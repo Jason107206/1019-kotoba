@@ -37,3 +37,5 @@ Choose **Hiragana groups** in the menu. Tap a character to see syllabus words be
 ## Kanji display
 
 Study cards, hiragana groups and the word reference show a kanji field only when the supplied form contains kanji. Kanji Match excludes kana-only entries and uses four kanji-bearing choices, including when started from a hiragana group. Written Part A and the mock retain the information sheet’s required X answers.
+
+The repository root also contains a relative entry page for branch-based GitHub Pages publishing. It opens `dist/`; the custom Actions workflow continues to publish the contents of `dist/` directly. Both publishing methods serve the same game.
