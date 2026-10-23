@@ -167,3 +167,13 @@ for(const [id,location] of [['2-01','speaker'],['2-04','speaker'],['2-02','liste
 ev('navigate("dialogue")');assert.ok(!elements.app.innerHTML.includes('data-dialogue-scope'));
 
 console.log('PASS: source coverage, strict spelling, 0/0.5/1 scoring, all 50 puzzles, 16 groups, shuffled duplicate tiles, every card renderer, missed-item practice, hints, 15-minute mock, balanced chapter sampling, 20-point grading and persisted state.');
+
+// Expression prompts show the incoming line without translating the answer.
+for(const kind of ['dialogue-choice','dialogue-tiles']){
+  ev(`startActivity('${kind}',['likewise'])`);
+  assert.ok(elements.app.innerHTML.includes('<p class="dialogue-scene jp" lang="ja">よろしくおねがいします</p>'));
+  assert.ok(!/LINE TO SAY|The pleasure is mine|Someone has finished an introduction|highlighted/.test(elements.app.innerHTML));
+  ev(`startActivity('${kind}',['meet'])`);
+  assert.ok(elements.app.innerHTML.includes('You meet someone for the first time.'));
+  assert.ok(!/LINE TO SAY|Nice to meet you/.test(elements.app.innerHTML));
+}
