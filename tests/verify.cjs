@@ -1,8 +1,8 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const elements={app:{innerHTML:''},toast:{style:{},textContent:''}};
-const handlers={};let storage={};
+const handlers={};let storage={'kotoba-ch12-v1':JSON.stringify({language:'en'})};
 const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>handlers[e]=f},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:()=>{},clearTimeout:()=>{}});
-vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/i18n.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
 const ev=s=>vm.runInContext(s,ctx);
 assert.equal(ev('WORDS.length'),96);
 assert.equal(ev('SENTENCES.length'),50);
@@ -177,3 +177,31 @@ for(const kind of ['dialogue-choice','dialogue-tiles']){
   assert.ok(elements.app.innerHTML.includes('You meet someone for the first time.'));
   assert.ok(!/LINE TO SAY|Nice to meet you/.test(elements.app.innerHTML));
 }
+
+// Language switching preserves an in-progress answer and persists the preference.
+ev('startActivity("dialogue-tiles",["likewise"]);state.activity.chosen=[0];run("toggleLanguage")');
+assert.equal(ev('state.language'),'zh-Hant');
+assert.equal(ev('state.activity.chosen.length'),1);
+assert.equal(JSON.parse(Object.values(storage)[0]).language,'zh-Hant');
+assert.ok(elements.app.innerHTML.includes('你會如何回應？'));
+assert.ok(elements.app.innerHTML.includes('<p class="dialogue-scene jp" lang="ja">よろしくおねがいします</p>'));
+assert.ok(!/LINE TO SAY|The pleasure is mine/.test(elements.app.innerHTML));
+assert.equal(ev('DIALOGUES.every(d=>(!d.scene||ZH_HANT[d.scene])&&ZH_HANT[d.why])'),true);
+assert.equal(ev('SENTENCES.every(s=>ZH_HANT[s.prompt])'),true);
+assert.equal(ev('PATTERNS.every(p=>ZH_HANT[p.title]&&ZH_HANT[p.tip])'),true);
+assert.equal(ev('matchingItems("wh").concat(matchingItems("demonstratives")).every(q=>ZH_HANT[q.why])'),true);
+assert.equal(ev('localizeMarkup(`<input value="English &amp; これ" data-answer="b" placeholder="Type hiragana"><span lang="ja">よろしくおねがいします</span>`)'),'<input value="English &amp; これ" data-answer="b" placeholder="輸入平假名"><span lang="ja">よろしくおねがいします</span>');
+for(const view of ['home','hiragana','cards','write','matching','dialogue','sentences','bank','mock']){
+  ev(`mock=null;resetFilters();state.kanaSelected=null;navigate('${view}')`);
+  assert.ok(elements.app.innerHTML.includes('切換至繁體中文')===false);
+  assert.ok(elements.app.innerHTML.includes('按平假名分類'));
+  assert.ok(!elements.app.innerHTML.includes('undefined'));
+}
+ev('navigate("bank");state.search="student";render()');
+assert.ok(elements.app.innerHTML.includes('學生'));
+ev('state.view="write";begin("write",["1-09"]);state.round.b="がくせい";run("toggleLanguage")');
+assert.equal(ev('state.round.b'),'がくせい');
+assert.equal(ev('state.language'),'en');
+assert.ok(elements.app.innerHTML.includes('Check both answers'));
+assert.equal(JSON.parse(Object.values(storage)[0]).language,'en');
+console.log('PASS: Traditional Chinese prompts, feedback, safe markup translation and persistent language switching without losing answers.');
