@@ -2,7 +2,7 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const elements={app:{innerHTML:''},toast:{style:{},textContent:''}};
 const handlers={};let storage={};
 const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>handlers[e]=f},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:()=>{},clearTimeout:()=>{}});
-vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
 const ev=s=>vm.runInContext(s,ctx);
 assert.equal(ev('WORDS.length'),96);
 assert.equal(ev('SENTENCES.length'),50);
@@ -32,7 +32,7 @@ assert.equal(ev('gradeSentence(sentenceBy("p12-1"),[0,1,5,3,4,2,6,7])'),true);
 assert.equal(ev('PATTERNS.every(p=>SENTENCES.some(s=>s.pattern===p.id))'),true);
 // Every kanji in a puzzle is taught on one of the specified vocabulary pages.
 assert.equal(ev(`(()=>{const allowed=new Set(WORDS.map(w=>w.c).join('').match(/\\p{Script=Han}/gu));return SENTENCES.every(s=>(s.tokens.join('').match(/\\p{Script=Han}/gu)||[]).every(k=>allowed.has(k)));})()`),true);
-for(const view of ['home','hiragana','cards','write','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
+for(const view of ['home','hiragana','cards','write','matching','dialogue','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
 ev('navigate("cards");begin("cards",["1-09"]);run("flip")');assert.ok(elements.app.innerHTML.includes('KANJI'));ev('run("got")');assert.equal(ev('state.round.index'),1);
 ev('navigate("write");state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');assert.equal(ev('state.round.result.score'),1);assert.ok(elements.app.innerHTML.includes('1 / 1 mark'));
 ev('run("next");state.round.b="";state.round.c="";run("checkWrite")');assert.equal(ev('state.round.result.score'),0);assert.equal(ev('state.round.missed.length'),1);
@@ -102,5 +102,55 @@ assert.ok(!elements.app.innerHTML.includes('no kanji'));
 ev('state.view="cards";begin("cards",["1-09"]);run("flip")');
 assert.ok(elements.app.innerHTML.includes('answer-c jp'));
 ev('resetFilters()');
+
+
+// Matching categories and dialogue modes stay separate from the quiz bank.
+assert.equal(ev('matchingItems("wh").length'),7);
+assert.equal(ev('matchingItems("demonstratives").length'),7);
+assert.equal(ev('matchingItems("wh").filter(x=>x.added).length'),2);
+assert.equal(ev('dialogueItems("quiz").some(x=>x.added)'),false);
+assert.equal(ev('dialogueItems("all").filter(x=>x.added).length'),1);
+assert.equal(ev('WORDS.some(w=>["なんじ","いくら","はじめましょう"].includes(w.kana))'),false);
+assert.equal(ev('kanaUnits("はじめましょう").join(",")'),'は,じ,め,ま,しょ,う');
+assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
+for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
+  ev(`state.dialogueScope='all';startActivity('${kind}')`);
+  assert.ok(elements.app.innerHTML.includes('Back to menu'));
+  const count=ev('state.activity.ids.length');
+  for(let i=0;i<count;i++){
+    ev(`state.activity.index=${i};prepareActivity();render()`);
+    assert.equal(ev('new Set(state.activity.choices.map(x=>x.kana)).size'),4);
+    if(kind.startsWith('dialogue'))assert.equal(ev('state.activity.choices.filter(x=>x.family===activityCurrent().family).length'),1);
+    if(kind==='dialogue-tiles'){
+      ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));if(id<0)throw Error('Missing tile');a.chosen.push(id);}checkActivity();}`);
+      assert.equal(ev('activityAnswer()'),ev('activityCurrent().kana'));
+    }else ev('checkActivity(activityCurrent().id)');
+    assert.equal(ev('state.activity.result'),true,kind+' correct answer');
+    assert.ok(!elements.app.innerHTML.includes('undefined'));
+  }
+  assert.equal(ev('state.activity.correct'),count);
+  ev('activityAction("activityNext")');assert.ok(elements.app.innerHTML.includes('Round complete.'));
+}
+ev('startActivity("wh");checkActivity(state.activity.choices.find(x=>x.id!==activityCurrent().id).id)');
+assert.equal(ev('state.activity.result'),false);
+assert.equal(ev('state.activity.missed.length'),1);
+const attemptsBefore=ev('Object.values(progress.activities).reduce((n,x)=>n+x.attempts,0)');
+ev('checkActivity(activityCurrent().id)');
+assert.equal(ev('Object.values(progress.activities).reduce((n,x)=>n+x.attempts,0)'),attemptsBefore);
+ev('activityAction("activityMissed")');assert.equal(ev('state.activity.ids.length'),1);
+ev('state.dialogueScope="quiz";startActivity("dialogue-choice")');
+assert.equal(ev('state.activity.items.some(x=>x.added)'),false);
+ev('state.dialogueScope="all";startActivity("dialogue-tiles",["class-begin"])');
+assert.equal(ev('activityCurrent().kana'),'はじめましょう');
+// Simulate actual event handlers for tile placement, removal and submission.
+ev(`{const a=state.activity,id=a.tileBank.findIndex(x=>x==='は');activityClick({dataset:{activityTile:String(id)}});}`);
+assert.equal(ev('activityAnswer()'),'は');
+ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAnswer()'),'');
+ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
+assert.equal(ev('state.activity.result'),true);
+ev('navigate("matching")');assert.ok(elements.app.innerHTML.includes('Question words'));
+ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('Build with hiragana'));
+ev('startMock()');assert.equal(ev('mock.a.every(q=>!!wordBy(q.id))'),true);
+ev('mock.done=true;resetFilters()');
 
 console.log('PASS: source coverage, strict spelling, 0/0.5/1 scoring, all 50 puzzles, 16 groups, shuffled duplicate tiles, every card renderer, missed-item practice, hints, 15-minute mock, balanced chapter sampling, 20-point grading and persisted state.');
