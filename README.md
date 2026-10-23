@@ -10,7 +10,7 @@ Transcribed and visually checked against the user-provided textbook extract:
 - Grammar: Chapter 1 PDF pp.2–5; Chapter 2 pp.7–10.
 - Assessment format: Chapters Quiz Information Sheet, Chapter 1–2 section only.
 
-90 printed entries become 103 separate recall forms after splitting the three polite pairs, the optional souvenir prefix, and bracketed expression variants. 62 are main-vocabulary forms; 17 are related names; 24 are expression forms.
+The selected vocabulary has 96 separate recall forms after splitting polite pairs and optional forms. Seven fictional company/institution names are excluded at the user’s request. There are 62 main-vocabulary forms, 10 country names and 24 expression forms. Named fictional characters in sentence puzzles are replaced with syllabus pronouns and generic roles; all 50 puzzles and 16 pattern groups are retained.
 
 Column B follows the sheet's literal Hiragana instruction, including hiragana readings for printed katakana loanwords. Original spelling is retained on study cards and in the reference bank. Column C only accepts the printed Japanese vocabulary-column form; blank and alphabet-only forms use X, following the sheet. Do not introduce alternative kanji for words printed only in kana. Placeholder tilde is ignored in answer grading. Traditional Chinese meanings are labels, not Japanese answer variants.
 
@@ -32,4 +32,4 @@ Original uploaded PDFs, original hosting configuration, and credentials are not 
 
 ## Hiragana groups
 
-Choose **Hiragana groups** in the menu. Tap a character to see syllabus words beginning with it, hide meanings for recall, or practise that group in cards, written Part A, or kanji matching. Voiced characters have separate groups; katakana words use their hiragana reading. Empty groups are disabled. All 103 forms remain within the original vocabulary bank.
+Choose **Hiragana groups** in the menu. Tap a character to see syllabus words beginning with it, hide meanings for recall, or practise that group in cards, written Part A, or kanji matching. Voiced characters have separate groups; katakana words use their hiragana reading. Empty groups are disabled. All 96 forms remain within the original vocabulary bank.
