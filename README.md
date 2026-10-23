@@ -42,8 +42,8 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 ## Matching menus and simulated dialogue
 
-Matching offers Kanji Match, Question Words, and This/That & Attention. The last group distinguishes stand-alone これ/それ/あれ, noun-prefixed この/その/あの, and the attention-getter あのう. Question Words includes the supplied standard/polite forms plus the user-requested なんじ and いくら.
+Matching offers Kanji Match, five Question Words, and seven This/That & Attention words. All activities use the original quiz-page vocabulary. The additional requested time, price and classroom expressions have been removed.
 
-Dialogue offers four-choice expressions or hiragana construction for 15 scenes. “Quiz-page expressions only” selects 14 scenes; the additional classroom scene uses the user-requested はじめましょう. Small-kana units stay together (は・じ・め・ま・しょ・う); small っ stays separate. Duplicate tiles are tracked by position, with correctness based on the resulting text. Each scene has feedback and missed-item replay. Equivalent thank-you variants are excluded as distractors in the same question.
+This/That uses precise SVG scenes of a speaker, listener and book. The book appears near the speaker, near the listener, or far from both. A sentence blank distinguishes stand-alone これ/それ/あれ from noun-prefixed この/その/あの. The あのう scene shows the speaker getting the listener’s attention. SVG titles and captions provide accessible descriptions. An expandable visual guide compares the three locations.
 
-All three requested additions are isolated in `activities.js`; they do not change the 96-word syllabus bank, its kanji forms, or the mock quiz. The app stores new activity progress independently.
+Dialogue offers four-choice expressions or hiragana construction for 14 syllabus scenes. Small-kana combinations stay together; small っ stays separate. Duplicate tiles are tracked by position, with correctness based on the resulting text. Each scene has feedback and missed-item replay. Equivalent thank-you variants are excluded as distractors in the same question. Activity progress is stored independently.

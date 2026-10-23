@@ -105,16 +105,16 @@ ev('resetFilters()');
 
 
 // Matching categories and dialogue modes stay separate from the quiz bank.
-assert.equal(ev('matchingItems("wh").length'),7);
+assert.equal(ev('matchingItems("wh").length'),5);
 assert.equal(ev('matchingItems("demonstratives").length'),7);
-assert.equal(ev('matchingItems("wh").filter(x=>x.added).length'),2);
+assert.equal(ev('matchingItems("wh").filter(x=>x.added).length'),0);
 assert.equal(ev('dialogueItems("quiz").some(x=>x.added)'),false);
-assert.equal(ev('dialogueItems("all").filter(x=>x.added).length'),1);
+assert.equal(ev('dialogueItems().length'),14);
 assert.equal(ev('WORDS.some(w=>["なんじ","いくら","はじめましょう"].includes(w.kana))'),false);
-assert.equal(ev('kanaUnits("はじめましょう").join(",")'),'は,じ,め,ま,しょ,う');
+assert.equal(ev('kanaUnits("きょうし").join(",")'),'きょ,う,し');
 assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
 for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
-  ev(`state.dialogueScope='all';startActivity('${kind}')`);
+  ev(`startActivity('${kind}')`);
   assert.ok(elements.app.innerHTML.includes('Back to menu'));
   const count=ev('state.activity.ids.length');
   for(let i=0;i<count;i++){
@@ -138,13 +138,13 @@ const attemptsBefore=ev('Object.values(progress.activities).reduce((n,x)=>n+x.at
 ev('checkActivity(activityCurrent().id)');
 assert.equal(ev('Object.values(progress.activities).reduce((n,x)=>n+x.attempts,0)'),attemptsBefore);
 ev('activityAction("activityMissed")');assert.equal(ev('state.activity.ids.length'),1);
-ev('state.dialogueScope="quiz";startActivity("dialogue-choice")');
+ev('startActivity("dialogue-choice")');
 assert.equal(ev('state.activity.items.some(x=>x.added)'),false);
-ev('state.dialogueScope="all";startActivity("dialogue-tiles",["class-begin"])');
-assert.equal(ev('activityCurrent().kana'),'はじめましょう');
+ev('startActivity("dialogue-tiles",["thanks-full"])');
+assert.equal(ev('activityCurrent().kana'),'どうもありがとうございます');
 // Simulate actual event handlers for tile placement, removal and submission.
-ev(`{const a=state.activity,id=a.tileBank.findIndex(x=>x==='は');activityClick({dataset:{activityTile:String(id)}});}`);
-assert.equal(ev('activityAnswer()'),'は');
+ev(`{const a=state.activity,id=a.tileBank.findIndex(x=>x==='ど');activityClick({dataset:{activityTile:String(id)}});}`);
+assert.equal(ev('activityAnswer()'),'ど');
 ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAnswer()'),'');
 ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
 assert.equal(ev('state.activity.result'),true);
@@ -152,5 +152,18 @@ ev('navigate("matching")');assert.ok(elements.app.innerHTML.includes('Question w
 ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('Build with hiragana'));
 ev('startMock()');assert.equal(ev('mock.a.every(q=>!!wordBy(q.id))'),true);
 ev('mock.done=true;resetFilters()');
+
+
+// Every activity answer must now come from the syllabus bank.
+assert.equal(ev('[...matchingItems("wh"),...matchingItems("demonstratives"),...dialogueItems()].every(q=>WORDS.some(w=>w.kana===q.kana))'),true);
+assert.equal(ev('[...matchingItems("wh"),...matchingItems("demonstratives"),...dialogueItems()].some(q=>["なんじ","いくら","はじめましょう"].includes(q.kana))'),false);
+for(const [id,location] of [['2-01','speaker'],['2-04','speaker'],['2-02','listener'],['2-05','listener'],['2-03','far'],['2-06','far'],['2-c1','attention']]){
+  ev(`{const q=matchingItems('demonstratives').find(x=>x.word==='${id}');if(demonstrativeLocation(q)!=='${location}')throw Error('Wrong graphic location');}`);
+  const html=ev(`demonstrativeQuestion(matchingItems('demonstratives').find(x=>x.word==='${id}'))`);
+  assert.ok(html.includes('<svg'));assert.ok(html.includes('role="img"'));assert.ok(!html.includes('undefined'));
+  if(location==='attention')assert.ok(!html.includes('scene-book'));else assert.ok(html.includes('scene-book'));
+  assert.ok(html.includes('_____'));
+}
+ev('navigate("dialogue")');assert.ok(!elements.app.innerHTML.includes('data-dialogue-scope'));
 
 console.log('PASS: source coverage, strict spelling, 0/0.5/1 scoring, all 50 puzzles, 16 groups, shuffled duplicate tiles, every card renderer, missed-item practice, hints, 15-minute mock, balanced chapter sampling, 20-point grading and persisted state.');
