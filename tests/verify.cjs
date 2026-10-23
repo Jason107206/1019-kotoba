@@ -32,7 +32,7 @@ assert.equal(ev('gradeSentence(sentenceBy("p12-1"),[0,1,5,3,4,2,6,7])'),true);
 assert.equal(ev('PATTERNS.every(p=>SENTENCES.some(s=>s.pattern===p.id))'),true);
 // Every kanji in a puzzle is taught on one of the specified vocabulary pages.
 assert.equal(ev(`(()=>{const allowed=new Set(WORDS.map(w=>w.c).join('').match(/\\p{Script=Han}/gu));return SENTENCES.every(s=>(s.tokens.join('').match(/\\p{Script=Han}/gu)||[]).every(k=>allowed.has(k)));})()`),true);
-for(const view of ['home','hiragana','cards','write','matching','dialogue','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
+for(const view of ['home','cards','write','matching','dialogue','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
 ev('navigate("cards");begin("cards",["1-09"]);run("flip")');assert.ok(elements.app.innerHTML.includes('KANJI'));ev('run("got")');assert.equal(ev('state.round.index'),1);
 ev('navigate("write");state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');assert.equal(ev('state.round.result.score'),1);assert.ok(elements.app.innerHTML.includes('1 / 1 mark'));
 ev('run("next");state.round.b="";state.round.c="";run("checkWrite")');assert.equal(ev('state.round.result.score'),0);assert.equal(ev('state.round.missed.length'),1);
@@ -52,28 +52,11 @@ ev('startMock();mock.a[0].b=wordBy(mock.a[0].id).kana;finishMock(true)');assert.
 ev('state.view="mock";render()');assert.ok(elements.app.innerHTML.includes('0.5<small> / 20'));
 assert.ok(Object.keys(storage).length===1);assert.equal(JSON.parse(Object.values(storage)[0]).mock.done,true);
 
-// Hiragana grouping must cover the complete syllabus exactly once.
+// Retain first-reading filters without a separate Hiragana groups page.
 assert.equal(ev('new Set(HIRAGANA_KEYS.map(([k])=>k)).size'),71);
-assert.equal(ev('[...hiraganaGroups(WORDS).values()].flat().length'),96);
-assert.equal(ev('new Set([...hiraganaGroups(WORDS).values()].flat().map(w=>w.id)).size'),96);
 assert.equal(ev('WORDS.every(w=>HIRAGANA_KEYS.some(([k])=>k===hiraganaInitial(w)))'),true);
 assert.equal(ev('hiraganaInitial({jp:"コーヒー"})'),'こ');
 assert.equal(ev('hiraganaInitial({kana:"～からきました"})'),'か');
-assert.equal(ev('hiraganaInitial(wordBy("1-09"))'),'が');
-assert.equal(ev('hiraganaGroups(WORDS).get("か").some(w=>w.id==="1-09")'),false);
-assert.equal(ev('hiraganaGroups(WORDS).get("あ").length'),10);
-assert.equal(ev('hiraganaGroups(WORDS).get("う").length'),0);
-ev('resetFilters();navigate("hiragana");chooseHiragana("あ")');
-assert.equal(ev('hiraganaWords().length'),10);
-assert.equal((elements.app.innerHTML.match(/class="kana-word-card"/g)||[]).length,10);
-ev('run("toggleKanaAnswers")');assert.ok(!elements.app.innerHTML.includes('class="kana-meaning"'));
-ev('run("toggleKanaAnswers");startHiraganaDrill("cards")');
-assert.equal(ev('state.round.ids.length'),10);
-assert.equal(ev('state.round.ids.every(id=>hiraganaInitial(wordBy(id))==="あ")'),true);
-ev('run("backKana");state.filter.ch="2";render()');
-assert.equal(ev('hiraganaWords().every(w=>w.ch===2)'),true);
-ev('startHiraganaDrill("write")');
-assert.equal(ev('state.round.ids.every(id=>wordBy(id).ch===2&&hiraganaInitial(wordBy(id))==="あ")'),true);
 ev('resetFilters();state.filter.kana="が"');
 assert.equal(ev('pool("cards").length'),1);
 assert.equal(ev('pool("sentences").length'),50);
@@ -89,15 +72,8 @@ assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id)))'),true);
 assert.equal(ev('state.round.options.every(c=>/\\p{Script=Han}/u.test(c))'),true);
 ev('begin("match",["1-01","1-09","2-18"])');
 assert.equal(ev('state.round.ids.join(",")'),'1-09');
-ev('resetFilters();chooseHiragana("あ");startHiraganaDrill("match")');
-assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id))&&hiraganaInitial(wordBy(id))==="あ")'),true);
-ev('resetFilters();chooseHiragana("の")');
-assert.ok(/data-kana-drill="match" disabled/.test(elements.app.innerHTML));
 ev('state.view="cards";begin("cards",["1-01"]);run("flip")');
 assert.ok(!elements.app.innerHTML.includes('answer-c '));
-assert.ok(!elements.app.innerHTML.includes('no kanji'));
-ev('chooseHiragana("の")');
-assert.ok(!elements.app.innerHTML.includes('kana-written'));
 assert.ok(!elements.app.innerHTML.includes('no kanji'));
 ev('state.view="cards";begin("cards",["1-09"]);run("flip")');
 assert.ok(elements.app.innerHTML.includes('answer-c jp'));
@@ -191,10 +167,10 @@ assert.equal(ev('SENTENCES.every(s=>ZH_HANT[s.prompt])'),true);
 assert.equal(ev('PATTERNS.every(p=>ZH_HANT[p.title]&&ZH_HANT[p.tip])'),true);
 assert.equal(ev('matchingItems("wh").concat(matchingItems("demonstratives")).every(q=>ZH_HANT[q.why])'),true);
 assert.equal(ev('localizeMarkup(`<input value="English &amp; これ" data-answer="b" placeholder="Type hiragana"><span lang="ja">よろしくおねがいします</span>`)'),'<input value="English &amp; これ" data-answer="b" placeholder="輸入平假名"><span lang="ja">よろしくおねがいします</span>');
-for(const view of ['home','hiragana','cards','write','matching','dialogue','sentences','bank','mock']){
-  ev(`mock=null;resetFilters();state.kanaSelected=null;navigate('${view}')`);
+for(const view of ['home','cards','write','matching','dialogue','sentences','bank','mock']){
+  ev(`mock=null;resetFilters();navigate('${view}')`);
   assert.ok(elements.app.innerHTML.includes('切換至繁體中文')===false);
-  assert.ok(elements.app.innerHTML.includes('按平假名分類'));
+  assert.ok(elements.app.innerHTML.includes('情境對話'));assert.ok(!elements.app.innerHTML.includes('data-view="hiragana"'));
   assert.ok(!elements.app.innerHTML.includes('undefined'));
 }
 ev('navigate("bank");state.search="student";render()');
@@ -205,3 +181,17 @@ assert.equal(ev('state.language'),'en');
 assert.ok(elements.app.innerHTML.includes('Check both answers'));
 assert.equal(JSON.parse(Object.values(storage)[0]).language,'en');
 console.log('PASS: Traditional Chinese prompts, feedback, safe markup translation and persistent language switching without losing answers.');
+
+// The language switch belongs to the logo header, above navigation.
+for(const lang of ['en','zh-Hant']){
+ ev(`state.language='${lang}';navigate('home')`);
+ const html=elements.app.innerHTML;
+ assert.equal((html.match(/data-action="toggleLanguage"/g)||[]).length,1);
+ assert.ok(html.indexOf('class="brand-header"')<html.indexOf('class="language-switch"'));
+ assert.ok(html.indexOf('class="language-switch"')<html.indexOf('<nav'));
+ assert.ok(!/data-view="hiragana"|kana-home-banner[^]*A NEW WAY/.test(html));
+ assert.ok(!html.includes('Hiragana groups')&&!html.includes('按平假名分類'));
+}
+ev('navigate("hiragana")');assert.equal(ev('state.view'),'home');
+assert.equal(ev('typeof hiraganaView'),'undefined');
+console.log('PASS: language selector in logo header; removed Hiragana groups page, navigation and home link.');
