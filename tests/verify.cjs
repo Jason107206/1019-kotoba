@@ -159,7 +159,7 @@ ev('startActivity("dialogue-tiles",["likewise"]);state.activity.chosen=[0];run("
 assert.equal(ev('state.language'),'zh-Hant');
 assert.equal(ev('state.activity.chosen.length'),1);
 assert.equal(JSON.parse(Object.values(storage)[0]).language,'zh-Hant');
-assert.ok(elements.app.innerHTML.includes('你會如何回應？'));
+assert.ok(elements.app.innerHTML.includes('你會怎樣說？'));
 assert.ok(elements.app.innerHTML.includes('<p class="dialogue-scene jp" lang="ja">よろしくおねがいします</p>'));
 assert.ok(!/LINE TO SAY|The pleasure is mine/.test(elements.app.innerHTML));
 assert.equal(ev('DIALOGUES.every(d=>(!d.scene||ZH_HANT[d.scene])&&ZH_HANT[d.why])'),true);
@@ -195,3 +195,21 @@ for(const lang of ['en','zh-Hant']){
 ev('navigate("hiragana")');assert.equal(ev('state.view'),'home');
 assert.equal(ev('typeof hiraganaView'),'undefined');
 console.log('PASS: language selector in logo header; removed Hiragana groups page, navigation and home link.');
+
+// Actual speech has a distinct bubble and speaker label in both languages and modes.
+for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dialogue-tiles']){
+  ev(`state.language='${language}';startActivity('${kind}',['likewise'])`);
+  assert.ok(elements.app.innerHTML.includes('<blockquote class="dialogue-incoming">'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'They say':'對方說'));
+  assert.ok(!elements.app.innerHTML.includes('dialogue-situation'));
+  assert.ok(!elements.app.innerHTML.includes('こちらこそ responds'));
+  ev(`startActivity('${kind}',['offer'])`);
+  assert.ok(elements.app.innerHTML.includes('class="dialogue-situation"'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'You give someone a pen.':'你把一枝筆遞給對方。'));
+  assert.ok(!elements.app.innerHTML.includes('dialogue-incoming'));
+  assert.ok(!elements.app.innerHTML.includes('Use どうぞ when'));
+  if(kind==='dialogue-tiles')assert.ok(elements.app.innerHTML.includes(language==='en'?'Use hiragana tiles to spell what you would say.':'用平假名字卡，拼出這個情況下你會說的話。'));
+  ev('state.activity.checked=true;render()');
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Use どうぞ when you give someone something.':'把東西遞給對方時，可以說 どうぞ'));
+}
+console.log('PASS: simple bilingual expression prompts, distinct incoming dialogue, and explanations shown only after answering.');
