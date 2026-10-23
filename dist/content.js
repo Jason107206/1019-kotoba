@@ -69,7 +69,7 @@ V('2-18',2,'core','鑰匙','key','かぎ');
 V('2-19',2,'core','鐘錶','clock / watch','とけい','時計');
 V('2-20',2,'core','傘','umbrella','かさ','傘');
 V('2-21',2,'core','皮包、提包','bag','かばん');
-V('2-22',2,'core','CD、光碟','CD','シーディー','X','The book also prints CD. It contains no kanji; column C follows the sheet’s X rule.');
+V('2-22',2,'core','CD、光碟','CD','シーディー','X','The book also prints CD.');
 V('2-23',2,'core','電視','television','テレビ');
 V('2-24',2,'core','收音機','radio','ラジオ');
 V('2-25',2,'core','照相機','camera','カメラ');

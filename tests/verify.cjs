@@ -33,7 +33,7 @@ assert.equal(ev('PATTERNS.every(p=>SENTENCES.some(s=>s.pattern===p.id))'),true);
 // Every kanji in a puzzle is taught on one of the specified vocabulary pages.
 assert.equal(ev(`(()=>{const allowed=new Set(WORDS.map(w=>w.c).join('').match(/\\p{Script=Han}/gu));return SENTENCES.every(s=>(s.tokens.join('').match(/\\p{Script=Han}/gu)||[]).every(k=>allowed.has(k)));})()`),true);
 for(const view of ['home','hiragana','cards','write','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
-ev('navigate("cards");run("flip")');assert.ok(elements.app.innerHTML.includes('C · KANJI / X'));ev('run("got")');assert.equal(ev('state.round.index'),1);
+ev('navigate("cards");begin("cards",["1-09"]);run("flip")');assert.ok(elements.app.innerHTML.includes('KANJI'));ev('run("got")');assert.equal(ev('state.round.index'),1);
 ev('navigate("write");state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');assert.equal(ev('state.round.result.score'),1);assert.ok(elements.app.innerHTML.includes('1 / 1 mark'));
 ev('run("next");state.round.b="";state.round.c="";run("checkWrite")');assert.equal(ev('state.round.result.score'),0);assert.equal(ev('state.round.missed.length'),1);
 ev('run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
@@ -81,4 +81,26 @@ ev('resetFilters()');
 
 assert.equal(ev('WORDS.some(w=>/^1-r1[1-7]$/.test(w.id))'),false);
 assert.equal(ev('/ミラー|サントス|ワン|カリナ|グプタ|テレーザ|IMC|AKC|神戸|富士|さくら大学/.test(JSON.stringify({WORDS,SENTENCES}))'),false);
+
+// Exclude kana-only entries through both normal and explicit-ID match entry points.
+ev('resetFilters();begin("match")');
+assert.equal(ev('state.round.ids.length'),ev('WORDS.filter(hasKanji).length'));
+assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id)))'),true);
+assert.equal(ev('state.round.options.every(c=>/\\p{Script=Han}/u.test(c))'),true);
+ev('begin("match",["1-01","1-09","2-18"])');
+assert.equal(ev('state.round.ids.join(",")'),'1-09');
+ev('resetFilters();chooseHiragana("あ");startHiraganaDrill("match")');
+assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id))&&hiraganaInitial(wordBy(id))==="あ")'),true);
+ev('resetFilters();chooseHiragana("の")');
+assert.ok(/data-kana-drill="match" disabled/.test(elements.app.innerHTML));
+ev('state.view="cards";begin("cards",["1-01"]);run("flip")');
+assert.ok(!elements.app.innerHTML.includes('answer-c '));
+assert.ok(!elements.app.innerHTML.includes('no kanji'));
+ev('chooseHiragana("の")');
+assert.ok(!elements.app.innerHTML.includes('kana-written'));
+assert.ok(!elements.app.innerHTML.includes('no kanji'));
+ev('state.view="cards";begin("cards",["1-09"]);run("flip")');
+assert.ok(elements.app.innerHTML.includes('answer-c jp'));
+ev('resetFilters()');
+
 console.log('PASS: source coverage, strict spelling, 0/0.5/1 scoring, all 50 puzzles, 16 groups, shuffled duplicate tiles, every card renderer, missed-item practice, hints, 15-minute mock, balanced chapter sampling, 20-point grading and persisted state.');

@@ -33,3 +33,7 @@ Original uploaded PDFs, original hosting configuration, and credentials are not 
 ## Hiragana groups
 
 Choose **Hiragana groups** in the menu. Tap a character to see syllabus words beginning with it, hide meanings for recall, or practise that group in cards, written Part A, or kanji matching. Voiced characters have separate groups; katakana words use their hiragana reading. Empty groups are disabled. All 96 forms remain within the original vocabulary bank.
+
+## Kanji display
+
+Study cards, hiragana groups and the word reference show a kanji field only when the supplied form contains kanji. Kanji Match excludes kana-only entries and uses four kanji-bearing choices, including when started from a hiragana group. Written Part A and the mock retain the information sheet’s required X answers.
