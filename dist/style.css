@@ -29,3 +29,6 @@
 
 /* Keep similar readings comfortable to read on narrow screens. */
 @media(max-width:600px){.hiragana-options .option{font-size:20px;min-height:70px}}
+
+/* Dialogue category guides lead to either practice mode. */
+.dialogue-guide>h2{margin-bottom:22px}.dialogue-guide-entry+.dialogue-guide-entry{border-top:1px solid var(--line);margin-top:24px;padding-top:4px}.dialogue-guide-entry>h3{font-size:23px;margin:8px 0;overflow-wrap:anywhere}.dialogue-guide-entry>p{font-size:13px;margin-top:10px}.dialogue-guide-entry>.dialogue-role{color:var(--sage-ink)}.dialogue-guide-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:24px}

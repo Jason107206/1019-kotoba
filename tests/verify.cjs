@@ -168,7 +168,7 @@ ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAns
 ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
 assert.equal(ev('state.activity.result'),true);
 ev('navigate("matching")');assert.ok(elements.app.innerHTML.includes('Question words'));
-ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('Build with hiragana'));
+ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('data-dialogue-category="introductions"'));
 ev('startMock()');assert.equal(ev('mock.a.every(q=>!!wordBy(q.id))'),true);
 ev('mock.done=true;resetFilters()');
 
@@ -545,3 +545,49 @@ assert.equal(JSON.parse(Object.values(storage)[0]).progress.hiraganaMatches['2-0
 ev('run("next")');assert.ok(elements.app.innerHTML.includes('Round complete'));
 ev('run("repeatMissed")');assert.equal(ev('state.round.ids.join(",")'),'2-09');
 console.log('PASS: bilingual Hiragana Match, all 96 prompts, four similar choices, independent saved scoring, manual feedback and scoped retries.');
+
+// Dialogue categories lead to a guide, then either game; retries retain that category.
+const dialogueCategoryCounts={introductions:5,courtesy:5,replies:4};
+assert.equal(ev('new Set(DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id).map(q=>q.id))).size'),14);
+assert.equal(ev('DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id)).length'),14);
+assert.equal(ev('DIALOGUE_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
+for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entries(dialogueCategoryCounts)){
+  ev(`state.language='${language}';pageHistory.length=0;navigate('dialogue')`);
+  assert.equal((elements.app.innerHTML.match(/data-dialogue-category=/g)||[]).length,3);
+  assert.ok(!elements.app.innerHTML.includes('data-open-dialogue='));
+  clickData({dialogueCategory:category});
+  assert.equal(ev('state.view'),'dialogue-content');
+  assert.equal(ev('activityNav()'),'dialogue');
+  assert.equal((elements.app.innerHTML.match(/data-dialogue-guide=/g)||[]).length,count);
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Expression guide':'說法指南'));
+  for(const label of language==='en'?['Choose your answer','Build with hiragana']:['選擇答案','平假名拼寫'])assert.ok(elements.app.innerHTML.includes(label));
+  for(const id of ev(`dialogueItems('${category}').map(q=>q.id)`))assert.ok(elements.app.innerHTML.includes(`data-dialogue-guide="${id}"`));
+  assert.ok(!elements.app.innerHTML.includes('undefined'));
+  for(const kind of ['dialogue-choice','dialogue-tiles']){
+    clickData({openDialogue:kind});
+    assert.equal(ev('state.view'),'activity');
+    assert.equal(ev('state.activity.category'),category);
+    assert.equal(ev('state.activity.ids.length'),count);
+    for(let index=0;index<count;index++){
+      ev(`state.activity.index=${index};prepareActivity();render()`);
+      assert.equal(ev(`state.activity.choices.every(q=>vocabularySection(wordBy(q.word))==='${category}')`),true);
+      assert.equal(ev('new Set(state.activity.choices.map(q=>q.kana)).size'),ev('state.activity.choices.length'));
+      if(kind==='dialogue-tiles'){
+        ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){a.chosen.push(a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i)));}checkActivity();}`);
+      }else clickData({activityChoice:ev('activityCurrent().id')});
+      assert.equal(ev('state.activity.result'),true);
+    }
+    ev('activityAction("activityNext")');
+    assert.ok(elements.app.innerHTML.includes('data-back-view="dialogue-content"'));
+    ev('state.activity.missed=[state.activity.ids[0]];activityAction("activityMissed")');
+    assert.equal(ev('state.activity.ids.length'),1);
+    assert.equal(ev('state.activity.category'),category);
+    ev('activityAction("activityRestart")');
+    assert.equal(ev('state.activity.ids.length'),count);
+    clickData({action:'back'});
+    assert.equal(ev('state.view'),'dialogue-content');
+    assert.equal(ev('state.dialogueCategory'),category);
+  }
+  clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
+}
+console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all 14 scenes, category-only choices, scoped retries and guide return paths.');

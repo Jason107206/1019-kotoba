@@ -1,6 +1,15 @@
 'use strict';
 // Interface translations only: Japanese answers and quiz data remain unchanged.
 const ZH_HANT = {
+  "Introduction": "自我介紹",
+  "Polite expressions": "禮貌用語",
+  "Replies": "回答與反應",
+  "Choose a category, read the guide, then practise the dialogue.": "選擇分類，閱讀指南，再進行情境對話練習。",
+  "Read the expressions and when to use them. Then choose how to practise.": "認識各種說法和使用時機，再選擇練習方式。",
+  "Expression guide": "說法指南",
+  "You say": "你說",
+  "Responding, showing surprise and correcting a misunderstanding.": "練習回答、表達驚訝，以及糾正誤會。",
+
   "Hiragana match": "平假名配對",
   "Choose the correct reading from similar hiragana spellings.": "從相近的平假名拼法中選出正確讀音。",
   "Match hiragana readings from one chapter.": "配對一課的平假名讀音。",
