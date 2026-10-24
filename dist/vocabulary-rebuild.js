@@ -44,3 +44,65 @@ function vocabularyTileClick(dataset){
   }
   render();
 }
+
+// Shared vocabulary library and launch point for Recall and Rebuild.
+function vocabularyStudySet(key){
+  let words=WORDS,label,description,section='main';
+  if(key==='all'){
+    label='All words';description='Review every vocabulary form from Chapters 1–2.';
+  }else if(/^chapter-[12]$/.test(key)){
+    const ch=Number(key.slice(-1));section='chapter';words=WORDS.filter(w=>w.ch===ch);
+    label=`Chapter ${ch} · p.${ch===1?1:6}`;description='Review the vocabulary from this chapter.';
+  }else{
+    const category=VOCAB_CATEGORIES.find(c=>key===`category-${c.id}`);if(!category)return null;
+    section='category';words=WORDS.filter(w=>vocabularySection(w)===category.id);
+    label=category.label;description=category.description;
+  }
+  return {key,section,label,description,ids:words.map(w=>w.id)};
+}
+function vocabularyMenu(){
+  const section=state.vocabularyMenu;
+  if(section==='chapter')return `<section class="mode-grid two-modes">${[1,2].map(ch=>{const set=vocabularyStudySet(`chapter-${ch}`);return activityCard(set.label,set.description,`${set.ids.length} forms`,`data-vocabulary-set="${set.key}"`,'','','chapters');}).join('')}</section>`;
+  if(section==='category')return `<section class="mode-grid category-grid">${VOCAB_CATEGORIES.map(category=>activityCard(category.label,category.description,`${category.ids.length} forms`,`data-vocabulary-set="category-${category.id}"`,'','',category.id)).join('')}</section>`;
+  return `<section class="mode-grid">${activityCard('All words','Review every vocabulary form from Chapters 1–2.',`${WORDS.length} forms`,'data-vocabulary-set="all"','','','bank')}${activityCard('By chapter','Choose Chapter 1 or Chapter 2.','2 chapters','data-vocabulary-menu="chapter"','mode-yellow','','chapters')}${activityCard('By category','Choose a word group.',`${VOCAB_CATEGORIES.length} groups`,'data-vocabulary-menu="category"','mode-blue','','categories')}</section>`;
+}
+function openVocabularyContent(key){
+  const set=vocabularyStudySet(key);if(!set)return;
+  rememberPage();state.vocabularyContentKey=key;state.vocabularyMenu=set.section;
+  state.view='vocabulary-content';state.round=null;state.modal=false;render();window.scrollTo({top:0,behavior:'smooth'});
+}
+function startVocabularyPractice(mode){
+  if(!['write','vocabulary-rebuild'].includes(mode))return;
+  const set=vocabularyStudySet(state.vocabularyContentKey);if(!set)return;
+  state[`${wordModePrefix(mode)}Menu`]=set.section;
+  startWordPractice(mode,set.ids,set.label,set.key);
+}
+const VOCAB_VISUALS={
+  '1-01':'🙋','1-02':'🫵','1-03a':'👉🧑','1-03b':'👉👤','1-04':'🪪','1-05':'🧒','1-06':'🌏🧑',
+  '1-07':'🧑‍🏫','1-08':'🏫🧑‍🏫','1-09':'🧑‍🎓','1-10':'🏢🧑‍💼','1-11':'🪪🧑‍💼','1-12':'🏦🧑‍💼','1-13':'🧑‍⚕️','1-14':'🧑‍🔬',
+  '1-15':'🏫','1-16':'🏥','1-17a':'🧑❓','1-17b':'👤❓','1-18':'🎂','1-19a':'🎂❓','1-19b':'🎂❓','1-20':'✅','1-21':'❌',
+  '1-c1':'👋🤝','1-c2':'🌏✈️','1-c3a':'🙇🤝','1-c3b':'🙇🤝','1-c3c':'🙇🤝','1-c3d':'🙇🤝','1-c4':'🙋💬','1-c5':'🪪❓','1-c6':'👉🪪',
+  '1-r1':'🇺🇸','1-r2':'🇬🇧','1-r3':'🇮🇳','1-r4':'🇮🇩','1-r5':'🇰🇷','1-r6':'🇹🇭','1-r7':'🇨🇳','1-r8':'🇩🇪','1-r9':'🇯🇵','1-r10':'🇧🇷',
+  '2-01':'📕','2-02':'📕','2-03':'📕','2-04':'📕','2-05':'📕','2-06':'📕',
+  '2-07':'📕','2-08':'📚','2-09':'📖','2-10':'📰','2-11':'📓','2-12':'📔','2-13':'🪪','2-14':'💳','2-15':'✏️','2-16':'🖊️','2-17':'✏️',
+  '2-18':'🔑','2-19':'⌚','2-20':'☂️','2-21':'👜','2-22':'💿','2-23':'📺','2-24':'📻','2-25':'📷','2-26':'💻','2-27':'🚗','2-28':'🪑💻','2-29':'🪑',
+  '2-30':'🍫','2-31':'☕','2-32a':'🎁','2-32b':'🎁','2-33':'🇬🇧💬','2-34':'🇯🇵💬','2-35':'🌏💬','2-36':'📦❓','2-37':'✅💬',
+  '2-d1':'🏠🙇','2-d2a':'🤝↔️','2-d2b':'🤝↔️','2-d2c':'🤝↔️','2-d2d':'🤝↔️',
+  '2-c1':'🙋💬','2-c2':'😮','2-c3':'🤲🎁','2-c4a':'🙏','2-c4b':'🙏','2-c4c':'🙇🙏','2-c4d':'🙇🙏','2-c5':'💡💬','2-c6':'🙅','2-c7':'💡'
+};
+function vocabularyVisual(word){
+  const id=`vocab-visual-${word.id}`,category=vocabularySection(word);
+  let scene=`<circle cx="250" cy="100" r="76" fill="#fffefb"/><text x="250" y="128" text-anchor="middle" font-size="76" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${VOCAB_VISUALS[word.id]}</text>`;
+  if(category==='demonstratives'){
+    const position={'2-01':95,'2-04':95,'2-02':250,'2-05':250,'2-03':415,'2-06':415}[word.id];
+    scene=`<path d="M40 156h420" stroke="#bccab0" stroke-width="2"/><circle cx="95" cy="109" r="17" fill="#d8775b"/><path d="M68 154v-15c0-25 54-25 54 0v15" fill="#d8775b"/><circle cx="250" cy="109" r="17" fill="#557a88"/><path d="M223 154v-15c0-25 54-25 54 0v15" fill="#557a88"/><text x="${position}" y="70" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
+  }
+  return `<figure class="vocabulary-visual"><svg viewBox="0 0 500 200" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title><rect x="5" y="5" width="490" height="190" rx="24" fill="${['food','objects'].includes(category)?'#f7edca':category==='nationality'?'#e3eaf0':'#edf2e6'}"/>${scene}</svg></figure>`;
+}
+function vocabularyContent(){
+  const set=vocabularyStudySet(state.vocabularyContentKey)||vocabularyStudySet('all');
+  const chapters=[1,2].map(ch=>vocabularyStudySet(`chapter-${ch}`));
+  const categories=VOCAB_CATEGORIES.map(category=>vocabularyStudySet(`category-${category.id}`));
+  const entries=sets=>options(sets.map(entry=>[entry.key,entry.label]),set.key);
+  return `<div class="study-wrap dialogue-selector"><select class="filter dialogue-category-select" data-vocabulary-select aria-label="Vocabulary selection">${entries([vocabularyStudySet('all')])}<optgroup label="${esc(translateText('By chapter'))}">${entries(chapters)}</optgroup><optgroup label="${esc(translateText('By category'))}">${entries(categories)}</optgroup></select><div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>${esc(set.description)}</p></div></div><div class="study-wrap dialogue-content vocabulary-content"><div class="dialogue-guide-actions"><button class="button primary" data-vocabulary-practice="write">Recall ${icon('arrow')}</button><button class="button soft" data-vocabulary-practice="vocabulary-rebuild">Rebuild ${icon('arrow')}</button></div><div class="guide-cards">${set.ids.map(id=>{const word=wordBy(id),spelling=hasKanji(word)?word.c:word.jp;return `<article class="paper guide-card vocabulary-guide-card" data-vocabulary-guide="${word.id}">${vocabularyVisual(word)}<span class="eyebrow muted">${sourceTag(word)}</span><h2 class="jp" lang="ja">${esc(spelling)}</h2>${spelling!==word.kana?`<p class="jp vocabulary-reading" lang="ja">${esc(word.kana)}</p>`:''}<p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p>${word.note?`<p class="small muted">${esc(word.note)}</p>`:''}</article>`;}).join('')}</div></div>`;
+}

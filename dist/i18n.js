@@ -1,6 +1,13 @@
 'use strict';
 // Interface translations only: Japanese answers and quiz data remain unchanged.
 const ZH_HANT = {
+  "Recall": "回想練習",
+  "Vocabulary selection": "詞彙選擇",
+  "Explore vocabulary, then practise recall or rebuild its hiragana reading.": "先認識詞彙，再練習回想或用平假名重組讀音。",
+  "Review every vocabulary form from Chapters 1–2.": "溫習第 1 至 2 課的全部詞彙。",
+  "Review the vocabulary from this chapter.": "溫習這一課的詞彙。",
+
+  "Go back": "返回",
   "Dialogue category": "對話分類",
   "WH-words": "疑問詞",
   "WH-words.": "疑問詞。",
