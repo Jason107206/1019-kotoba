@@ -22,7 +22,7 @@ No network dependencies, accounts or analytics. Progress and an active mock are 
 
 ## Verification
 
-Run `node tests/verify.cjs` for meaningful content, scoring, shuffle, session, timer configuration and persistence checks. Run `node --check dist/app.js` for syntax. Verification uses Node checks for game behavior, bilingual navigation and offline support; browser tests are not required.
+Run `node tests/verify.cjs` for meaningful content, scoring, shuffle, session, timer configuration and persistence checks. Run `node --check dist/app.js` for syntax. The dependency-free Node checks cover game behavior, bilingual navigation and offline support. Optional browser checks are described below.
 
 ## GitHub Pages
 
@@ -81,3 +81,25 @@ node tests/verify.cjs
 ```
 
 The Pages workflow runs these steps automatically. `tests/pwa.cjs` verifies manifest/icon sizes, asset coverage, generated-worker freshness, offline fetch behavior, both Pages paths, scope isolation, manual-only installation and explicit update activation without browser tests.
+
+## Material 3 interface
+
+All study modes share the Material 3 color roles and component styles in `dist/style.css`: violet primary actions, tonal surface containers, rounded cards, outlined fields, 48px touch targets, visible focus indicators, and distinct success/error feedback. Typography uses locally available sans-serif fonts, with Japanese and Traditional Chinese fallbacks; no remote fonts or UI framework are required.
+
+The navigation drawer stays visible from 840px upward. On smaller screens, the app bar opens a modal drawer with a focus trap, Escape dismissal, and background interaction disabled. The active study mode is marked on every screen. The overview retains its six study cards. Lesson selectors have visible labels, all pages have a heading, and keyboard focus survives answer/language redraws. Browser zoom remains enabled, and reduced-motion and forced-color preferences are supported.
+
+Installed-app icons and theme colors match the new palette. `dist/icons/icon.svg` is the vector source for the PNG installation icons. Existing storage keys, study content, quiz grading, and explicit PWA update behavior remain unchanged.
+
+### Optional browser verification
+
+With Playwright and Chromium available locally, serve `dist/` and run:
+
+```sh
+# Terminal 1
+python -m http.server 4173 --directory dist
+
+# Terminal 2 (use your installed Chromium path, or omit for Playwright's browser)
+CHROMIUM_PATH=/usr/bin/chromium node tests/material-browser.cjs
+```
+
+Set `KOTOBA_TEST_URL` to test another local URL. This suite checks 23 screen states at 320, 390, 768, 1024 and 1440 pixels in both interface languages, including overflow, active navigation, headings, drawer focus and resizing, modal dismissal, input retention, and word search. It uses an isolated browser context and does not change real learner progress.

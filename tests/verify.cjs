@@ -264,7 +264,9 @@ for(const language of ['en','zh-Hant']){
   assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="overview-progress"'));
   const nav=html.match(/<nav class="nav overview-nav"[^]*?<\/nav>/)[0];
   assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['dialogue','vocabulary-menu','sentences','handwriting-menu','mock','bank']);
-  for(const mode of ['dialogue','vocabulary-menu','sentences','handwriting-menu','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
+  for(const mode of ['dialogue','vocabulary-menu','sentences','handwriting-menu','mock','bank'])assert.equal((nav.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
+  const drawer=html.match(/<nav class="nav drawer-nav"[^]*?<\/nav>/)[0];
+  assert.deepEqual([...drawer.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['home','dialogue','vocabulary-menu','sentences','handwriting-menu','mock','bank']);
   assert.equal((html.match(/class="stat"/g)||[]).length,3);
   assert.ok(!/mock-banner|kana-home-banner|hero-art|class="nav "/.test(html));
   assert.equal(ev('STUDY_MODES.every(mode=>ZH_HANT[mode.label]&&ZH_HANT[mode.copy])'),true);
@@ -277,7 +279,7 @@ for(const language of ['en','zh-Hant']){
   assert.ok(!elements.app.innerHTML.includes('class="nav overview-nav"'));
   assert.ok(!elements.app.innerHTML.includes('class="nav "'));
 }
-console.log('PASS: unified Overview launcher, consistent mode order, combined word progress, and no duplicate entry points.');
+console.log('PASS: unified Overview launcher, consistent mode order, combined word progress, and persistent Material navigation.');
 
 // Dialogue opens the This/That guide before practice.
 for(const language of ['en','zh-Hant']){
@@ -774,3 +776,21 @@ for(const language of ['en','zh-Hant']){
     assert.ok(!elements.app.innerHTML.includes('data-action="back"')&&!elements.app.innerHTML.includes('page-back'));
   }
 }
+
+// Opening and closing navigation must preserve an in-progress answer.
+ev('state.language="en";startWordPractice("write",["1-09"],"Selected words");state.round.b="がくせい";run("openNavigation")');
+assert.equal(ev('state.navOpen'),true);
+assert.ok(elements.app.innerHTML.includes('aria-modal="true" aria-label="Study navigation"'));
+assert.ok(elements.app.innerHTML.includes('id="main-content" tabindex="-1" inert'));
+ev('run("closeNavigation")');
+assert.equal(ev('state.navOpen'),false);
+assert.equal(ev('state.round.b'),'がくせい');
+ev('run("openNavigation");navigate("bank")');
+assert.equal(ev('state.navOpen'),false);
+assert.ok(elements.app.innerHTML.includes('class="active" aria-current="page"'));
+for(const language of ['en','zh-Hant']){
+ ev(`state.language='${language}';run('openNavigation')`);
+ assert.ok(elements.app.innerHTML.includes(language==='en'?'Close navigation':'關閉導覽'));
+ ev('run("closeNavigation")');
+}
+console.log('PASS: Material navigation preserves answers, closes on destination changes and has bilingual accessible controls.');

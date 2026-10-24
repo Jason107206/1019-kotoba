@@ -1,8 +1,8 @@
 'use strict';
 // Generated into dist/sw.js with a revision derived from every deployable asset.
 const CACHE_PREFIX='kotoba-shell-'+encodeURIComponent(new URL(self.registration.scope).pathname)+'-';
-const CACHE_NAME=CACHE_PREFIX+'971690204aae085e1a71';
-const PRECACHE=[".nojekyll","activities.js","app.js","content.js","hiragana.js","i18n.js","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","index.html","kanji-writing.js","manifest.webmanifest","pwa.js","style.css","vocabulary-rebuild.js"];
+const CACHE_NAME=CACHE_PREFIX+'971183ad8ac27fa05b9b';
+const PRECACHE=[".nojekyll","activities.js","app.js","content.js","hiragana.js","i18n.js","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/icon.svg","icons/maskable-512.png","index.html","kanji-writing.js","manifest.webmanifest","pwa.js","style.css","vocabulary-rebuild.js"];
 const appUrl=path=>new URL(path,self.registration.scope).href;
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(PRECACHE.map(path=>new Request(appUrl(path),{cache:'reload'})))));

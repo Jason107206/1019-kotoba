@@ -1,6 +1,10 @@
 'use strict';
 // Interface translations only: Japanese answers and quiz data remain unchanged.
 const ZH_HANT = {
+  "Skip to content": "跳至主要內容",
+  "Study navigation": "學習導覽",
+  "Open navigation": "開啟導覽",
+  "Close navigation": "關閉導覽",
   "Recall": "回想練習",
   "Vocabulary selection": "詞彙選擇",
   "Explore vocabulary, then practise recall or rebuild its hiragana reading.": "先認識詞彙，再練習回想或用平假名重組讀音。",

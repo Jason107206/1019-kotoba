@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Kotoba</title>
+  <rect width="512" height="512" fill="#f3edf7"/>
+  <rect x="64" y="64" width="384" height="384" rx="128" fill="#6750a4"/>
+  <path d="M173 144h34v104l105-104h45L242 257l121 111h-48L207 267v101h-34Z" fill="#ffffff"/>
+</svg>
