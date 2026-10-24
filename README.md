@@ -42,9 +42,9 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 ## Rebuild and simulated dialogue
 
-Rebuild opens a mode menu with Vocabulary Rebuild and Sentence Rebuild. Vocabulary Rebuild offers all 96 words, one chapter, or one of the 12 categories, including their category icons. Build each hiragana reading from shuffled kana tiles mixed with similar alternatives: voicing, small kana, long vowels and visually similar forms. For example, the bank for そうじ includes そ, ぞ, う, じ, し and っじ. All relevant alternatives are included, and repeated target kana have separate tiles. Small-kana combinations stay together; placeholder ～ is omitted. Kana-only words use their meaning as the prompt, while kanji-bearing words show their taught spelling. Correctness depends on the assembled reading, with manual Next, missed-item replay and independent saved progress. Sentence Rebuild retains the existing 50 puzzles and pattern filters. Matching has been removed.
+Vocabulary Rebuild and Sentence Rebuild are separate modes on Overview; the combined Rebuild menu has been removed. Vocabulary Rebuild offers all 96 words, one chapter, or one of the 12 categories, including their category icons. Build each hiragana reading from shuffled kana tiles mixed with similar alternatives: voicing, small kana, long vowels and visually similar forms. For example, the bank for そうじ includes そ, ぞ, う, じ, し and っじ. All relevant alternatives are included, and repeated target kana have separate tiles. Small-kana combinations stay together; placeholder ～ is omitted. Kana-only words use their meaning as the prompt, while kanji-bearing words show their taught spelling. Correctness depends on the assembled reading, with manual Next, missed-item replay and independent saved progress. Sentence Rebuild retains the existing 50 puzzles and pattern filters. Matching has been removed.
 
-Back buttons return to the preceding subpage, retaining chapter/category menus and word-reference filters and searches. This also applies after a round ends or missed items are retried. They are labelled Back / 返回上一頁.
+Breadcrumbs show Kotoba, the current mode and the selected category or activity. Ancestors are clickable; Back links are removed. The Update control sits immediately left of the language switch with the same pill styling, and retains explicit update/reload behavior across page renders.
 
 Vocabulary Recall, Dialogue and Rebuild keep the answer and feedback visible until the user selects Next. After the last answer, Next opens the round results. The timed mock keeps its existing submission flow.
 
@@ -54,7 +54,7 @@ Dialogue opens Introduction (5 scenes), Polite expressions (5 scenes), Replies (
 
 ## Overview
 
-Overview has one responsive study-card navigation in the order Dialogue, Rebuild, Kanji Writing, Vocabulary Recall, Mock quiz, All words. It uses the same mode names and icons as the other pages, with no repeated activity cards or promotional banners. Vocabulary practice and secure counts share one progress panel alongside sentence-group progress and the best mock score. An active mock changes its existing card action to Resume.
+Overview has one responsive study-card navigation in the order Dialogue, Vocabulary Rebuild, Sentence Rebuild, Kanji Writing, Vocabulary Recall, Mock quiz, All words. It uses the same mode names and icons as the other pages, with no repeated activity cards or promotional banners. Vocabulary practice and secure counts share one progress panel alongside sentence-group progress and the best mock score. An active mock changes its existing card action to Resume.
 
 ## Visual expression guides
 
@@ -70,7 +70,7 @@ Kotoba includes an installable web app manifest, 192px/512px icons, a maskable i
 
 The manifest, start URL, service worker and assets use relative paths, supporting both the GitHub Actions deployment at the project root and branch publishing under `dist/`. In branch publishing, the installed app starts directly at `dist/`, so its offline launch does not depend on the root redirect.
 
-The service worker precaches a complete release, including all scripts, CSS, icons and the manifest. Each release’s cache revision derives from the content of all deployed assets and the worker template. Cache cleanup is restricted to this app’s own scope. Updates wait until the app is closed, or until the user selects Update & reload; active quizzes are never reloaded automatically. Install/update button labels follow the interface language.
+The service worker precaches a complete release, including all scripts, CSS, icons and the manifest. Each release’s cache revision derives from the content of all deployed assets and the worker template. Cache cleanup is restricted to this app’s own scope. Updates wait until the app is closed, or until the user selects Update; active quizzes are never reloaded automatically. Install/update button labels follow the interface language.
 
 After changing anything in `dist/`, regenerate the offline worker before testing or publishing:
 

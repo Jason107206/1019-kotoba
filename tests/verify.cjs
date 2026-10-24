@@ -65,7 +65,7 @@ assert.equal(ev('gradeSentence(sentenceBy("p12-1"),[0,1,5,3,4,2,6,7])'),true);
 assert.equal(ev('PATTERNS.every(p=>SENTENCES.some(s=>s.pattern===p.id))'),true);
 // Every kanji in a puzzle is taught on one of the specified vocabulary pages.
 assert.equal(ev(`(()=>{const allowed=new Set(WORDS.map(w=>w.c).join('').match(/\\p{Script=Han}/gu));return SENTENCES.every(s=>(s.tokens.join('').match(/\\p{Script=Han}/gu)||[]).every(k=>allowed.has(k)));})()`),true);
-for(const view of ['home','write-menu','write','rebuild-menu','dialogue','vocabulary-rebuild','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
+for(const view of ['home','write-menu','write','vocabulary-menu','dialogue','vocabulary-rebuild','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
 ev('navigate("cards")');assert.equal(ev('state.view'),'write-menu');
 assert.equal(ev('views.some(([view])=>view==="cards")'),false);
 ev('navigate("write");state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');assert.equal(ev('state.round.result.score'),1);assert.ok(elements.app.innerHTML.includes('1 / 1 mark'));
@@ -122,7 +122,7 @@ assert.equal(ev('kanaUnits("きょうし").join(",")'),'きょ,う,し');
 assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
 for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles']){
   ev(`startActivity('${kind}')`);
-  assert.ok(elements.app.innerHTML.includes('data-action="back"'));
+  assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
   const count=ev('state.activity.ids.length');
   for(let i=0;i<count;i++){
     ev(`state.activity.index=${i};prepareActivity();render()`);
@@ -157,7 +157,7 @@ assert.equal(ev('activityAnswer()'),'ど');
 ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAnswer()'),'');
 ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
 assert.equal(ev('state.activity.result'),true);
-ev('navigate("rebuild-menu")');assert.ok(!elements.app.innerHTML.includes('Question words'));
+ev('navigate("vocabulary-menu")');assert.ok(!elements.app.innerHTML.includes('Question words'));
 ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('data-dialogue-category="introductions"'));
 ev('startMock()');assert.equal(ev('mock.a.every(q=>!!wordBy(q.id))'),true);
 ev('mock.done=true;resetFilters()');
@@ -200,7 +200,7 @@ assert.equal(ev('SENTENCES.every(s=>ZH_HANT[s.prompt])'),true);
 assert.equal(ev('PATTERNS.every(p=>ZH_HANT[p.title]&&ZH_HANT[p.tip])'),true);
 assert.equal(ev('demonstrativeItems().every(q=>ZH_HANT[q.why])'),true);
 assert.equal(ev('localizeMarkup(`<input value="English &amp; これ" data-answer="b" placeholder="Type hiragana"><span lang="ja">よろしくおねがいします</span>`)'),'<input value="English &amp; これ" data-answer="b" placeholder="輸入平假名"><span lang="ja">よろしくおねがいします</span>');
-for(const view of ['home','write-menu','write','rebuild-menu','dialogue','sentences','bank','mock']){
+for(const view of ['home','write-menu','write','vocabulary-menu','dialogue','sentences','bank','mock']){
   ev(`mock=null;resetFilters();navigate('${view}')`);
   assert.ok(elements.app.innerHTML.includes('切換至繁體中文')===false);
   if(view==='home')assert.ok(elements.app.innerHTML.includes('情境對話'));assert.ok(!elements.app.innerHTML.includes('data-view="hiragana"'));
@@ -256,13 +256,13 @@ for(const language of ['en','zh-Hant']){
   assert.ok(html.indexOf('class="nav overview-nav"')>html.indexOf('class="overview-intro"'));
   assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="overview-progress"'));
   const nav=html.match(/<nav class="nav overview-nav"[^]*?<\/nav>/)[0];
-  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['dialogue','rebuild-menu','handwriting-menu','write-menu','mock','bank']);
-  for(const mode of ['dialogue','rebuild-menu','handwriting-menu','write-menu','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
+  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['dialogue','vocabulary-menu','sentences','handwriting-menu','write-menu','mock','bank']);
+  for(const mode of ['dialogue','vocabulary-menu','sentences','handwriting-menu','write-menu','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
   assert.equal((html.match(/class="stat"/g)||[]).length,3);
   assert.ok(!/mock-banner|kana-home-banner|hero-art|class="nav "/.test(html));
   assert.equal(ev('STUDY_MODES.every(mode=>ZH_HANT[mode.label]&&ZH_HANT[mode.copy])'),true);
   assert.ok(!html.includes(language==='en'?'Open practice':'進入練習'));
-  assert.equal((nav.match(/class="card-arrow"/g)||[]).length,6);
+  assert.equal((nav.match(/class="card-arrow"/g)||[]).length,7);
   assert.ok(html.includes(language==='en'?'Your progress':'溫習進度'));
   assert.ok(!html.includes('data-action="goCards"')&&!html.includes('data-action="review"'));
   assert.equal((html.match(/class="nav overview-nav"/g)||[]).length,1);
@@ -287,7 +287,7 @@ for(const language of ['en','zh-Hant']){
  assert.equal(ev('state.view'),'activity');
  assert.equal(ev('state.activity.kind'),'demonstratives');
  assert.equal(ev('state.activity.ids.length'),7);
- assert.ok(elements.app.innerHTML.includes('data-back-view="demonstratives-content"'));
+ assert.ok(elements.app.innerHTML.includes('data-crumb-view="demonstratives-content"'));
  ev('navigate("demonstratives-content")');
  assert.ok(elements.app.innerHTML.includes('guide-carousel'));
  assert.equal(ev('activityNav()'),'dialogue');
@@ -295,9 +295,9 @@ for(const language of ['en','zh-Hant']){
 console.log('PASS: Dialogue menu → illustrated content → seven This/That questions, with guide return path.');
 
 // Mode navigation is available through Overview cards only.
-for(const view of ['dialogue','rebuild-menu','write-menu','handwriting-menu','vocabulary-menu','bank','mock']){
+for(const view of ['dialogue','vocabulary-menu','write-menu','handwriting-menu','vocabulary-menu','bank','mock']){
   ev(`navigate('${view}')`);
-  assert.ok(!elements.app.innerHTML.includes('<nav'));
+  assert.ok(!elements.app.innerHTML.includes('class="nav "'));
 }
 ev('navigate("home")');assert.ok(elements.app.innerHTML.includes('class="nav overview-nav"'));
 
@@ -327,7 +327,7 @@ assert.equal(ev('state.round.ids.length'),43);
 for(const [key,count] of [['chapter-1',43],['chapter-2',53],...Object.entries(expectedCategoryCounts).map(([category,count])=>[`category-${category}`,count])]){
   ev(`startWriteSet('${key}')`);
   assert.equal(ev('state.round.ids.length'),count);
-  assert.ok(elements.app.innerHTML.includes('data-back-view="write-menu"'));
+  assert.ok(elements.app.innerHTML.includes('data-crumb-view="write-menu"'));
   ev('run("restart")');
   assert.equal(ev('state.round.ids.length'),count);
   assert.equal(ev('state.round.ids.every(id=>state.writeSet.ids.includes(id))'),true);
@@ -336,7 +336,7 @@ ev('startWriteSet("category-places");state.round.missed=[state.round.ids[0]];run
 assert.equal(ev('state.round.ids.length'),1);
 ev('run("restart")');assert.equal(ev('state.round.ids.length'),2);
 ev('state.round.index=state.round.ids.length;render()');
-assert.ok(elements.app.innerHTML.includes('data-action="back"')||elements.app.innerHTML.includes('返回上一頁'));
+assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
 ev('navigate("mock")');
 assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
 console.log('PASS: bilingual Write menu, all/chapter/category sets, retry scope, and removed Part A/B labels.');
@@ -406,7 +406,7 @@ assert.equal(ev('state.view'),'bank');
 assert.equal(ev('state.filter.group'),'occupations');
 assert.equal(ev('state.search'),'student');
 assert.ok(elements.app.innerHTML.includes('data-word-id="1-09"'));
-ev('pageHistory.length=0;previousPage("rebuild-menu")');assert.equal(ev('state.view'),'rebuild-menu');
+ev('pageHistory.length=0;previousPage("vocabulary-menu")');assert.equal(ev('state.view'),'vocabulary-menu');
 console.log('PASS: Back returns to the preceding subpage, including chapter/category menus, activity guides and filtered word references.');
 
 // Dialogue categories lead to a guide, then either game; retries retain that category.
@@ -441,7 +441,7 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
       assert.equal(ev('state.activity.result'),true);
     }
     ev('activityAction("activityNext")');
-    assert.ok(elements.app.innerHTML.includes('data-back-view="dialogue-content"'));
+    assert.ok(elements.app.innerHTML.includes('data-crumb-view="dialogue-content"'));
     ev('state.activity.missed=[state.activity.ids[0]];activityAction("activityMissed")');
     assert.equal(ev('state.activity.ids.length'),1);
     assert.equal(ev('state.activity.category'),category);
@@ -575,7 +575,7 @@ assert.equal(ev('progress.words["1-09"]?.attempts||0'),typedAttempts);
 const handwritingAttempts=ev('progress.kanjiWriting["1-09"].attempts');
 ev('run("kanjiCorrect")');assert.equal(ev('progress.kanjiWriting["1-09"].attempts'),handwritingAttempts);
 assert.equal(JSON.parse(Object.values(storage)[0]).progress.kanjiWriting['1-09'].last,true);
-ev('run("next")');assert.ok(elements.app.innerHTML.includes('data-back-view="handwriting-menu"'));
+ev('run("next")');assert.ok(elements.app.innerHTML.includes('data-crumb-view="handwriting-menu"'));
 ev('begin("kanji-writing",["1-09"]);run("kanjiReveal");run("kanjiMissed")');assert.equal(ev('state.round.missed.join(",")'),'1-09');
 console.log('PASS: Kanji Writing selection, per-character pads, pointer input and bounds, undo/clear/cancel, model reveal, independent self-check progress, retries and Vocabulary Recall naming.');
 
@@ -596,15 +596,14 @@ console.log('PASS: all 14 Dialogue scenes illustrated in both games and language
 for(const language of ['en','zh-Hant']){
   ev(`state.language='${language}';pageHistory.length=0;navigate('home')`);
   assert.equal(ev('STUDY_MODES.some(mode=>mode.id==="matching")'),false);
-  assert.equal(ev('STUDY_MODES.findIndex(mode=>mode.id==="rebuild-menu")<STUDY_MODES.findIndex(mode=>mode.id==="handwriting-menu")'),true);
-  assert.equal(ev('STUDY_MODES.findIndex(mode=>mode.id==="rebuild-menu")<STUDY_MODES.findIndex(mode=>mode.id==="write-menu")'),true);
-  clickData({view:'rebuild-menu'});assert.equal(ev('activityNav()'),'rebuild-menu');
+  assert.equal(ev('STUDY_MODES.findIndex(mode=>mode.id==="vocabulary-menu")<STUDY_MODES.findIndex(mode=>mode.id==="handwriting-menu")'),true);
+  assert.equal(ev('STUDY_MODES.findIndex(mode=>mode.id==="vocabulary-menu")<STUDY_MODES.findIndex(mode=>mode.id==="write-menu")'),true);
+  assert.equal(ev('STUDY_MODES.some(mode=>mode.id==="rebuild-menu")'),false);
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Vocabulary Rebuild':'詞彙重組'));
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Sentence Rebuild':'句子重組'));
-  assert.ok(!elements.app.innerHTML.includes('data-open-match'));
-  clickData({view:'sentences'});assert.equal(ev('activityNav()'),'rebuild-menu');
-  clickData({action:'back'});assert.equal(ev('state.view'),'rebuild-menu');
-  clickData({view:'vocabulary-menu'});assert.equal(ev('activityNav()'),'rebuild-menu');
+  clickData({view:'sentences'});assert.equal(ev('activityNav()'),'sentences');
+  clickData({view:'home'});
+  clickData({view:'vocabulary-menu'});assert.equal(ev('activityNav()'),'vocabulary-menu');
   assert.ok(elements.app.innerHTML.includes('data-vocabulary-set="all"'));
   clickData({vocabularyMenu:'category'});
   for(const category of Object.keys(expectedCategoryCounts))assert.ok(elements.app.innerHTML.includes(`data-vocabulary-set="category-${category}"`));
@@ -663,32 +662,30 @@ const attemptsAfterWrong=ev('progress.vocabularyRebuild["2-09"].attempts');ev('r
 ev('run("next")');assert.ok(elements.app.innerHTML.includes('Round complete'));
 ev('run("repeatMissed")');assert.equal(ev('state.round.ids.join(",")'),'2-09');
 ev('run("vocabularyReveal")');assert.equal(ev('state.round.result'),false);assert.equal(ev('state.round.revealed'),true);
-ev('navigate("matching")');assert.equal(ev('state.view'),'rebuild-menu');assert.equal(ev('typeof matchingMenu'),'undefined');
+ev('navigate("matching")');assert.equal(ev('state.view'),'vocabulary-menu');assert.equal(ev('typeof matchingMenu'),'undefined');
 console.log('PASS: bilingual Rebuild mode menu and order, full-word/chapter/category sets, all 96 readings with complete similar-kana banks, duplicate tiles, scoring, manual feedback, validation and retries.');
 
 
-// One Back link: below descriptions on main menus, above titles on subpages.
+
+// Breadcrumbs replace Back links, retain context and navigate to ancestors.
 for(const language of ['en','zh-Hant']){
-  ev(`state.language='${language}'`);
-  for(const view of ['rebuild-menu','write-menu','handwriting-menu','dialogue','bank','mock']){
-    ev(`navigate('${view}')`);const html=elements.app.innerHTML;
-    assert.ok(html.indexOf('page-back menu-back')>html.indexOf('<h1>'),view);
-    assert.ok(!html.includes('Back to Overview')&&!html.includes('返回總覽'));
-    clickData({view:'home'});assert.equal(ev('state.view'),'home');
-  }
-  for(const view of ['vocabulary-menu','vocabulary-rebuild','sentences','write','kanji-writing']){
-    ev(`navigate('${view}')`);const html=elements.app.innerHTML;
-    assert.ok(html.indexOf('page-back subpage-back')>=0&&html.indexOf('page-back subpage-back')<html.indexOf('<h1>'),view);
-    assert.equal((html.match(/data-action="back"/g)||[]).length,1,view);
-    assert.ok(!html.includes('Back to Overview')&&!html.includes('返回總覽'));
-  }
-  ev('pageHistory.length=0;navigate("dialogue");openDialogueCategory("courtesy")');
-  assert.ok(elements.app.innerHTML.indexOf('page-back subpage-back')<elements.app.innerHTML.indexOf('<h1>'));
+  ev(`state.language='${language}';navigate('dialogue');openDialogueCategory('introductions')`);
+  assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Dialogue','Introduction']);
+  const html=elements.app.innerHTML;
+  assert.ok(!html.includes('data-action="back"')&&!html.includes('page-back'));
+  assert.ok(html.includes('aria-current="page"'));
+  assert.ok(html.indexOf('id="pwa-update-slot"')<html.indexOf('class="language-switch"'));
   clickData({openDialogue:'dialogue-choice'});
-  assert.equal((elements.app.innerHTML.match(/data-action="back"/g)||[]).length,1);
-  ev('state.activity.index=state.activity.ids.length;render()');
-  assert.equal((elements.app.innerHTML.match(/data-action="back"/g)||[]).length,1);
-  clickData({action:'back'});assert.equal(ev('state.view'),'dialogue-content');
-  clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
-  clickData({view:'home'});assert.ok(!elements.app.innerHTML.includes('class="page-back'));
+  assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Dialogue','Introduction','Choose your answer']);
+  clickData({crumbView:'dialogue-content',crumbCategory:'introductions'});assert.equal(ev('state.view'),'dialogue-content');
+  clickData({crumbView:'dialogue'});assert.equal(ev('state.view'),'dialogue');
+  clickData({crumbView:'home'});assert.equal(ev('state.view'),'home');
+  ev('navigate("vocabulary-menu");openWordMenu("vocabulary","category");startWordSet("vocabulary-rebuild","category-occupations")');
+  assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Vocabulary Rebuild','By category','Jobs & roles']);
+  clickData({crumbView:'vocabulary-menu',crumbSection:'category'});
+  assert.equal(ev('state.vocabularyMenu'),'category');assert.equal(ev('state.view'),'vocabulary-menu');
+  for(const view of ['vocabulary-menu','write-menu','write','handwriting-menu','kanji-writing','bank','mock','sentences','demonstratives-content']){
+    ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
+    assert.ok(!elements.app.innerHTML.includes('data-action="back"')&&!elements.app.innerHTML.includes('page-back'));
+  }
 }

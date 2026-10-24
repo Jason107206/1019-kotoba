@@ -1,6 +1,8 @@
 'use strict';
 // Interface translations only: Japanese answers and quiz data remain unchanged.
 const ZH_HANT = {
+  "Breadcrumb": "目前位置",
+  "Practice": "練習",
   "Empty slot": "空白字格",
   "Rebuild modes": "重組模式",
   "← Back to Overview": "← 返回總覽",

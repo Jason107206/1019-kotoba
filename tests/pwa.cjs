@@ -28,13 +28,14 @@ function client({supported=true,secure=true,waiting=true,controller=true,install
   const serviceWorker={controller:controller?{}:null,addEventListener:(name,fn)=>swEvents[name]=fn,register:async(...args)=>{state.registrations.push(args);return registration;}};
   const welcome=fakeButton();welcome.open=false;welcome.showModal=()=>welcome.open=true;welcome.close=()=>welcome.open=false;
   const extra={'pwa-welcome':welcome,'pwa-welcome-install':fakeButton(),'pwa-welcome-later':fakeButton(),'pwa-welcome-title':fakeButton(),'pwa-welcome-copy':fakeButton(),'pwa-welcome-help':fakeButton()};
+  extra['pwa-update-slot']={append(node){node.parentNode=this;this.child=node;}};extra.app={};
   install.click=()=>install.events.click();
   const document={getElementById:id=>id==='pwa-install'?install:id==='pwa-update'?update:extra[id],documentElement:{lang:'en'}};
   const storage={seen};const localStorage={getItem:()=>storage.seen?'seen':null,setItem:()=>storage.seen=true};
   const window={matchMedia:()=>({matches:standalone}),isSecureContext:secure,location:{reload:()=>state.reloads++},addEventListener:(name,fn)=>winEvents[name]=fn};
-  let observer;
-  vm.runInNewContext(fs.readFileSync(path.join(dist,'pwa.js'),'utf8'),{document,window,localStorage,navigator:supported?{serviceWorker}:{},MutationObserver:class{constructor(fn){observer=fn;}observe(){}}});
-  return {winEvents,swEvents,regEvents,workerEvents,worker,install,update,messages,state,document,observer,extra,storage};
+  let observer;const observers=[];
+  vm.runInNewContext(fs.readFileSync(path.join(dist,'pwa.js'),'utf8'),{document,window,localStorage,navigator:supported?{serviceWorker}:{},MutationObserver:class{constructor(fn){observer=fn;observers.push(fn);}observe(){}}});
+  return {winEvents,swEvents,regEvents,workerEvents,worker,install,update,messages,state,document,observer,extra,storage,observers};
 }
 (async()=>{
   for(const scope of ['https://example.com/1019-kotoba/','https://example.com/1019-kotoba/dist/']){
@@ -62,8 +63,9 @@ function client({supported=true,secure=true,waiting=true,controller=true,install
   const fresh=client({waiting:false,controller:false,installing:true});await fresh.winEvents.load();fresh.worker.state='installed';fresh.workerEvents.statechange();assert.equal(fresh.update.hidden,true);
   const updating=client({waiting:false,installing:true});await updating.winEvents.load();updating.worker.state='installed';updating.workerEvents.statechange();assert.equal(updating.update.hidden,false);
   let prevented=false;c.winEvents.beforeinstallprompt({preventDefault:()=>prevented=true,prompt:async()=>c.state.prompted++,userChoice:Promise.resolve({outcome:'accepted'})});assert.equal(prevented,true);assert.equal(c.install.hidden,false);await c.install.events.click();assert.equal(c.state.prompted,1);assert.equal(c.install.hidden,true);
-  c.document.documentElement.lang='zh-Hant';c.observer();assert.equal(c.install.textContent,'安裝應用程式');assert.equal(c.update.textContent,'更新並重新載入');
+  c.document.documentElement.lang='zh-Hant';c.observer();assert.equal(c.install.textContent,'安裝應用程式');assert.equal(c.update.textContent,'更新');
   assert.equal(client({supported:false}).winEvents.load,undefined);assert.equal(client({secure:false}).winEvents.load,undefined);
+  assert.equal(c.update.parentNode,c.extra['pwa-update-slot']);c.update.parentNode=null;c.observers[0]();assert.equal(c.update.parentNode,c.extra['pwa-update-slot']);
   const first=client();await first.winEvents.load();assert.equal(first.extra['pwa-welcome'].open,true);
   first.extra['pwa-welcome-later'].events.click();assert.equal(first.extra['pwa-welcome'].open,false);assert.equal(first.storage.seen,true);
   const returning=client({seen:true});await returning.winEvents.load();assert.equal(returning.extra['pwa-welcome'].open,false);
