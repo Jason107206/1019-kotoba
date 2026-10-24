@@ -26,3 +26,6 @@
 .write-menu-back{margin:-4px 0 22px}.write-menu-back .scope-link{display:inline-block}
 
 .category-grid .mode-card{min-height:0;padding:22px}.category-grid .mode-card h2{font-size:25px;margin:16px 0 12px}.category-grid .mode-card p{margin-bottom:18px}.word-table .word-category-row th{padding:13px 18px;background:var(--sage);color:var(--ink);font-size:13px;letter-spacing:0;text-transform:none;white-space:normal;border-top:1px solid var(--line)}.category-count{font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap}@media(min-width:901px){.category-grid .mode-card{min-height:230px}}
+
+/* Keep similar readings together on narrow screens. */
+@media(max-width:600px){.hiragana-options{grid-template-columns:1fr}.hiragana-options .option{font-size:20px;min-height:70px}}

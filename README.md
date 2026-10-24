@@ -22,7 +22,7 @@ No network dependencies, accounts or analytics. Progress and an active mock are 
 
 ## Verification
 
-Run `node tests/verify.cjs` for meaningful content, scoring, shuffle, session, timer configuration and persistence checks. Run `node --check dist/app.js` for syntax. Browser visual QA was unavailable in this environment; responsive CSS and semantic controls are supplied.
+Run `node tests/verify.cjs` for meaningful content, scoring, shuffle, session, timer configuration and persistence checks. Run `node --check dist/app.js` for syntax. The navigation and Hiragana Match updates were also checked in Chromium at desktop and mobile widths, in English and Traditional Chinese.
 
 ## GitHub Pages
 
@@ -42,7 +42,9 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 ## Matching menus and simulated dialogue
 
-Matching opens three choices: Kanji Match, Question Words, and This/That. Kanji Match then offers all words, one chapter, or one category using the same selection component as Write. Its counts, prompts and selectable categories include only entries with taught kanji; categories without any are hidden. Restarts keep the selected set, and missed-item rounds keep only the missed prompts. Question Words has five words; This/That includes the six pointing words and あのう. All activities use the original quiz-page vocabulary.
+Matching opens four choices: Kanji Match, Hiragana Match, Question Words, and This/That. Kanji Match and Hiragana Match then offer all words, one chapter, or one category using the same selection component as Write. Its counts, prompts and selectable categories include only entries with taught kanji; categories without any are hidden. Restarts keep the selected set, and missed-item rounds keep only the missed prompts. Hiragana Match covers all 96 forms. It shows taught kanji when available, or the meaning for kana-only words, and offers the correct reading with three similar spellings. Distractors target voicing, long vowels, small kana and similar shapes; for example, そうじ produces そうし, そおじ and そおし. Hiragana matching progress is saved separately from Kanji Match and Write. Question Words has five words; This/That includes the six pointing words and あのう. All activities use the original quiz-page vocabulary.
+
+Back buttons return to the preceding subpage, retaining chapter/category menus and word-reference filters and searches. This also applies after a round ends or missed items are retried. They are labelled Back / 返回上一頁.
 
 Matching, Write, Dialogue and Rebuild keep the answer and feedback visible until the user selects Next. After the last answer, Next opens the round results. The timed mock keeps its existing submission flow.
 

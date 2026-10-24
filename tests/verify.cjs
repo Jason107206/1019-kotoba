@@ -132,7 +132,7 @@ assert.equal(ev('kanaUnits("きょうし").join(",")'),'きょ,う,し');
 assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
 for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
   ev(`startActivity('${kind}')`);
-  assert.ok(elements.app.innerHTML.includes('Back to menu'));
+  assert.ok(elements.app.innerHTML.includes('data-action="back"'));
   const count=ev('state.activity.ids.length');
   for(let i=0;i<count;i++){
     ev(`state.activity.index=${i};prepareActivity();render()`);
@@ -296,7 +296,7 @@ for(const language of ['en','zh-Hant']){
  assert.equal(ev('state.view'),'activity');
  assert.equal(ev('state.activity.kind'),'demonstratives');
  assert.equal(ev('state.activity.ids.length'),7);
- assert.ok(elements.app.innerHTML.includes('data-view="demonstratives-content"'));
+ assert.ok(elements.app.innerHTML.includes('data-back-view="demonstratives-content"'));
  ev('navigate("demonstratives-content")');
  assert.ok(elements.app.innerHTML.includes('visual-guide-grid'));
  ev('navigate("matching");activityClick({dataset:{openMatch:"wh"}})');
@@ -320,9 +320,9 @@ for(const language of ['en','zh-Hant']){
  assert.equal(ev('state.view'),'activity');
  assert.equal(ev('state.activity.kind'),'wh');
  assert.equal(ev('state.activity.ids.length'),5);
- assert.ok(elements.app.innerHTML.includes('data-view="question-words-content"'));
+ assert.ok(elements.app.innerHTML.includes('data-back-view="question-words-content"'));
  ev('state.activity.index=state.activity.ids.length;render()');
- assert.ok(elements.app.innerHTML.includes('data-view="question-words-content"'));
+ assert.ok(elements.app.innerHTML.includes('data-back-view="question-words-content"'));
  ev('navigate("question-words-content")');
  assert.ok(elements.app.innerHTML.includes('question-guide-grid'));
 }
@@ -386,7 +386,7 @@ ev('startWriteSet("category-places");state.round.missed=[state.round.ids[0]];run
 assert.equal(ev('state.round.ids.length'),1);
 ev('run("restart")');assert.equal(ev('state.round.ids.length'),2);
 ev('state.round.index=state.round.ids.length;render()');
-assert.ok(elements.app.innerHTML.includes('Back to menu')||elements.app.innerHTML.includes('返回選單'));
+assert.ok(elements.app.innerHTML.includes('data-action="back"')||elements.app.innerHTML.includes('返回上一頁'));
 ev('navigate("mock")');
 assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
 console.log('PASS: bilingual Write menu, all/chapter/category sets, retry scope, and removed Part A/B labels.');
@@ -416,13 +416,13 @@ for(const key of ['chapter-1','chapter-2',...ev('VOCAB_CATEGORIES.filter(c=>c.id
   assert.equal(ev('state.round.options.every(c=>/\\p{Script=Han}/u.test(c))'),true);
   if(key.startsWith('chapter-'))assert.equal(ev(`state.round.ids.every(id=>wordBy(id).ch===${key.slice(-1)})`),true);
   else assert.equal(ev(`state.round.ids.every(id=>vocabularySection(wordBy(id))==='${key.slice(9)}')`),true);
-  assert.ok(elements.app.innerHTML.includes('data-view="kanji-menu"'));
+  assert.ok(elements.app.innerHTML.includes('data-back-view="kanji-menu"'));
   ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');
   assert.equal(ev('state.round.ids.length'),1);
   ev('run("restart")');assert.equal(ev('state.round.ids.length'),count);
 }
 ev('state.round.index=state.round.ids.length;render()');
-assert.ok(elements.app.innerHTML.includes('data-view="kanji-menu"'));
+assert.ok(elements.app.innerHTML.includes('data-back-view="kanji-menu"'));
 console.log('PASS: Matching → Kanji word sets → all/chapter/category practice; kanji-only contents and preserved retry scope.');
 
 // Every practice mode keeps correct-answer feedback visible until the user presses Next.
@@ -457,3 +457,91 @@ for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
   assert.ok(elements.app.innerHTML.includes('Round complete'));
 }
 console.log('PASS: all practice modes wait for manual Next after correct answers, including before final results; no countdown timers.');
+
+// Back retraces the actual subpages and restores the chapter/category selection.
+const clickData=dataset=>handlers.click({target:{closest:()=>({disabled:false,dataset})}});
+for(const [view,prefix,mode] of [['write-menu','write','write'],['kanji-menu','kanji','match'],['hiragana-menu','hiragana','hiragana-match']]){
+  for(const section of ['chapter','category'])for(const complete of [false,true]){
+    ev(`pageHistory.length=0;navigate('${view}')`);
+    clickData({[`${prefix}Menu`]:section});
+    clickData({[`${prefix}Set`]:section==='chapter'?'chapter-1':'category-occupations'});
+    assert.equal(ev('state.view'),mode);
+    if(complete)ev('state.round.index=state.round.ids.length;render()');
+    clickData({action:'back',backView:view});
+    assert.equal(ev('state.view'),view);
+    assert.equal(ev(`state.${prefix}Menu`),section);
+    clickData({action:'back',backView:view});
+    assert.equal(ev(`state.${prefix}Menu`),'main');
+  }
+}
+// The original matching submenu is also retained after retry/restart.
+for(const kind of ['wh','demonstratives']){
+  ev(`pageHistory.length=0;navigate('matching');activityClick({dataset:{openMatch:'${kind}'}});activityClick({dataset:{openMatch:'start-${kind}'}})`);
+  ev('state.activity.missed=[state.activity.ids[0]];activityAction("activityMissed");activityAction("activityRestart");state.activity.index=state.activity.ids.length;render()');
+  clickData({action:'back'});
+  assert.equal(ev('state.view'),kind==='wh'?'question-words-content':'demonstratives-content');
+  clickData({action:'back'});assert.equal(ev('state.view'),'matching');
+}
+for(const kind of ['dialogue-choice','dialogue-tiles']){
+  ev(`pageHistory.length=0;navigate('dialogue');activityClick({dataset:{openDialogue:'${kind}'}})`);
+  clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
+}
+ev('pageHistory.length=0;resetFilters();navigate("bank");state.filter.group="occupations";state.search="student";writeSelection()');
+clickData({action:'back'});
+assert.equal(ev('state.view'),'bank');
+assert.equal(ev('state.filter.group'),'occupations');
+assert.equal(ev('state.search'),'student');
+assert.ok(elements.app.innerHTML.includes('data-word-id="1-09"'));
+ev('pageHistory.length=0;previousPage("matching")');assert.equal(ev('state.view'),'matching');
+console.log('PASS: Back returns to the preceding subpage, including chapter/category menus, activity guides and filtered word references.');
+
+// Hiragana Match has four close spellings, including the requested voicing/long-vowel contrast.
+assert.deepEqual(Array.from(ev('hiraganaDistractors("そうじ")')).sort(),['そうし','そおじ','そおし'].sort());
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';resetFilters();navigate('matching')`);
+  assert.ok(elements.app.innerHTML.includes('data-open-match="hiragana"'));
+  ev('activityClick({dataset:{openMatch:"hiragana"}})');
+  assert.equal(ev('state.view'),'hiragana-menu');
+  assert.equal(ev('activityNav()'),'matching');
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Choose hiragana words.':'選擇平假名配對詞彙。'));
+  clickData({hiraganaSet:'all'});
+  assert.equal(ev('state.view'),'hiragana-match');
+  assert.equal(ev('state.round.ids.length'),96);
+  for(let i=0;i<96;i++){
+    ev(`state.round.index=${i};prepareQuestion();render()`);
+    assert.equal(ev('state.round.options.length'),4);
+    assert.equal(ev('new Set(state.round.options).size'),4);
+    assert.equal(ev('state.round.options.filter(option=>option===wordBy(current()).kana).length'),1);
+    assert.equal(ev('state.round.options.every(option=>/^[ぁ-ゖー～]+$/u.test(option))'),true);
+    const prompt=elements.app.innerHTML.match(/<div class="match-prompt[^]*?<\/div>/)[0];
+    assert.ok(!prompt.includes(ev('wordBy(current()).kana')),prompt);
+    assert.ok(!elements.app.innerHTML.includes('undefined'));
+  }
+}
+for(const key of ['chapter-1','chapter-2',...Object.keys(expectedCategoryCounts).map(id=>'category-'+id)]){
+  ev(`startWordSet('hiragana-match','${key}')`);
+  const count=ev('state.round.ids.length');assert.ok(count>0);
+  if(key.startsWith('chapter-'))assert.equal(ev(`state.round.ids.every(id=>wordBy(id).ch===${key.slice(-1)})`),true);
+  else assert.equal(ev(`state.round.ids.every(id=>vocabularySection(wordBy(id))==='${key.slice(9)}')`),true);
+  ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
+  ev('run("restart")');assert.equal(ev('state.round.ids.length'),count);
+}
+ev('state.language="en";startWordPractice("hiragana-match",["1-09","2-09"],"Spelling practice");begin("hiragana-match",["1-09","2-09"]);render()');
+const oldKanjiAttempts=ev('progress.matches["1-09"]?.attempts||0'),oldWriteAttempts=ev('progress.words["1-09"]?.attempts||0');
+clickData({match:String(ev('state.round.options.indexOf(wordBy(current()).kana)'))});
+assert.equal(ev('state.round.correct'),1);
+assert.equal(ev('state.round.checked'),true);
+assert.equal(ev('state.round.index'),0);
+assert.equal(ev('progress.hiraganaMatches["1-09"].last'),true);
+assert.equal(ev('progress.matches["1-09"]?.attempts||0'),oldKanjiAttempts);
+assert.equal(ev('progress.words["1-09"]?.attempts||0'),oldWriteAttempts);
+assertManualFeedback();
+ev('run("next")');
+clickData({match:String(ev('state.round.options.findIndex(option=>option!==wordBy(current()).kana)'))});
+assert.equal(ev('state.round.correct'),1);
+assert.equal(ev('state.round.missed.join(",")'),'2-09');
+assert.ok(elements.app.innerHTML.includes('The correct match is ざっし.'));
+assert.equal(JSON.parse(Object.values(storage)[0]).progress.hiraganaMatches['2-09'].last,false);
+ev('run("next")');assert.ok(elements.app.innerHTML.includes('Round complete'));
+ev('run("repeatMissed")');assert.equal(ev('state.round.ids.join(",")'),'2-09');
+console.log('PASS: bilingual Hiragana Match, all 96 prompts, four similar choices, independent saved scoring, manual feedback and scoped retries.');
