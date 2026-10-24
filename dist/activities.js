@@ -179,7 +179,7 @@ function demonstrativesContent(){
 function dialogueSelector(selected){
   const categories=[...DIALOGUE_CATEGORIES,{id:'wh-words',label:'WH-words',description:'Practise standard and polite questions about age, people and “what”.'}];
   const category=categories.find(item=>item.id===selected);
-  return `<div class="study-wrap dialogue-selector"><select class="filter dialogue-category-select" data-dialogue-select aria-label="Dialogue category">${categories.map(category=>`<option value="${category.id}" ${category.id===selected?'selected':''}>${category.label}</option>`).join('')}</select><div class="dialogue-intro"><h1>${esc(category.label)}</h1><p>${esc(category.description)}</p></div></div>`;
+  return `<div class="study-wrap dialogue-selector"><select class="filter" data-dialogue-select aria-label="Dialogue category">${categories.map(category=>`<option value="${category.id}" ${category.id===selected?'selected':''}>${category.label}</option>`).join('')}</select><div class="dialogue-intro"><h1>${esc(category.label)}</h1><p>${esc(category.description)}</p></div></div>`;
 }
 function selectDialogueCategory(category){
   if(category==='wh-words'){rememberPage();state.dialogueCategory=category;navigate('demonstratives-content',false);}
