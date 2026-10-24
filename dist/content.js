@@ -102,15 +102,23 @@ V('2-c5',2,'phrases','這樣啊','I see','そうですか');
 V('2-c6',2,'phrases','不是／不對','that is not correct','ちがいます','違います');
 V('2-c7',2,'phrases','啊（意識到某事時）','ah (realisation)','あ');
 
-// Study categories within the printed main vocabulary; the source group remains core.
-const MAIN_VOCAB_CATEGORIES={
-  occupations:['1-07','1-08','1-09','1-10','1-11','1-12','1-13','1-14'],
-  places:['1-15','1-16'],
-  demonstratives:['2-01','2-02','2-03','2-04','2-05','2-06'],
-  objects:['2-07','2-08','2-09','2-10','2-11','2-12','2-13','2-14','2-15','2-16','2-17','2-18','2-19','2-20','2-21','2-22','2-23','2-24','2-25','2-26','2-27','2-28','2-29','2-30','2-31','2-32a','2-32b']
-};
-const MAIN_VOCAB_CATEGORY_BY_ID=new Map(Object.entries(MAIN_VOCAB_CATEGORIES).flatMap(([category,ids])=>ids.map(id=>[id,category])));
-function vocabularySection(w){return w.group==='core'?(MAIN_VOCAB_CATEGORY_BY_ID.get(w.id)||'core'):w.group;}
+// Each syllabus form has one study category. Printed source groups stay unchanged for quiz sampling.
+const VOCAB_CATEGORIES=[
+  {id:'people',label:'People & forms of address',description:'Pronouns, ways to refer to people, and name endings.',ids:['1-01','1-02','1-03a','1-03b','1-04','1-05']},
+  {id:'occupations',label:'Jobs & roles',description:'Teachers, students and other occupations.',ids:['1-07','1-08','1-09','1-10','1-11','1-12','1-13','1-14']},
+  {id:'places',label:'Places',description:'University and hospital.',ids:['1-15','1-16']},
+  {id:'nationality',label:'Countries & nationality',description:'Country names and the nationality ending.',ids:['1-06','1-r1','1-r2','1-r3','1-r4','1-r5','1-r6','1-r7','1-r8','1-r9','1-r10']},
+  {id:'questions',label:'Questions & age',description:'Who, what, how old, and the age ending.',ids:['1-17a','1-17b','1-18','1-19a','1-19b','2-36']},
+  {id:'demonstratives',label:'This and that',description:'Words that point to things near you, near the listener, or far away.',ids:['2-01','2-02','2-03','2-04','2-05','2-06']},
+  {id:'objects',label:'Objects',description:'Books, stationery, electronics, furniture and other everyday things.',ids:['2-07','2-08','2-09','2-10','2-11','2-12','2-13','2-14','2-15','2-16','2-17','2-18','2-19','2-20','2-21','2-22','2-23','2-24','2-25','2-26','2-27','2-28','2-29','2-32a','2-32b']},
+  {id:'food',label:'Food & drinks',description:'Chocolate and coffee.',ids:['2-30','2-31']},
+  {id:'languages',label:'Languages',description:'English, Japanese and the language ending.',ids:['2-33','2-34','2-35']},
+  {id:'introductions',label:'Introductions & greetings',description:'Meeting people, asking names and making introductions.',ids:['1-c1','1-c2','1-c3a','1-c3b','1-c3c','1-c3d','1-c5','1-c6','2-d1','2-d2a','2-d2b','2-d2c','2-d2d']},
+  {id:'courtesy',label:'Polite expressions & thanks',description:'Getting attention, offering something and saying thank you.',ids:['1-c4','2-c1','2-c3','2-c4a','2-c4b','2-c4c','2-c4d']},
+  {id:'replies',label:'Replies & reactions',description:'Yes and no, agreement, surprise and understanding.',ids:['1-20','1-21','2-37','2-c2','2-c5','2-c6','2-c7']}
+];
+const VOCAB_CATEGORY_BY_WORD=new Map(VOCAB_CATEGORIES.flatMap(category=>category.ids.map(id=>[id,category])));
+function vocabularySection(w){return VOCAB_CATEGORY_BY_WORD.get(w.id)?.id;}
 
 const PATTERNS=[
 {id:'p1',ch:1,title:'Name, job & nationality',formula:'N₁ は N₂ です',source:'PDF p.2 文型1; p.3 練習A1',tip:'は marks the topic. です completes the statement.'},

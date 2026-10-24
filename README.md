@@ -32,7 +32,7 @@ Original uploaded PDFs, original hosting configuration, and credentials are not 
 
 ## Vocabulary sections
 
-The word reference can filter by first hiragana and by section. The Write menu offers all words, one chapter, or one category. Occupations and roles, places, this/that words, and objects are separated from the printed main vocabulary; the remaining entries appear as Other main vocabulary. The original 62 core forms remain eligible for mock quiz sampling. The word reference can also start a writing round for its filtered and searched selection.
+Every vocabulary form belongs to one of 12 categories by meaning and use: people and forms of address, jobs and roles, places, countries and nationality, questions and age, this/that, objects, food and drinks, languages, introductions and greetings, polite expressions and thanks, or replies and reactions. Polite and optional variants stay in the same category. The word reference groups its rows by category and supports chapter, first-hiragana and progress filters. The Write category menu, filters and word labels use the same category definitions. The original 62 printed core forms remain eligible for mock quiz sampling. The word reference can also start a writing round for its filtered and searched selection.
 
 ## Kanji display
 
@@ -42,8 +42,12 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 ## Matching menus and simulated dialogue
 
-Matching offers Kanji Match, five Question Words, and seven This/That & Attention words. All activities use the original quiz-page vocabulary. The additional requested time, price and classroom expressions have been removed.
+Matching opens three choices: Kanji Match, Question Words, and This/That. Kanji Match then offers all words, one chapter, or one category using the same selection component as Write. Its counts, prompts and selectable categories include only entries with taught kanji; categories without any are hidden. Restarts keep the selected set, and missed-item rounds keep only the missed prompts. Question Words has five words; This/That includes the six pointing words and あのう. All activities use the original quiz-page vocabulary.
 
-This/That uses precise SVG scenes of a speaker, listener and book. The book appears near the speaker, near the listener, or far from both. A sentence blank distinguishes stand-alone これ/それ/あれ from noun-prefixed この/その/あの. The あのう scene shows the speaker getting the listener’s attention. SVG titles and captions provide accessible descriptions. An expandable visual guide compares the three locations.
+This/That uses precise SVG scenes of a speaker, listener and book. The book appears near the speaker, near the listener, or far from both. A sentence blank distinguishes stand-alone これ/それ/あれ from noun-prefixed この/その/あの. The あのう scene shows the speaker getting the listener’s attention. SVG titles and captions provide accessible descriptions. Question Words and This/That each open a guide page before practice.
 
 Dialogue offers four-choice expressions or hiragana construction for 14 syllabus scenes. Small-kana combinations stay together; small っ stays separate. Duplicate tiles are tracked by position, with correctness based on the resulting text. Each scene has feedback and missed-item replay. Equivalent thank-you variants are excluded as distractors in the same question. Activity progress is stored independently.
+
+## Overview
+
+Overview has one responsive study-card navigation in the order Matching, Write, Dialogue, Rebuild, Mock quiz, All words. It uses the same mode names and icons as the other pages, with no repeated activity cards or promotional banners. Vocabulary practice and secure counts share one progress panel alongside sentence-group progress and the best mock score. An active mock changes its existing card action to Resume.

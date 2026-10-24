@@ -10,20 +10,37 @@ assert.equal(ev('PATTERNS.length'),16);
 assert.equal(ev('new Set(WORDS.map(x=>x.id)).size'),96);
 assert.equal(ev('new Set(SENTENCES.map(x=>x.id)).size'),50);
 assert.equal(ev('WORDS.filter(w=>w.group==="core").length'),62);
-// Extracted study sections partition the printed main vocabulary.
-assert.equal(ev('MAIN_VOCAB_CATEGORY_BY_ID.size'),43);
-assert.equal(ev('MAIN_VOCAB_CATEGORY_BY_ID.size===Object.values(MAIN_VOCAB_CATEGORIES).flat().length'),true);
-assert.equal(ev('[...MAIN_VOCAB_CATEGORY_BY_ID.keys()].every(id=>wordBy(id)?.group==="core")'),true);
-for(const [section,count,word] of [['occupations',8,'きょうし'],['places',2,'びょういん'],['demonstratives',6,'この'],['objects',27,'コーヒー'],['core',19,'わたし']]){
+// All syllabus forms belong to one meaningful category, independently of their printed source group.
+const expectedCategoryCounts={people:6,occupations:8,places:2,nationality:11,questions:6,demonstratives:6,objects:25,food:2,languages:3,introductions:13,courtesy:7,replies:7};
+assert.equal(ev('VOCAB_CATEGORIES.length'),12);
+assert.equal(ev('new Set(VOCAB_CATEGORIES.map(c=>c.id)).size'),12);
+assert.equal(ev('VOCAB_CATEGORY_BY_WORD.size'),96);
+assert.equal(ev('VOCAB_CATEGORIES.flatMap(c=>c.ids).length'),96);
+assert.equal(ev('VOCAB_CATEGORIES.every(c=>c.ids.every(id=>!!wordBy(id)))'),true);
+assert.equal(ev('WORDS.every(w=>!!vocabularySection(w))'),true);
+assert.equal(ev('VOCAB_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
+for(const [section,count] of Object.entries(expectedCategoryCounts)){
   ev(`state.filter.group='${section}'`);
   assert.equal(ev('pool("write").length'),count);
-  assert.ok(ev('pool("write")').some(w=>w.jp===word));
   assert.equal(ev(`pool('write').every(w=>vocabularySection(w)==='${section}')`),true);
 }
+for(const [id,category] of [['1-04','people'],['1-09','occupations'],['1-06','nationality'],['1-18','questions'],['1-19b','questions'],['2-35','languages'],['2-06','demonstratives'],['2-c1','courtesy'],['2-30','food'],['2-31','food'],['2-22','objects'],['2-37','replies'],['2-c6','replies']])assert.equal(ev(`vocabularySection(wordBy('${id}'))`),category);
 ev('resetFilters();navigate("bank")');
-for(const label of ['Occupations','Places','This and that','Objects','Other main vocabulary'])assert.ok(elements.app.innerHTML.includes(label));
+assert.equal((elements.app.innerHTML.match(/data-word-category=/g)||[]).length,12);
+const bankIds=[...elements.app.innerHTML.matchAll(/data-word-id="([^"]+)"/g)].map(match=>match[1]);
+assert.equal(bankIds.length,96);assert.equal(new Set(bankIds).size,96);
+assert.ok(!elements.app.innerHTML.includes('Other main vocabulary'));
+ev('state.search="coffee";render()');
+assert.ok(elements.app.innerHTML.includes('data-word-category="food"'));
+assert.ok(!elements.app.innerHTML.includes('data-word-category="objects"'));
+assert.equal((elements.app.innerHTML.match(/data-word-id=/g)||[]).length,1);
+ev('state.search="";state.filter.group="replies";state.filter.ch="2";render()');
+assert.equal(ev('pool("write").length'),5);
+assert.equal((elements.app.innerHTML.match(/data-word-category=/g)||[]).length,1);
+ev('resetFilters()');
 ev('state.language="zh-Hant";render()');
-for(const label of ['職業與身分','場所','這個與那個','物品','其他主要詞彙'])assert.ok(elements.app.innerHTML.includes(label));
+for(const label of ['人物與稱呼','國家與國籍','疑問詞與年齡','食物與飲品','語言','回答與反應'])assert.ok(elements.app.innerHTML.includes(label));
+assert.ok(!elements.app.innerHTML.includes('其他主要詞彙'));
 ev('state.language="en";render()');
 assert.equal(ev('WORDS.filter(w=>w.ch===1).length'),43);
 assert.equal(ev('WORDS.filter(w=>w.ch===2).length'),53);
@@ -237,21 +254,29 @@ for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dia
 }
 console.log('PASS: simple bilingual expression prompts, distinct incoming dialogue, and explanations shown only after answering.');
 
-// Overview uses its navigation at the former action-button position; other pages keep the header nav.
+// Overview has one shared launcher per mode and combined vocabulary progress.
 for(const language of ['en','zh-Hant']){
   ev(`state.language='${language}';navigate('home')`);
   const html=elements.app.innerHTML;
   assert.ok(html.includes('class="shell home-view"'));
   assert.ok(html.includes('class="nav overview-nav"'));
-  assert.ok(html.indexOf('class="nav overview-nav"')>html.indexOf('class="hero-copy"'));
-  assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="stats"'));
+  assert.ok(html.indexOf('class="nav overview-nav"')>html.indexOf('class="overview-intro"'));
+  assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="overview-progress"'));
+  const nav=html.match(/<nav class="nav overview-nav"[^]*?<\/nav>/)[0];
+  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['matching','write-menu','dialogue','sentences','mock','bank']);
+  for(const mode of ['matching','write-menu','dialogue','sentences','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
+  assert.equal((html.match(/class="stat"/g)||[]).length,3);
+  assert.ok(!/mock-banner|kana-home-banner|hero-art|class="nav "/.test(html));
+  assert.equal(ev('STUDY_MODES.every(mode=>ZH_HANT[mode.label]&&ZH_HANT[mode.copy])'),true);
+  assert.ok(html.includes(language==='en'?'Open practice':'進入練習'));
+  assert.ok(html.includes(language==='en'?'Your progress':'溫習進度'));
   assert.ok(!html.includes('data-action="goCards"')&&!html.includes('data-action="review"'));
   assert.equal((html.match(/class="nav overview-nav"/g)||[]).length,1);
   ev('navigate("dialogue")');
   assert.ok(!elements.app.innerHTML.includes('class="nav overview-nav"'));
   assert.ok(elements.app.innerHTML.includes('class="nav "'));
 }
-console.log('PASS: overview navigation replaces the two hero buttons; other pages retain header navigation.');
+console.log('PASS: unified Overview launcher, consistent mode order, combined word progress, and no duplicate entry points.');
 
 // This/That has a full guide page before matching; the other modes open as before.
 for(const language of ['en','zh-Hant']){
@@ -335,7 +360,7 @@ for(const language of ['en','zh-Hant']){
   assert.ok(elements.app.innerHTML.includes('data-write-set="chapter-1"'));
   assert.ok(elements.app.innerHTML.includes('data-write-set="chapter-2"'));
   ev('state.writeMenu="category";render()');
-  for(const category of ['occupations','places','demonstratives','objects','core','phrases','related'])assert.ok(elements.app.innerHTML.includes(`data-write-set="category-${category}"`));
+  for(const category of Object.keys(expectedCategoryCounts))assert.ok(elements.app.innerHTML.includes(`data-write-set="category-${category}"`));
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Choose a category.':'選擇詞彙分類。'));
 }
 ev('startWriteSet("all")');
@@ -346,7 +371,7 @@ assert.equal(ev('state.writeMenu'),'chapter');
 handlers.click({target:{closest:()=>({disabled:false,dataset:{writeSet:'chapter-1'}})}});
 assert.equal(ev('state.view'),'write');
 assert.equal(ev('state.round.ids.length'),43);
-for(const [key,count] of [['chapter-1',43],['chapter-2',53],['category-occupations',8],['category-places',2],['category-demonstratives',6],['category-objects',27],['category-core',19],['category-phrases',24],['category-related',10]]){
+for(const [key,count] of [['chapter-1',43],['chapter-2',53],...Object.entries(expectedCategoryCounts).map(([category,count])=>[`category-${category}`,count])]){
   ev(`startWriteSet('${key}')`);
   assert.equal(ev('state.round.ids.length'),count);
   assert.ok(elements.app.innerHTML.includes('data-view="write-menu"'));
@@ -362,3 +387,37 @@ assert.ok(elements.app.innerHTML.includes('Back to word sets')||elements.app.inn
 ev('navigate("mock")');
 assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
 console.log('PASS: bilingual Write menu, all/chapter/category sets, retry scope, and removed Part A/B labels.');
+
+// Kanji Match shares the word-set flow and never includes kana-only prompts or choices.
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';navigate('matching');activityClick({dataset:{openMatch:'kanji'}})`);
+  assert.equal(ev('state.view'),'kanji-menu');
+  assert.equal(ev('activityNav()'),'matching');
+  assert.ok(elements.app.innerHTML.includes('data-kanji-set="all"'));
+  assert.ok(elements.app.innerHTML.includes('data-kanji-menu="chapter"'));
+  assert.ok(elements.app.innerHTML.includes('data-kanji-menu="category"'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Choose kanji words.':'選擇漢字配對詞彙。'));
+  handlers.click({target:{closest:()=>({disabled:false,dataset:{kanjiMenu:'category'}})}});
+  assert.ok(!elements.app.innerHTML.includes('data-kanji-set="category-food"'));
+  assert.ok(!elements.app.innerHTML.includes('data-kanji-set="category-demonstratives"'));
+  for(const category of ev('VOCAB_CATEGORIES.filter(c=>c.ids.some(id=>hasKanji(wordBy(id)))).map(c=>c.id)'))assert.ok(elements.app.innerHTML.includes(`data-kanji-set="category-${category}"`));
+  handlers.click({target:{closest:()=>({disabled:false,dataset:{kanjiSet:'all'}})}});
+  assert.equal(ev('state.view'),'match');
+  assert.equal(ev('state.round.ids.length'),ev('WORDS.filter(hasKanji).length'));
+}
+for(const key of ['chapter-1','chapter-2',...ev('VOCAB_CATEGORIES.filter(c=>c.ids.some(id=>hasKanji(wordBy(id)))).map(c=>"category-"+c.id)')]){
+  ev(`startWordSet('match','${key}')`);
+  const count=ev('state.round.ids.length');
+  assert.ok(count>0);
+  assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id)))'),true);
+  assert.equal(ev('state.round.options.every(c=>/\\p{Script=Han}/u.test(c))'),true);
+  if(key.startsWith('chapter-'))assert.equal(ev(`state.round.ids.every(id=>wordBy(id).ch===${key.slice(-1)})`),true);
+  else assert.equal(ev(`state.round.ids.every(id=>vocabularySection(wordBy(id))==='${key.slice(9)}')`),true);
+  assert.ok(elements.app.innerHTML.includes('data-view="kanji-menu"'));
+  ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');
+  assert.equal(ev('state.round.ids.length'),1);
+  ev('run("restart")');assert.equal(ev('state.round.ids.length'),count);
+}
+ev('state.round.index=state.round.ids.length;render()');
+assert.ok(elements.app.innerHTML.includes('data-view="kanji-menu"'));
+console.log('PASS: Matching → Kanji word sets → all/chapter/category practice; kanji-only contents and preserved retry scope.');
