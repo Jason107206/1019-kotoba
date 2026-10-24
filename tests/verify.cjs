@@ -13,6 +13,8 @@ assert.equal(ev('new Set(SENTENCES.map(x=>x.id)).size'),50);
 assert.equal(ev('WORDS.filter(w=>w.group==="core").length'),62);
 // All syllabus forms belong to one meaningful category, independently of their printed source group.
 const expectedCategoryCounts={people:6,occupations:8,places:2,nationality:11,questions:6,demonstratives:6,objects:25,food:2,languages:3,introductions:13,courtesy:7,replies:7};
+const expectedVocabularyCategoryCounts=Object.fromEntries(Object.entries(expectedCategoryCounts).filter(([id])=>!['introductions','replies'].includes(id)));
+assert.equal(ev('VOCABULARY_WORDS.length'),76);assert.equal(ev('VOCABULARY_CATEGORIES.length'),10);
 assert.equal(ev('VOCAB_CATEGORIES.length'),12);
 assert.equal(ev('new Set(VOCAB_CATEGORIES.map(c=>c.id)).size'),12);
 assert.equal(ev('VOCAB_CATEGORY_BY_WORD.size'),96);
@@ -22,7 +24,8 @@ assert.equal(ev('WORDS.every(w=>!!vocabularySection(w))'),true);
 assert.equal(ev('VOCAB_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
 for(const [section,count] of Object.entries(expectedCategoryCounts)){
   ev(`state.filter.group='${section}'`);
-  assert.equal(ev('pool("write").length'),count);
+  assert.equal(ev('pool("bank").length'),count);
+  assert.equal(ev('pool("write").length'),['introductions','replies'].includes(section)?0:count);
   assert.equal(ev(`pool('write').every(w=>vocabularySection(w)==='${section}')`),true);
 }
 for(const [id,category] of [['1-04','people'],['1-09','occupations'],['1-06','nationality'],['1-18','questions'],['1-19b','questions'],['2-35','languages'],['2-06','demonstratives'],['2-c1','courtesy'],['2-30','food'],['2-31','food'],['2-22','objects'],['2-37','replies'],['2-c6','replies']])assert.equal(ev(`vocabularySection(wordBy('${id}'))`),category);
@@ -36,7 +39,7 @@ assert.ok(elements.app.innerHTML.includes('data-word-category="food"'));
 assert.ok(!elements.app.innerHTML.includes('data-word-category="objects"'));
 assert.equal((elements.app.innerHTML.match(/data-word-id=/g)||[]).length,1);
 ev('state.search="";state.filter.group="replies";state.filter.ch="2";render()');
-assert.equal(ev('pool("write").length'),5);
+assert.equal(ev('pool("bank").length'),5);
 assert.equal((elements.app.innerHTML.match(/data-word-category=/g)||[]).length,1);
 ev('resetFilters()');
 ev('state.language="zh-Hant";render()');
@@ -120,7 +123,7 @@ assert.equal(ev('dialogueItems().length'),14);
 assert.equal(ev('WORDS.some(w=>["なんじ","いくら","はじめましょう"].includes(w.kana))'),false);
 assert.equal(ev('kanaUnits("きょうし").join(",")'),'きょ,う,し');
 assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
-for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles']){
+for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles']){
   ev(`startActivity('${kind}')`);
   assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
   const count=ev('state.activity.ids.length');
@@ -129,10 +132,11 @@ for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles']){
     assert.equal(ev('new Set(state.activity.choices.map(x=>x.kana)).size===state.activity.choices.length&&state.activity.choices.length>=2&&state.activity.choices.length<=4'),true);
     assert.equal(ev(`state.activity.choices.every(item=>vocabularySection(wordBy(item.word))===vocabularySection(wordBy(activityCurrent().word))||[item.word,activityCurrent().word].sort().join(',')==='2-06,2-c1')`),true);
     if(kind.startsWith('dialogue'))assert.equal(ev('state.activity.choices.filter(x=>x.family===activityCurrent().family).length'),1);
-    if(kind==='dialogue-tiles'){
-      assert.equal(ev('JSON.stringify([...state.activity.tileBank].sort())===JSON.stringify(kanaUnits(activityCurrent().kana).sort())'),true);
-      ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));if(id<0)throw Error('Missing tile');a.chosen.push(id);}checkActivity();}`);
-      assert.equal(ev('activityAnswer()'),ev('activityCurrent().kana'));
+    if(['dialogue-tiles','wh-tiles'].includes(kind)){
+      assert.equal(ev('kanaUnits(vocabularyReading(activityCurrent())).every(unit=>state.activity.tileBank.filter(x=>x===unit).length>=kanaUnits(vocabularyReading(activityCurrent())).filter(x=>x===unit).length)'),true);
+      assert.equal(ev('state.activity.tileBank.some(unit=>!kanaUnits(vocabularyReading(activityCurrent())).includes(unit))'),true);
+      ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));if(id<0)throw Error('Missing tile');a.chosen.push(id);}checkActivity();}`);
+      assert.equal(ev('activityAnswer()'),ev('vocabularyReading(activityCurrent())'));
     }else ev('checkActivity(activityCurrent().id)');
     assert.equal(ev('state.activity.result'),true,kind+' correct answer');
     assert.ok(!elements.app.innerHTML.includes('undefined'));
@@ -141,7 +145,7 @@ for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles']){
   ev('activityAction("activityNext")');assert.ok(elements.app.innerHTML.includes('Round complete.'));
   assert.ok(elements.app.innerHTML.indexOf('data-action="activityBack"')>elements.app.innerHTML.indexOf('data-action="activityRestart"'));
   ev('activityAction("activityBack")');assert.equal(ev('state.view'),'dialogue');
-  assert.equal(ev('state.dialogueCategory'),kind==='demonstratives'?'wh-words':'introductions');
+  assert.equal(ev('state.dialogueCategory'),kind.startsWith('dialogue')?'introductions':'wh-words');
   assert.ok(elements.app.innerHTML.includes('data-dialogue-select'));
 }
 ev('startActivity("demonstratives");checkActivity(state.activity.choices.find(x=>x.id!==activityCurrent().id).id)');
@@ -159,7 +163,7 @@ assert.equal(ev('activityCurrent().kana'),'どうもありがとうございま�
 ev(`{const a=state.activity,id=a.tileBank.findIndex(x=>x==='ど');activityClick({dataset:{activityTile:String(id)}});}`);
 assert.equal(ev('activityAnswer()'),'ど');
 ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAnswer()'),'');
-ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
+ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
 assert.equal(ev('state.activity.result'),true);
 ev('navigate("vocabulary-menu")');assert.ok(!elements.app.innerHTML.includes('Question words'));
 ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('data-dialogue-select'));
@@ -305,41 +309,52 @@ for(const view of ['dialogue','vocabulary-menu','write-menu','handwriting-menu',
 ev('navigate("home")');assert.ok(elements.app.innerHTML.includes('class="nav overview-nav"'));
 
 // Vocabulary opens set selection, then illustrated content with both practice modes.
+for(const category of ['introductions','replies']){
+  assert.equal(ev(`vocabularyStudySet('category-${category}')`),null);
+}
+for(const mode of ['write','vocabulary-rebuild']){
+  ev(`startWordSet('${mode}','all')`);
+  assert.equal(ev('state.round.ids.length'),76);
+  assert.equal(ev('state.round.ids.every(id=>!["introductions","replies"].includes(vocabularySection(wordBy(id))))'),true);
+}
+
 assert.equal(ev('WORDS.every(w=>typeof VOCAB_VISUALS[w.id]==="string"&&VOCAB_VISUALS[w.id].length>0)'),true);
 for(const language of ['en','zh-Hant']){
   ev(`state.language='${language}';navigate('vocabulary-menu')`);
   assert.equal(ev('activityNav()'),'vocabulary-menu');
-  for(const attribute of ['data-vocabulary-set="all"','data-vocabulary-menu="chapter"','data-vocabulary-menu="category"'])assert.ok(elements.app.innerHTML.includes(attribute));
+  assert.ok(elements.app.innerHTML.includes('data-vocabulary-select'));
+  assert.ok(!elements.app.innerHTML.includes('data-vocabulary-menu=')&&!elements.app.innerHTML.includes('data-vocabulary-set='));
   ev('openVocabularyContent("all")');
   assert.equal(ev('state.view'),'vocabulary-content');
-  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,96);
-  assert.equal((elements.app.innerHTML.match(/<svg[^>]+role="img"/g)||[]).length,96);
+  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,76);
+  assert.equal((elements.app.innerHTML.match(/<svg[^>]+role="img"/g)||[]).length,76);
   assert.ok(!elements.app.innerHTML.includes('undefined'));
   assert.ok(elements.app.innerHTML.includes('data-vocabulary-select'));
+  assert.ok(!/value="category-(?:introductions|replies)"|data-vocabulary-guide="(?:1-c1|2-c6)"/.test(elements.app.innerHTML));
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Recall':'回想練習'));
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Rebuild':'重組練習'));
   assert.ok(elements.app.innerHTML.indexOf('data-vocabulary-select')<elements.app.innerHTML.indexOf('<h1>'));
   handlers.change({target:{value:'chapter-1',hasAttribute:name=>name==='data-vocabulary-select'}});
   assert.equal(ev('state.vocabularyContentKey'),'chapter-1');
-  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,43);
+  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,33);
   handlers.click({target:{closest:()=>({disabled:false,dataset:{vocabularyPractice:'write'}})}});
   assert.equal(ev('state.view'),'write');
-  assert.equal(ev('state.round.ids.length'),43);
+  assert.equal(ev('state.round.ids.length'),33);
   assert.equal(ev('state.round.ids.every(id=>wordBy(id).ch===1)'),true);
-  ev('navigateBreadcrumb({crumbView:"vocabulary-content",crumbKey:"chapter-1"})');
+  ev('navigateBreadcrumb({crumbView:"vocabulary-menu"})');
   handlers.click({target:{closest:()=>({disabled:false,dataset:{vocabularyPractice:'vocabulary-rebuild'}})}});
   assert.equal(ev('state.view'),'vocabulary-rebuild');
-  assert.equal(ev('state.round.ids.length'),43);
-  ev('run("restart")');assert.equal(ev('state.round.ids.length'),43);
-  ev('navigateBreadcrumb({crumbView:"vocabulary-content",crumbKey:"chapter-1"})');
+  assert.equal(ev('state.round.ids.length'),33);
+  ev('run("restart")');assert.equal(ev('state.round.ids.length'),33);
+  ev('navigateBreadcrumb({crumbView:"vocabulary-menu"})');
   assert.ok(elements.app.innerHTML.includes('value="chapter-1" selected'));
   ev('run("toggleLanguage")');
   assert.equal(ev('state.vocabularyContentKey'),'chapter-1');
-  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,43);
+  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,33);
 }
-for(const key of ['chapter-2',...Object.keys(expectedCategoryCounts).map(id=>'category-'+id)]){
+for(const key of ['chapter-2',...Object.keys(expectedVocabularyCategoryCounts).map(id=>'category-'+id)]){
   ev(`openVocabularyContent('${key}')`);
-  const count=key==='chapter-2'?53:expectedCategoryCounts[key.slice(9)];
+  const count=key==='chapter-2'?43:expectedVocabularyCategoryCounts[key.slice(9)];
   assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,count);
   for(const mode of ['write','vocabulary-rebuild']){
     ev(`startVocabularyPractice('${mode}')`);
@@ -348,7 +363,7 @@ for(const key of ['chapter-2',...Object.keys(expectedCategoryCounts).map(id=>'ca
   }
 }
 ev('navigate("write-menu")');assert.equal(ev('state.view'),'vocabulary-menu');
-for(const [key,count] of [['chapter-1',43],['chapter-2',53],...Object.entries(expectedCategoryCounts).map(([category,count])=>[`category-${category}`,count])]){
+for(const [key,count] of [['chapter-1',33],['chapter-2',43],...Object.entries(expectedVocabularyCategoryCounts).map(([category,count])=>[`category-${category}`,count])]){
   ev(`startWriteSet('${key}')`);
   assert.equal(ev('state.round.ids.length'),count);
   assert.ok(elements.app.innerHTML.includes('data-crumb-view="vocabulary-menu"'));
@@ -385,10 +400,10 @@ for(const mode of ['vocabulary-rebuild','write','sentences']){
   }
   assert.ok(elements.app.innerHTML.includes('Round complete'));
 }
-for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles']){
+for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles']){
   ev(`state.language='en';startActivity('${kind}');state.activity.ids=state.activity.ids.slice(0,2);prepareActivity();render()`);
   for(let index=0;index<2;index++){
-    if(kind==='dialogue-tiles')ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));a.chosen.push(id);}checkActivity();}`);
+    if(['dialogue-tiles','wh-tiles'].includes(kind))ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));a.chosen.push(id);}checkActivity();}`);
     else ev('checkActivity(activityCurrent().id)');
     assert.equal(ev('state.activity.index'),index);assert.equal(ev('state.activity.checked'),true);
     assertManualFeedback();assert.ok(elements.app.innerHTML.includes('data-action="activityNext"'));
@@ -400,19 +415,57 @@ console.log('PASS: all practice modes wait for manual Next after correct answers
 
 // Back retraces the actual subpages and restores the chapter/category selection.
 const clickData=dataset=>handlers.click({target:{closest:()=>({disabled:false,dataset})}});
+
+// Dialogue and WH-word Rebuild use the shared bank and support review, retries and editing.
+for(const category of ['courtesy','wh-words']){
+  ev(`selectDialogueCategory('${category}')`);
+  clickData(category==='wh-words'?{openDemonstratives:'rebuild'}:{openDialogue:'dialogue-tiles'});
+  assert.equal(ev('state.activity.kind'),category==='wh-words'?'wh-tiles':'dialogue-tiles');
+  assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Dialogue','Rebuild']);
+  const limit=ev('kanaUnits(vocabularyReading(activityCurrent())).length');
+  assert.equal((elements.app.innerHTML.match(/data-activity-slot=/g)||[]).length,limit);
+  clickData({action:'activityCheck'});assert.equal(ev('state.activity.checked'),false);
+  const tile=ev('state.activity.tileBank.findIndex(unit=>unit===kanaUnits(vocabularyReading(activityCurrent()))[0])');
+  clickData({activityTile:String(tile)});clickData({activityTile:String(tile)});
+  clickData({activityTile:'-1'});clickData({activityTile:'99999'});clickData({activityReturn:'-1'});
+  assert.equal(ev('state.activity.chosen.length'),1);
+  assert.ok(elements.app.innerHTML.includes('class="tile jp selected"'));
+  clickData({action:'activityUndo'});assert.equal(ev('state.activity.chosen.length'),0);
+  clickData({activityTile:String(tile)});clickData({action:'activityClear'});
+  assert.equal(ev('state.activity.chosen.length'),0);
+  const before=ev('Object.values(progress.activities).reduce((sum,item)=>sum+item.attempts,0)');
+  clickData({action:'activityReveal'});
+  assert.equal(ev('state.activity.checked&&state.activity.revealed&&!state.activity.result'),true);
+  assert.equal(ev('state.activity.missed.length'),1);
+  clickData({action:'activityCheck'});
+  assert.equal(ev('Object.values(progress.activities).reduce((sum,item)=>sum+item.attempts,0)'),before+1);
+  clickData({action:'activityRestart'});
+  assert.equal(ev('state.activity.revealed'),false);
+  assert.equal(ev('state.activity.ids.length'),5);
+  ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const i=a.tileBank.findIndex((text,index)=>text===unit&&!a.chosen.includes(index));activityClick({dataset:{activityTile:String(i)}});}}`);
+  ev('state.language="en";run("toggleLanguage")');
+  assert.equal(ev('state.activity.chosen.length'),ev('kanaUnits(vocabularyReading(activityCurrent())).length'));
+  handlers.keydown({key:'Enter',target:{tagName:'BODY'},preventDefault(){}});
+  assert.equal(ev('state.activity.result'),true);assert.equal(ev('state.activity.index'),0);
+  handlers.keydown({key:'Enter',target:{tagName:'BODY'},preventDefault(){}});
+  assert.equal(ev('state.activity.index'),1);
+  clickData({action:'activityBack'});assert.equal(ev('state.dialogueCategory'),category);
+}
+ev('state.language="en"');
+console.log('PASS: shared Dialogue/WH Rebuild slots, confusable tiles, editing, review, scoped retries, language retention and manual Next.');
+
 for(const mode of ['write','vocabulary-rebuild']){
-  for(const section of ['chapter','category'])for(const complete of [false,true]){
+  for(const key of ['chapter-1','category-occupations'])for(const complete of [false,true]){
     ev('pageHistory.length=0;navigate("vocabulary-menu")');
-    clickData({vocabularyMenu:section});
-    const key=section==='chapter'?'chapter-1':'category-occupations';
-    clickData({vocabularySet:key});assert.equal(ev('state.view'),'vocabulary-content');
+    assert.ok(elements.app.innerHTML.includes('data-vocabulary-select'));
+    handlers.change({target:{value:key,hasAttribute:name=>name==='data-vocabulary-select'}});
     clickData({vocabularyPractice:mode});assert.equal(ev('state.view'),mode);
     if(complete)ev('state.round.index=state.round.ids.length;render()');
-    clickData({action:'back'});assert.equal(ev('state.view'),'vocabulary-content');
+    clickData({crumbView:'vocabulary-menu'});assert.equal(ev('state.view'),'vocabulary-menu');
     assert.equal(ev('state.vocabularyContentKey'),key);
-    clickData({action:'back'});assert.equal(ev('state.view'),'vocabulary-menu');
-    assert.equal(ev('state.vocabularyMenu'),section);
-    clickData({action:'back'});assert.equal(ev('state.vocabularyMenu'),'main');
+    assert.ok(elements.app.innerHTML.includes(`value="${key}" selected`));
+    assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Vocabulary']);
+    assert.ok(!elements.app.innerHTML.includes('class="mode-card'));
   }
 }
 // This/That keeps its Dialogue guide after retries and round completion.
@@ -463,7 +516,7 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
   assert.equal(ev('activityNav()'),'dialogue');
   assert.equal((elements.app.innerHTML.match(/data-dialogue-guide=/g)||[]).length,count);
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Expression guide':'說法指南'));
-  for(const label of language==='en'?['Matching','Build with hiragana']:['配對練習','平假名拼寫'])assert.ok(elements.app.innerHTML.includes(label));
+  for(const label of language==='en'?['Matching','Rebuild']:['配對練習','重組練習'])assert.ok(elements.app.innerHTML.includes(label));
   for(const id of ev(`dialogueItems('${category}').map(q=>q.id)`))assert.ok(elements.app.innerHTML.includes(`data-dialogue-guide="${id}"`));
   assert.ok(!elements.app.innerHTML.includes('undefined'));
   for(const kind of ['dialogue-choice','dialogue-tiles']){
@@ -475,8 +528,8 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
       ev(`state.activity.index=${index};prepareActivity();render()`);
       assert.equal(ev(`state.activity.choices.every(q=>vocabularySection(wordBy(q.word))==='${category}')`),true);
       assert.equal(ev('new Set(state.activity.choices.map(q=>q.kana)).size'),ev('state.activity.choices.length'));
-      if(kind==='dialogue-tiles'){
-        ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){a.chosen.push(a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i)));}checkActivity();}`);
+      if(['dialogue-tiles','wh-tiles'].includes(kind)){
+        ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){a.chosen.push(a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i)));}checkActivity();}`);
       }else clickData({activityChoice:ev('activityCurrent().id')});
       assert.equal(ev('state.activity.result'),true);
     }
@@ -636,16 +689,15 @@ for(const language of ['en','zh-Hant']){
   clickData({view:'sentences'});assert.equal(ev('activityNav()'),'sentences');
   clickData({view:'home'});
   clickData({view:'vocabulary-menu'});assert.equal(ev('activityNav()'),'vocabulary-menu');
-  assert.ok(elements.app.innerHTML.includes('data-vocabulary-set="all"'));
-  clickData({vocabularyMenu:'category'});
-  for(const category of Object.keys(expectedCategoryCounts))assert.ok(elements.app.innerHTML.includes(`data-vocabulary-set="category-${category}"`));
-  clickData({vocabularySet:'category-occupations'});
-  clickData({action:'back'});assert.equal(ev('state.vocabularyMenu'),'category');
+  assert.ok(elements.app.innerHTML.includes('data-vocabulary-select'));
+  for(const category of Object.keys(expectedVocabularyCategoryCounts))assert.ok(elements.app.innerHTML.includes(`value="category-${category}"`));
+  handlers.change({target:{value:'category-occupations',hasAttribute:name=>name==='data-vocabulary-select'}});
+  assert.equal(ev('state.vocabularyContentKey'),'category-occupations');
 }
-for(const key of ['all','chapter-1','chapter-2',...Object.keys(expectedCategoryCounts).map(id=>'category-'+id)]){
+for(const key of ['all','chapter-1','chapter-2',...Object.keys(expectedVocabularyCategoryCounts).map(id=>'category-'+id)]){
   ev(`startWordSet('vocabulary-rebuild','${key}')`);
   const count=ev('state.round.ids.length');assert.ok(count>0);
-  if(key==='all')assert.equal(count,96);
+  if(key==='all')assert.equal(count,76);
   else if(key.startsWith('chapter-'))assert.equal(ev(`state.round.ids.every(id=>wordBy(id).ch===Number('${key}'.slice(-1)))`),true);
   else assert.equal(ev(`state.round.ids.every(id=>vocabularySection(wordBy(id))==='${key}'.slice(9))`),true);
   ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
@@ -656,7 +708,7 @@ for(const unit of ['そ','ぞ','う','じ','し','っじ'])assert.ok(exampleBank
 const chooseVocabularyAnswer=()=>ev(`{const r=state.round;for(const unit of kanaUnits(vocabularyReading(wordBy(current())))){const index=r.tileBank.findIndex((text,i)=>text===unit&&!r.chosen.includes(i));if(index<0)throw Error('Missing correct tile');vocabularyTileClick({vocabularyTile:String(index)});}}`);
 for(const language of ['en','zh-Hant']){
   ev(`state.language='${language}';resetFilters();startWordSet('vocabulary-rebuild','all')`);
-  for(let i=0;i<96;i++){
+  for(let i=0;i<76;i++){
     ev(`state.round.index=${i};prepareQuestion();render()`);
     assert.equal(ev('state.round.tileBank.every(unit=>/^[ぁ-ゖー]+$/u.test(unit))'),true);
     assert.equal((elements.app.innerHTML.match(/data-vocabulary-slot=/g)||[]).length,ev('kanaUnits(vocabularyReading(wordBy(current()))).length'));
@@ -695,7 +747,7 @@ ev('run("next")');assert.ok(elements.app.innerHTML.includes('Round complete'));
 ev('run("repeatMissed")');assert.equal(ev('state.round.ids.join(",")'),'2-09');
 ev('run("vocabularyReveal")');assert.equal(ev('state.round.result'),false);assert.equal(ev('state.round.revealed'),true);
 ev('navigate("matching")');assert.equal(ev('state.view'),'vocabulary-menu');assert.equal(ev('typeof matchingMenu'),'undefined');
-console.log('PASS: bilingual Rebuild mode menu and order, full-word/chapter/category sets, all 96 readings with complete similar-kana banks, duplicate tiles, scoring, manual feedback, validation and retries.');
+console.log('PASS: bilingual Rebuild mode menu and order, full-word/chapter/category sets, all 76 Vocabulary readings with complete similar-kana banks, duplicate tiles, scoring, manual feedback, validation and retries.');
 
 
 
@@ -712,10 +764,11 @@ for(const language of ['en','zh-Hant']){
   clickData({crumbView:'dialogue-content',crumbCategory:'introductions'});assert.equal(ev('state.view'),'dialogue-content');
   clickData({crumbView:'dialogue'});assert.equal(ev('state.view'),'dialogue');
   clickData({crumbView:'home'});assert.equal(ev('state.view'),'home');
-  ev('navigate("vocabulary-menu");openWordMenu("vocabulary","category");startWordSet("vocabulary-rebuild","category-occupations")');
-  assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Vocabulary','By category','Jobs & roles','Rebuild']);
-  clickData({crumbView:'vocabulary-menu',crumbSection:'category'});
-  assert.equal(ev('state.vocabularyMenu'),'category');assert.equal(ev('state.view'),'vocabulary-menu');
+  ev('openVocabularyContent("category-occupations");startVocabularyPractice("vocabulary-rebuild")');
+  assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Vocabulary','Rebuild']);
+  clickData({crumbView:'vocabulary-menu'});
+  assert.equal(ev('state.view'),'vocabulary-menu');assert.equal(ev('state.vocabularyContentKey'),'category-occupations');
+  assert.ok(elements.app.innerHTML.includes('data-vocabulary-select'));
   for(const view of ['vocabulary-menu','write-menu','write','handwriting-menu','kanji-writing','bank','mock','sentences','demonstratives-content']){
     ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
     assert.ok(!elements.app.innerHTML.includes('data-action="back"')&&!elements.app.innerHTML.includes('page-back'));

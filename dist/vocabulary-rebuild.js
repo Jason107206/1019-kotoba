@@ -13,14 +13,21 @@ function vocabularyTileBank(word){
   return shuffle([...target,...alternatives]);
 }
 function vocabularyAnswer(){const r=state.round;return r.chosen.map(index=>r.tileBank[index]).join('');}
-function vocabularyAnswerSlots(round,count){return Array.from({length:count},(_,position)=>{
-  const index=round.chosen[position],attrs=`data-vocabulary-slot="${position}"`;
-  return index===undefined?`<span class="vocabulary-slot empty" ${attrs} aria-label="${esc(translateText('Empty slot'))} ${position+1}"><span aria-hidden="true">${position+1}</span></span>`:`<button class="tile jp vocabulary-slot filled" lang="ja" ${attrs} data-vocabulary-return="${position}" aria-label="Return ${esc(round.tileBank[index])} to word bank" ${round.checked?'disabled':''}>${esc(round.tileBank[index])}</button>`;
+function vocabularyAnswerSlots(round,count,prefix='vocabulary'){return Array.from({length:count},(_,position)=>{
+  const index=round.chosen[position],attrs=`data-${prefix}-slot="${position}"`;
+  return index===undefined?`<span class="vocabulary-slot empty" ${attrs} aria-label="${esc(translateText('Empty slot'))} ${position+1}"><span aria-hidden="true">${position+1}</span></span>`:`<button class="tile jp vocabulary-slot filled" lang="ja" ${attrs} data-${prefix}-return="${position}" aria-label="Return ${esc(round.tileBank[index])} to word bank" ${round.checked?'disabled':''}>${esc(round.tileBank[index])}</button>`;
 }).join('');}
+function rebuildTileInputs(round,target,prefix='vocabulary'){
+  const limit=kanaUnits(target).length;
+  return `<p class="small muted" style="margin-top:18px">Build the reading. Watch for similar kana, long vowels and small letters.</p><div class="token-area vocabulary-answer-slots ${round.chosen.length?'filled':''}" role="group" aria-label="Your hiragana answer">${vocabularyAnswerSlots(round,limit,prefix)}</div><div class="token-bank vocabulary-tile-bank" aria-label="Hiragana bank">${round.tileBank.map((unit,index)=>`<button class="tile jp ${round.chosen.includes(index)?'selected':''}" lang="ja" data-${prefix}-tile="${index}" ${round.checked||round.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div><div class="small muted">${round.chosen.length} / ${limit} units</div>`;
+}
+function rebuildTileControls(round,limit,prefix='vocabulary'){
+  return `<div class="card-actions">${button('Clear',`${prefix}Clear`,'ghost')}${button('Undo',`${prefix}Undo`,'ghost',round.chosen.length?'':'disabled')}${button('Check answer',`${prefix}Check`,'primary',round.chosen.length===limit?'':'disabled')}</div><div style="text-align:center;margin-top:14px"><button class="scope-link" data-action="${prefix}Reveal">Show answer & mark for review</button></div>`;
+}
 function vocabularyRebuildCard(){
   const w=wordBy(current()),r=state.round,target=vocabularyReading(w),limit=kanaUnits(target).length;
   const prompt=hasKanji(w)?w.c:w.zh;
-  return `<div class="paper vocabulary-rebuild-card"><div class="eyebrow muted">${sourceTag(w)}</div><h2 class="vocabulary-rebuild-prompt ${hasKanji(w)?'jp':''}" ${hasKanji(w)?'lang="ja"':''}>${esc(prompt)}</h2><p class="muted">${hasKanji(w)?`${esc(w.zh)} · `:''}${esc(w.en)}</p><p class="small muted" style="margin-top:18px">Build the reading. Watch for similar kana, long vowels and small letters.</p><div class="token-area vocabulary-answer-slots ${r.chosen.length?'filled':''}" role="group" aria-label="Your hiragana answer">${vocabularyAnswerSlots(r,limit)}</div><div class="token-bank vocabulary-tile-bank" aria-label="Hiragana bank">${r.tileBank.map((unit,index)=>`<button class="tile jp ${r.chosen.includes(index)?'selected':''}" lang="ja" data-vocabulary-tile="${index}" ${r.checked||r.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div><div class="small muted">${r.chosen.length} / ${limit} units</div>${r.checked?`<div class="feedback ${r.result?'':'bad'}" role="status"><strong>${r.result?'Correct!':'The correct answer is:'}</strong><div class="jp" lang="ja">${esc(target)}</div><p class="small jp">${kanaUnits(target).map(esc).join(' · ')}</p></div><div class="card-actions">${button('Next word '+icon('arrow'),'next','primary')}</div>`:`<div class="card-actions">${button('Clear','vocabularyClear','ghost')}${button('Undo','vocabularyUndo','ghost',r.chosen.length?'':'disabled')}${button('Check answer','vocabularyCheck','primary',r.chosen.length===limit?'':'disabled')}</div><div style="text-align:center;margin-top:14px"><button class="scope-link" data-action="vocabularyReveal">Show answer & mark for review</button></div>`}</div>`;
+  return `<div class="paper vocabulary-rebuild-card">${vocabularyVisual(w)}<div class="eyebrow muted">${sourceTag(w)}</div><h2 class="vocabulary-rebuild-prompt ${hasKanji(w)?'jp':''}" ${hasKanji(w)?'lang="ja"':''}>${esc(prompt)}</h2><p class="muted">${hasKanji(w)?`${esc(w.zh)} · `:''}${esc(w.en)}</p>${rebuildTileInputs(r,target)}${r.checked?`<div class="feedback ${r.result?'':'bad'}" role="status"><strong>${r.result?'Correct!':'The correct answer is:'}</strong><div class="jp" lang="ja">${esc(target)}</div><p class="small jp">${kanaUnits(target).map(esc).join(' · ')}</p></div><div class="card-actions">${button('Next word '+icon('arrow'),'next','primary')}</div>`:rebuildTileControls(r,limit)}</div>`;
 }
 function vocabularyAction(action){
   const r=state.round;if(state.view!=='vocabulary-rebuild'||!r||r.checked||r.index>=r.ids.length)return;
@@ -45,27 +52,27 @@ function vocabularyTileClick(dataset){
   render();
 }
 
+// Dialogue handles introductions/greetings and replies; Vocabulary focuses on the other groups.
+const VOCABULARY_CATEGORIES=VOCAB_CATEGORIES.filter(category=>!['introductions','replies'].includes(category.id));
+const VOCABULARY_WORDS=WORDS.filter(word=>VOCABULARY_CATEGORIES.some(category=>category.id===vocabularySection(word)));
+const VOCABULARY_WORD_IDS=new Set(VOCABULARY_WORDS.map(word=>word.id));
+
 // Shared vocabulary library and launch point for Recall and Rebuild.
 function vocabularyStudySet(key){
-  let words=WORDS,label,description,section='main';
+  let words=VOCABULARY_WORDS,label,description,section='main';
   if(key==='all'){
     label='All words';description='Review every vocabulary form from Chapters 1–2.';
   }else if(/^chapter-[12]$/.test(key)){
-    const ch=Number(key.slice(-1));section='chapter';words=WORDS.filter(w=>w.ch===ch);
+    const ch=Number(key.slice(-1));section='chapter';words=VOCABULARY_WORDS.filter(w=>w.ch===ch);
     label=`Chapter ${ch} · p.${ch===1?1:6}`;description='Review the vocabulary from this chapter.';
   }else{
-    const category=VOCAB_CATEGORIES.find(c=>key===`category-${c.id}`);if(!category)return null;
-    section='category';words=WORDS.filter(w=>vocabularySection(w)===category.id);
+    const category=VOCABULARY_CATEGORIES.find(c=>key===`category-${c.id}`);if(!category)return null;
+    section='category';words=VOCABULARY_WORDS.filter(w=>vocabularySection(w)===category.id);
     label=category.label;description=category.description;
   }
   return {key,section,label,description,ids:words.map(w=>w.id)};
 }
-function vocabularyMenu(){
-  const section=state.vocabularyMenu;
-  if(section==='chapter')return `<section class="mode-grid two-modes">${[1,2].map(ch=>{const set=vocabularyStudySet(`chapter-${ch}`);return activityCard(set.label,set.description,`${set.ids.length} forms`,`data-vocabulary-set="${set.key}"`,'','','chapters');}).join('')}</section>`;
-  if(section==='category')return `<section class="mode-grid category-grid">${VOCAB_CATEGORIES.map(category=>activityCard(category.label,category.description,`${category.ids.length} forms`,`data-vocabulary-set="category-${category.id}"`,'','',category.id)).join('')}</section>`;
-  return `<section class="mode-grid">${activityCard('All words','Review every vocabulary form from Chapters 1–2.',`${WORDS.length} forms`,'data-vocabulary-set="all"','','','bank')}${activityCard('By chapter','Choose Chapter 1 or Chapter 2.','2 chapters','data-vocabulary-menu="chapter"','mode-yellow','','chapters')}${activityCard('By category','Choose a word group.',`${VOCAB_CATEGORIES.length} groups`,'data-vocabulary-menu="category"','mode-blue','','categories')}</section>`;
-}
+function vocabularyMenu(){return vocabularyContent();}
 function openVocabularyContent(key){
   const set=vocabularyStudySet(key);if(!set)return;
   rememberPage();state.vocabularyContentKey=key;state.vocabularyMenu=set.section;
@@ -102,7 +109,7 @@ function vocabularyVisual(word){
 function vocabularyContent(){
   const set=vocabularyStudySet(state.vocabularyContentKey)||vocabularyStudySet('all');
   const chapters=[1,2].map(ch=>vocabularyStudySet(`chapter-${ch}`));
-  const categories=VOCAB_CATEGORIES.map(category=>vocabularyStudySet(`category-${category.id}`));
+  const categories=VOCABULARY_CATEGORIES.map(category=>vocabularyStudySet(`category-${category.id}`));
   const entries=sets=>options(sets.map(entry=>[entry.key,entry.label]),set.key);
   return `<div class="study-wrap dialogue-selector"><select class="filter dialogue-category-select" data-vocabulary-select aria-label="Vocabulary selection">${entries([vocabularyStudySet('all')])}<optgroup label="${esc(translateText('By chapter'))}">${entries(chapters)}</optgroup><optgroup label="${esc(translateText('By category'))}">${entries(categories)}</optgroup></select><div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>${esc(set.description)}</p></div></div><div class="study-wrap dialogue-content vocabulary-content"><div class="dialogue-guide-actions"><button class="button primary" data-vocabulary-practice="write">Recall ${icon('arrow')}</button><button class="button soft" data-vocabulary-practice="vocabulary-rebuild">Rebuild ${icon('arrow')}</button></div><div class="guide-cards">${set.ids.map(id=>{const word=wordBy(id),spelling=hasKanji(word)?word.c:word.jp;return `<article class="paper guide-card vocabulary-guide-card" data-vocabulary-guide="${word.id}">${vocabularyVisual(word)}<span class="eyebrow muted">${sourceTag(word)}</span><h2 class="jp" lang="ja">${esc(spelling)}</h2>${spelling!==word.kana?`<p class="jp vocabulary-reading" lang="ja">${esc(word.kana)}</p>`:''}<p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p>${word.note?`<p class="small muted">${esc(word.note)}</p>`:''}</article>`;}).join('')}</div></div>`;
 }
