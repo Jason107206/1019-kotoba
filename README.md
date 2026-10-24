@@ -12,13 +12,13 @@ Transcribed and visually checked against the user-provided textbook extract:
 
 The selected vocabulary has 96 separate recall forms after splitting polite pairs and optional forms. Seven fictional company/institution names are excluded at the user’s request. There are 62 main-vocabulary forms, 10 country names and 24 expression forms. Named fictional characters in sentence puzzles are replaced with syllabus pronouns and generic roles; all 50 puzzles and 16 pattern groups are retained.
 
-Column B follows the sheet's literal Hiragana instruction, including hiragana readings for printed katakana loanwords. Original spelling is retained on study cards and in the reference bank. Column C only accepts the printed Japanese vocabulary-column form; blank and alphabet-only forms use X, following the sheet. Do not introduce alternative kanji for words printed only in kana. Placeholder tilde is ignored in answer grading. Traditional Chinese meanings are labels, not Japanese answer variants.
+Column B follows the sheet's literal Hiragana instruction, including hiragana readings for printed katakana loanwords. Original spelling is retained in the word reference. Column C only accepts the printed Japanese vocabulary-column form; blank and alphabet-only forms use X, following the sheet. Do not introduce alternative kanji for words printed only in kana. Placeholder tilde is ignored in answer grading. Traditional Chinese meanings are labels, not Japanese answer variants.
 
 The 50 sentence puzzles cover all six Exercise A structures in each chapter, the chapter sentence patterns and examples, and Chapter 1 introductions. Sixteen named groups are teaching labels, not an additional claim about exam questions. Mock quizzes sample 5 main-vocabulary forms from each chapter and five different grammar groups (2 from Chapter 1, 3 from Chapter 2), allowing 15 minutes and scoring 10 + 10 marks.
 
 ## Implementation
 
-No network dependencies, accounts or analytics. Progress and an active mock are stored in browser localStorage. A reload retains the original mock deadline. Optional speech synthesis only works with an installed Japanese voice. It is a study aid, not part of the assessment.
+No network dependencies, accounts or analytics. Progress and an active mock are stored in browser localStorage. A reload retains the original mock deadline.
 
 ## Verification
 
@@ -30,13 +30,13 @@ The `Publish GitHub Pages` workflow runs the verification suite, then publishes 
 
 Original uploaded PDFs, original hosting configuration, and credentials are not included in this repository.
 
-## Hiragana groups
+## Vocabulary sections
 
-Choose **Hiragana groups** in the menu. Tap a character to see syllabus words beginning with it, hide meanings for recall, or practise that group in cards, written Part A, or kanji matching. Voiced characters have separate groups; katakana words use their hiragana reading. Empty groups are disabled. All 96 forms remain within the original vocabulary bank.
+The word reference can filter by first hiragana and by section. The Write menu offers all words, one chapter, or one category. Occupations and roles, places, this/that words, and objects are separated from the printed main vocabulary; the remaining entries appear as Other main vocabulary. The original 62 core forms remain eligible for mock quiz sampling. The word reference can also start a writing round for its filtered and searched selection.
 
 ## Kanji display
 
-Study cards, hiragana groups and the word reference show a kanji field only when the supplied form contains kanji. Kanji Match excludes kana-only entries and uses four kanji-bearing choices, including when started from a hiragana group. Written Part A and the mock retain the information sheet’s required X answers.
+The word reference shows a kanji field only when the supplied form contains kanji. Kanji Match excludes kana-only entries and uses four kanji-bearing choices. Write and the mock retain the information sheet’s required X answers.
 
 The repository root also contains a relative entry page for branch-based GitHub Pages publishing. It opens `dist/`; the custom Actions workflow continues to publish the contents of `dist/` directly. Both publishing methods serve the same game.
 

@@ -10,6 +10,21 @@ assert.equal(ev('PATTERNS.length'),16);
 assert.equal(ev('new Set(WORDS.map(x=>x.id)).size'),96);
 assert.equal(ev('new Set(SENTENCES.map(x=>x.id)).size'),50);
 assert.equal(ev('WORDS.filter(w=>w.group==="core").length'),62);
+// Extracted study sections partition the printed main vocabulary.
+assert.equal(ev('MAIN_VOCAB_CATEGORY_BY_ID.size'),43);
+assert.equal(ev('MAIN_VOCAB_CATEGORY_BY_ID.size===Object.values(MAIN_VOCAB_CATEGORIES).flat().length'),true);
+assert.equal(ev('[...MAIN_VOCAB_CATEGORY_BY_ID.keys()].every(id=>wordBy(id)?.group==="core")'),true);
+for(const [section,count,word] of [['occupations',8,'きょうし'],['places',2,'びょういん'],['demonstratives',6,'この'],['objects',27,'コーヒー'],['core',19,'わたし']]){
+  ev(`state.filter.group='${section}'`);
+  assert.equal(ev('pool("write").length'),count);
+  assert.ok(ev('pool("write")').some(w=>w.jp===word));
+  assert.equal(ev(`pool('write').every(w=>vocabularySection(w)==='${section}')`),true);
+}
+ev('resetFilters();navigate("bank")');
+for(const label of ['Occupations','Places','This and that','Objects','Other main vocabulary'])assert.ok(elements.app.innerHTML.includes(label));
+ev('state.language="zh-Hant";render()');
+for(const label of ['職業與身分','場所','這個與那個','物品','其他主要詞彙'])assert.ok(elements.app.innerHTML.includes(label));
+ev('state.language="en";render()');
 assert.equal(ev('WORDS.filter(w=>w.ch===1).length'),43);
 assert.equal(ev('WORDS.filter(w=>w.ch===2).length'),53);
 assert.equal(ev('WORDS.every(w=>/^[ぁ-ゖー～]+$/.test(w.kana))'),true);
@@ -32,8 +47,9 @@ assert.equal(ev('gradeSentence(sentenceBy("p12-1"),[0,1,5,3,4,2,6,7])'),true);
 assert.equal(ev('PATTERNS.every(p=>SENTENCES.some(s=>s.pattern===p.id))'),true);
 // Every kanji in a puzzle is taught on one of the specified vocabulary pages.
 assert.equal(ev(`(()=>{const allowed=new Set(WORDS.map(w=>w.c).join('').match(/\\p{Script=Han}/gu));return SENTENCES.every(s=>(s.tokens.join('').match(/\\p{Script=Han}/gu)||[]).every(k=>allowed.has(k)));})()`),true);
-for(const view of ['home','cards','write','matching','dialogue','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
-ev('navigate("cards");begin("cards",["1-09"]);run("flip")');assert.ok(elements.app.innerHTML.includes('KANJI'));ev('run("got")');assert.equal(ev('state.round.index'),1);
+for(const view of ['home','write-menu','write','matching','dialogue','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
+ev('navigate("cards")');assert.equal(ev('state.view'),'write-menu');
+assert.equal(ev('views.some(([view])=>view==="cards")'),false);
 ev('navigate("write");state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');assert.equal(ev('state.round.result.score'),1);assert.ok(elements.app.innerHTML.includes('1 / 1 mark'));
 ev('run("next");state.round.b="";state.round.c="";run("checkWrite")');assert.equal(ev('state.round.result.score'),0);assert.equal(ev('state.round.missed.length'),1);
 ev('run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
@@ -41,8 +57,8 @@ ev('navigate("sentences");state.round.chosen=sentenceBy(current()).tokens.map((_
 ev('run("next");run("hint");state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');assert.equal(ev('state.round.result'),true);assert.equal(ev('state.round.correct'),1);assert.equal(ev('state.round.missed.length'),1);
 ev('navigate("match")');assert.equal(ev('new Set(state.round.options).size'),4);assert.equal(ev('state.round.options.includes(wordBy(current()).c)'),true);
 // Exercise every item’s renderer and distractor generation.
-for(const mode of ['cards','write','match','sentences']){
-ev(`resetFilters();state.view='${mode}';begin('${mode}');for(let i=0;i<state.round.ids.length;i++){state.round.index=i;prepareQuestion();render();if('${mode}'==='cards'){state.round.revealed=true;render();}if('${mode}'==='match'&&new Set(state.round.options).size!==4)throw Error('Bad distractors');}`);
+for(const mode of ['write','match','sentences']){
+ev(`resetFilters();state.view='${mode}';begin('${mode}');for(let i=0;i<state.round.ids.length;i++){state.round.index=i;prepareQuestion();render();if('${mode}'==='match'&&new Set(state.round.options).size!==4)throw Error('Bad distractors');}`);
 assert.ok(!elements.app.innerHTML.includes('undefined'));
 }
 ev('navigate("mock");startMock()');assert.equal(ev('mock.a.length'),10);assert.equal(ev('mock.b.length'),5);assert.equal(ev('mock.a.filter(q=>wordBy(q.id).ch===1).length'),5);assert.equal(ev('new Set(mock.b.map(q=>sentenceBy(q.id).pattern)).size'),5);assert.equal(ev('mock.deadline-mock.started'),900000);
@@ -58,7 +74,7 @@ assert.equal(ev('WORDS.every(w=>HIRAGANA_KEYS.some(([k])=>k===hiraganaInitial(w)
 assert.equal(ev('hiraganaInitial({jp:"コーヒー"})'),'こ');
 assert.equal(ev('hiraganaInitial({kana:"～からきました"})'),'か');
 ev('resetFilters();state.filter.kana="が"');
-assert.equal(ev('pool("cards").length'),1);
+assert.equal(ev('pool("write").length'),1);
 assert.equal(ev('pool("sentences").length'),50);
 ev('resetFilters()');
 
@@ -72,11 +88,18 @@ assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id)))'),true);
 assert.equal(ev('state.round.options.every(c=>/\\p{Script=Han}/u.test(c))'),true);
 ev('begin("match",["1-01","1-09","2-18"])');
 assert.equal(ev('state.round.ids.join(",")'),'1-09');
-ev('state.view="cards";begin("cards",["1-01"]);run("flip")');
-assert.ok(!elements.app.innerHTML.includes('answer-c '));
-assert.ok(!elements.app.innerHTML.includes('no kanji'));
-ev('state.view="cards";begin("cards",["1-09"]);run("flip")');
-assert.ok(elements.app.innerHTML.includes('answer-c jp'));
+ev('navigate("bank")');
+assert.ok(!elements.app.innerHTML.includes('data-view="cards"'));
+assert.ok(!elements.app.innerHTML.includes('data-action="goCards"'));
+assert.ok(elements.app.innerHTML.includes('data-action="writeSelection"'));
+ev('state.language="zh-Hant";render()');
+assert.ok(elements.app.innerHTML.includes('默寫所選詞彙'));
+assert.ok(!elements.app.innerHTML.includes('記憶卡'));
+ev('state.language="en";render()');
+ev('state.search="student";writeSelection()');
+assert.equal(ev('state.view'),'write');
+assert.equal(ev('state.round.ids.join(",")'),'1-09');
+assert.ok(elements.app.innerHTML.includes('C · KANJI / X'));
 ev('resetFilters()');
 
 
@@ -142,7 +165,7 @@ for(const [id,location] of [['2-01','speaker'],['2-04','speaker'],['2-02','liste
 }
 ev('navigate("dialogue")');assert.ok(!elements.app.innerHTML.includes('data-dialogue-scope'));
 
-console.log('PASS: source coverage, strict spelling, 0/0.5/1 scoring, all 50 puzzles, 16 groups, shuffled duplicate tiles, every card renderer, missed-item practice, hints, 15-minute mock, balanced chapter sampling, 20-point grading and persisted state.');
+console.log('PASS: source coverage, strict spelling, 0/0.5/1 scoring, all 50 puzzles, 16 groups, shuffled duplicate tiles, word practice modes, missed-item practice, hints, 15-minute mock, balanced chapter sampling, 20-point grading and persisted state.');
 
 // Expression prompts show the incoming line without translating the answer.
 for(const kind of ['dialogue-choice','dialogue-tiles']){
@@ -167,7 +190,7 @@ assert.equal(ev('SENTENCES.every(s=>ZH_HANT[s.prompt])'),true);
 assert.equal(ev('PATTERNS.every(p=>ZH_HANT[p.title]&&ZH_HANT[p.tip])'),true);
 assert.equal(ev('matchingItems("wh").concat(matchingItems("demonstratives")).every(q=>ZH_HANT[q.why])'),true);
 assert.equal(ev('localizeMarkup(`<input value="English &amp; これ" data-answer="b" placeholder="Type hiragana"><span lang="ja">よろしくおねがいします</span>`)'),'<input value="English &amp; これ" data-answer="b" placeholder="輸入平假名"><span lang="ja">よろしくおねがいします</span>');
-for(const view of ['home','cards','write','matching','dialogue','sentences','bank','mock']){
+for(const view of ['home','write-menu','write','matching','dialogue','sentences','bank','mock']){
   ev(`mock=null;resetFilters();navigate('${view}')`);
   assert.ok(elements.app.innerHTML.includes('切換至繁體中文')===false);
   assert.ok(elements.app.innerHTML.includes('情境對話'));assert.ok(!elements.app.innerHTML.includes('data-view="hiragana"'));
@@ -213,3 +236,129 @@ for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dia
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Use どうぞ when you give someone something.':'把東西遞給對方時，可以說 どうぞ'));
 }
 console.log('PASS: simple bilingual expression prompts, distinct incoming dialogue, and explanations shown only after answering.');
+
+// Overview uses its navigation at the former action-button position; other pages keep the header nav.
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';navigate('home')`);
+  const html=elements.app.innerHTML;
+  assert.ok(html.includes('class="shell home-view"'));
+  assert.ok(html.includes('class="nav overview-nav"'));
+  assert.ok(html.indexOf('class="nav overview-nav"')>html.indexOf('class="hero-copy"'));
+  assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="stats"'));
+  assert.ok(!html.includes('data-action="goCards"')&&!html.includes('data-action="review"'));
+  assert.equal((html.match(/class="nav overview-nav"/g)||[]).length,1);
+  ev('navigate("dialogue")');
+  assert.ok(!elements.app.innerHTML.includes('class="nav overview-nav"'));
+  assert.ok(elements.app.innerHTML.includes('class="nav "'));
+}
+console.log('PASS: overview navigation replaces the two hero buttons; other pages retain header navigation.');
+
+// This/That has a full guide page before matching; the other modes open as before.
+for(const language of ['en','zh-Hant']){
+ ev(`state.language='${language}';navigate('matching')`);
+ assert.ok(!elements.app.innerHTML.includes('demonstrative-guide'));
+ assert.ok(!elements.app.innerHTML.includes('visual-guide-grid'));
+ ev('activityClick({dataset:{openMatch:"demonstratives"}})');
+ assert.equal(ev('state.view'),'demonstratives-content');
+ assert.ok(elements.app.innerHTML.includes('visual-guide-grid'));
+ assert.equal((elements.app.innerHTML.match(/class="guide-pair jp"/g)||[]).length,4);
+ assert.ok(elements.app.innerHTML.includes('data-open-match="start-demonstratives"'));
+ assert.ok(elements.app.innerHTML.includes(language==='en'?'Look at the speaker, listener and book.':'看圖中你、對方和書的位置。'));
+ ev('activityClick({dataset:{openMatch:"start-demonstratives"}})');
+ assert.equal(ev('state.view'),'activity');
+ assert.equal(ev('state.activity.kind'),'demonstratives');
+ assert.equal(ev('state.activity.ids.length'),7);
+ assert.ok(elements.app.innerHTML.includes('data-view="demonstratives-content"'));
+ ev('navigate("demonstratives-content")');
+ assert.ok(elements.app.innerHTML.includes('visual-guide-grid'));
+ ev('navigate("matching");activityClick({dataset:{openMatch:"wh"}})');
+ assert.equal(ev('state.view'),'question-words-content');
+}
+console.log('PASS: Matching menu → illustrated content → seven This/That questions, with guide return path.');
+
+// Question Words uses the same menu → content → matching flow in both languages.
+for(const language of ['en','zh-Hant']){
+ ev(`state.language='${language}';navigate('matching')`);
+ assert.ok(!elements.app.innerHTML.includes('question-guide-grid'));
+ ev('activityClick({dataset:{openMatch:"wh"}})');
+ assert.equal(ev('state.view'),'question-words-content');
+ assert.equal(ev('activityNav()'),'matching');
+ assert.ok(elements.app.innerHTML.includes('question-guide-grid'));
+ assert.ok(elements.app.innerHTML.includes(language==='en'?'Question word guide':'疑問詞小指南'));
+ for(const kana of ['なんさい','おいくつ','だれ','どなた','なん'])assert.ok(elements.app.innerHTML.includes(`>${kana}</strong>`));
+ assert.ok(!/なんじ|いくら/.test(elements.app.innerHTML));
+ assert.ok(elements.app.innerHTML.includes('data-view="matching"'));
+ ev('activityClick({dataset:{openMatch:"start-wh"}})');
+ assert.equal(ev('state.view'),'activity');
+ assert.equal(ev('state.activity.kind'),'wh');
+ assert.equal(ev('state.activity.ids.length'),5);
+ assert.ok(elements.app.innerHTML.includes('data-view="question-words-content"'));
+ ev('state.activity.index=state.activity.ids.length;render()');
+ assert.ok(elements.app.innerHTML.includes('data-view="question-words-content"'));
+ ev('navigate("question-words-content")');
+ assert.ok(elements.app.innerHTML.includes('question-guide-grid'));
+}
+console.log('PASS: Question Words menu → bilingual five-word guide → matching, with guide return path.');
+
+// Re-rendered horizontal navigation retains its scroll offset across subpages.
+const querySelector=ctx.document.querySelector;
+const menuNav={scrollLeft:0},guideNav={scrollLeft:0},overviewNav={scrollLeft:0};
+ctx.document.querySelector=s=>{
+  if(s==='.overview-nav')return elements.app.innerHTML.includes('class="shell home-view"')?overviewNav:null;
+  if(s==='.sidebar .nav')return elements.app.innerHTML.includes('question-words-content')?guideNav:menuNav;
+  return querySelector(s);
+};
+ev('navigate("matching")');menuNav.scrollLeft=245;
+ev('activityClick({dataset:{openMatch:"wh"}})');
+assert.equal(guideNav.scrollLeft,245);
+guideNav.scrollLeft=318;
+ev('navigate("matching")');
+assert.equal(menuNav.scrollLeft,318);
+menuNav.scrollLeft=278;
+ev('navigate("home")');
+assert.equal(overviewNav.scrollLeft,278);
+overviewNav.scrollLeft=301;
+ev('navigate("dialogue")');
+assert.equal(menuNav.scrollLeft,301);
+ctx.document.querySelector=querySelector;
+console.log('PASS: horizontal navigation position survives menu, guide, and overview page changes.');
+
+// Writing opens a choice menu; the chosen set survives restarts and missed-item rounds.
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';navigate('write-menu')`);
+  assert.equal(ev('activityNav()'),'write-menu');
+  assert.ok(elements.app.innerHTML.includes('data-write-set="all"'));
+  assert.ok(elements.app.innerHTML.includes('data-write-menu="chapter"'));
+  assert.ok(elements.app.innerHTML.includes('data-write-menu="category"'));
+  assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
+  ev('state.writeMenu="chapter";render()');
+  assert.ok(elements.app.innerHTML.includes('data-write-set="chapter-1"'));
+  assert.ok(elements.app.innerHTML.includes('data-write-set="chapter-2"'));
+  ev('state.writeMenu="category";render()');
+  for(const category of ['occupations','places','demonstratives','objects','core','phrases','related'])assert.ok(elements.app.innerHTML.includes(`data-write-set="category-${category}"`));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Choose a category.':'選擇詞彙分類。'));
+}
+ev('startWriteSet("all")');
+assert.equal(ev('state.round.ids.length'),96);
+ev('navigate("write-menu")');
+handlers.click({target:{closest:()=>({disabled:false,dataset:{writeMenu:'chapter'}})}});
+assert.equal(ev('state.writeMenu'),'chapter');
+handlers.click({target:{closest:()=>({disabled:false,dataset:{writeSet:'chapter-1'}})}});
+assert.equal(ev('state.view'),'write');
+assert.equal(ev('state.round.ids.length'),43);
+for(const [key,count] of [['chapter-1',43],['chapter-2',53],['category-occupations',8],['category-places',2],['category-demonstratives',6],['category-objects',27],['category-core',19],['category-phrases',24],['category-related',10]]){
+  ev(`startWriteSet('${key}')`);
+  assert.equal(ev('state.round.ids.length'),count);
+  assert.ok(elements.app.innerHTML.includes('data-view="write-menu"'));
+  ev('run("restart")');
+  assert.equal(ev('state.round.ids.length'),count);
+  assert.equal(ev('state.round.ids.every(id=>state.writeSet.ids.includes(id))'),true);
+}
+ev('startWriteSet("category-places");state.round.missed=[state.round.ids[0]];run("repeatMissed")');
+assert.equal(ev('state.round.ids.length'),1);
+ev('run("restart")');assert.equal(ev('state.round.ids.length'),2);
+ev('state.round.index=state.round.ids.length;render()');
+assert.ok(elements.app.innerHTML.includes('Back to word sets')||elements.app.innerHTML.includes('返回詞彙選單'));
+ev('navigate("mock")');
+assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
+console.log('PASS: bilingual Write menu, all/chapter/category sets, retry scope, and removed Part A/B labels.');

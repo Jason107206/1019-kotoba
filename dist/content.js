@@ -102,6 +102,16 @@ V('2-c5',2,'phrases','這樣啊','I see','そうですか');
 V('2-c6',2,'phrases','不是／不對','that is not correct','ちがいます','違います');
 V('2-c7',2,'phrases','啊（意識到某事時）','ah (realisation)','あ');
 
+// Study categories within the printed main vocabulary; the source group remains core.
+const MAIN_VOCAB_CATEGORIES={
+  occupations:['1-07','1-08','1-09','1-10','1-11','1-12','1-13','1-14'],
+  places:['1-15','1-16'],
+  demonstratives:['2-01','2-02','2-03','2-04','2-05','2-06'],
+  objects:['2-07','2-08','2-09','2-10','2-11','2-12','2-13','2-14','2-15','2-16','2-17','2-18','2-19','2-20','2-21','2-22','2-23','2-24','2-25','2-26','2-27','2-28','2-29','2-30','2-31','2-32a','2-32b']
+};
+const MAIN_VOCAB_CATEGORY_BY_ID=new Map(Object.entries(MAIN_VOCAB_CATEGORIES).flatMap(([category,ids])=>ids.map(id=>[id,category])));
+function vocabularySection(w){return w.group==='core'?(MAIN_VOCAB_CATEGORY_BY_ID.get(w.id)||'core'):w.group;}
+
 const PATTERNS=[
 {id:'p1',ch:1,title:'Name, job & nationality',formula:'N₁ は N₂ です',source:'PDF p.2 文型1; p.3 練習A1',tip:'は marks the topic. です completes the statement.'},
 {id:'p2',ch:1,title:'Negative statements',formula:'N₁ は N₂ じゃ ありません',source:'PDF p.2 文型2; p.3 練習A2',tip:'Keep じゃ → ありません together in this order. The page also shows では ありません.'},
