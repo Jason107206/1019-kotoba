@@ -198,6 +198,8 @@ const ZH_HANT = {
   "Use your Japanese keyboard. Enter checks both answers.": "請使用日文鍵盤；按 Enter 核對兩欄答案。",
   "Matched!": "配對正確！",
   "Next match": "下一題配對",
+  "Next match in 2 seconds.": "2 秒後自動進入下一題。",
+  "Results in 2 seconds.": "2 秒後顯示本回合結果。",
   "Keys 1–4 to choose · Enter for the next match": "按 1–4 選擇 · 按 Enter 進入下一題",
   "Your sentence goes here. Tap a tile below.": "點選下方字卡，在這裡排出句子。",
   "Correct with help — try it unaided next time.": "答對了！下次試試不看提示。",

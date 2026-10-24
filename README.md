@@ -44,6 +44,8 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 Matching opens three choices: Kanji Match, Question Words, and This/That. Kanji Match then offers all words, one chapter, or one category using the same selection component as Write. Its counts, prompts and selectable categories include only entries with taught kanji; categories without any are hidden. Restarts keep the selected set, and missed-item rounds keep only the missed prompts. Question Words has five words; This/That includes the six pointing words and あのう. All activities use the original quiz-page vocabulary.
 
+A correct answer in any matching mode advances after two seconds of feedback. Incorrect answers wait for Next. The last correct answer opens the round results. Manual advancement or leaving the page cancels the pending advance; dialogue and writing remain manual.
+
 This/That uses precise SVG scenes of a speaker, listener and book. The book appears near the speaker, near the listener, or far from both. A sentence blank distinguishes stand-alone これ/それ/あれ from noun-prefixed この/その/あの. The あのう scene shows the speaker getting the listener’s attention. SVG titles and captions provide accessible descriptions. Question Words and This/That each open a guide page before practice.
 
 Dialogue offers four-choice expressions or hiragana construction for 14 syllabus scenes. Small-kana combinations stay together; small っ stays separate. Duplicate tiles are tracked by position, with correctness based on the resulting text. Each scene has feedback and missed-item replay. Equivalent thank-you variants are excluded as distractors in the same question. Activity progress is stored independently.

@@ -1,7 +1,8 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const elements={app:{innerHTML:''},toast:{style:{},textContent:''}};
 const handlers={};let storage={'kotoba-ch12-v1':JSON.stringify({language:'en'})};
-const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>handlers[e]=f},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:()=>{},clearTimeout:()=>{}});
+const timers=new Map();let timerId=0;
+const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>handlers[e]=f},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:(fn,delay)=>{const id=++timerId;timers.set(id,{fn,delay});return id;},clearTimeout:id=>timers.delete(id)});
 vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/i18n.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
 const ev=s=>vm.runInContext(s,ctx);
 assert.equal(ev('WORDS.length'),96);
@@ -421,3 +422,34 @@ for(const key of ['chapter-1','chapter-2',...ev('VOCAB_CATEGORIES.filter(c=>c.id
 ev('state.round.index=state.round.ids.length;render()');
 assert.ok(elements.app.innerHTML.includes('data-view="kanji-menu"'));
 console.log('PASS: Matching → Kanji word sets → all/chapter/category practice; kanji-only contents and preserved retry scope.');
+
+// Correct matching answers advance after 2000 ms; wrong answers and dialogue stay manual.
+const pendingMatchTimers=()=>[...timers.entries()].filter(([,timer])=>timer.delay===2000);
+const fireMatchTimer=()=>{const pending=pendingMatchTimers();assert.equal(pending.length,1);const [id,timer]=pending[0];timers.delete(id);timer.fn();};
+ev('startWordSet("match","all")');
+const chooseKanji=correct=>handlers.click({target:{closest:()=>({disabled:false,dataset:{match:String(ev(`state.round.options.findIndex(c=>c${correct?'===':'!=='}wordBy(current()).c)`))}})}});
+chooseKanji(false);assert.equal(pendingMatchTimers().length,0);
+ev('run("next")');chooseKanji(true);
+assert.equal(ev('state.round.index'),1);assert.equal(pendingMatchTimers().length,1);
+fireMatchTimer();assert.equal(ev('state.round.index'),2);assert.equal(ev('state.round.checked'),false);
+chooseKanji(true);const staleKanji=pendingMatchTimers()[0][1].fn;
+ev('run("next")');staleKanji();assert.equal(ev('state.round.index'),3);assert.equal(pendingMatchTimers().length,0);
+ev('state.round.index=state.round.ids.length-1;prepareQuestion();render()');chooseKanji(true);fireMatchTimer();
+assert.equal(ev('state.round.index===state.round.ids.length'),true);
+for(const kind of ['wh','demonstratives']){
+  ev(`state.language='en';startActivity('${kind}');checkActivity(state.activity.choices.find(q=>q.id!==activityCurrent().id).id)`);
+  assert.equal(pendingMatchTimers().length,0);
+  ev('activityAction("activityNext");checkActivity(activityCurrent().id)');
+  assert.equal(ev('state.activity.index'),1);assert.equal(pendingMatchTimers().length,1);
+  ev('run("toggleLanguage")');
+  assert.ok(elements.app.innerHTML.includes('2 秒後自動進入下一題。'));
+  fireMatchTimer();assert.equal(ev('state.activity.index'),2);
+  ev('checkActivity(activityCurrent().id)');const stale=pendingMatchTimers()[0][1].fn;
+  ev('navigate("matching")');stale();
+  assert.equal(ev('state.activity.index'),2);assert.equal(pendingMatchTimers().length,0);
+  ev(`startActivity('${kind}');state.activity.index=state.activity.ids.length-1;prepareActivity();checkActivity(activityCurrent().id)`);
+  fireMatchTimer();assert.equal(ev('state.activity.index===state.activity.ids.length'),true);
+}
+ev('startActivity("dialogue-choice");checkActivity(activityCurrent().id)');
+assert.equal(pendingMatchTimers().length,0);
+console.log('PASS: two-second correct-answer advance in all matching modes, manual wrong answers/dialogue, safe navigation and final results.');
