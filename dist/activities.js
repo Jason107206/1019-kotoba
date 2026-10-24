@@ -1,23 +1,48 @@
 'use strict';
 // Matching and dialogue content uses the existing quiz-page vocabulary.
 const demonstrativeWords=[
-  {word:'2-01',meaning:'This · near the speaker · stands alone',clue:'The book is beside you. Refer to it with a word that stands alone.'},
-  {word:'2-02',meaning:'That · near the listener · stands alone',clue:'The book is beside the person you are speaking to. Use a word that stands alone.'},
-  {word:'2-03',meaning:'That over there · far from both · stands alone',clue:'The book is far from both of you. Use a word that stands alone.'},
-  {word:'2-04',meaning:'This … · near the speaker · before a noun',clue:'The book is beside you. Choose the word that goes immediately before the noun “book”.'},
-  {word:'2-05',meaning:'That … · near the listener · before a noun',clue:'The book is beside the listener. Choose the word that goes immediately before a noun.'},
-  {word:'2-06',meaning:'That … over there · far from both · before a noun',clue:'The book is far from both of you. Choose the word that goes immediately before a noun.'},
-  {word:'2-c1',meaning:'Um / excuse me … · get someone’s attention',clue:'You hesitate and politely get someone’s attention before speaking. This is an expression, rather than a word pointing to an object.'}
+  {
+    "word": "1-17a",
+    "meaning": "Who",
+    "clue": "Ask who that person is, using the standard form.",
+    "why": "だれ asks who someone is. Use どなた for the polite form.",
+    "sentence": "あの人は {word} ですか。",
+    "symbol": "?"
+  },
+  {
+    "word": "1-17b",
+    "meaning": "Who · polite",
+    "clue": "Ask who that person is, using the polite form.",
+    "why": "どなた is the polite way to ask who someone is.",
+    "sentence": "あの方は {word} ですか。",
+    "symbol": "?"
+  },
+  {
+    "word": "1-19a",
+    "meaning": "How old",
+    "clue": "Ask someone’s age, using the standard form.",
+    "why": "なんさい asks how old someone is. Use おいくつ for the polite form.",
+    "sentence": "あなたは {word} ですか。",
+    "symbol": "18?"
+  },
+  {
+    "word": "1-19b",
+    "meaning": "How old · polite",
+    "clue": "Ask someone’s age, using the polite form.",
+    "why": "おいくつ is the polite way to ask someone’s age.",
+    "sentence": "あなたは {word} ですか。",
+    "symbol": "18?"
+  },
+  {
+    "word": "2-36",
+    "meaning": "What",
+    "clue": "Ask what this object is.",
+    "why": "なん means what before ですか.",
+    "sentence": "これは {word} ですか。",
+    "symbol": "?"
+  }
 ];
-function demonstrativeItems(){return demonstrativeWords.map(q=>{const w=wordBy(q.word);const explanations={
-  '2-01':'これ stands alone and refers to something near the speaker. この must come before a noun.',
-  '2-02':'それ stands alone and refers to something near the listener. その must come before a noun.',
-  '2-03':'あれ stands alone and refers to something far from both people. あの must come before a noun.',
-  '2-04':'この comes directly before a noun and points to something near the speaker.',
-  '2-05':'その comes directly before a noun and points to something near the listener.',
-  '2-06':'あの comes directly before a noun and points to something far from both people. あのう gets attention.',
-  '2-c1':'あのう gets attention or shows hesitation. The final う distinguishes it from the noun modifier あの.'
-};return {...q,id:`demonstratives-${w.id}`,kana:w.kana,zh:w.zh,why:explanations[w.id]};});}
+function demonstrativeItems(){return demonstrativeWords.map(q=>{const w=wordBy(q.word);return {...q,id:`wh-words-${w.id}`,kana:w.kana,zh:w.zh};});}
 const DIALOGUES=[
   {
     "id": "meet",
@@ -118,31 +143,9 @@ const DIALOGUES=[
     "why": "これからおせわになります asks for someone’s kindness or help from now on."
   }
 ];
-function guideCarousel(cards,label){
-  const index=Math.max(0,Math.min(state.guideIndex,cards.length-1));
-  return `<section class="expression-carousel" aria-label="${esc(label)}"><div class="guide-heading"><h2>${label}</h2><span class="guide-position" aria-live="polite">${index+1} / ${cards.length}</span></div><p class="small muted guide-instruction">Swipe or use the arrows to explore the expressions.</p><div class="guide-carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="${esc(label)}">${cards.map((card,i)=>card.replace('<article ',`<article role="group" aria-roledescription="slide" aria-label="${i+1} / ${cards.length}" `)).join('')}</div><div class="guide-controls"><button class="button ghost" data-carousel-step="-1" aria-label="Previous expression" ${index===0?'disabled':''}>← Previous</button><button class="button ghost" data-carousel-step="1" aria-label="Next expression" ${index===cards.length-1?'disabled':''}>Next →</button></div></section>`;
+function guideCards(cards,label){
+  return `<section class="expression-guide" aria-label="${esc(label)}"><div class="guide-heading"><h2>${label}</h2></div><div class="guide-cards">${cards.join('')}</div></section>`;
 }
-function restoreGuideCarousel(){const track=document.querySelector('.guide-carousel');if(!track)return;const slide=track.children[state.guideIndex];if(slide)track.scrollLeft=slide.offsetLeft;}
-function moveGuide(step){
-  const track=document.querySelector('.guide-carousel');if(!track)return;
-  const index=Math.max(0,Math.min(state.guideIndex+step,track.children.length-1));
-  state.guideIndex=index;track.scrollTo({left:track.children[index].offsetLeft,behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
-}
-function syncGuideScroll(track){
-  const slides=[...track.children];let index=0;
-  slides.forEach((slide,i)=>{if(Math.abs(slide.offsetLeft-track.scrollLeft)<Math.abs(slides[index].offsetLeft-track.scrollLeft))index=i;});
-  state.guideIndex=index;
-  const counter=document.querySelector('.guide-position'),previous=document.querySelector('[data-carousel-step="-1"]'),next=document.querySelector('[data-carousel-step="1"]');
-  if(counter)counter.textContent=`${index+1} / ${slides.length}`;
-  if(previous)previous.disabled=index===0;if(next)next.disabled=index===slides.length-1;
-}
-document.addEventListener('scroll',e=>{if(e.target.classList?.contains('guide-carousel'))syncGuideScroll(e.target);},true);
-document.addEventListener('keydown',e=>{
-  if(!e.target.classList?.contains('guide-carousel'))return;
-  if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){
-    e.preventDefault();moveGuide(e.key==='ArrowLeft'?-1:e.key==='ArrowRight'?1:e.key==='Home'?-state.guideIndex:100);
-  }
-});
 function dialogueGraphic(q){
   const person=(x,color,flip=false)=>`<g transform="translate(${x} 0)"><circle cy="119" r="20" fill="${color}"/><path d="M-30 184v-24c0-27 60-27 60 0v24" fill="${color}"/><circle cx="${flip?-6:6}" cy="117" r="2.5" fill="#fff"/></g>`;
   const bubble=(x,symbol)=>`<g transform="translate(${x} 0)"><path d="M-37 28h74a12 12 0 0 1 12 12v26a12 12 0 0 1-12 12H9L-5 94l2-16h-34a12 12 0 0 1-12-12V40a12 12 0 0 1 12-12" fill="#fff" stroke="#a6b8a0" stroke-width="2"/><text y="62" text-anchor="middle" font-size="29" fill="#425b36">${symbol}</text></g>`;
@@ -164,22 +167,30 @@ const DIALOGUE_CATEGORIES=[
   {id:'replies',label:'Replies',description:'Responding, showing surprise and correcting a misunderstanding.'}
 ];
 function dialogueItems(category=null){return DIALOGUES.filter(d=>!category||vocabularySection(wordBy(d.word))===category).map(d=>({...d,kana:wordBy(d.word).kana}));}
-function openDialogueCategory(category){if(!DIALOGUE_CATEGORIES.some(c=>c.id===category))return;rememberPage();state.dialogueCategory=category;state.guideIndex=0;navigate('dialogue-content',false);}
+function openDialogueCategory(category){if(!DIALOGUE_CATEGORIES.some(c=>c.id===category))return;rememberPage();state.dialogueCategory=category;navigate('dialogue-content',false);}
 
 function kanaUnits(text){const units=[];for(const c of [...text]){if(/[ゃゅょぁぃぅぇぉゎ]/u.test(c)&&units.length)units[units.length-1]+=c;else units.push(c);}return units;}
 function activityNav(){if(state.view==='handwriting-menu'||state.view==='kanji-writing')return 'handwriting-menu';if(state.view==='dialogue-content'||state.view==='demonstratives-content')return 'dialogue';if(state.view==='write'||state.view==='write-menu')return 'write-menu';if(['vocabulary-menu','vocabulary-rebuild'].includes(state.view))return 'vocabulary-menu';if(state.view==='activity')return state.activity?.kind.startsWith('dialogue')||state.activity?.kind==='demonstratives'?'dialogue':'dialogue';return state.view;}
 function activityCard(title,copy,label,attr,tone='',action='',symbol=''){return `<button class="mode-card ${tone}" ${attr}><span class="activity-icon">${icon(symbol||'bank')}</span><span class="card-copy"><span class="eyebrow muted">${label}</span><h2>${title}</h2><p>${copy}</p></span><span class="card-arrow" aria-hidden="true">${icon('arrow')}</span></button>`;}
 function demonstrativesContent(){
-  const cards=demonstrativeItems().map(q=>`<article class="paper guide-slide" data-dialogue-guide="${q.id}"><h2 class="guide-pair jp" lang="ja">${esc(q.kana)}</h2>${demonstrativeGraphic(q,true)}<p class="guide-meaning">${esc(q.meaning)}</p><p class="muted">${esc(q.why)}</p></article>`);
-  return header('This and that.','Look at where the book is, then practise matching the words.')+`<div class="study-wrap demonstratives-content">${guideCarousel(cards,'Visual guide · this and that')}<div class="dialogue-guide-actions"><button class="button primary" data-open-demonstratives="practice">Start matching ${icon('arrow')}</button></div></div>`;
+  const cards=demonstrativeItems().map(q=>`<article class="paper guide-card" data-dialogue-guide="${q.id}"><h2 class="guide-pair jp" lang="ja">${esc(q.kana)}</h2>${demonstrativeGraphic(q,true)}<p class="guide-meaning">${esc(q.meaning)}</p><p class="jp" lang="ja">${esc(q.sentence.replace('{word}',q.kana))}</p><p class="muted">${esc(q.why)}</p></article>`);
+  return dialogueSelector('wh-words')+`<div class="study-wrap dialogue-content demonstratives-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-demonstratives="practice">Choose your answer ${icon('arrow')}</button></div>${guideCards(cards,'WH-words guide')}</div>`;
 }
-function dialogueMenu(){return header('Practise the conversation.','Choose a category, read the guide, then practise the dialogue.')+`<section class="mode-grid two-modes">${DIALOGUE_CATEGORIES.map((category,i)=>activityCard(category.label,category.description,`${dialogueItems(category.id).length} SCENES · QUIZ EXPRESSIONS`,`data-dialogue-category="${category.id}"`,['','mode-yellow','mode-blue'][i],'View guide',category.id)).join('')}${activityCard('This and that','Use illustrated scenes to locate the book relative to the speaker and listener. Then complete the blank.','7 WORDS · VISUAL PRACTICE','data-open-demonstratives="guide"','mode-blue','View guide','demonstratives')}</section>`;}
+function dialogueSelector(selected){
+  const categories=[...DIALOGUE_CATEGORIES,{id:'wh-words',label:'WH-words'}];
+  return `<div class="study-wrap dialogue-selector"><select class="filter dialogue-category-select" data-dialogue-select aria-label="Dialogue category">${categories.map(category=>`<option value="${category.id}" ${category.id===selected?'selected':''}>${category.label}</option>`).join('')}</select></div>`;
+}
+function selectDialogueCategory(category){
+  if(category==='wh-words'){rememberPage();state.dialogueCategory=category;navigate('demonstratives-content',false);}
+  else openDialogueCategory(category);
+}
+function dialogueMenu(){return state.dialogueCategory==='wh-words'?demonstrativesContent():dialogueContent();}
 function dialogueContent(){
   const category=DIALOGUE_CATEGORIES.find(c=>c.id===state.dialogueCategory);
-  if(!category)return dialogueMenu();
+  if(!category){state.dialogueCategory=DIALOGUE_CATEGORIES[0].id;return dialogueContent();}
   const items=dialogueItems(category.id);
-  const cards=items.map(q=>{const word=wordBy(q.word);return `<article class="paper guide-slide dialogue-guide-entry" data-dialogue-guide="${q.id}">${dialogueGraphic(q)}${dialoguePrompt(q)}<span class="dialogue-role">You say</span><h3 class="jp" lang="ja">${esc(q.kana)}</h3><p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p><p class="muted">${esc(q.why)}</p></article>`;});
-  return header(category.label,'Read the expressions and when to use them. Then choose how to practise.')+`<div class="study-wrap dialogue-content">${guideCarousel(cards,'Expression guide')}<div class="dialogue-guide-actions"><button class="button primary" data-open-dialogue="dialogue-choice">Choose your answer ${icon('arrow')}</button><button class="button soft" data-open-dialogue="dialogue-tiles">Build with hiragana ${icon('arrow')}</button></div></div>`;
+  const cards=items.map(q=>{const word=wordBy(q.word);return `<article class="paper guide-card dialogue-guide-entry" data-dialogue-guide="${q.id}">${dialogueGraphic(q)}${dialoguePrompt(q)}<span class="dialogue-role">You say</span><h3 class="jp" lang="ja">${esc(q.kana)}</h3><p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p><p class="muted">${esc(q.why)}</p></article>`;});
+  return dialogueSelector(category.id)+`<div class="study-wrap dialogue-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-dialogue="dialogue-choice">Choose your answer ${icon('arrow')}</button><button class="button soft" data-open-dialogue="dialogue-tiles">Build with hiragana ${icon('arrow')}</button></div>${guideCards(cards,'Expression guide')}</div>`;
 }
 
 function startActivity(kind,ids,category=null){if(!['demonstratives','dialogue-choice','dialogue-tiles'].includes(kind))return;if(state.view!=='activity')rememberPage();const dialogue=kind.startsWith('dialogue');const items=dialogue?dialogueItems(category):demonstrativeItems();state.activity={kind,category,items,ids:ids||shuffle(items.map(x=>x.id)),index:0,correct:0,missed:[],checked:false,selected:null,chosen:[],tileBank:[],choices:[],result:false};state.view='activity';prepareActivity();render();window.scrollTo({top:0,behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
@@ -198,25 +209,18 @@ function dialoguePrompt(q){
   return situation+incoming;
 }
 function activityPage(){const a=state.activity;if(!a)return dialogueMenu();const dialogue=a.kind.startsWith('dialogue');const menu=dialogue?(a.category?'dialogue-content':'dialogue'):a.kind==='demonstratives'?'demonstratives-content':'dialogue';if(a.index>=a.ids.length)return header('Round complete.','Give yourself another chance with the items you missed.')+`<div class="study-wrap paper result-center"><div class="result-score">${a.correct}<small> / ${a.ids.length}</small></div><p class="muted" style="margin-top:15px">${a.missed.length?`${a.missed.length} items are ready for another look.`:'Every answer correct in this round.'}</p><div class="card-actions">${a.missed.length?button('Practise missed items','activityMissed','coral'):''}${button('New round','activityRestart','primary')}</div></div>`;
-const q=activityCurrent(),tileMode=a.kind==='dialogue-tiles',title=dialogue?'What would you say?':'Choose the right word.';
-return header(title,dialogue?(tileMode?'Use hiragana tiles to spell what you would say.':'Choose what you would say in Japanese.'):a.kind==='demonstratives'?'Look at the scene and complete the blank.':q.clue)+`<section class="study-wrap"><div class="row between" style="margin-bottom:17px"><span class="pill">${a.index+1} / ${a.ids.length} · ${a.correct} correct</span></div><div class="progress-bar"><div class="progress-fill" style="width:${100*a.index/a.ids.length}%"></div></div><section class="paper"><span class="eyebrow muted">QUIZ-PAGE VOCABULARY</span>${dialogue?dialogueGraphic(q)+dialoguePrompt(q):a.kind==='demonstratives'?demonstrativeQuestion(q):`<h2 class="meaning-prompt">${esc(q.meaning)}</h2>`}${tileMode?activityTiles(q):activityChoices()}${a.checked?`<div class="feedback ${a.result?'':'bad'}" role="status"><strong>${a.result?'Correct!':'The correct answer is:'}</strong><div class="jp" lang="ja">${esc(q.kana)}</div><p>${esc(q.why||q.clue)}</p>${tileMode?`<p class="small jp">${kanaUnits(q.kana).map(esc).join(' · ')}</p>`:''}</div><div class="card-actions">${button('Next '+icon('arrow'),'activityNext','primary')}</div>`:''}</section></section>`;}
+const q=activityCurrent(),tileMode=a.kind==='dialogue-tiles';
+return `<section class="study-wrap"><div class="row between" style="margin-bottom:17px"><span class="pill">${a.index+1} / ${a.ids.length} · ${a.correct} correct</span></div><div class="progress-bar"><div class="progress-fill" style="width:${100*a.index/a.ids.length}%"></div></div><section class="paper"><span class="eyebrow muted">QUIZ-PAGE VOCABULARY</span>${dialogue?dialogueGraphic(q)+dialoguePrompt(q):a.kind==='demonstratives'?demonstrativeQuestion(q):`<h2 class="meaning-prompt">${esc(q.meaning)}</h2>`}${tileMode?activityTiles(q):activityChoices()}${a.checked?`<div class="feedback ${a.result?'':'bad'}" role="status"><strong>${a.result?'Correct!':'The correct answer is:'}</strong><div class="jp" lang="ja">${esc(q.kana)}</div><p>${esc(q.why||q.clue)}</p>${tileMode?`<p class="small jp">${kanaUnits(q.kana).map(esc).join(' · ')}</p>`:''}</div><div class="card-actions">${button('Next '+icon('arrow'),'activityNext','primary')}</div>`:''}</section></section>`;}
 function activityChoices(){const a=state.activity;return `<div class="options activity-options">${a.choices.map((q,i)=>`<button class="option jp ${a.checked&&q.id===activityCurrent().id?'correct':a.checked&&q.id===a.selected?'wrong':''}" data-activity-choice="${q.id}" ${a.checked?'disabled':''}><span class="number">${i+1}</span>${esc(q.kana)}</button>`).join('')}</div>`;}
 function activityTiles(q){const a=state.activity,limit=kanaUnits(q.kana).length;return `<p class="small muted" style="margin-top:22px">Tap the tiles in order. Tap a chosen tile to put it back.</p><div class="token-area ${a.chosen.length?'filled':''}" aria-label="Your hiragana answer">${a.chosen.length?a.chosen.map((id,i)=>`<button class="tile jp" data-activity-return="${i}" ${a.checked?'disabled':''}>${esc(a.tileBank[id])}</button>`).join(''):'<span class="empty-hint">Put your answer here.</span>'}</div><div class="token-bank activity-tile-bank" aria-label="Hiragana bank">${a.tileBank.map((unit,i)=>`<button class="tile jp" data-activity-tile="${i}" ${a.checked||a.chosen.includes(i)?'disabled':''}>${esc(unit)}</button>`).join('')}</div><div class="small muted">${a.chosen.length} / ${limit} units</div>${a.checked?'':`<div class="card-actions">${button('Clear','activityClear','ghost')}${button('Undo','activityUndo','ghost',a.chosen.length?'':'disabled')}${button('Check answer','activityCheck','primary',a.chosen.length===limit?'':'disabled')}</div>`}`;}
 function activityAction(action){const a=state.activity;if(!a)return;switch(action){case'activityNext':a.index++;prepareActivity();render();break;case'activityRestart':startActivity(a.kind,undefined,a.category);break;case'activityMissed':startActivity(a.kind,shuffle(a.missed),a.category);break;case'activityClear':if(!a.checked)a.chosen=[];render();break;case'activityUndo':if(!a.checked)a.chosen.pop();render();break;case'activityCheck':checkActivity();break;}}
-function activityClick(target){const d=target.dataset;if(d.carouselStep){moveGuide(Number(d.carouselStep));return true;}if(d.openDemonstratives){if(d.openDemonstratives==='guide'){state.guideIndex=0;navigate('demonstratives-content');}else if(d.openDemonstratives==='practice')startActivity('demonstratives');return true;}if(d.dialogueCategory){openDialogueCategory(d.dialogueCategory);return true;}if(d.openDialogue){startActivity(d.openDialogue,undefined,state.view==='dialogue-content'?state.dialogueCategory:null);return true;}if(d.activityChoice){checkActivity(d.activityChoice);return true;}if(d.activityTile!==undefined){const a=state.activity;if(!a||a.checked)return true;const i=Number(d.activityTile),limit=kanaUnits(activityCurrent().kana).length;if(Number.isInteger(i)&&i>=0&&i<a.tileBank.length&&!a.chosen.includes(i)&&a.chosen.length<limit)a.chosen.push(i);render();return true;}if(d.activityReturn!==undefined){const a=state.activity;if(a&&!a.checked)a.chosen.splice(Number(d.activityReturn),1);render();return true;}if(d.action?.startsWith('activity')){activityAction(d.action);return true;}return false;}
+function activityClick(target){const d=target.dataset;if(d.openDemonstratives){if(d.openDemonstratives==='guide'){selectDialogueCategory('wh-words');}else if(d.openDemonstratives==='practice')startActivity('demonstratives');return true;}if(d.dialogueCategory){openDialogueCategory(d.dialogueCategory);return true;}if(d.openDialogue){startActivity(d.openDialogue,undefined,['dialogue','dialogue-content'].includes(state.view)?state.dialogueCategory:null);return true;}if(d.activityChoice){checkActivity(d.activityChoice);return true;}if(d.activityTile!==undefined){const a=state.activity;if(!a||a.checked)return true;const i=Number(d.activityTile),limit=kanaUnits(activityCurrent().kana).length;if(Number.isInteger(i)&&i>=0&&i<a.tileBank.length&&!a.chosen.includes(i)&&a.chosen.length<limit)a.chosen.push(i);render();return true;}if(d.activityReturn!==undefined){const a=state.activity;if(a&&!a.checked)a.chosen.splice(Number(d.activityReturn),1);render();return true;}if(d.action?.startsWith('activity')){activityAction(d.action);return true;}return false;}
 
-function demonstrativeLocation(q){return {'2-01':'speaker','2-04':'speaker','2-02':'listener','2-05':'listener','2-03':'far','2-06':'far','2-c1':'attention'}[q.word];}
 function demonstrativeGraphic(q,compact=false){
-  const location=demonstrativeLocation(q),attention=location==='attention';
-  const descriptions={speaker:'The book is near the speaker on the left.',listener:'The book is near the listener in the middle.',far:'The book is on the right, far from both people.',attention:'The speaker is getting the listener’s attention before speaking.'};
-  const x={speaker:90,listener:310,far:520}[location];
-  const person=(cx,color,flip=false)=>`<g transform="translate(${cx} 0)"><circle cx="0" cy="132" r="17" fill="${color}"/><path d="M-28 181v-15c0-20 56-20 56 0v15" fill="${color}"/><path d="M-14 182v18m28-18v18" stroke="${color}" stroke-width="8" stroke-linecap="round"/><circle cx="${flip?-5:5}" cy="130" r="2" fill="#fff"/></g>`;
-  const book=attention?'':`<g class="scene-book" transform="translate(${x} 68)"><ellipse cy="32" rx="32" ry="7" fill="#24393615"/><rect x="-24" y="-26" width="49" height="54" rx="5" fill="#f5d577" stroke="#725a2d" stroke-width="2"/><path d="M-17-25v52" stroke="#b29043" stroke-width="3"/><path d="M-9-10h25m-25 9h19" stroke="#8c7039" stroke-width="2"/><text x="3" y="19" text-anchor="middle" fill="#655028" font-size="10">BOOK</text></g>`;
-  const bubble=attention?'<g><path d="M62 38h113a13 13 0 0 1 13 13v29a13 13 0 0 1-13 13h-44l-17 18 3-18H62a13 13 0 0 1-13-13V51a13 13 0 0 1 13-13" fill="#fff" stroke="#e77255" stroke-width="2"/><text x="118" y="75" text-anchor="middle" font-size="29" fill="#a7442d">…</text><path d="m266 108 10-12m4 23 15-2" stroke="#e77255" stroke-width="3" stroke-linecap="round"/></g>':'';
-  return `<figure class="demonstrative-figure ${compact?'compact-scene':''}"><svg viewBox="0 0 620 240" role="img" aria-labelledby="scene-${q.id}${compact?'-guide':''}"><title id="scene-${q.id}${compact?'-guide':''}">${esc(descriptions[location])} The speaker is labelled You, and the other person Listener.</title><rect x="10" y="16" width="185" height="205" rx="20" fill="${location==='speaker'||attention?'#fbe9df':'#f0f2eb'}" stroke="${location==='speaker'||attention?'#e9ac93':'#e3e5dc'}"/><rect x="220" y="16" width="185" height="205" rx="20" fill="${location==='listener'?'#e4eef7':'#f0f2eb'}" stroke="${location==='listener'?'#9bb9ce':'#e3e5dc'}"/><rect x="430" y="16" width="180" height="205" rx="20" fill="${location==='far'?'#fff3cf':'#f6f6f0'}" stroke="${location==='far'?'#cfb56e':'#e3e5dc'}" stroke-dasharray="${location==='far'?'0':'5 5'}"/><path d="M28 200h564" stroke="#cdd5c5" stroke-width="2"/>${person(105,'#d86c51')}${person(313,'#557a88',true)}${book}${bubble}<text x="105" y="232" text-anchor="middle" fill="#8e3f2b" font-size="17" font-weight="600">YOU · SPEAKER</text><text x="313" y="232" text-anchor="middle" fill="#3f6676" font-size="17" font-weight="600">LISTENER</text><text x="520" y="190" text-anchor="middle" fill="#768069" font-size="15">FAR FROM BOTH</text></svg><figcaption>${esc(descriptions[location])}</figcaption></figure>`;
+  const age=q.word.startsWith('1-19'),object=q.word==='2-36';
+  const figure=object?'<rect x="225" y="93" width="50" height="58" rx="5" fill="#f5d577" stroke="#8c7039" stroke-width="2"/><path d="M234 94v56m8-40h25m-25 12h20" stroke="#8c7039" stroke-width="2"/>':'<circle cx="250" cy="106" r="21" fill="#d8775b"/><path d="M214 182v-31c0-32 72-32 72 0v31" fill="#557a88"/>';
+  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="wh-scene-${q.id}${compact?'-guide':''}"><title id="wh-scene-${q.id}${compact?'-guide':''}">${esc(q.clue)}</title><rect x="5" y="5" width="490" height="210" rx="24" fill="#edf2e6"/>${figure}<rect x="315" y="35" width="110" height="66" rx="16" fill="#fff" stroke="#a6b8a0" stroke-width="2"/><text x="370" y="79" text-anchor="middle" font-size="30" fill="#425b36">${age?'18?':'?'}</text></svg><figcaption>${esc(q.clue)}</figcaption></figure>`;
 }
 function demonstrativeQuestion(q){
-  const attention=demonstrativeLocation(q)==='attention',beforeNoun=['2-04','2-05','2-06'].includes(q.word);
-  const prompt=attention?'Get the listener’s attention before speaking.':beforeNoun?'Choose the word immediately before the noun.':'Choose a word that stands alone.';
-  return `${demonstrativeGraphic(q)}<div class="scene-sentence"><span class="eyebrow muted">${prompt}</span><div class="jp" lang="ja"><span class="scene-blank">_____</span>${attention?' …':beforeNoun?' 本（ほん）':' は 本です。'}</div></div>`;
+  return `${demonstrativeGraphic(q)}<div class="scene-sentence"><span class="eyebrow muted">${esc(q.clue)}</span><div class="jp" lang="ja">${esc(q.sentence).replace('{word}','<span class="scene-blank">_____</span>')}</div></div>`;
 }

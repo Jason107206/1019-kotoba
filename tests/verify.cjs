@@ -114,7 +114,7 @@ ev('resetFilters()');
 
 
 // Matching categories and dialogue modes stay separate from the quiz bank.
-assert.equal(ev('demonstrativeItems().length'),7);
+assert.equal(ev('demonstrativeItems().length'),5);
 assert.equal(ev('dialogueItems("quiz").some(x=>x.added)'),false);
 assert.equal(ev('dialogueItems().length'),14);
 assert.equal(ev('WORDS.some(w=>["なんじ","いくら","はじめましょう"].includes(w.kana))'),false);
@@ -158,7 +158,7 @@ ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAns
 ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
 assert.equal(ev('state.activity.result'),true);
 ev('navigate("vocabulary-menu")');assert.ok(!elements.app.innerHTML.includes('Question words'));
-ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('data-dialogue-category="introductions"'));
+ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('data-dialogue-select'));
 ev('startMock()');assert.equal(ev('mock.a.every(q=>!!wordBy(q.id))'),true);
 ev('mock.done=true;resetFilters()');
 
@@ -166,11 +166,10 @@ ev('mock.done=true;resetFilters()');
 // Every activity answer must now come from the syllabus bank.
 assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].every(q=>WORDS.some(w=>w.kana===q.kana))'),true);
 assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].some(q=>["なんじ","いくら","はじめましょう"].includes(q.kana))'),false);
-for(const [id,location] of [['2-01','speaker'],['2-04','speaker'],['2-02','listener'],['2-05','listener'],['2-03','far'],['2-06','far'],['2-c1','attention']]){
-  ev(`{const q=demonstrativeItems().find(x=>x.word==='${id}');if(demonstrativeLocation(q)!=='${location}')throw Error('Wrong graphic location');}`);
+assert.equal(ev('demonstrativeItems().every(q=>vocabularySection(wordBy(q.word))==="questions"&&q.word!=="1-18")'),true);
+for(const id of ['1-17a','1-17b','1-19a','1-19b','2-36']){
   const html=ev(`demonstrativeQuestion(demonstrativeItems().find(x=>x.word==='${id}'))`);
   assert.ok(html.includes('<svg'));assert.ok(html.includes('role="img"'));assert.ok(!html.includes('undefined'));
-  if(location==='attention')assert.ok(!html.includes('scene-book'));else assert.ok(html.includes('scene-book'));
   assert.ok(html.includes('_____'));
 }
 ev('navigate("dialogue")');assert.ok(!elements.app.innerHTML.includes('data-dialogue-scope'));
@@ -192,7 +191,7 @@ ev('startActivity("dialogue-tiles",["likewise"]);state.activity.chosen=[0];run("
 assert.equal(ev('state.language'),'zh-Hant');
 assert.equal(ev('state.activity.chosen.length'),1);
 assert.equal(JSON.parse(Object.values(storage)[0]).language,'zh-Hant');
-assert.ok(elements.app.innerHTML.includes('你會怎樣說？'));
+assert.ok(!elements.app.innerHTML.includes('你會怎樣說？'));
 assert.ok(elements.app.innerHTML.includes('<p class="dialogue-scene jp" lang="ja">よろしくおねがいします</p>'));
 assert.ok(!/LINE TO SAY|The pleasure is mine/.test(elements.app.innerHTML));
 assert.equal(ev('DIALOGUES.every(d=>(!d.scene||ZH_HANT[d.scene])&&ZH_HANT[d.why])'),true);
@@ -215,13 +214,13 @@ assert.ok(elements.app.innerHTML.includes('Check both answers'));
 assert.equal(JSON.parse(Object.values(storage)[0]).language,'en');
 console.log('PASS: Traditional Chinese prompts, feedback, safe markup translation and persistent language switching without losing answers.');
 
-// The language switch belongs to the logo header, above navigation.
+// The language switch follows the breadcrumb navigation.
 for(const lang of ['en','zh-Hant']){
  ev(`state.language='${lang}';navigate('home')`);
  const html=elements.app.innerHTML;
  assert.equal((html.match(/data-action="toggleLanguage"/g)||[]).length,1);
  assert.ok(html.indexOf('class="brand-header"')<html.indexOf('class="language-switch"'));
- assert.ok(html.indexOf('class="language-switch"')<html.indexOf('<nav'));
+ assert.ok(html.indexOf('class="language-switch"')>html.indexOf('</nav>'));
  assert.ok(!/data-view="hiragana"|kana-home-banner[^]*A NEW WAY/.test(html));
  assert.ok(!html.includes('Hiragana groups')&&!html.includes('按平假名分類'));
 }
@@ -241,7 +240,7 @@ for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dia
   assert.ok(elements.app.innerHTML.includes(language==='en'?'You give someone a pen.':'你把一枝筆遞給對方。'));
   assert.ok(!elements.app.innerHTML.includes('dialogue-incoming'));
   assert.ok(!elements.app.innerHTML.includes('Use どうぞ when'));
-  if(kind==='dialogue-tiles')assert.ok(elements.app.innerHTML.includes(language==='en'?'Use hiragana tiles to spell what you would say.':'用平假名字卡，拼出這個情況下你會說的話。'));
+  assert.ok(!elements.app.innerHTML.includes('class="page-head"'));
   ev('state.activity.checked=true;render()');
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Use どうぞ when you give someone something.':'把東西遞給對方時，可以說 どうぞ'));
 }
@@ -276,23 +275,23 @@ console.log('PASS: unified Overview launcher, consistent mode order, combined wo
 for(const language of ['en','zh-Hant']){
  ev(`state.language='${language}';navigate('dialogue')`);
  assert.ok(!elements.app.innerHTML.includes('demonstrative-guide'));
- assert.ok(!elements.app.innerHTML.includes('guide-carousel'));
- ev('activityClick({dataset:{openDemonstratives:"guide"}})');
+ assert.ok(elements.app.innerHTML.includes('guide-cards'));
+ handlers.change({target:{value:'wh-words',hasAttribute:name=>name==='data-dialogue-select'}});
  assert.equal(ev('state.view'),'demonstratives-content');
- assert.ok(elements.app.innerHTML.includes('guide-carousel'));
- assert.equal((elements.app.innerHTML.match(/class="guide-pair jp"/g)||[]).length,7);
+ assert.ok(elements.app.innerHTML.includes('guide-cards'));
+ assert.equal((elements.app.innerHTML.match(/class="guide-pair jp"/g)||[]).length,5);
  assert.ok(elements.app.innerHTML.includes('data-open-demonstratives="practice"'));
- assert.ok(elements.app.innerHTML.includes(language==='en'?'Visual guide · this and that':'圖解指示詞'));
+ assert.ok(elements.app.innerHTML.includes(language==='en'?'WH-words guide':'疑問詞指南'));
  ev('activityClick({dataset:{openDemonstratives:"practice"}})');
  assert.equal(ev('state.view'),'activity');
  assert.equal(ev('state.activity.kind'),'demonstratives');
- assert.equal(ev('state.activity.ids.length'),7);
+ assert.equal(ev('state.activity.ids.length'),5);
  assert.ok(elements.app.innerHTML.includes('data-crumb-view="demonstratives-content"'));
  ev('navigate("demonstratives-content")');
- assert.ok(elements.app.innerHTML.includes('guide-carousel'));
+ assert.ok(elements.app.innerHTML.includes('guide-cards'));
  assert.equal(ev('activityNav()'),'dialogue');
 }
-console.log('PASS: Dialogue menu → illustrated content → seven This/That questions, with guide return path.');
+console.log('PASS: Dialogue menu → illustrated content → five WH-word questions, with guide return path.');
 
 // Mode navigation is available through Overview cards only.
 for(const view of ['dialogue','vocabulary-menu','write-menu','handwriting-menu','vocabulary-menu','bank','mock']){
@@ -409,6 +408,20 @@ assert.ok(elements.app.innerHTML.includes('data-word-id="1-09"'));
 ev('pageHistory.length=0;previousPage("vocabulary-menu")');assert.equal(ev('state.view'),'vocabulary-menu');
 console.log('PASS: Back returns to the preceding subpage, including chapter/category menus, activity guides and filtered word references.');
 
+// Opening Dialogue shows the initial guide immediately and starts a scoped game.
+for(const kind of ['dialogue-choice','dialogue-tiles']){
+  ev('state.dialogueCategory="introductions";pageHistory.length=0;navigate("dialogue")');
+  assert.ok(elements.app.innerHTML.includes('value="introductions" selected'));
+  assert.equal((elements.app.innerHTML.match(/data-dialogue-guide=/g)||[]).length,5);
+  assert.ok(!elements.app.innerHTML.includes('class="mode-card'));
+  assert.ok(!elements.app.innerHTML.includes('dialogue-content-description'));
+  clickData({openDialogue:kind});
+  assert.equal(ev('state.activity.category'),'introductions');
+  assert.equal(ev('state.activity.ids.length'),5);
+  clickData({action:'back'});
+  assert.equal(ev('state.view'),'dialogue');
+}
+
 // Dialogue categories lead to a guide, then either game; retries retain that category.
 const dialogueCategoryCounts={introductions:5,courtesy:5,replies:4};
 assert.equal(ev('new Set(DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id).map(q=>q.id))).size'),14);
@@ -416,9 +429,10 @@ assert.equal(ev('DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id)).length'),14
 assert.equal(ev('DIALOGUE_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
 for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entries(dialogueCategoryCounts)){
   ev(`state.language='${language}';pageHistory.length=0;navigate('dialogue')`);
-  assert.equal((elements.app.innerHTML.match(/data-dialogue-category=/g)||[]).length,3);
-  assert.ok(!elements.app.innerHTML.includes('data-open-dialogue='));
-  clickData({dialogueCategory:category});
+  assert.ok(elements.app.innerHTML.includes('data-dialogue-select'));
+  assert.ok(!elements.app.innerHTML.includes('class="page-head"'));
+  assert.equal((elements.app.innerHTML.match(/<option value="(?:introductions|courtesy|replies|wh-words)"/g)||[]).length,4);
+  handlers.change({target:{value:category,hasAttribute:name=>name==='data-dialogue-select'}});
   assert.equal(ev('state.view'),'dialogue-content');
   assert.equal(ev('activityNav()'),'dialogue');
   assert.equal((elements.app.innerHTML.match(/data-dialogue-guide=/g)||[]).length,count);
@@ -455,41 +469,33 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
 }
 console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all 14 scenes, category-only choices, scoped retries and guide return paths.');
 
-// Illustrated guide cards stay in one accessible carousel for every category.
+// Every category exposes all illustrated expression cards in one vertical list.
 for(const language of ['en','zh-Hant'])for(const category of ['introductions','courtesy','replies','demonstratives']){
   ev(`state.language='${language}';pageHistory.length=0;navigate('dialogue')`);
   if(category==='demonstratives')clickData({openDemonstratives:'guide'});
   else clickData({dialogueCategory:category});
-  const count=category==='demonstratives'?7:dialogueCategoryCounts[category];
-  assert.equal((elements.app.innerHTML.match(/aria-roledescription="slide"/g)||[]).length,count);
+  const count=category==='demonstratives'?5:dialogueCategoryCounts[category];
+  assert.equal((elements.app.innerHTML.match(/<article class="paper guide-card/g)||[]).length,count);
   assert.equal((elements.app.innerHTML.match(/<svg[^>]+role="img"/g)||[]).length,count);
-  assert.ok(elements.app.innerHTML.includes('aria-roledescription="carousel"'));
-  assert.ok(elements.app.innerHTML.includes('data-carousel-step="-1"'));
-  assert.ok(elements.app.innerHTML.includes(language==='en'?'Next expression':'下一個說法'));
+  assert.ok(elements.app.innerHTML.includes('class="guide-cards"'));
+  assert.ok(!elements.app.innerHTML.includes('carousel'));
   assert.ok(!elements.app.innerHTML.includes('undefined'));
-  ev('state.guideIndex=2;run("toggleLanguage")');assert.equal(ev('state.guideIndex'),2);
+  ev('run("toggleLanguage")');
+  assert.equal((elements.app.innerHTML.match(/<article class="paper guide-card/g)||[]).length,count);
   if(category==='demonstratives')clickData({openDemonstratives:'practice'});
   else clickData({openDialogue:'dialogue-choice'});
   clickData({action:'back'});
-  assert.equal(ev('state.guideIndex'),2);
-  assert.ok(elements.app.innerHTML.includes('3 / '+count));
+  assert.equal((elements.app.innerHTML.match(/<article class="paper guide-card/g)||[]).length,count);
 }
-// Exercise native scrolling, controls and boundaries without a browser.
-const carouselQuerySelector=ctx.document.querySelector;
-const carouselTrack={children:[{offsetLeft:0},{offsetLeft:500},{offsetLeft:1000}],scrollLeft:0,scrollTo({left}){this.scrollLeft=left;}};
-const carouselPrevious={disabled:false},carouselNext={disabled:false},carouselPosition={textContent:''};
-ctx.document.querySelector=selector=>({'.guide-carousel':carouselTrack,'.guide-position':carouselPosition,'[data-carousel-step="-1"]':carouselPrevious,'[data-carousel-step="1"]':carouselNext}[selector]||carouselQuerySelector(selector));
-ev('state.guideIndex=0;moveGuide(-1)');assert.equal(carouselTrack.scrollLeft,0);
-clickData({carouselStep:'1'});assert.equal(carouselTrack.scrollLeft,500);
-ev('syncGuideScroll(document.querySelector(".guide-carousel"))');assert.equal(carouselPosition.textContent,'2 / 3');
-assert.equal(carouselPrevious.disabled,false);assert.equal(carouselNext.disabled,false);
-ev('moveGuide(100);syncGuideScroll(document.querySelector(".guide-carousel"))');
-assert.equal(carouselTrack.scrollLeft,1000);assert.equal(carouselNext.disabled,true);
-carouselTrack.scrollLeft=10;ev('syncGuideScroll(document.querySelector(".guide-carousel"))');
-assert.equal(ev('state.guideIndex'),0);assert.equal(carouselPrevious.disabled,true);
-ev('state.guideIndex=1;restoreGuideCarousel()');assert.equal(carouselTrack.scrollLeft,500);
-ctx.document.querySelector=carouselQuerySelector;
-console.log('PASS: Kanji Match removed; illustrated bilingual guide carousels, previous/next boundaries, scrolling and slide restoration after language switching and games.');
+// Language and Update controls follow the breadcrumbs in the page header.
+for(const view of ['home','dialogue','vocabulary-menu']){
+  ev(`navigate('${view}')`);
+  const html=elements.app.innerHTML,header=html.match(/<header class="topbar">([\s\S]*?)<\/header>/)[1];
+  assert.ok(header.indexOf('data-action="toggleLanguage"')>header.indexOf('</nav>'));
+  assert.ok(header.indexOf('pwa-update-slot')<header.indexOf('data-action="toggleLanguage"'));
+  assert.ok(!html.match(/<aside[\s\S]*?<\/aside>/)[0].includes('data-action="toggleLanguage"'));
+}
+console.log('PASS: bilingual vertical expression guides and breadcrumb language/update controls.');
 
 // Write accepts a blank C only for no-kanji words, without changing mock grading.
 assert.equal(ev('WORDS.every(w=>gradeWord(w,w.kana,"",true).score===(w.c==="X"?1:.5))'),true);
