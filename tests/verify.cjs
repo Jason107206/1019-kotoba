@@ -122,15 +122,13 @@ ev('resetFilters()');
 
 
 // Matching categories and dialogue modes stay separate from the quiz bank.
-assert.equal(ev('matchingItems("wh").length'),5);
-assert.equal(ev('matchingItems("demonstratives").length'),7);
-assert.equal(ev('matchingItems("wh").filter(x=>x.added).length'),0);
+assert.equal(ev('demonstrativeItems().length'),7);
 assert.equal(ev('dialogueItems("quiz").some(x=>x.added)'),false);
 assert.equal(ev('dialogueItems().length'),14);
 assert.equal(ev('WORDS.some(w=>["なんじ","いくら","はじめましょう"].includes(w.kana))'),false);
 assert.equal(ev('kanaUnits("きょうし").join(",")'),'きょ,う,し');
 assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
-for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
+for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles']){
   ev(`startActivity('${kind}')`);
   assert.ok(elements.app.innerHTML.includes('data-action="back"'));
   const count=ev('state.activity.ids.length');
@@ -150,7 +148,7 @@ for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
   assert.equal(ev('state.activity.correct'),count);
   ev('activityAction("activityNext")');assert.ok(elements.app.innerHTML.includes('Round complete.'));
 }
-ev('startActivity("wh");checkActivity(state.activity.choices.find(x=>x.id!==activityCurrent().id).id)');
+ev('startActivity("demonstratives");checkActivity(state.activity.choices.find(x=>x.id!==activityCurrent().id).id)');
 assert.equal(ev('state.activity.result'),false);
 assert.equal(ev('state.activity.missed.length'),1);
 const attemptsBefore=ev('Object.values(progress.activities).reduce((n,x)=>n+x.attempts,0)');
@@ -167,18 +165,18 @@ assert.equal(ev('activityAnswer()'),'ど');
 ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAnswer()'),'');
 ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
 assert.equal(ev('state.activity.result'),true);
-ev('navigate("matching")');assert.ok(elements.app.innerHTML.includes('Question words'));
+ev('navigate("matching")');assert.ok(!elements.app.innerHTML.includes('Question words'));
 ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('data-dialogue-category="introductions"'));
 ev('startMock()');assert.equal(ev('mock.a.every(q=>!!wordBy(q.id))'),true);
 ev('mock.done=true;resetFilters()');
 
 
 // Every activity answer must now come from the syllabus bank.
-assert.equal(ev('[...matchingItems("wh"),...matchingItems("demonstratives"),...dialogueItems()].every(q=>WORDS.some(w=>w.kana===q.kana))'),true);
-assert.equal(ev('[...matchingItems("wh"),...matchingItems("demonstratives"),...dialogueItems()].some(q=>["なんじ","いくら","はじめましょう"].includes(q.kana))'),false);
+assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].every(q=>WORDS.some(w=>w.kana===q.kana))'),true);
+assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].some(q=>["なんじ","いくら","はじめましょう"].includes(q.kana))'),false);
 for(const [id,location] of [['2-01','speaker'],['2-04','speaker'],['2-02','listener'],['2-05','listener'],['2-03','far'],['2-06','far'],['2-c1','attention']]){
-  ev(`{const q=matchingItems('demonstratives').find(x=>x.word==='${id}');if(demonstrativeLocation(q)!=='${location}')throw Error('Wrong graphic location');}`);
-  const html=ev(`demonstrativeQuestion(matchingItems('demonstratives').find(x=>x.word==='${id}'))`);
+  ev(`{const q=demonstrativeItems().find(x=>x.word==='${id}');if(demonstrativeLocation(q)!=='${location}')throw Error('Wrong graphic location');}`);
+  const html=ev(`demonstrativeQuestion(demonstrativeItems().find(x=>x.word==='${id}'))`);
   assert.ok(html.includes('<svg'));assert.ok(html.includes('role="img"'));assert.ok(!html.includes('undefined'));
   if(location==='attention')assert.ok(!html.includes('scene-book'));else assert.ok(html.includes('scene-book'));
   assert.ok(html.includes('_____'));
@@ -208,7 +206,7 @@ assert.ok(!/LINE TO SAY|The pleasure is mine/.test(elements.app.innerHTML));
 assert.equal(ev('DIALOGUES.every(d=>(!d.scene||ZH_HANT[d.scene])&&ZH_HANT[d.why])'),true);
 assert.equal(ev('SENTENCES.every(s=>ZH_HANT[s.prompt])'),true);
 assert.equal(ev('PATTERNS.every(p=>ZH_HANT[p.title]&&ZH_HANT[p.tip])'),true);
-assert.equal(ev('matchingItems("wh").concat(matchingItems("demonstratives")).every(q=>ZH_HANT[q.why])'),true);
+assert.equal(ev('demonstrativeItems().every(q=>ZH_HANT[q.why])'),true);
 assert.equal(ev('localizeMarkup(`<input value="English &amp; これ" data-answer="b" placeholder="Type hiragana"><span lang="ja">よろしくおねがいします</span>`)'),'<input value="English &amp; これ" data-answer="b" placeholder="輸入平假名"><span lang="ja">よろしくおねがいします</span>');
 for(const view of ['home','write-menu','write','matching','dialogue','sentences','bank','mock']){
   ev(`mock=null;resetFilters();navigate('${view}')`);
@@ -281,63 +279,38 @@ for(const language of ['en','zh-Hant']){
 }
 console.log('PASS: unified Overview launcher, consistent mode order, combined word progress, and no duplicate entry points.');
 
-// This/That has a full guide page before matching; the other modes open as before.
+// Dialogue opens the This/That guide before practice.
 for(const language of ['en','zh-Hant']){
- ev(`state.language='${language}';navigate('matching')`);
+ ev(`state.language='${language}';navigate('dialogue')`);
  assert.ok(!elements.app.innerHTML.includes('demonstrative-guide'));
  assert.ok(!elements.app.innerHTML.includes('visual-guide-grid'));
- ev('activityClick({dataset:{openMatch:"demonstratives"}})');
+ ev('activityClick({dataset:{openDemonstratives:"guide"}})');
  assert.equal(ev('state.view'),'demonstratives-content');
  assert.ok(elements.app.innerHTML.includes('visual-guide-grid'));
  assert.equal((elements.app.innerHTML.match(/class="guide-pair jp"/g)||[]).length,4);
- assert.ok(elements.app.innerHTML.includes('data-open-match="start-demonstratives"'));
+ assert.ok(elements.app.innerHTML.includes('data-open-demonstratives="practice"'));
  assert.ok(elements.app.innerHTML.includes(language==='en'?'Look at the speaker, listener and book.':'看圖中你、對方和書的位置。'));
- ev('activityClick({dataset:{openMatch:"start-demonstratives"}})');
+ ev('activityClick({dataset:{openDemonstratives:"practice"}})');
  assert.equal(ev('state.view'),'activity');
  assert.equal(ev('state.activity.kind'),'demonstratives');
  assert.equal(ev('state.activity.ids.length'),7);
  assert.ok(elements.app.innerHTML.includes('data-back-view="demonstratives-content"'));
  ev('navigate("demonstratives-content")');
  assert.ok(elements.app.innerHTML.includes('visual-guide-grid'));
- ev('navigate("matching");activityClick({dataset:{openMatch:"wh"}})');
- assert.equal(ev('state.view'),'question-words-content');
+ assert.equal(ev('activityNav()'),'dialogue');
 }
-console.log('PASS: Matching menu → illustrated content → seven This/That questions, with guide return path.');
-
-// Question Words uses the same menu → content → matching flow in both languages.
-for(const language of ['en','zh-Hant']){
- ev(`state.language='${language}';navigate('matching')`);
- assert.ok(!elements.app.innerHTML.includes('question-guide-grid'));
- ev('activityClick({dataset:{openMatch:"wh"}})');
- assert.equal(ev('state.view'),'question-words-content');
- assert.equal(ev('activityNav()'),'matching');
- assert.ok(elements.app.innerHTML.includes('question-guide-grid'));
- assert.ok(elements.app.innerHTML.includes(language==='en'?'Question word guide':'疑問詞小指南'));
- for(const kana of ['なんさい','おいくつ','だれ','どなた','なん'])assert.ok(elements.app.innerHTML.includes(`>${kana}</strong>`));
- assert.ok(!/なんじ|いくら/.test(elements.app.innerHTML));
- assert.ok(elements.app.innerHTML.includes('data-view="matching"'));
- ev('activityClick({dataset:{openMatch:"start-wh"}})');
- assert.equal(ev('state.view'),'activity');
- assert.equal(ev('state.activity.kind'),'wh');
- assert.equal(ev('state.activity.ids.length'),5);
- assert.ok(elements.app.innerHTML.includes('data-back-view="question-words-content"'));
- ev('state.activity.index=state.activity.ids.length;render()');
- assert.ok(elements.app.innerHTML.includes('data-back-view="question-words-content"'));
- ev('navigate("question-words-content")');
- assert.ok(elements.app.innerHTML.includes('question-guide-grid'));
-}
-console.log('PASS: Question Words menu → bilingual five-word guide → matching, with guide return path.');
+console.log('PASS: Dialogue menu → illustrated content → seven This/That questions, with guide return path.');
 
 // Re-rendered horizontal navigation retains its scroll offset across subpages.
 const querySelector=ctx.document.querySelector;
 const menuNav={scrollLeft:0},guideNav={scrollLeft:0},overviewNav={scrollLeft:0};
 ctx.document.querySelector=s=>{
   if(s==='.overview-nav')return elements.app.innerHTML.includes('class="shell home-view"')?overviewNav:null;
-  if(s==='.sidebar .nav')return elements.app.innerHTML.includes('question-words-content')?guideNav:menuNav;
+  if(s==='.sidebar .nav')return elements.app.innerHTML.includes('demonstratives-content')?guideNav:menuNav;
   return querySelector(s);
 };
 ev('navigate("matching")');menuNav.scrollLeft=245;
-ev('activityClick({dataset:{openMatch:"wh"}})');
+ev('activityClick({dataset:{openDemonstratives:"guide"}})');
 assert.equal(guideNav.scrollLeft,245);
 guideNav.scrollLeft=318;
 ev('navigate("matching")');
@@ -445,7 +418,7 @@ for(const mode of ['match','write','sentences']){
   }
   assert.ok(elements.app.innerHTML.includes('Round complete'));
 }
-for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
+for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles']){
   ev(`state.language='en';startActivity('${kind}');state.activity.ids=state.activity.ids.slice(0,2);prepareActivity();render()`);
   for(let index=0;index<2;index++){
     if(kind==='dialogue-tiles')ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));a.chosen.push(id);}checkActivity();}`);
@@ -474,14 +447,12 @@ for(const [view,prefix,mode] of [['write-menu','write','write'],['kanji-menu','k
     assert.equal(ev(`state.${prefix}Menu`),'main');
   }
 }
-// The original matching submenu is also retained after retry/restart.
-for(const kind of ['wh','demonstratives']){
-  ev(`pageHistory.length=0;navigate('matching');activityClick({dataset:{openMatch:'${kind}'}});activityClick({dataset:{openMatch:'start-${kind}'}})`);
-  ev('state.activity.missed=[state.activity.ids[0]];activityAction("activityMissed");activityAction("activityRestart");state.activity.index=state.activity.ids.length;render()');
-  clickData({action:'back'});
-  assert.equal(ev('state.view'),kind==='wh'?'question-words-content':'demonstratives-content');
-  clickData({action:'back'});assert.equal(ev('state.view'),'matching');
-}
+// This/That keeps its Dialogue guide after retries and round completion.
+ev(`pageHistory.length=0;navigate('dialogue');activityClick({dataset:{openDemonstratives:'guide'}});activityClick({dataset:{openDemonstratives:'practice'}})`);
+ev('state.activity.missed=[state.activity.ids[0]];activityAction("activityMissed");activityAction("activityRestart");state.activity.index=state.activity.ids.length;render()');
+assert.equal(ev('activityNav()'),'dialogue');
+clickData({action:'back'});assert.equal(ev('state.view'),'demonstratives-content');
+clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
 for(const kind of ['dialogue-choice','dialogue-tiles']){
   ev(`pageHistory.length=0;navigate('dialogue');activityClick({dataset:{openDialogue:'${kind}'}})`);
   clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
@@ -591,3 +562,22 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
   clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
 }
 console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all 14 scenes, category-only choices, scoped retries and guide return paths.');
+
+// Matching has only two word modes; This/That belongs to Dialogue in both languages.
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';navigate('matching')`);
+  assert.deepEqual([...elements.app.innerHTML.matchAll(/data-open-match="([^"]+)"/g)].map(m=>m[1]),['kanji','hiragana']);
+  assert.ok(!elements.app.innerHTML.includes('data-open-demonstratives'));
+  assert.equal(ev('typeof questionWordsContent'),'undefined');
+  ev('activityClick({dataset:{openMatch:"wh"}})');assert.equal(ev('state.view'),'matching');
+  ev('startActivity("wh")');assert.equal(ev('state.view'),'matching');
+  ev('navigate("dialogue")');
+  assert.ok(elements.app.innerHTML.includes('data-open-demonstratives="guide"'));
+  ev('activityClick({dataset:{openDemonstratives:"guide"}})');
+  assert.equal(ev('activityNav()'),'dialogue');
+  assert.ok(elements.app.innerHTML.includes('data-back-view="dialogue"'));
+  ev('activityClick({dataset:{openDemonstratives:"practice"}})');
+  assert.equal(ev('activityNav()'),'dialogue');
+  assert.equal(ev('state.activity.ids.length'),7);
+}
+console.log('PASS: Question Words removed, Matching has two modes, This/That guide and game highlight Dialogue.');
