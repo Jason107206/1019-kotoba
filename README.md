@@ -36,7 +36,7 @@ Every vocabulary form belongs to one of 12 categories by meaning and use: people
 
 ## Kanji display
 
-The word reference shows a kanji field only when the supplied form contains kanji. Kanji Match excludes kana-only entries and uses four kanji-bearing choices. Write and the mock retain the information sheet’s required X answers.
+The word reference shows a kanji field only when the supplied form contains kanji. Kanji Match excludes kana-only entries and uses up to four choices from the same word category, without adding unrelated distractors. Write and the mock retain the information sheet’s required X answers.
 
 The repository root also contains a relative entry page for branch-based GitHub Pages publishing. It opens `dist/`; the custom Actions workflow continues to publish the contents of `dist/` directly. Both publishing methods serve the same game.
 
@@ -44,12 +44,12 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 Matching opens three choices: Kanji Match, Question Words, and This/That. Kanji Match then offers all words, one chapter, or one category using the same selection component as Write. Its counts, prompts and selectable categories include only entries with taught kanji; categories without any are hidden. Restarts keep the selected set, and missed-item rounds keep only the missed prompts. Question Words has five words; This/That includes the six pointing words and あのう. All activities use the original quiz-page vocabulary.
 
-A correct answer in any matching mode advances after two seconds of feedback. Incorrect answers wait for Next. The last correct answer opens the round results. Manual advancement or leaving the page cancels the pending advance; dialogue and writing remain manual.
+Correct answers in Matching, Write, Dialogue and Rebuild show a live 2 → 1 countdown, then advance. Write requires full credit in both columns. Incorrect or partial answers wait for Next. The last correct answer opens the round results. Manual advancement, opening the syllabus, or leaving the page cancels the pending advance. The timed mock keeps its existing submission flow.
 
 This/That uses precise SVG scenes of a speaker, listener and book. The book appears near the speaker, near the listener, or far from both. A sentence blank distinguishes stand-alone これ/それ/あれ from noun-prefixed この/その/あの. The あのう scene shows the speaker getting the listener’s attention. SVG titles and captions provide accessible descriptions. Question Words and This/That each open a guide page before practice.
 
-Dialogue offers four-choice expressions or hiragana construction for 14 syllabus scenes. Small-kana combinations stay together; small っ stays separate. Duplicate tiles are tracked by position, with correctness based on the resulting text. Each scene has feedback and missed-item replay. Equivalent thank-you variants are excluded as distractors in the same question. Activity progress is stored independently.
+Dialogue offers related expression choices or hiragana construction for 14 syllabus scenes. Choices come from the same communicative category; hiragana tiles contain only the target expression’s units. The visually similar あの / あのう pair is also used as a related contrast in This/That. Small-kana combinations stay together; small っ stays separate. Duplicate tiles are tracked by position, with correctness based on the resulting text. Each scene has feedback and missed-item replay. Equivalent thank-you variants are excluded as distractors in the same question. Activity progress is stored independently.
 
 ## Overview
 
-Overview has one responsive study-card navigation in the order Matching, Write, Dialogue, Rebuild, Mock quiz, All words. It uses the same mode names and icons as the other pages, with no repeated activity cards or promotional banners. Vocabulary practice and secure counts share one progress panel alongside sentence-group progress and the best mock score. An active mock changes its existing card action to Resume.
+Overview has one responsive study-card navigation in the order Matching, Dialogue, Write, Rebuild, Mock quiz, All words. It uses the same mode names and icons as the other pages, with no repeated activity cards or promotional banners. Vocabulary practice and secure counts share one progress panel alongside sentence-group progress and the best mock score. An active mock changes its existing card action to Resume.

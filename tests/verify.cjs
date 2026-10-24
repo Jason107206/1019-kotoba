@@ -73,10 +73,10 @@ ev('run("next");state.round.b="";state.round.c="";run("checkWrite")');assert.equ
 ev('run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
 ev('navigate("sentences");state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');assert.equal(ev('state.round.result'),true);assert.equal(ev('state.round.correct'),1);
 ev('run("next");run("hint");state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');assert.equal(ev('state.round.result'),true);assert.equal(ev('state.round.correct'),1);assert.equal(ev('state.round.missed.length'),1);
-ev('navigate("match")');assert.equal(ev('new Set(state.round.options).size'),4);assert.equal(ev('state.round.options.includes(wordBy(current()).c)'),true);
+ev('navigate("match")');assert.equal(ev('new Set(state.round.options).size===state.round.options.length&&state.round.options.length>=1&&state.round.options.length<=4'),true);assert.equal(ev('state.round.options.includes(wordBy(current()).c)'),true);
 // Exercise every item’s renderer and distractor generation.
 for(const mode of ['write','match','sentences']){
-ev(`resetFilters();state.view='${mode}';begin('${mode}');for(let i=0;i<state.round.ids.length;i++){state.round.index=i;prepareQuestion();render();if('${mode}'==='match'&&new Set(state.round.options).size!==4)throw Error('Bad distractors');}`);
+ev(`resetFilters();state.view='${mode}';begin('${mode}');for(let i=0;i<state.round.ids.length;i++){state.round.index=i;prepareQuestion();render();if('${mode}'==='match'&&(new Set(state.round.options).size!==state.round.options.length||state.round.options.length>4||!state.round.options.every(c=>relatedWords(wordBy(current())).some(w=>w.c===c))))throw Error('Unrelated distractors');}`);
 assert.ok(!elements.app.innerHTML.includes('undefined'));
 }
 ev('navigate("mock");startMock()');assert.equal(ev('mock.a.length'),10);assert.equal(ev('mock.b.length'),5);assert.equal(ev('mock.a.filter(q=>wordBy(q.id).ch===1).length'),5);assert.equal(ev('new Set(mock.b.map(q=>sentenceBy(q.id).pattern)).size'),5);assert.equal(ev('mock.deadline-mock.started'),900000);
@@ -136,9 +136,11 @@ for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
   const count=ev('state.activity.ids.length');
   for(let i=0;i<count;i++){
     ev(`state.activity.index=${i};prepareActivity();render()`);
-    assert.equal(ev('new Set(state.activity.choices.map(x=>x.kana)).size'),4);
+    assert.equal(ev('new Set(state.activity.choices.map(x=>x.kana)).size===state.activity.choices.length&&state.activity.choices.length>=2&&state.activity.choices.length<=4'),true);
+    assert.equal(ev(`state.activity.choices.every(item=>vocabularySection(wordBy(item.word))===vocabularySection(wordBy(activityCurrent().word))||[item.word,activityCurrent().word].sort().join(',')==='2-06,2-c1')`),true);
     if(kind.startsWith('dialogue'))assert.equal(ev('state.activity.choices.filter(x=>x.family===activityCurrent().family).length'),1);
     if(kind==='dialogue-tiles'){
+      assert.equal(ev('JSON.stringify([...state.activity.tileBank].sort())===JSON.stringify(kanaUnits(activityCurrent().kana).sort())'),true);
       ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));if(id<0)throw Error('Missing tile');a.chosen.push(id);}checkActivity();}`);
       assert.equal(ev('activityAnswer()'),ev('activityCurrent().kana'));
     }else ev('checkActivity(activityCurrent().id)');
@@ -264,8 +266,8 @@ for(const language of ['en','zh-Hant']){
   assert.ok(html.indexOf('class="nav overview-nav"')>html.indexOf('class="overview-intro"'));
   assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="overview-progress"'));
   const nav=html.match(/<nav class="nav overview-nav"[^]*?<\/nav>/)[0];
-  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['matching','write-menu','dialogue','sentences','mock','bank']);
-  for(const mode of ['matching','write-menu','dialogue','sentences','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
+  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['matching','dialogue','write-menu','sentences','mock','bank']);
+  for(const mode of ['matching','dialogue','write-menu','sentences','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
   assert.equal((html.match(/class="stat"/g)||[]).length,3);
   assert.ok(!/mock-banner|kana-home-banner|hero-art|class="nav "/.test(html));
   assert.equal(ev('STUDY_MODES.every(mode=>ZH_HANT[mode.label]&&ZH_HANT[mode.copy])'),true);
@@ -384,7 +386,7 @@ ev('startWriteSet("category-places");state.round.missed=[state.round.ids[0]];run
 assert.equal(ev('state.round.ids.length'),1);
 ev('run("restart")');assert.equal(ev('state.round.ids.length'),2);
 ev('state.round.index=state.round.ids.length;render()');
-assert.ok(elements.app.innerHTML.includes('Back to word sets')||elements.app.innerHTML.includes('返回詞彙選單'));
+assert.ok(elements.app.innerHTML.includes('Back to menu')||elements.app.innerHTML.includes('返回選單'));
 ev('navigate("mock")');
 assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
 console.log('PASS: bilingual Write menu, all/chapter/category sets, retry scope, and removed Part A/B labels.');
@@ -423,33 +425,53 @@ ev('state.round.index=state.round.ids.length;render()');
 assert.ok(elements.app.innerHTML.includes('data-view="kanji-menu"'));
 console.log('PASS: Matching → Kanji word sets → all/chapter/category practice; kanji-only contents and preserved retry scope.');
 
-// Correct matching answers advance after 2000 ms; wrong answers and dialogue stay manual.
-const pendingMatchTimers=()=>[...timers.entries()].filter(([,timer])=>timer.delay===2000);
-const fireMatchTimer=()=>{const pending=pendingMatchTimers();assert.equal(pending.length,1);const [id,timer]=pending[0];timers.delete(id);timer.fn();};
-ev('startWordSet("match","all")');
+// All correct practice answers use a live 2 → 1 countdown; incorrect and partial answers wait.
+const pendingAdvanceTimers=()=>[...timers.entries()].filter(([,timer])=>timer.delay===2000);
+const fireAdvanceTimer=()=>{const pending=pendingAdvanceTimers();assert.equal(pending.length,1);const [id,timer]=pending[0];timers.delete(id);timer.fn();};
+const tickCountdown=()=>{const [id,timer]=[...timers.entries()].find(([,timer])=>timer.delay===1000);timers.delete(id);timer.fn();};
 const chooseKanji=correct=>handlers.click({target:{closest:()=>({disabled:false,dataset:{match:String(ev(`state.round.options.findIndex(c=>c${correct?'===':'!=='}wordBy(current()).c)`))}})}});
-chooseKanji(false);assert.equal(pendingMatchTimers().length,0);
+ev('startWordSet("match","category-occupations")');
+chooseKanji(false);assert.equal(pendingAdvanceTimers().length,0);
 ev('run("next")');chooseKanji(true);
-assert.equal(ev('state.round.index'),1);assert.equal(pendingMatchTimers().length,1);
-fireMatchTimer();assert.equal(ev('state.round.index'),2);assert.equal(ev('state.round.checked'),false);
-chooseKanji(true);const staleKanji=pendingMatchTimers()[0][1].fn;
-ev('run("next")');staleKanji();assert.equal(ev('state.round.index'),3);assert.equal(pendingMatchTimers().length,0);
-ev('state.round.index=state.round.ids.length-1;prepareQuestion();render()');chooseKanji(true);fireMatchTimer();
+assert.equal(ev('state.round.index'),1);assert.equal(ev('autoAdvance.remaining'),2);
+const originalQueryAll=ctx.document.querySelectorAll,countdownNode={textContent:'2'};
+ctx.document.querySelectorAll=selector=>selector==='[data-auto-countdown]'?[countdownNode]:[];
+tickCountdown();assert.equal(countdownNode.textContent,'1');assert.equal(ev('autoAdvance.remaining'),1);
+ev('state.language="en";run("toggleLanguage")');
+assert.ok(elements.app.innerHTML.includes('data-auto-countdown>1</span>'));assert.ok(elements.app.innerHTML.includes('秒'));
+ctx.document.querySelectorAll=originalQueryAll;
+fireAdvanceTimer();assert.equal(ev('state.round.index'),2);assert.equal(ev('state.round.checked'),false);
+chooseKanji(true);const staleKanji=pendingAdvanceTimers()[0][1].fn;
+ev('run("next")');staleKanji();assert.equal(ev('state.round.index'),3);assert.equal(pendingAdvanceTimers().length,0);
+ev('state.round.index=state.round.ids.length-1;prepareQuestion();render()');chooseKanji(true);fireAdvanceTimer();
 assert.equal(ev('state.round.index===state.round.ids.length'),true);
-for(const kind of ['wh','demonstratives']){
-  ev(`state.language='en';startActivity('${kind}');checkActivity(state.activity.choices.find(q=>q.id!==activityCurrent().id).id)`);
-  assert.equal(pendingMatchTimers().length,0);
-  ev('activityAction("activityNext");checkActivity(activityCurrent().id)');
-  assert.equal(ev('state.activity.index'),1);assert.equal(pendingMatchTimers().length,1);
-  ev('run("toggleLanguage")');
-  assert.ok(elements.app.innerHTML.includes('2 秒後自動進入下一題。'));
-  fireMatchTimer();assert.equal(ev('state.activity.index'),2);
-  ev('checkActivity(activityCurrent().id)');const stale=pendingMatchTimers()[0][1].fn;
-  ev('navigate("matching")');stale();
-  assert.equal(ev('state.activity.index'),2);assert.equal(pendingMatchTimers().length,0);
-  ev(`startActivity('${kind}');state.activity.index=state.activity.ids.length-1;prepareActivity();checkActivity(activityCurrent().id)`);
-  fireMatchTimer();assert.equal(ev('state.activity.index===state.activity.ids.length'),true);
+for(const mode of ['write','sentences']){
+  ev(`navigate('${mode}')`);
+  if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c="";run("checkWrite")');
+  else ev('state.round.chosen=[];run("checkSentence")');
+  assert.equal(pendingAdvanceTimers().length,0);
+  ev('run("next")');
+  if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');
+  else ev('state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');
+  assert.ok(elements.app.innerHTML.includes('data-auto-countdown>2</span>'));
+  fireAdvanceTimer();assert.equal(ev('state.round.index'),2);
+  ev('state.round.index=state.round.ids.length-1;prepareQuestion()');
+  if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');
+  else ev('state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');
+  fireAdvanceTimer();assert.equal(ev('state.round.index===state.round.ids.length'),true);
 }
-ev('startActivity("dialogue-choice");checkActivity(activityCurrent().id)');
-assert.equal(pendingMatchTimers().length,0);
-console.log('PASS: two-second correct-answer advance in all matching modes, manual wrong answers/dialogue, safe navigation and final results.');
+for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
+  ev(`state.language='en';startActivity('${kind}')`);
+  if(kind==='dialogue-tiles')ev('checkActivity()');
+  else ev('checkActivity(state.activity.choices.find(q=>q.id!==activityCurrent().id).id)');
+  assert.equal(pendingAdvanceTimers().length,0);
+  ev('activityAction("activityNext")');
+  const answer=()=>ev(`{const a=state.activity;if(a.kind==='dialogue-tiles'){for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));a.chosen.push(id);}checkActivity();}else checkActivity(activityCurrent().id);}`);
+  answer();assert.equal(ev('state.activity.index'),1);assert.equal(pendingAdvanceTimers().length,1);
+  fireAdvanceTimer();assert.equal(ev('state.activity.index'),2);
+  answer();const stale=pendingAdvanceTimers()[0][1].fn;
+  ev('navigate("matching")');stale();assert.equal(ev('state.activity.index'),2);assert.equal(pendingAdvanceTimers().length,0);
+  ev(`startActivity('${kind}');state.activity.index=state.activity.ids.length-1;prepareActivity()`);
+  answer();fireAdvanceTimer();assert.equal(ev('state.activity.index===state.activity.ids.length'),true);
+}
+console.log('PASS: live countdown across Matching, Write, Dialogue and Rebuild; partial/wrong answers wait; safe manual navigation and final results.');
