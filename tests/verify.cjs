@@ -203,7 +203,7 @@ assert.equal(ev('localizeMarkup(`<input value="English &amp; これ" data-answer
 for(const view of ['home','write-menu','write','rebuild-menu','dialogue','sentences','bank','mock']){
   ev(`mock=null;resetFilters();navigate('${view}')`);
   assert.ok(elements.app.innerHTML.includes('切換至繁體中文')===false);
-  assert.ok(elements.app.innerHTML.includes('情境對話'));assert.ok(!elements.app.innerHTML.includes('data-view="hiragana"'));
+  if(view==='home')assert.ok(elements.app.innerHTML.includes('情境對話'));assert.ok(!elements.app.innerHTML.includes('data-view="hiragana"'));
   assert.ok(!elements.app.innerHTML.includes('undefined'));
 }
 ev('navigate("bank");state.search="student";render()');
@@ -261,13 +261,14 @@ for(const language of ['en','zh-Hant']){
   assert.equal((html.match(/class="stat"/g)||[]).length,3);
   assert.ok(!/mock-banner|kana-home-banner|hero-art|class="nav "/.test(html));
   assert.equal(ev('STUDY_MODES.every(mode=>ZH_HANT[mode.label]&&ZH_HANT[mode.copy])'),true);
-  assert.ok(html.includes(language==='en'?'Open practice':'進入練習'));
+  assert.ok(!html.includes(language==='en'?'Open practice':'進入練習'));
+  assert.equal((nav.match(/class="card-arrow"/g)||[]).length,6);
   assert.ok(html.includes(language==='en'?'Your progress':'溫習進度'));
   assert.ok(!html.includes('data-action="goCards"')&&!html.includes('data-action="review"'));
   assert.equal((html.match(/class="nav overview-nav"/g)||[]).length,1);
   ev('navigate("dialogue")');
   assert.ok(!elements.app.innerHTML.includes('class="nav overview-nav"'));
-  assert.ok(elements.app.innerHTML.includes('class="nav "'));
+  assert.ok(!elements.app.innerHTML.includes('class="nav "'));
 }
 console.log('PASS: unified Overview launcher, consistent mode order, combined word progress, and no duplicate entry points.');
 
@@ -293,28 +294,12 @@ for(const language of ['en','zh-Hant']){
 }
 console.log('PASS: Dialogue menu → illustrated content → seven This/That questions, with guide return path.');
 
-// Re-rendered horizontal navigation retains its scroll offset across subpages.
-const querySelector=ctx.document.querySelector;
-const menuNav={scrollLeft:0},guideNav={scrollLeft:0},overviewNav={scrollLeft:0};
-ctx.document.querySelector=s=>{
-  if(s==='.overview-nav')return elements.app.innerHTML.includes('class="shell home-view"')?overviewNav:null;
-  if(s==='.sidebar .nav')return elements.app.innerHTML.includes('demonstratives-content')?guideNav:menuNav;
-  return querySelector(s);
-};
-ev('navigate("rebuild-menu")');menuNav.scrollLeft=245;
-ev('activityClick({dataset:{openDemonstratives:"guide"}})');
-assert.equal(guideNav.scrollLeft,245);
-guideNav.scrollLeft=318;
-ev('navigate("rebuild-menu")');
-assert.equal(menuNav.scrollLeft,318);
-menuNav.scrollLeft=278;
-ev('navigate("home")');
-assert.equal(overviewNav.scrollLeft,278);
-overviewNav.scrollLeft=301;
-ev('navigate("dialogue")');
-assert.equal(menuNav.scrollLeft,301);
-ctx.document.querySelector=querySelector;
-console.log('PASS: horizontal navigation position survives menu, guide, and overview page changes.');
+// Mode navigation is available through Overview cards only.
+for(const view of ['dialogue','rebuild-menu','write-menu','handwriting-menu','vocabulary-menu','bank','mock']){
+  ev(`navigate('${view}')`);
+  assert.ok(!elements.app.innerHTML.includes('<nav'));
+}
+ev('navigate("home")');assert.ok(elements.app.innerHTML.includes('class="nav overview-nav"'));
 
 // Writing opens a choice menu; the chosen set survives restarts and missed-item rounds.
 for(const language of ['en','zh-Hant']){
@@ -342,7 +327,7 @@ assert.equal(ev('state.round.ids.length'),43);
 for(const [key,count] of [['chapter-1',43],['chapter-2',53],...Object.entries(expectedCategoryCounts).map(([category,count])=>[`category-${category}`,count])]){
   ev(`startWriteSet('${key}')`);
   assert.equal(ev('state.round.ids.length'),count);
-  assert.ok(elements.app.innerHTML.includes('data-view="write-menu"'));
+  assert.ok(elements.app.innerHTML.includes('data-back-view="write-menu"'));
   ev('run("restart")');
   assert.equal(ev('state.round.ids.length'),count);
   assert.equal(ev('state.round.ids.every(id=>state.writeSet.ids.includes(id))'),true);
@@ -643,6 +628,8 @@ for(const language of ['en','zh-Hant']){
   for(let i=0;i<96;i++){
     ev(`state.round.index=${i};prepareQuestion();render()`);
     assert.equal(ev('state.round.tileBank.every(unit=>/^[ぁ-ゖー]+$/u.test(unit))'),true);
+    assert.equal((elements.app.innerHTML.match(/data-vocabulary-slot=/g)||[]).length,ev('kanaUnits(vocabularyReading(wordBy(current()))).length'));
+    assert.equal((elements.app.innerHTML.match(/class="vocabulary-slot empty"/g)||[]).length,ev('kanaUnits(vocabularyReading(wordBy(current()))).length'));
     assert.equal(ev('kanaUnits(vocabularyReading(wordBy(current()))).every(unit=>state.round.tileBank.filter(text=>text===unit).length>=kanaUnits(vocabularyReading(wordBy(current()))).filter(text=>text===unit).length)'),true);
     assert.equal(ev('state.round.tileBank.some(unit=>!kanaUnits(vocabularyReading(wordBy(current()))).includes(unit))'),true);
     assert.ok(!elements.app.innerHTML.includes('undefined'));
@@ -679,16 +666,29 @@ ev('run("vocabularyReveal")');assert.equal(ev('state.round.result'),false);asser
 ev('navigate("matching")');assert.equal(ev('state.view'),'rebuild-menu');assert.equal(ev('typeof matchingMenu'),'undefined');
 console.log('PASS: bilingual Rebuild mode menu and order, full-word/chapter/category sets, all 96 readings with complete similar-kana banks, duplicate tiles, scoring, manual feedback, validation and retries.');
 
-// A direct Overview link appears on every mode and its subpages.
+
+// One Back link: below descriptions on main menus, above titles on subpages.
 for(const language of ['en','zh-Hant']){
   ev(`state.language='${language}'`);
-  for(const view of ['rebuild-menu','vocabulary-menu','vocabulary-rebuild','sentences','write-menu','write','handwriting-menu','kanji-writing','dialogue','bank','mock']){
-    ev(`navigate('${view}')`);
-    assert.ok(elements.app.innerHTML.includes(language==='en'?'← Back to Overview':'← 返回總覽'),view);
+  for(const view of ['rebuild-menu','write-menu','handwriting-menu','dialogue','bank','mock']){
+    ev(`navigate('${view}')`);const html=elements.app.innerHTML;
+    assert.ok(html.indexOf('page-back menu-back')>html.indexOf('<h1>'),view);
+    assert.ok(!html.includes('Back to Overview')&&!html.includes('返回總覽'));
+    clickData({view:'home'});assert.equal(ev('state.view'),'home');
   }
-  ev('navigate("dialogue");openDialogueCategory("courtesy")');
-  assert.ok(elements.app.innerHTML.includes('class="overview-back"'));
-  ev('startActivity("dialogue-choice")');assert.ok(elements.app.innerHTML.includes('class="overview-back"'));
-  clickData({view:'home'});assert.equal(ev('state.view'),'home');
-  assert.ok(!elements.app.innerHTML.includes('class="overview-back"'));
+  for(const view of ['vocabulary-menu','vocabulary-rebuild','sentences','write','kanji-writing']){
+    ev(`navigate('${view}')`);const html=elements.app.innerHTML;
+    assert.ok(html.indexOf('page-back subpage-back')>=0&&html.indexOf('page-back subpage-back')<html.indexOf('<h1>'),view);
+    assert.equal((html.match(/data-action="back"/g)||[]).length,1,view);
+    assert.ok(!html.includes('Back to Overview')&&!html.includes('返回總覽'));
+  }
+  ev('pageHistory.length=0;navigate("dialogue");openDialogueCategory("courtesy")');
+  assert.ok(elements.app.innerHTML.indexOf('page-back subpage-back')<elements.app.innerHTML.indexOf('<h1>'));
+  clickData({openDialogue:'dialogue-choice'});
+  assert.equal((elements.app.innerHTML.match(/data-action="back"/g)||[]).length,1);
+  ev('state.activity.index=state.activity.ids.length;render()');
+  assert.equal((elements.app.innerHTML.match(/data-action="back"/g)||[]).length,1);
+  clickData({action:'back'});assert.equal(ev('state.view'),'dialogue-content');
+  clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
+  clickData({view:'home'});assert.ok(!elements.app.innerHTML.includes('class="page-back'));
 }
