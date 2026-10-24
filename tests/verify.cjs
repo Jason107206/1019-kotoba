@@ -425,53 +425,35 @@ ev('state.round.index=state.round.ids.length;render()');
 assert.ok(elements.app.innerHTML.includes('data-view="kanji-menu"'));
 console.log('PASS: Matching → Kanji word sets → all/chapter/category practice; kanji-only contents and preserved retry scope.');
 
-// All correct practice answers use a live 2 → 1 countdown; incorrect and partial answers wait.
-const pendingAdvanceTimers=()=>[...timers.entries()].filter(([,timer])=>timer.delay===2000);
-const fireAdvanceTimer=()=>{const pending=pendingAdvanceTimers();assert.equal(pending.length,1);const [id,timer]=pending[0];timers.delete(id);timer.fn();};
-const tickCountdown=()=>{const [id,timer]=[...timers.entries()].find(([,timer])=>timer.delay===1000);timers.delete(id);timer.fn();};
-const chooseKanji=correct=>handlers.click({target:{closest:()=>({disabled:false,dataset:{match:String(ev(`state.round.options.findIndex(c=>c${correct?'===':'!=='}wordBy(current()).c)`))}})}});
-ev('startWordSet("match","category-occupations")');
-chooseKanji(false);assert.equal(pendingAdvanceTimers().length,0);
-ev('run("next")');chooseKanji(true);
-assert.equal(ev('state.round.index'),1);assert.equal(ev('autoAdvance.remaining'),2);
-const originalQueryAll=ctx.document.querySelectorAll,countdownNode={textContent:'2'};
-ctx.document.querySelectorAll=selector=>selector==='[data-auto-countdown]'?[countdownNode]:[];
-tickCountdown();assert.equal(countdownNode.textContent,'1');assert.equal(ev('autoAdvance.remaining'),1);
-ev('state.language="en";run("toggleLanguage")');
-assert.ok(elements.app.innerHTML.includes('data-auto-countdown>1</span>'));assert.ok(elements.app.innerHTML.includes('秒'));
-ctx.document.querySelectorAll=originalQueryAll;
-fireAdvanceTimer();assert.equal(ev('state.round.index'),2);assert.equal(ev('state.round.checked'),false);
-chooseKanji(true);const staleKanji=pendingAdvanceTimers()[0][1].fn;
-ev('run("next")');staleKanji();assert.equal(ev('state.round.index'),3);assert.equal(pendingAdvanceTimers().length,0);
-ev('state.round.index=state.round.ids.length-1;prepareQuestion();render()');chooseKanji(true);fireAdvanceTimer();
-assert.equal(ev('state.round.index===state.round.ids.length'),true);
-for(const mode of ['write','sentences']){
-  ev(`navigate('${mode}')`);
-  if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c="";run("checkWrite")');
-  else ev('state.round.chosen=[];run("checkSentence")');
-  assert.equal(pendingAdvanceTimers().length,0);
-  ev('run("next")');
-  if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');
-  else ev('state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');
-  assert.ok(elements.app.innerHTML.includes('data-auto-countdown>2</span>'));
-  fireAdvanceTimer();assert.equal(ev('state.round.index'),2);
-  ev('state.round.index=state.round.ids.length-1;prepareQuestion()');
-  if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');
-  else ev('state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');
-  fireAdvanceTimer();assert.equal(ev('state.round.index===state.round.ids.length'),true);
+// Every practice mode keeps correct-answer feedback visible until the user presses Next.
+const assertManualFeedback=()=>{
+  assert.equal([...timers.values()].some(timer=>timer.delay===1000||timer.delay===2000),false);
+  assert.ok(!elements.app.innerHTML.includes('data-auto-countdown'));
+};
+for(const mode of ['match','write','sentences']){
+  ev('state.language="en"');
+  if(mode==='match')ev('startWordPractice("match",["1-07","1-08"],"Jobs & roles")');
+  else if(mode==='write')ev('startWriteWords(["1-09","1-13"],"Jobs & roles")');
+  else ev('state.view="sentences";begin("sentences",["p1-1","p1-2"]);render()');
+  for(let index=0;index<2;index++){
+    if(mode==='match')handlers.click({target:{closest:()=>({disabled:false,dataset:{match:String(ev('state.round.options.indexOf(wordBy(current()).c)'))}})}});
+    else if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');
+    else ev('state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');
+    assert.equal(ev('state.round.index'),index);assert.equal(ev('state.round.checked'),true);
+    assertManualFeedback();assert.ok(elements.app.innerHTML.includes('data-action="next"'));
+    ev('run("next")');assert.equal(ev('state.round.index'),index+1);
+  }
+  assert.ok(elements.app.innerHTML.includes('Round complete'));
 }
 for(const kind of ['wh','demonstratives','dialogue-choice','dialogue-tiles']){
-  ev(`state.language='en';startActivity('${kind}')`);
-  if(kind==='dialogue-tiles')ev('checkActivity()');
-  else ev('checkActivity(state.activity.choices.find(q=>q.id!==activityCurrent().id).id)');
-  assert.equal(pendingAdvanceTimers().length,0);
-  ev('activityAction("activityNext")');
-  const answer=()=>ev(`{const a=state.activity;if(a.kind==='dialogue-tiles'){for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));a.chosen.push(id);}checkActivity();}else checkActivity(activityCurrent().id);}`);
-  answer();assert.equal(ev('state.activity.index'),1);assert.equal(pendingAdvanceTimers().length,1);
-  fireAdvanceTimer();assert.equal(ev('state.activity.index'),2);
-  answer();const stale=pendingAdvanceTimers()[0][1].fn;
-  ev('navigate("matching")');stale();assert.equal(ev('state.activity.index'),2);assert.equal(pendingAdvanceTimers().length,0);
-  ev(`startActivity('${kind}');state.activity.index=state.activity.ids.length-1;prepareActivity()`);
-  answer();fireAdvanceTimer();assert.equal(ev('state.activity.index===state.activity.ids.length'),true);
+  ev(`state.language='en';startActivity('${kind}');state.activity.ids=state.activity.ids.slice(0,2);prepareActivity();render()`);
+  for(let index=0;index<2;index++){
+    if(kind==='dialogue-tiles')ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));a.chosen.push(id);}checkActivity();}`);
+    else ev('checkActivity(activityCurrent().id)');
+    assert.equal(ev('state.activity.index'),index);assert.equal(ev('state.activity.checked'),true);
+    assertManualFeedback();assert.ok(elements.app.innerHTML.includes('data-action="activityNext"'));
+    ev('activityAction("activityNext")');assert.equal(ev('state.activity.index'),index+1);
+  }
+  assert.ok(elements.app.innerHTML.includes('Round complete'));
 }
-console.log('PASS: live countdown across Matching, Write, Dialogue and Rebuild; partial/wrong answers wait; safe manual navigation and final results.');
+console.log('PASS: all practice modes wait for manual Next after correct answers, including before final results; no countdown timers.');
