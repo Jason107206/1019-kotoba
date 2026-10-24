@@ -3,7 +3,7 @@ const elements={app:{innerHTML:''},toast:{style:{},textContent:''}};
 const handlers={};let storage={'kotoba-ch12-v1':JSON.stringify({language:'en'})};
 const timers=new Map();let timerId=0;
 const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>handlers[e]=f},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:(fn,delay)=>{const id=++timerId;timers.set(id,{fn,delay});return id;},clearTimeout:id=>timers.delete(id)});
-vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/i18n.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/i18n.js','utf8')+'\n'+fs.readFileSync('dist/kanji-writing.js','utf8')+'\n'+fs.readFileSync('dist/vocabulary-rebuild.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
 const ev=s=>vm.runInContext(s,ctx);
 assert.equal(ev('WORDS.length'),96);
 assert.equal(ev('SENTENCES.length'),50);
@@ -65,18 +65,17 @@ assert.equal(ev('gradeSentence(sentenceBy("p12-1"),[0,1,5,3,4,2,6,7])'),true);
 assert.equal(ev('PATTERNS.every(p=>SENTENCES.some(s=>s.pattern===p.id))'),true);
 // Every kanji in a puzzle is taught on one of the specified vocabulary pages.
 assert.equal(ev(`(()=>{const allowed=new Set(WORDS.map(w=>w.c).join('').match(/\\p{Script=Han}/gu));return SENTENCES.every(s=>(s.tokens.join('').match(/\\p{Script=Han}/gu)||[]).every(k=>allowed.has(k)));})()`),true);
-for(const view of ['home','write-menu','write','matching','dialogue','match','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
+for(const view of ['home','write-menu','write','rebuild-menu','dialogue','vocabulary-rebuild','sentences','bank','mock']){ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.length>1000,view);assert.ok(!elements.app.innerHTML.includes('undefined'),view);}
 ev('navigate("cards")');assert.equal(ev('state.view'),'write-menu');
 assert.equal(ev('views.some(([view])=>view==="cards")'),false);
 ev('navigate("write");state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');assert.equal(ev('state.round.result.score'),1);assert.ok(elements.app.innerHTML.includes('1 / 1 mark'));
-ev('run("next");state.round.b="";state.round.c="";run("checkWrite")');assert.equal(ev('state.round.result.score'),0);assert.equal(ev('state.round.missed.length'),1);
+ev('run("next");state.round.ids[state.round.index]="1-09";prepareQuestion();state.round.b="";state.round.c="";run("checkWrite")');assert.equal(ev('state.round.result.score'),0);assert.equal(ev('state.round.missed.length'),1);
 ev('run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
 ev('navigate("sentences");state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');assert.equal(ev('state.round.result'),true);assert.equal(ev('state.round.correct'),1);
 ev('run("next");run("hint");state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');assert.equal(ev('state.round.result'),true);assert.equal(ev('state.round.correct'),1);assert.equal(ev('state.round.missed.length'),1);
-ev('navigate("match")');assert.equal(ev('new Set(state.round.options).size===state.round.options.length&&state.round.options.length>=1&&state.round.options.length<=4'),true);assert.equal(ev('state.round.options.includes(wordBy(current()).c)'),true);
 // Exercise every item’s renderer and distractor generation.
-for(const mode of ['write','match','sentences']){
-ev(`resetFilters();state.view='${mode}';begin('${mode}');for(let i=0;i<state.round.ids.length;i++){state.round.index=i;prepareQuestion();render();if('${mode}'==='match'&&(new Set(state.round.options).size!==state.round.options.length||state.round.options.length>4||!state.round.options.every(c=>relatedWords(wordBy(current())).some(w=>w.c===c))))throw Error('Unrelated distractors');}`);
+for(const mode of ['write','vocabulary-rebuild','sentences']){
+ev(`resetFilters();state.view='${mode}';begin('${mode}');for(let i=0;i<state.round.ids.length;i++){state.round.index=i;prepareQuestion();render();}`);
 assert.ok(!elements.app.innerHTML.includes('undefined'));
 }
 ev('navigate("mock");startMock()');assert.equal(ev('mock.a.length'),10);assert.equal(ev('mock.b.length'),5);assert.equal(ev('mock.a.filter(q=>wordBy(q.id).ch===1).length'),5);assert.equal(ev('new Set(mock.b.map(q=>sentenceBy(q.id).pattern)).size'),5);assert.equal(ev('mock.deadline-mock.started'),900000);
@@ -99,19 +98,12 @@ ev('resetFilters()');
 assert.equal(ev('WORDS.some(w=>/^1-r1[1-7]$/.test(w.id))'),false);
 assert.equal(ev('/ミラー|サントス|ワン|カリナ|グプタ|テレーザ|IMC|AKC|神戸|富士|さくら大学/.test(JSON.stringify({WORDS,SENTENCES}))'),false);
 
-// Exclude kana-only entries through both normal and explicit-ID match entry points.
-ev('resetFilters();begin("match")');
-assert.equal(ev('state.round.ids.length'),ev('WORDS.filter(hasKanji).length'));
-assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id)))'),true);
-assert.equal(ev('state.round.options.every(c=>/\\p{Script=Han}/u.test(c))'),true);
-ev('begin("match",["1-01","1-09","2-18"])');
-assert.equal(ev('state.round.ids.join(",")'),'1-09');
 ev('navigate("bank")');
 assert.ok(!elements.app.innerHTML.includes('data-view="cards"'));
 assert.ok(!elements.app.innerHTML.includes('data-action="goCards"'));
 assert.ok(elements.app.innerHTML.includes('data-action="writeSelection"'));
 ev('state.language="zh-Hant";render()');
-assert.ok(elements.app.innerHTML.includes('默寫所選詞彙'));
+assert.ok(elements.app.innerHTML.includes('回想所選詞彙'));
 assert.ok(!elements.app.innerHTML.includes('記憶卡'));
 ev('state.language="en";render()');
 ev('state.search="student";writeSelection()');
@@ -165,7 +157,7 @@ assert.equal(ev('activityAnswer()'),'ど');
 ev('activityClick({dataset:{activityReturn:"0"}})');assert.equal(ev('activityAnswer()'),'');
 ev(`{const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana)){const id=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));activityClick({dataset:{activityTile:String(id)}});}activityAction('activityCheck');}`);
 assert.equal(ev('state.activity.result'),true);
-ev('navigate("matching")');assert.ok(!elements.app.innerHTML.includes('Question words'));
+ev('navigate("rebuild-menu")');assert.ok(!elements.app.innerHTML.includes('Question words'));
 ev('navigate("dialogue")');assert.ok(elements.app.innerHTML.includes('data-dialogue-category="introductions"'));
 ev('startMock()');assert.equal(ev('mock.a.every(q=>!!wordBy(q.id))'),true);
 ev('mock.done=true;resetFilters()');
@@ -208,7 +200,7 @@ assert.equal(ev('SENTENCES.every(s=>ZH_HANT[s.prompt])'),true);
 assert.equal(ev('PATTERNS.every(p=>ZH_HANT[p.title]&&ZH_HANT[p.tip])'),true);
 assert.equal(ev('demonstrativeItems().every(q=>ZH_HANT[q.why])'),true);
 assert.equal(ev('localizeMarkup(`<input value="English &amp; これ" data-answer="b" placeholder="Type hiragana"><span lang="ja">よろしくおねがいします</span>`)'),'<input value="English &amp; これ" data-answer="b" placeholder="輸入平假名"><span lang="ja">よろしくおねがいします</span>');
-for(const view of ['home','write-menu','write','matching','dialogue','sentences','bank','mock']){
+for(const view of ['home','write-menu','write','rebuild-menu','dialogue','sentences','bank','mock']){
   ev(`mock=null;resetFilters();navigate('${view}')`);
   assert.ok(elements.app.innerHTML.includes('切換至繁體中文')===false);
   assert.ok(elements.app.innerHTML.includes('情境對話'));assert.ok(!elements.app.innerHTML.includes('data-view="hiragana"'));
@@ -264,8 +256,8 @@ for(const language of ['en','zh-Hant']){
   assert.ok(html.indexOf('class="nav overview-nav"')>html.indexOf('class="overview-intro"'));
   assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="overview-progress"'));
   const nav=html.match(/<nav class="nav overview-nav"[^]*?<\/nav>/)[0];
-  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['matching','dialogue','write-menu','sentences','mock','bank']);
-  for(const mode of ['matching','dialogue','write-menu','sentences','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
+  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['dialogue','rebuild-menu','handwriting-menu','write-menu','mock','bank']);
+  for(const mode of ['dialogue','rebuild-menu','handwriting-menu','write-menu','mock','bank'])assert.equal((html.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
   assert.equal((html.match(/class="stat"/g)||[]).length,3);
   assert.ok(!/mock-banner|kana-home-banner|hero-art|class="nav "/.test(html));
   assert.equal(ev('STUDY_MODES.every(mode=>ZH_HANT[mode.label]&&ZH_HANT[mode.copy])'),true);
@@ -283,20 +275,20 @@ console.log('PASS: unified Overview launcher, consistent mode order, combined wo
 for(const language of ['en','zh-Hant']){
  ev(`state.language='${language}';navigate('dialogue')`);
  assert.ok(!elements.app.innerHTML.includes('demonstrative-guide'));
- assert.ok(!elements.app.innerHTML.includes('visual-guide-grid'));
+ assert.ok(!elements.app.innerHTML.includes('guide-carousel'));
  ev('activityClick({dataset:{openDemonstratives:"guide"}})');
  assert.equal(ev('state.view'),'demonstratives-content');
- assert.ok(elements.app.innerHTML.includes('visual-guide-grid'));
- assert.equal((elements.app.innerHTML.match(/class="guide-pair jp"/g)||[]).length,4);
+ assert.ok(elements.app.innerHTML.includes('guide-carousel'));
+ assert.equal((elements.app.innerHTML.match(/class="guide-pair jp"/g)||[]).length,7);
  assert.ok(elements.app.innerHTML.includes('data-open-demonstratives="practice"'));
- assert.ok(elements.app.innerHTML.includes(language==='en'?'Look at the speaker, listener and book.':'看圖中你、對方和書的位置。'));
+ assert.ok(elements.app.innerHTML.includes(language==='en'?'Visual guide · this and that':'圖解指示詞'));
  ev('activityClick({dataset:{openDemonstratives:"practice"}})');
  assert.equal(ev('state.view'),'activity');
  assert.equal(ev('state.activity.kind'),'demonstratives');
  assert.equal(ev('state.activity.ids.length'),7);
  assert.ok(elements.app.innerHTML.includes('data-back-view="demonstratives-content"'));
  ev('navigate("demonstratives-content")');
- assert.ok(elements.app.innerHTML.includes('visual-guide-grid'));
+ assert.ok(elements.app.innerHTML.includes('guide-carousel'));
  assert.equal(ev('activityNav()'),'dialogue');
 }
 console.log('PASS: Dialogue menu → illustrated content → seven This/That questions, with guide return path.');
@@ -309,11 +301,11 @@ ctx.document.querySelector=s=>{
   if(s==='.sidebar .nav')return elements.app.innerHTML.includes('demonstratives-content')?guideNav:menuNav;
   return querySelector(s);
 };
-ev('navigate("matching")');menuNav.scrollLeft=245;
+ev('navigate("rebuild-menu")');menuNav.scrollLeft=245;
 ev('activityClick({dataset:{openDemonstratives:"guide"}})');
 assert.equal(guideNav.scrollLeft,245);
 guideNav.scrollLeft=318;
-ev('navigate("matching")');
+ev('navigate("rebuild-menu")');
 assert.equal(menuNav.scrollLeft,318);
 menuNav.scrollLeft=278;
 ev('navigate("home")');
@@ -364,52 +356,18 @@ ev('navigate("mock")');
 assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
 console.log('PASS: bilingual Write menu, all/chapter/category sets, retry scope, and removed Part A/B labels.');
 
-// Kanji Match shares the word-set flow and never includes kana-only prompts or choices.
-for(const language of ['en','zh-Hant']){
-  ev(`state.language='${language}';navigate('matching');activityClick({dataset:{openMatch:'kanji'}})`);
-  assert.equal(ev('state.view'),'kanji-menu');
-  assert.equal(ev('activityNav()'),'matching');
-  assert.ok(elements.app.innerHTML.includes('data-kanji-set="all"'));
-  assert.ok(elements.app.innerHTML.includes('data-kanji-menu="chapter"'));
-  assert.ok(elements.app.innerHTML.includes('data-kanji-menu="category"'));
-  assert.ok(elements.app.innerHTML.includes(language==='en'?'Choose kanji words.':'選擇漢字配對詞彙。'));
-  handlers.click({target:{closest:()=>({disabled:false,dataset:{kanjiMenu:'category'}})}});
-  assert.ok(!elements.app.innerHTML.includes('data-kanji-set="category-food"'));
-  assert.ok(!elements.app.innerHTML.includes('data-kanji-set="category-demonstratives"'));
-  for(const category of ev('VOCAB_CATEGORIES.filter(c=>c.ids.some(id=>hasKanji(wordBy(id)))).map(c=>c.id)'))assert.ok(elements.app.innerHTML.includes(`data-kanji-set="category-${category}"`));
-  handlers.click({target:{closest:()=>({disabled:false,dataset:{kanjiSet:'all'}})}});
-  assert.equal(ev('state.view'),'match');
-  assert.equal(ev('state.round.ids.length'),ev('WORDS.filter(hasKanji).length'));
-}
-for(const key of ['chapter-1','chapter-2',...ev('VOCAB_CATEGORIES.filter(c=>c.ids.some(id=>hasKanji(wordBy(id)))).map(c=>"category-"+c.id)')]){
-  ev(`startWordSet('match','${key}')`);
-  const count=ev('state.round.ids.length');
-  assert.ok(count>0);
-  assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id)))'),true);
-  assert.equal(ev('state.round.options.every(c=>/\\p{Script=Han}/u.test(c))'),true);
-  if(key.startsWith('chapter-'))assert.equal(ev(`state.round.ids.every(id=>wordBy(id).ch===${key.slice(-1)})`),true);
-  else assert.equal(ev(`state.round.ids.every(id=>vocabularySection(wordBy(id))==='${key.slice(9)}')`),true);
-  assert.ok(elements.app.innerHTML.includes('data-back-view="kanji-menu"'));
-  ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');
-  assert.equal(ev('state.round.ids.length'),1);
-  ev('run("restart")');assert.equal(ev('state.round.ids.length'),count);
-}
-ev('state.round.index=state.round.ids.length;render()');
-assert.ok(elements.app.innerHTML.includes('data-back-view="kanji-menu"'));
-console.log('PASS: Matching → Kanji word sets → all/chapter/category practice; kanji-only contents and preserved retry scope.');
-
 // Every practice mode keeps correct-answer feedback visible until the user presses Next.
 const assertManualFeedback=()=>{
   assert.equal([...timers.values()].some(timer=>timer.delay===1000||timer.delay===2000),false);
   assert.ok(!elements.app.innerHTML.includes('data-auto-countdown'));
 };
-for(const mode of ['match','write','sentences']){
+for(const mode of ['vocabulary-rebuild','write','sentences']){
   ev('state.language="en"');
-  if(mode==='match')ev('startWordPractice("match",["1-07","1-08"],"Jobs & roles")');
+  if(mode==='vocabulary-rebuild')ev('startWordPractice("vocabulary-rebuild",["1-07","1-08"],"Jobs & roles")');
   else if(mode==='write')ev('startWriteWords(["1-09","1-13"],"Jobs & roles")');
   else ev('state.view="sentences";begin("sentences",["p1-1","p1-2"]);render()');
   for(let index=0;index<2;index++){
-    if(mode==='match')handlers.click({target:{closest:()=>({disabled:false,dataset:{match:String(ev('state.round.options.indexOf(wordBy(current()).c)'))}})}});
+    if(mode==='vocabulary-rebuild')ev(`{const r=state.round;for(const unit of kanaUnits(vocabularyReading(wordBy(current()))))r.chosen.push(r.tileBank.findIndex((x,i)=>x===unit&&!r.chosen.includes(i)));vocabularyAction('vocabularyCheck');}`);
     else if(mode==='write')ev('state.round.b=wordBy(current()).kana;state.round.c=wordBy(current()).c;run("checkWrite")');
     else ev('state.round.chosen=sentenceBy(current()).tokens.map((_,i)=>i);run("checkSentence")');
     assert.equal(ev('state.round.index'),index);assert.equal(ev('state.round.checked'),true);
@@ -433,7 +391,7 @@ console.log('PASS: all practice modes wait for manual Next after correct answers
 
 // Back retraces the actual subpages and restores the chapter/category selection.
 const clickData=dataset=>handlers.click({target:{closest:()=>({disabled:false,dataset})}});
-for(const [view,prefix,mode] of [['write-menu','write','write'],['kanji-menu','kanji','match'],['hiragana-menu','hiragana','hiragana-match']]){
+for(const [view,prefix,mode] of [['write-menu','write','write'],['vocabulary-menu','vocabulary','vocabulary-rebuild']]){
   for(const section of ['chapter','category'])for(const complete of [false,true]){
     ev(`pageHistory.length=0;navigate('${view}')`);
     clickData({[`${prefix}Menu`]:section});
@@ -463,59 +421,8 @@ assert.equal(ev('state.view'),'bank');
 assert.equal(ev('state.filter.group'),'occupations');
 assert.equal(ev('state.search'),'student');
 assert.ok(elements.app.innerHTML.includes('data-word-id="1-09"'));
-ev('pageHistory.length=0;previousPage("matching")');assert.equal(ev('state.view'),'matching');
+ev('pageHistory.length=0;previousPage("rebuild-menu")');assert.equal(ev('state.view'),'rebuild-menu');
 console.log('PASS: Back returns to the preceding subpage, including chapter/category menus, activity guides and filtered word references.');
-
-// Hiragana Match has four close spellings, including the requested voicing/long-vowel contrast.
-assert.deepEqual(Array.from(ev('hiraganaDistractors("そうじ")')).sort(),['そうし','そおじ','そおし'].sort());
-for(const language of ['en','zh-Hant']){
-  ev(`state.language='${language}';resetFilters();navigate('matching')`);
-  assert.ok(elements.app.innerHTML.includes('data-open-match="hiragana"'));
-  ev('activityClick({dataset:{openMatch:"hiragana"}})');
-  assert.equal(ev('state.view'),'hiragana-menu');
-  assert.equal(ev('activityNav()'),'matching');
-  assert.ok(elements.app.innerHTML.includes(language==='en'?'Choose hiragana words.':'選擇平假名配對詞彙。'));
-  clickData({hiraganaSet:'all'});
-  assert.equal(ev('state.view'),'hiragana-match');
-  assert.equal(ev('state.round.ids.length'),96);
-  for(let i=0;i<96;i++){
-    ev(`state.round.index=${i};prepareQuestion();render()`);
-    assert.equal(ev('state.round.options.length'),4);
-    assert.equal(ev('new Set(state.round.options).size'),4);
-    assert.equal(ev('state.round.options.filter(option=>option===wordBy(current()).kana).length'),1);
-    assert.equal(ev('state.round.options.every(option=>/^[ぁ-ゖー～]+$/u.test(option))'),true);
-    const prompt=elements.app.innerHTML.match(/<div class="match-prompt[^]*?<\/div>/)[0];
-    assert.ok(!prompt.includes(ev('wordBy(current()).kana')),prompt);
-    assert.ok(!elements.app.innerHTML.includes('undefined'));
-  }
-}
-for(const key of ['chapter-1','chapter-2',...Object.keys(expectedCategoryCounts).map(id=>'category-'+id)]){
-  ev(`startWordSet('hiragana-match','${key}')`);
-  const count=ev('state.round.ids.length');assert.ok(count>0);
-  if(key.startsWith('chapter-'))assert.equal(ev(`state.round.ids.every(id=>wordBy(id).ch===${key.slice(-1)})`),true);
-  else assert.equal(ev(`state.round.ids.every(id=>vocabularySection(wordBy(id))==='${key.slice(9)}')`),true);
-  ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
-  ev('run("restart")');assert.equal(ev('state.round.ids.length'),count);
-}
-ev('state.language="en";startWordPractice("hiragana-match",["1-09","2-09"],"Spelling practice");begin("hiragana-match",["1-09","2-09"]);render()');
-const oldKanjiAttempts=ev('progress.matches["1-09"]?.attempts||0'),oldWriteAttempts=ev('progress.words["1-09"]?.attempts||0');
-clickData({match:String(ev('state.round.options.indexOf(wordBy(current()).kana)'))});
-assert.equal(ev('state.round.correct'),1);
-assert.equal(ev('state.round.checked'),true);
-assert.equal(ev('state.round.index'),0);
-assert.equal(ev('progress.hiraganaMatches["1-09"].last'),true);
-assert.equal(ev('progress.matches["1-09"]?.attempts||0'),oldKanjiAttempts);
-assert.equal(ev('progress.words["1-09"]?.attempts||0'),oldWriteAttempts);
-assertManualFeedback();
-ev('run("next")');
-clickData({match:String(ev('state.round.options.findIndex(option=>option!==wordBy(current()).kana)'))});
-assert.equal(ev('state.round.correct'),1);
-assert.equal(ev('state.round.missed.join(",")'),'2-09');
-assert.ok(elements.app.innerHTML.includes('The correct match is ざっし.'));
-assert.equal(JSON.parse(Object.values(storage)[0]).progress.hiraganaMatches['2-09'].last,false);
-ev('run("next")');assert.ok(elements.app.innerHTML.includes('Round complete'));
-ev('run("repeatMissed")');assert.equal(ev('state.round.ids.join(",")'),'2-09');
-console.log('PASS: bilingual Hiragana Match, all 96 prompts, four similar choices, independent saved scoring, manual feedback and scoped retries.');
 
 // Dialogue categories lead to a guide, then either game; retries retain that category.
 const dialogueCategoryCounts={introductions:5,courtesy:5,replies:4};
@@ -563,21 +470,211 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
 }
 console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all 14 scenes, category-only choices, scoped retries and guide return paths.');
 
-// Matching has only two word modes; This/That belongs to Dialogue in both languages.
-for(const language of ['en','zh-Hant']){
-  ev(`state.language='${language}';navigate('matching')`);
-  assert.deepEqual([...elements.app.innerHTML.matchAll(/data-open-match="([^"]+)"/g)].map(m=>m[1]),['kanji','hiragana']);
-  assert.ok(!elements.app.innerHTML.includes('data-open-demonstratives'));
-  assert.equal(ev('typeof questionWordsContent'),'undefined');
-  ev('activityClick({dataset:{openMatch:"wh"}})');assert.equal(ev('state.view'),'matching');
-  ev('startActivity("wh")');assert.equal(ev('state.view'),'matching');
-  ev('navigate("dialogue")');
-  assert.ok(elements.app.innerHTML.includes('data-open-demonstratives="guide"'));
-  ev('activityClick({dataset:{openDemonstratives:"guide"}})');
-  assert.equal(ev('activityNav()'),'dialogue');
-  assert.ok(elements.app.innerHTML.includes('data-back-view="dialogue"'));
-  ev('activityClick({dataset:{openDemonstratives:"practice"}})');
-  assert.equal(ev('activityNav()'),'dialogue');
-  assert.equal(ev('state.activity.ids.length'),7);
+// Illustrated guide cards stay in one accessible carousel for every category.
+for(const language of ['en','zh-Hant'])for(const category of ['introductions','courtesy','replies','demonstratives']){
+  ev(`state.language='${language}';pageHistory.length=0;navigate('dialogue')`);
+  if(category==='demonstratives')clickData({openDemonstratives:'guide'});
+  else clickData({dialogueCategory:category});
+  const count=category==='demonstratives'?7:dialogueCategoryCounts[category];
+  assert.equal((elements.app.innerHTML.match(/aria-roledescription="slide"/g)||[]).length,count);
+  assert.equal((elements.app.innerHTML.match(/<svg[^>]+role="img"/g)||[]).length,count);
+  assert.ok(elements.app.innerHTML.includes('aria-roledescription="carousel"'));
+  assert.ok(elements.app.innerHTML.includes('data-carousel-step="-1"'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Next expression':'下一個說法'));
+  assert.ok(!elements.app.innerHTML.includes('undefined'));
+  ev('state.guideIndex=2;run("toggleLanguage")');assert.equal(ev('state.guideIndex'),2);
+  if(category==='demonstratives')clickData({openDemonstratives:'practice'});
+  else clickData({openDialogue:'dialogue-choice'});
+  clickData({action:'back'});
+  assert.equal(ev('state.guideIndex'),2);
+  assert.ok(elements.app.innerHTML.includes('3 / '+count));
 }
-console.log('PASS: Question Words removed, Matching has two modes, This/That guide and game highlight Dialogue.');
+// Exercise native scrolling, controls and boundaries without a browser.
+const carouselQuerySelector=ctx.document.querySelector;
+const carouselTrack={children:[{offsetLeft:0},{offsetLeft:500},{offsetLeft:1000}],scrollLeft:0,scrollTo({left}){this.scrollLeft=left;}};
+const carouselPrevious={disabled:false},carouselNext={disabled:false},carouselPosition={textContent:''};
+ctx.document.querySelector=selector=>({'.guide-carousel':carouselTrack,'.guide-position':carouselPosition,'[data-carousel-step="-1"]':carouselPrevious,'[data-carousel-step="1"]':carouselNext}[selector]||carouselQuerySelector(selector));
+ev('state.guideIndex=0;moveGuide(-1)');assert.equal(carouselTrack.scrollLeft,0);
+clickData({carouselStep:'1'});assert.equal(carouselTrack.scrollLeft,500);
+ev('syncGuideScroll(document.querySelector(".guide-carousel"))');assert.equal(carouselPosition.textContent,'2 / 3');
+assert.equal(carouselPrevious.disabled,false);assert.equal(carouselNext.disabled,false);
+ev('moveGuide(100);syncGuideScroll(document.querySelector(".guide-carousel"))');
+assert.equal(carouselTrack.scrollLeft,1000);assert.equal(carouselNext.disabled,true);
+carouselTrack.scrollLeft=10;ev('syncGuideScroll(document.querySelector(".guide-carousel"))');
+assert.equal(ev('state.guideIndex'),0);assert.equal(carouselPrevious.disabled,true);
+ev('state.guideIndex=1;restoreGuideCarousel()');assert.equal(carouselTrack.scrollLeft,500);
+ctx.document.querySelector=carouselQuerySelector;
+console.log('PASS: Kanji Match removed; illustrated bilingual guide carousels, previous/next boundaries, scrolling and slide restoration after language switching and games.');
+
+// Write accepts a blank C only for no-kanji words, without changing mock grading.
+assert.equal(ev('WORDS.every(w=>gradeWord(w,w.kana,"",true).score===(w.c==="X"?1:.5))'),true);
+for(const answer of ['','  ','　','X','x','ｘ','×']){
+  ev(`startWriteWords(['2-18'],'Blank kanji practice');state.round.b='かぎ';state.round.c=${JSON.stringify(answer)};run('checkWrite')`);
+  assert.equal(ev('state.round.result.cOk'),true);
+  assert.equal(ev('state.round.result.score'),1);
+  assert.equal(ev('state.round.correct'),1);
+  assert.equal(ev('state.round.missed.length'),0);
+}
+for(const answer of ['。','～','鍵','no'])assert.equal(ev(`gradeWord(wordBy('2-18'),'かぎ',${JSON.stringify(answer)},true).cOk`),false);
+ev('startWriteWords(["1-09"],"Kanji required");state.round.b="がくせい";state.round.c="";run("checkWrite")');
+assert.equal(ev('state.round.result.score'),.5);
+assert.equal(ev('state.round.missed.length'),1);
+ev('startWriteWords(["2-18"],"No reading");state.round.b="";state.round.c="";run("checkWrite")');
+assert.equal(ev('state.round.result.score'),.5);
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';render()`);
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'No kanji? Leave C blank or enter X.':'沒有漢字時，C 欄可留空或填 X。'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Blank or X':'留空或 X'));
+}
+ev('startMock();mock.a[0]={id:"2-18",b:"かぎ",c:""};finishMock()');
+assert.equal(ev('mock.aResults[0].score'),.5);
+assert.equal(ev('mock.aResults[0].cOk'),false);
+console.log('PASS: Write accepts blank/whitespace or X for no-kanji words, still requires kana and taught kanji, and preserves strict mock scoring.');
+
+// Kanji Writing is independent from the renamed typed Vocabulary Recall mode.
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';navigate('home')`);
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Vocabulary Recall':'詞彙回想'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Kanji Writing':'漢字書寫'));
+  ev('navigate("handwriting-menu")');
+  assert.equal(ev('activityNav()'),'handwriting-menu');
+  assert.ok(elements.app.innerHTML.includes('data-handwriting-set="all"'));
+  clickData({handwritingMenu:'category'});
+  for(const category of ev('VOCAB_CATEGORIES.filter(c=>!c.ids.some(id=>hasKanji(wordBy(id)))).map(c=>c.id)'))assert.ok(!elements.app.innerHTML.includes(`data-handwriting-set="category-${category}"`));
+  clickData({handwritingSet:'category-occupations'});
+  assert.equal(ev('state.view'),'kanji-writing');
+  assert.equal(ev('state.round.ids.every(id=>hasKanji(wordBy(id)))'),true);
+  clickData({action:'back'});assert.equal(ev('state.view'),'handwriting-menu');assert.equal(ev('state.handwritingMenu'),'category');
+}
+for(const key of ['all','chapter-1','chapter-2',...ev('VOCAB_CATEGORIES.filter(c=>c.ids.some(id=>hasKanji(wordBy(id)))).map(c=>"category-"+c.id)')]){
+  ev(`startWordSet('kanji-writing','${key}')`);
+  const expected=ev(`WORDS.filter(hasKanji).filter(w=>'${key}'==='all'||('${key}'.startsWith('chapter-')?w.ch===Number('${key}'.slice(-1)):vocabularySection(w)==='${key}'.slice(9))).length`);
+  assert.equal(ev('state.round.ids.length'),expected);
+  for(let i=0;i<expected;i++){
+    ev(`state.round.index=${i};prepareQuestion();render()`);
+    assert.equal((elements.app.innerHTML.match(/data-kanji-cell=/g)||[]).length,ev('kanjiCharacters(wordBy(current())).length'));
+    assert.ok(!elements.app.innerHTML.includes('undefined'));
+    assert.ok(!elements.app.innerHTML.includes('class="kanji-model'));
+  }
+  ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
+  ev('run("restart")');assert.equal(ev('state.round.ids.length'),expected);
+}
+ev('state.language="en";startWordPractice("kanji-writing",["1-01","1-09","2-18"],"Kanji only")');
+assert.equal(ev('state.round.ids.join(",")'),'1-09');
+const inkGroup={innerHTML:''};
+const penPad={dataset:{kanjiCell:'0'},getBoundingClientRect:()=>({left:10,top:20,width:200,height:200}),setPointerCapture(){},hasPointerCapture:()=>true,releasePointerCapture(){},querySelector:()=>inkGroup};
+const penEvent=(overrides={})=>({target:{closest:()=>penPad},pointerId:1,clientX:60,clientY:80,isPrimary:true,button:0,preventDefault(){},...overrides});
+handlers.pointerdown(penEvent());assert.equal(ev('state.round.ink.length'),1);
+assert.deepEqual(Array.from(ev('state.round.ink[0].points[0]')),[50,60]);
+handlers.pointerdown(penEvent({pointerId:2}));assert.equal(ev('state.round.ink.length'),1);
+handlers.pointermove(penEvent({pointerId:2}));assert.equal(ev('state.round.ink[0].points.length'),1);
+handlers.pointermove(penEvent({clientX:400,clientY:-50}));
+assert.deepEqual(Array.from(ev('state.round.ink[0].points[1]')),[200,0]);
+assert.ok(inkGroup.innerHTML.includes('L200 0'));
+handlers.pointerup(penEvent());
+ev('run("toggleLanguage")');assert.equal(ev('state.round.ink.length'),1);
+ev('run("kanjiUndo")');assert.equal(ev('state.round.ink.length'),0);
+handlers.pointerdown(penEvent({button:2}));assert.equal(ev('state.round.ink.length'),0);
+handlers.pointerdown(penEvent());handlers.pointercancel(penEvent());
+ev('run("kanjiClear")');assert.equal(ev('state.round.ink.length'),0);
+ev('run("kanjiReveal");run("kanjiCorrect")');assert.equal(ev('state.round.checked'),false);
+// A model is revealed before self-marking, and empty drawings cannot earn a recall.
+ev('begin("kanji-writing",["1-09"]);render()');
+handlers.pointerdown(penEvent());handlers.pointerup(penEvent());
+const typedAttempts=ev('progress.words["1-09"]?.attempts||0');
+ev('run("kanjiCorrect")');assert.equal(ev('state.round.checked'),false);
+ev('run("kanjiReveal")');assert.ok(elements.app.innerHTML.includes('class="kanji-model jp"'));
+handlers.pointerdown(penEvent());assert.equal(ev('state.round.ink.length'),1);
+ev('run("kanjiCorrect")');assert.equal(ev('state.round.correct'),1);assert.equal(ev('state.round.checked'),true);
+assert.equal(ev('progress.words["1-09"]?.attempts||0'),typedAttempts);
+const handwritingAttempts=ev('progress.kanjiWriting["1-09"].attempts');
+ev('run("kanjiCorrect")');assert.equal(ev('progress.kanjiWriting["1-09"].attempts'),handwritingAttempts);
+assert.equal(JSON.parse(Object.values(storage)[0]).progress.kanjiWriting['1-09'].last,true);
+ev('run("next")');assert.ok(elements.app.innerHTML.includes('data-back-view="handwriting-menu"'));
+ev('begin("kanji-writing",["1-09"]);run("kanjiReveal");run("kanjiMissed")');assert.equal(ev('state.round.missed.join(",")'),'1-09');
+console.log('PASS: Kanji Writing selection, per-character pads, pointer input and bounds, undo/clear/cancel, model reveal, independent self-check progress, retries and Vocabulary Recall naming.');
+
+// Both Dialogue games illustrate every situation without giving the answer in the picture.
+for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dialogue-tiles'])for(const id of ev('DIALOGUES.map(q=>q.id)')){
+  ev(`state.language='${language}';startActivity('${kind}',['${id}'])`);
+  const figure=elements.app.innerHTML.match(/<figure class="expression-figure">[^]*?<\/figure>/)?.[0];
+  assert.ok(figure,`${kind}: ${id}`);
+  assert.ok(figure.includes('role="img"'));
+  assert.ok(figure.includes(`aria-labelledby="expression-scene-${id}"`));
+  assert.ok(figure.includes(language==='en'?'>You</text>':'>你</text>'));
+  assert.ok(!figure.includes(ev('activityCurrent().kana')));
+  assert.ok(!elements.app.innerHTML.includes(ev('esc(translateText(activityCurrent().why))')));
+}
+console.log('PASS: all 14 Dialogue scenes illustrated in both games and languages, with answer explanations kept behind feedback.');
+
+// Rebuild launches vocabulary or sentences, and replaces Matching before writing modes.
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';pageHistory.length=0;navigate('home')`);
+  assert.equal(ev('STUDY_MODES.some(mode=>mode.id==="matching")'),false);
+  assert.equal(ev('STUDY_MODES.findIndex(mode=>mode.id==="rebuild-menu")<STUDY_MODES.findIndex(mode=>mode.id==="handwriting-menu")'),true);
+  assert.equal(ev('STUDY_MODES.findIndex(mode=>mode.id==="rebuild-menu")<STUDY_MODES.findIndex(mode=>mode.id==="write-menu")'),true);
+  clickData({view:'rebuild-menu'});assert.equal(ev('activityNav()'),'rebuild-menu');
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Vocabulary Rebuild':'詞彙重組'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Sentence Rebuild':'句子重組'));
+  assert.ok(!elements.app.innerHTML.includes('data-open-match'));
+  clickData({view:'sentences'});assert.equal(ev('activityNav()'),'rebuild-menu');
+  clickData({action:'back'});assert.equal(ev('state.view'),'rebuild-menu');
+  clickData({view:'vocabulary-menu'});assert.equal(ev('activityNav()'),'rebuild-menu');
+  assert.ok(elements.app.innerHTML.includes('data-vocabulary-set="all"'));
+  clickData({vocabularyMenu:'category'});
+  for(const category of Object.keys(expectedCategoryCounts))assert.ok(elements.app.innerHTML.includes(`data-vocabulary-set="category-${category}"`));
+  clickData({vocabularySet:'category-occupations'});
+  clickData({action:'back'});assert.equal(ev('state.vocabularyMenu'),'category');
+}
+for(const key of ['all','chapter-1','chapter-2',...Object.keys(expectedCategoryCounts).map(id=>'category-'+id)]){
+  ev(`startWordSet('vocabulary-rebuild','${key}')`);
+  const count=ev('state.round.ids.length');assert.ok(count>0);
+  if(key==='all')assert.equal(count,96);
+  else if(key.startsWith('chapter-'))assert.equal(ev(`state.round.ids.every(id=>wordBy(id).ch===Number('${key}'.slice(-1)))`),true);
+  else assert.equal(ev(`state.round.ids.every(id=>vocabularySection(wordBy(id))==='${key}'.slice(9))`),true);
+  ev('state.round.missed=[state.round.ids[0]];run("repeatMissed")');assert.equal(ev('state.round.ids.length'),1);
+  ev('run("restart")');assert.equal(ev('state.round.ids.length'),count);
+}
+const exampleBank=Array.from(ev('vocabularyTileBank({kana:"そうじ"})'));
+for(const unit of ['そ','ぞ','う','じ','し','っじ'])assert.ok(exampleBank.includes(unit),unit);
+const chooseVocabularyAnswer=()=>ev(`{const r=state.round;for(const unit of kanaUnits(vocabularyReading(wordBy(current())))){const index=r.tileBank.findIndex((text,i)=>text===unit&&!r.chosen.includes(i));if(index<0)throw Error('Missing correct tile');vocabularyTileClick({vocabularyTile:String(index)});}}`);
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';resetFilters();startWordSet('vocabulary-rebuild','all')`);
+  for(let i=0;i<96;i++){
+    ev(`state.round.index=${i};prepareQuestion();render()`);
+    assert.equal(ev('state.round.tileBank.every(unit=>/^[ぁ-ゖー]+$/u.test(unit))'),true);
+    assert.equal(ev('kanaUnits(vocabularyReading(wordBy(current()))).every(unit=>state.round.tileBank.filter(text=>text===unit).length>=kanaUnits(vocabularyReading(wordBy(current()))).filter(text=>text===unit).length)'),true);
+    assert.equal(ev('state.round.tileBank.some(unit=>!kanaUnits(vocabularyReading(wordBy(current()))).includes(unit))'),true);
+    assert.ok(!elements.app.innerHTML.includes('undefined'));
+    chooseVocabularyAnswer();
+    assert.equal(ev('vocabularyAnswer()'),ev('vocabularyReading(wordBy(current()))'));
+    ev('run("vocabularyCheck")');assert.equal(ev('state.round.result'),true);
+    assert.equal(ev('state.round.index'),i);assertManualFeedback();
+  }
+}
+ev('state.language="en";startWordPractice("vocabulary-rebuild",["1-09","2-09"],"Spelling practice");begin("vocabulary-rebuild",["1-09","2-09"]);render()');
+const oldRecallAttempts=ev('progress.words["1-09"]?.attempts||0');
+chooseVocabularyAnswer();
+const oldIndex=ev('state.round.index');
+handlers.keydown({key:'Enter',target:{tagName:'BODY'},preventDefault(){}});
+assert.equal(ev('state.round.index'),oldIndex,'Enter checks the answer without skipping feedback');
+assert.equal(ev('state.round.result'),true);
+assert.equal(ev('progress.words["1-09"]?.attempts||0'),oldRecallAttempts);
+assert.equal(JSON.parse(Object.values(storage)[0]).progress.vocabularyRebuild['1-09'].last,true);
+handlers.keydown({key:'Enter',target:{tagName:'BODY'},preventDefault(){}});assert.equal(ev('state.round.index'),oldIndex+1);
+const firstIndex=ev('state.round.tileBank.findIndex(unit=>unit===kanaUnits(vocabularyReading(wordBy(current())))[0])');
+clickData({vocabularyTile:String(firstIndex)});clickData({vocabularyTile:String(firstIndex)});assert.equal(ev('state.round.chosen.length'),1);
+clickData({vocabularyTile:'-1'});clickData({vocabularyTile:'9999'});assert.equal(ev('state.round.chosen.length'),1);
+clickData({vocabularyReturn:'-1'});assert.equal(ev('state.round.chosen.length'),1);
+ev('run("vocabularyCheck")');assert.equal(ev('state.round.checked'),false);
+clickData({vocabularyReturn:'0'});assert.equal(ev('state.round.chosen.length'),0);
+chooseVocabularyAnswer();ev('run("vocabularyUndo")');assert.equal(ev('state.round.chosen.length'),ev('kanaUnits(vocabularyReading(wordBy(current()))).length-1'));
+ev('run("vocabularyClear")');assert.equal(ev('state.round.chosen.length'),0);
+chooseVocabularyAnswer();ev('state.round.chosen[0]=state.round.tileBank.findIndex(unit=>!kanaUnits(vocabularyReading(wordBy(current()))).includes(unit));run("vocabularyCheck")');
+assert.equal(ev('state.round.result'),false);assert.equal(ev('state.round.missed.join(",")'),'2-09');
+const attemptsAfterWrong=ev('progress.vocabularyRebuild["2-09"].attempts');ev('run("vocabularyCheck")');assert.equal(ev('progress.vocabularyRebuild["2-09"].attempts'),attemptsAfterWrong);
+ev('run("next")');assert.ok(elements.app.innerHTML.includes('Round complete'));
+ev('run("repeatMissed")');assert.equal(ev('state.round.ids.join(",")'),'2-09');
+ev('run("vocabularyReveal")');assert.equal(ev('state.round.result'),false);assert.equal(ev('state.round.revealed'),true);
+ev('navigate("matching")');assert.equal(ev('state.view'),'rebuild-menu');assert.equal(ev('typeof matchingMenu'),'undefined');
+console.log('PASS: bilingual Rebuild mode menu and order, full-word/chapter/category sets, all 96 readings with complete similar-kana banks, duplicate tiles, scoring, manual feedback, validation and retries.');

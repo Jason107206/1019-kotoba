@@ -28,6 +28,10 @@ jobs:
         with:
           node-version: '22'
           package-manager-cache: false
+      - name: Build offline asset cache
+        run: node scripts/build-pwa.cjs
+      - name: Verify PWA
+        run: node tests/pwa.cjs
       - name: Verify game content and scoring
         run: node tests/verify.cjs
       - name: Configure Pages
