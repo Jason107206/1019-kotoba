@@ -1,6 +1,8 @@
 'use strict';
 // Interface translations only: Japanese answers and quiz data remain unchanged.
 const ZH_HANT = {
+  "Rebuild modes": "重組模式",
+  "← Back to Overview": "← 返回總覽",
   "Rebuild, your way.": "選擇重組練習。",
   "Choose vocabulary or sentences, then put the tiles in order.": "選擇詞彙或句子，再把字卡按正確順序排列。",
   "Vocabulary Rebuild": "詞彙重組",
@@ -89,7 +91,7 @@ const ZH_HANT = {
   "Write": "默寫",
   "Matching": "配對練習",
   "Dialogue": "情境對話",
-  "Rebuild": "句子重組",
+  "Rebuild": "重組練習",
   "Mock quiz": "模擬測驗",
   "All words": "全部詞彙",
   "Choose your practice.": "選擇練習模式。",

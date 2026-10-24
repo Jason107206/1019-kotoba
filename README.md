@@ -66,7 +66,7 @@ The former Write mode is labelled Vocabulary Recall; it still checks typed hirag
 
 ## Progressive Web App
 
-Kotoba includes an installable web app manifest, 192px/512px icons, a maskable icon and an Apple touch icon. On supported browsers, an Install app button appears when installation is offered. On iPhone/iPad, use Safari’s Share → Add to Home Screen. Installation and offline support require HTTPS (GitHub Pages) or localhost. Open the deployed app online once to finish caching; the installed app then opens offline with every study mode, including Kanji Writing. Progress continues to use browser localStorage.
+Kotoba includes an installable web app manifest, 192px/512px icons, a maskable icon and an Apple touch icon. On the first visit, a dismissible installation invitation appears. Install opens the native browser prompt when available, otherwise shows browser-specific instructions. Not now and dismissal are remembered, and the invitation is skipped in installed standalone mode. An Install app button remains available when the browser offers installation. On iPhone/iPad, use Safari’s Share → Add to Home Screen. Installation and offline support require HTTPS (GitHub Pages) or localhost. Open the deployed app online once to finish caching; the installed app then opens offline with every study mode, including Kanji Writing. Progress continues to use browser localStorage.
 
 The manifest, start URL, service worker and assets use relative paths, supporting both the GitHub Actions deployment at the project root and branch publishing under `dist/`. In branch publishing, the installed app starts directly at `dist/`, so its offline launch does not depend on the root redirect.
 

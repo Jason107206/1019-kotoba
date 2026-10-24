@@ -21,16 +21,20 @@ function worker(scope){
 }
 function pendingEvent(){let promise;return {waitUntil:p=>promise=p,done:()=>promise};}
 function fakeButton(){const events={};return {events,hidden:true,disabled:false,textContent:'',addEventListener:(name,fn)=>events[name]=fn};}
-function client({supported=true,secure=true,waiting=true,controller=true,installing=false}={}){
+function client({supported=true,secure=true,waiting=true,controller=true,installing=false,seen=false,standalone=false}={}){
   const winEvents={},swEvents={},regEvents={},workerEvents={},install=fakeButton(),update=fakeButton(),messages=[];
   const state={reloads:0,registrations:[],prompted:0},worker={state:installing?'installing':'installed',postMessage:message=>messages.push(message),addEventListener:(name,fn)=>workerEvents[name]=fn};
   const registration={waiting:waiting?worker:null,installing:installing?worker:null,addEventListener:(name,fn)=>regEvents[name]=fn};
   const serviceWorker={controller:controller?{}:null,addEventListener:(name,fn)=>swEvents[name]=fn,register:async(...args)=>{state.registrations.push(args);return registration;}};
-  const document={getElementById:id=>id==='pwa-install'?install:update,documentElement:{lang:'en'}};
-  const window={isSecureContext:secure,location:{reload:()=>state.reloads++},addEventListener:(name,fn)=>winEvents[name]=fn};
+  const welcome=fakeButton();welcome.open=false;welcome.showModal=()=>welcome.open=true;welcome.close=()=>welcome.open=false;
+  const extra={'pwa-welcome':welcome,'pwa-welcome-install':fakeButton(),'pwa-welcome-later':fakeButton(),'pwa-welcome-title':fakeButton(),'pwa-welcome-copy':fakeButton(),'pwa-welcome-help':fakeButton()};
+  install.click=()=>install.events.click();
+  const document={getElementById:id=>id==='pwa-install'?install:id==='pwa-update'?update:extra[id],documentElement:{lang:'en'}};
+  const storage={seen};const localStorage={getItem:()=>storage.seen?'seen':null,setItem:()=>storage.seen=true};
+  const window={matchMedia:()=>({matches:standalone}),isSecureContext:secure,location:{reload:()=>state.reloads++},addEventListener:(name,fn)=>winEvents[name]=fn};
   let observer;
-  vm.runInNewContext(fs.readFileSync(path.join(dist,'pwa.js'),'utf8'),{document,window,navigator:supported?{serviceWorker}:{},MutationObserver:class{constructor(fn){observer=fn;}observe(){}}});
-  return {winEvents,swEvents,regEvents,workerEvents,worker,install,update,messages,state,document,observer};
+  vm.runInNewContext(fs.readFileSync(path.join(dist,'pwa.js'),'utf8'),{document,window,localStorage,navigator:supported?{serviceWorker}:{},MutationObserver:class{constructor(fn){observer=fn;}observe(){}}});
+  return {winEvents,swEvents,regEvents,workerEvents,worker,install,update,messages,state,document,observer,extra,storage};
 }
 (async()=>{
   for(const scope of ['https://example.com/1019-kotoba/','https://example.com/1019-kotoba/dist/']){
@@ -60,5 +64,11 @@ function client({supported=true,secure=true,waiting=true,controller=true,install
   let prevented=false;c.winEvents.beforeinstallprompt({preventDefault:()=>prevented=true,prompt:async()=>c.state.prompted++,userChoice:Promise.resolve({outcome:'accepted'})});assert.equal(prevented,true);assert.equal(c.install.hidden,false);await c.install.events.click();assert.equal(c.state.prompted,1);assert.equal(c.install.hidden,true);
   c.document.documentElement.lang='zh-Hant';c.observer();assert.equal(c.install.textContent,'安裝應用程式');assert.equal(c.update.textContent,'更新並重新載入');
   assert.equal(client({supported:false}).winEvents.load,undefined);assert.equal(client({secure:false}).winEvents.load,undefined);
+  const first=client();await first.winEvents.load();assert.equal(first.extra['pwa-welcome'].open,true);
+  first.extra['pwa-welcome-later'].events.click();assert.equal(first.extra['pwa-welcome'].open,false);assert.equal(first.storage.seen,true);
+  const returning=client({seen:true});await returning.winEvents.load();assert.equal(returning.extra['pwa-welcome'].open,false);
+  const installed=client({standalone:true});await installed.winEvents.load();assert.equal(installed.extra['pwa-welcome'].open,false);
+  const manual=client();await manual.winEvents.load();manual.extra['pwa-welcome-install'].events.click();assert.equal(manual.extra['pwa-welcome-help'].hidden,false);
+  const native=client();await native.winEvents.load();native.winEvents.beforeinstallprompt({preventDefault(){},prompt:async()=>native.state.prompted++,userChoice:Promise.resolve({outcome:'accepted'})});await native.extra['pwa-welcome-install'].events.click();assert.equal(native.state.prompted,1);assert.equal(native.extra['pwa-welcome'].open,false);
   console.log('PASS: PWA icons/manifest, reproducible cache revision, complete offline assets, both Pages paths, cache isolation, safe updates, install prompt and bilingual controls.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

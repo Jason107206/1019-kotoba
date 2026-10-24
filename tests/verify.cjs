@@ -678,3 +678,17 @@ ev('run("repeatMissed")');assert.equal(ev('state.round.ids.join(",")'),'2-09');
 ev('run("vocabularyReveal")');assert.equal(ev('state.round.result'),false);assert.equal(ev('state.round.revealed'),true);
 ev('navigate("matching")');assert.equal(ev('state.view'),'rebuild-menu');assert.equal(ev('typeof matchingMenu'),'undefined');
 console.log('PASS: bilingual Rebuild mode menu and order, full-word/chapter/category sets, all 96 readings with complete similar-kana banks, duplicate tiles, scoring, manual feedback, validation and retries.');
+
+// A direct Overview link appears on every mode and its subpages.
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}'`);
+  for(const view of ['rebuild-menu','vocabulary-menu','vocabulary-rebuild','sentences','write-menu','write','handwriting-menu','kanji-writing','dialogue','bank','mock']){
+    ev(`navigate('${view}')`);
+    assert.ok(elements.app.innerHTML.includes(language==='en'?'← Back to Overview':'← 返回總覽'),view);
+  }
+  ev('navigate("dialogue");openDialogueCategory("courtesy")');
+  assert.ok(elements.app.innerHTML.includes('class="overview-back"'));
+  ev('startActivity("dialogue-choice")');assert.ok(elements.app.innerHTML.includes('class="overview-back"'));
+  clickData({view:'home'});assert.equal(ev('state.view'),'home');
+  assert.ok(!elements.app.innerHTML.includes('class="overview-back"'));
+}
