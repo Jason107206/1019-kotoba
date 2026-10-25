@@ -6,6 +6,7 @@ assert.equal(source,generate(),'Rebuild offline assets with node scripts/build-p
 const manifest=JSON.parse(fs.readFileSync(path.join(dist,'manifest.webmanifest'),'utf8'));
 assert.equal(manifest.start_url,'./');assert.equal(manifest.scope,'./');assert.equal(manifest.id,'./');assert.equal(manifest.display,'standalone');
 assert.ok(manifest.icons.some(icon=>icon.purpose==='maskable'));
+assert.ok(files(dist).includes('icons/lulu-piggy.png'),'The shared lesson illustration must be available offline');
 for(const icon of [...manifest.icons,{src:'icons/apple-touch-icon.png',sizes:'180x180'}]){
   const png=fs.readFileSync(path.join(dist,icon.src));assert.equal(png.toString('hex',0,8),'89504e470d0a1a0a');
   assert.equal(`${png.readUInt32BE(16)}x${png.readUInt32BE(20)}`,icon.sizes);

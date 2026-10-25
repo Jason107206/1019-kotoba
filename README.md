@@ -88,7 +88,7 @@ All study modes share the Material 3 color roles and component styles in `dist/s
 
 The navigation drawer stays visible from 840px upward. On smaller screens, the app bar opens a modal drawer with a focus trap, Escape dismissal, and background interaction disabled. The active study mode is marked on every screen. The overview retains its six study cards. Lesson selectors have visible labels, all pages have a heading, and keyboard focus survives answer/language redraws. Browser zoom remains enabled, and reduced-motion and forced-color preferences are supported.
 
-Installed-app icons and theme colors match the new palette. `dist/icons/icon.svg` is the vector source for the PNG installation icons. Existing storage keys, study content, quiz grading, and explicit PWA update behavior remain unchanged.
+The lesson scenes use a shared transparent Lulu illustration drawn from the supplied visual references, set against warm brick and wood backgrounds. The asset is included in the offline cache. Installed-app icons and theme colors match the new palette. `dist/icons/icon.svg` is the vector source for the PNG installation icons. Existing storage keys, study content, quiz grading, and explicit PWA update behavior remain unchanged.
 
 ### Optional browser verification
 

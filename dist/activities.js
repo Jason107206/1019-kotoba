@@ -146,28 +146,19 @@ const DIALOGUES=[
 function guideCards(cards,label){
   return `<section class="expression-guide" aria-label="${esc(label)}"><div class="guide-heading"><h2>${label}</h2></div><div class="guide-cards">${cards.join('')}</div></section>`;
 }
-// One small vector character reused wherever a lesson scene shows a person.
-// Its simple shapes remain legible offline and at card size.
-function luluPiggy(x,y,scale=1,accent='#6750a4'){
-  return `<g class="lulu-piggy" transform="translate(${x} ${y}) scale(${scale})" aria-hidden="true">
-    <ellipse cx="-23" cy="55" rx="11" ry="6" fill="#cf879a"/>
-    <ellipse cx="23" cy="55" rx="11" ry="6" fill="#cf879a"/>
-    <ellipse cy="27" rx="37" ry="32" fill="#f5b7c5" stroke="#bd8294" stroke-width="2"/>
-    <path d="M-31 22q-15 4-18-8m80 8q15 4 18-8" fill="none" stroke="#eaa9b9" stroke-width="9" stroke-linecap="round"/>
-    <path d="M-29-25-38-48q20-1 29 12M29-25l9-23Q18-49 9-36" fill="#f6b9c8" stroke="#bd8294" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M-26-32-31-42q10 2 14 11M26-32l5-10q-10 2-14 11" fill="#e997ac"/>
-    <circle cy="-10" r="38" fill="#f9c5d0" stroke="#bd8294" stroke-width="2"/>
-    <ellipse cx="-24" cy="1" rx="8" ry="5" fill="#ef98ad" opacity=".8"/>
-    <ellipse cx="24" cy="1" rx="8" ry="5" fill="#ef98ad" opacity=".8"/>
-    <path d="M-19-16q5-5 10 0m18 0q5-5 10 0" fill="none" stroke="#5c4250" stroke-width="3" stroke-linecap="round"/>
-    <ellipse cy="-1" rx="14" ry="10" fill="#ef9eb0" stroke="#ce8196" stroke-width="1.5"/>
-    <ellipse cx="-5" cy="-1" rx="2.5" ry="3.4" fill="#9a6578"/>
-    <ellipse cx="5" cy="-1" rx="2.5" ry="3.4" fill="#9a6578"/>
-    <path d="M-13 31q13 10 26 0" fill="none" stroke="${accent}" stroke-width="7" stroke-linecap="round"/>
-  </g>`;
+// A single transparent illustration keeps the character consistent in every lesson.
+// It was drawn from the supplied examples and is cached for offline study.
+function luluPiggy(x,y,scale=1){
+  return `<image class="lulu-piggy" href="icons/lulu-piggy.png" x="${x-41*scale}" y="${y-50*scale}" width="${82*scale}" height="${100*scale}" preserveAspectRatio="xMidYMid meet" aria-hidden="true"/>`;
+}
+function lessonBackdrop(height=225,floor=185){
+  return `<rect x="5" y="5" width="490" height="${height-10}" rx="24" fill="#fff1d4"/>
+    <path d="M5 53h490M5 101h490M5 149h490M70 5v48m116 0v48m119-96v48m116 0v48M125 101v48m154-48v48m147-48v48" stroke="#f5d8a2" stroke-width="7" opacity=".55"/>
+    <path d="M5 ${floor}h490v${height-floor-29}q0 24-24 24H29q-24 0-24-24Z" fill="#edbc81"/>
+    <path d="M5 ${floor}h490" stroke="#aa714a" stroke-width="3"/>`;
 }
 function dialogueGraphic(q){
-  const bubble=(x,symbol)=>`<g transform="translate(${x} 0)"><path d="M-37 28h74a12 12 0 0 1 12 12v26a12 12 0 0 1-12 12H9L-5 94l2-16h-34a12 12 0 0 1-12-12V40a12 12 0 0 1 12-12" fill="#fff" stroke="#a6b8a0" stroke-width="2"/><text y="62" text-anchor="middle" font-size="29" fill="#425b36">${symbol}</text></g>`;
+  const bubble=(x,symbol)=>`<g transform="translate(${x} 0)"><path d="M-37 28h74a12 12 0 0 1 12 12v26a12 12 0 0 1-12 12H9L-5 94l2-16h-34a12 12 0 0 1-12-12V40a12 12 0 0 1 12-12" fill="#fffaf0" stroke="#a36843" stroke-width="2"/><text y="62" text-anchor="middle" font-size="29" fill="#7e4a30">${symbol}</text></g>`;
   const gift='<rect x="219" y="123" width="62" height="49" rx="4" fill="#f4d780" stroke="#876d35" stroke-width="2"/><path d="M250 123v49m-33-39h66m-33-10c-27-1-23-26-8-18l8 18c25-1 25-25 9-18Z" fill="none" stroke="#d36f55" stroke-width="5"/>';
   const badge='<rect x="211" y="113" width="78" height="54" rx="7" fill="#fff" stroke="#698a96" stroke-width="2"/><circle cx="230" cy="132" r="8" fill="#e3eada"/><path d="M220 152q10-17 20 0m8-25h29m-29 12h21" stroke="#698a96" stroke-width="3" fill="none"/>';
   const pen='<g transform="rotate(25 250 148)"><rect x="244" y="110" width="12" height="64" rx="4" fill="#557a88"/><path d="m244 174 6 14 6-14" fill="#d5b975"/></g><path d="M184 151h42m-11-9 11 9-11 9" stroke="#d36f55" stroke-width="4" fill="none"/>';
@@ -177,7 +168,7 @@ function dialogueGraphic(q){
   const umbrella='<path d="M212 133a38 38 0 0 1 76 0Z" fill="#d8e9f1" stroke="#557a88" stroke-width="2"/><path d="M250 132v43c0 17 20 17 20 0" fill="none" stroke="#557a88" stroke-width="4"/>';
   const props={meet:badge,intro:badge,likewise:badge,excuse:badge,name:badge,attention:'',offer:pen,thanks:gift,'thanks-full':gift,understand:bulb,incorrect:books,surprise:bulb,realise:umbrella,neighbour:house};
   const symbols={meet:'…',intro:'…',likewise:'↔',excuse:'?',name:'?',attention:'…',offer:'→',thanks:'♡','thanks-full':'♡',understand:'!',incorrect:'×',surprise:'!',realise:'!',neighbour:'…'};
-  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="expression-scene-${q.id}"><title id="expression-scene-${q.id}">${esc(q.scene||'Reply to a greeting.')}</title><rect x="5" y="5" width="490" height="210" rx="24" fill="#edf2e6"/><path d="M45 185h410" stroke="#cdd8c3" stroke-width="2"/>${luluPiggy(105,137,.88,'#6750a4')}${luluPiggy(395,137,.88,'#3f6676')}${bubble(105,symbols[q.id]||'…')}${q.id==='likewise'?bubble(395,'↔'):''}${props[q.id]||''}<text x="105" y="207" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="395" y="207" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text></svg></figure>`;
+  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="expression-scene-${q.id}"><title id="expression-scene-${q.id}">${esc(q.scene||'Reply to a greeting.')}</title>${lessonBackdrop()}${luluPiggy(105,137,1.08)}${luluPiggy(395,137,1.08)}${bubble(105,symbols[q.id]||'…')}${q.id==='likewise'?bubble(395,'↔'):''}${props[q.id]||''}<text x="105" y="207" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="395" y="207" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text></svg></figure>`;
 }
 
 const DIALOGUE_CATEGORIES=[
@@ -251,8 +242,8 @@ function activityClick(target){const d=target.dataset;if(d.openDemonstratives){i
 
 function demonstrativeGraphic(q,compact=false){
   const age=q.word.startsWith('1-19'),object=q.word==='2-36';
-  const figure=object?'<rect x="225" y="93" width="50" height="58" rx="5" fill="#f5d577" stroke="#8c7039" stroke-width="2"/><path d="M234 94v56m8-40h25m-25 12h20" stroke="#8c7039" stroke-width="2"/>':luluPiggy(250,140,.8);
-  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="wh-scene-${q.id}${compact?'-guide':''}"><title id="wh-scene-${q.id}${compact?'-guide':''}">${esc(q.clue)}</title><rect x="5" y="5" width="490" height="210" rx="24" fill="#edf2e6"/>${figure}<rect x="315" y="35" width="110" height="66" rx="16" fill="#fff" stroke="#a6b8a0" stroke-width="2"/><text x="370" y="79" text-anchor="middle" font-size="30" fill="#425b36">${age?'18?':'?'}</text></svg><figcaption>${esc(q.clue)}</figcaption></figure>`;
+  const figure=object?'<rect x="225" y="93" width="50" height="58" rx="5" fill="#f5d577" stroke="#8c7039" stroke-width="2"/><path d="M234 94v56m8-40h25m-25 12h20" stroke="#8c7039" stroke-width="2"/>':luluPiggy(250,122,1.24);
+  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="wh-scene-${q.id}${compact?'-guide':''}"><title id="wh-scene-${q.id}${compact?'-guide':''}">${esc(q.clue)}</title>${lessonBackdrop()}${figure}<rect x="315" y="35" width="110" height="66" rx="16" fill="#fffaf0" stroke="#a36843" stroke-width="2"/><text x="370" y="79" text-anchor="middle" font-size="30" fill="#7e4a30">${age?'18?':'?'}</text></svg><figcaption>${esc(q.clue)}</figcaption></figure>`;
 }
 function demonstrativeQuestion(q){
   return `${demonstrativeGraphic(q)}<div class="scene-sentence"><span class="eyebrow muted">${esc(q.clue)}</span><div class="jp" lang="ja">${esc(q.sentence).replace('{word}','<span class="scene-blank">_____</span>')}</div></div>`;

@@ -106,15 +106,15 @@ const PIGGY_VISUAL_ACCENTS={
 function piggyAccent(word){return PIGGY_VISUAL_ACCENTS[word.id]||({introductions:'💬',courtesy:'♡',replies:'↔',people:'👋',occupations:'📚',questions:'❓'})[vocabularySection(word)]||'✦';}
 function vocabularyVisual(word){
   const id=`vocab-visual-${word.id}`,category=vocabularySection(word);
-  let scene=`<circle cx="250" cy="100" r="76" fill="#fffefb"/><text x="250" y="128" text-anchor="middle" font-size="76" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${VOCAB_VISUALS[word.id]}</text>`;
+  let scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/><text x="250" y="128" text-anchor="middle" font-size="76" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${VOCAB_VISUALS[word.id]}</text>`;
   if(PIGGY_VISUAL_CATEGORIES.has(category)||word.id==='1-06'){
-    scene=`<circle cx="250" cy="100" r="76" fill="#fffefb"/>${luluPiggy(250,101,1.02)}<circle cx="336" cy="57" r="30" fill="#eaddff"/><text x="336" y="69" text-anchor="middle" font-size="31" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${piggyAccent(word)}</text>`;
+    scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/>${luluPiggy(250,100,1.32)}<circle cx="336" cy="57" r="30" fill="#ffe2ad"/><text x="336" y="69" text-anchor="middle" font-size="31" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${piggyAccent(word)}</text>`;
   }
   if(category==='demonstratives'){
     const position={'2-01':95,'2-04':95,'2-02':250,'2-05':250,'2-03':415,'2-06':415}[word.id];
-    scene=`<path d="M40 156h420" stroke="#bccab0" stroke-width="2"/>${luluPiggy(95,115,.67,'#6750a4')}${luluPiggy(250,115,.67,'#3f6676')}<text x="${position}" y="70" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
+    scene=`${luluPiggy(95,110,.9)}${luluPiggy(250,110,.9)}<text x="${position}" y="57" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
   }
-  return `<figure class="vocabulary-visual"><svg viewBox="0 0 500 200" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title><rect x="5" y="5" width="490" height="190" rx="24" fill="${['food','objects'].includes(category)?'#f7edca':category==='nationality'?'#e3eaf0':'#edf2e6'}"/>${scene}</svg></figure>`;
+  return `<figure class="vocabulary-visual"><svg viewBox="0 0 500 200" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title>${lessonBackdrop(200,156)}${scene}</svg></figure>`;
 }
 function vocabularyContent(){
   const set=vocabularyStudySet(state.vocabularyContentKey)||vocabularyStudySet('all');
