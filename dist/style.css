@@ -232,12 +232,21 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .guide-heading { margin-bottom: 20px; }
 .guide-heading h2 { font-size: 22px; }
 .guide-cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
-.guide-card { min-width: 0; }
+.paper.guide-card { min-width: 0; padding: 0; overflow: hidden; border-radius: 16px; }
+.guide-card-body { padding: 20px 24px 24px; }
+.guide-card .expression-figure { margin: 0; background: #fff1d4; }
+.guide-card .expression-figure svg { max-height: none; }
+.guide-card .guide-pair, .guide-card h3.jp { margin: 0; font-size: 28px; line-height: 1.35; font-weight: 500; text-align: left; }
+.guide-card .guide-meaning { margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--md-on-surface-variant); }
+.guide-card .guide-clue { margin-top: 16px; font-size: 14px; line-height: 1.5; color: var(--md-on-surface-variant); }
+.guide-card .guide-example { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--md-outline-variant); }
+.guide-card .guide-example .jp { font-size: 22px; line-height: 1.5; }
+.guide-card .guide-note { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--md-outline-variant); font-size: 14px; line-height: 1.6; }
+.dialogue-guide-entry .dialogue-situation, .dialogue-guide-entry .dialogue-incoming { margin: 16px 0 0; padding: 12px 16px; border-radius: 12px; }
+.dialogue-guide-entry .dialogue-scene { margin: 4px 0 0; font-size: 14px; line-height: 1.5; }
+.dialogue-guide-entry .dialogue-incoming .dialogue-scene { font-size: 20px; }
 .expression-figure, .vocabulary-visual { margin: 0 0 24px; }
 .expression-figure svg, .vocabulary-visual svg, .demonstrative-figure svg { display: block; width: 100%; height: auto; max-height: 240px; }
-.guide-card > .jp, .guide-card h2.jp, .guide-card h3.jp { font-size: 28px; margin-top: 8px; }
-.guide-meaning { font-size: 16px; margin: 12px 0; }
-.guide-card > p { line-height: 1.75; }
 .vocabulary-reading { font-size: 22px; margin-top: 8px; }
 .dialogue-role { display: block; font-size: 12px; font-weight: 500; color: var(--md-primary); letter-spacing: .4px; }
 .dialogue-scene { font-size: 18px; margin: 16px 0; line-height: 1.7; }
@@ -252,7 +261,6 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .scene-sentence { padding: 24px; text-align: center; background: var(--md-surface-container-low); border-radius: 16px; margin: 24px 0; }
 .scene-sentence > .jp { font-size: 28px; margin-top: 12px; }
 .scene-blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--md-primary); color: var(--md-primary); margin-right: 8px; }
-.guide-pair { font-size: 28px; text-align: center; }
 .visual-guide-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin-top: 24px; }
 .visual-guide-grid article { padding: 16px; border: 1px solid var(--line); border-radius: 16px; }
 .demonstratives-attention { padding: 20px; background: var(--md-surface-container-low); border-radius: 16px; margin-top: 24px; text-align: center; }

@@ -146,9 +146,12 @@ const DIALOGUES=[
 function guideCards(cards,label){
   return `<section class="expression-guide" aria-label="${esc(label)}"><div class="guide-heading"><h2>${label}</h2></div><div class="guide-cards">${cards.join('')}</div></section>`;
 }
-// A single transparent illustration keeps the character consistent in every lesson.
-// It was drawn from the supplied examples and is cached for offline study.
-function luluPiggy(x,y,scale=1){
+// Each cell of the transparent 3 × 3 atlas shows Lulu performing an action.
+// The original idle image remains available for listener and neutral scenes.
+const LULU_POSES={wave:[0,0],point:[1,0],bow:[2,0],reading:[0,1],teacher:[1,1],doctor:[2,1],thinking:[0,2],gift:[1,2],speaking:[2,2]};
+function luluPiggy(x,y,scale=1,pose='idle'){
+  const cell=LULU_POSES[pose];
+  if(cell)return `<svg class="lulu-piggy" x="${x-50*scale}" y="${y-50*scale}" width="${100*scale}" height="${100*scale}" viewBox="${cell[0]*418} ${cell[1]*418} 418 418" aria-hidden="true"><image href="icons/lulu-poses.png" width="1254" height="1254"/></svg>`;
   return `<image class="lulu-piggy" href="icons/lulu-piggy.png" x="${x-41*scale}" y="${y-50*scale}" width="${82*scale}" height="${100*scale}" preserveAspectRatio="xMidYMid meet" aria-hidden="true"/>`;
 }
 function lessonBackdrop(height=225,floor=185){
@@ -168,7 +171,8 @@ function dialogueGraphic(q){
   const umbrella='<path d="M212 133a38 38 0 0 1 76 0Z" fill="#d8e9f1" stroke="#557a88" stroke-width="2"/><path d="M250 132v43c0 17 20 17 20 0" fill="none" stroke="#557a88" stroke-width="4"/>';
   const props={meet:badge,intro:badge,likewise:badge,excuse:badge,name:badge,attention:'',offer:pen,thanks:gift,'thanks-full':gift,understand:bulb,incorrect:books,surprise:bulb,realise:umbrella,neighbour:house};
   const symbols={meet:'…',intro:'…',likewise:'↔',excuse:'?',name:'?',attention:'…',offer:'→',thanks:'♡','thanks-full':'♡',understand:'!',incorrect:'×',surprise:'!',realise:'!',neighbour:'…'};
-  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="expression-scene-${q.id}"><title id="expression-scene-${q.id}">${esc(q.scene||'Reply to a greeting.')}</title>${lessonBackdrop()}${luluPiggy(105,137,1.08)}${luluPiggy(395,137,1.08)}${bubble(105,symbols[q.id]||'…')}${q.id==='likewise'?bubble(395,'↔'):''}${props[q.id]||''}<text x="105" y="207" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="395" y="207" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text></svg></figure>`;
+  const pose={meet:'wave',intro:'bow',likewise:'bow',excuse:'speaking',name:'thinking',attention:'wave',offer:'point',thanks:'gift','thanks-full':'bow',understand:'teacher',incorrect:'point',surprise:'thinking',realise:'thinking',neighbour:'wave'}[q.id]||'speaking';
+  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="expression-scene-${q.id}"><title id="expression-scene-${q.id}">${esc(q.scene||'Reply to a greeting.')}</title>${lessonBackdrop()}${luluPiggy(105,137,1.08,q.incoming?'thinking':pose)}${luluPiggy(395,137,1.08,q.incoming?'speaking':'idle')}${bubble(105,symbols[q.id]||'…')}${q.id==='likewise'?bubble(395,'↔'):''}${props[q.id]||''}<text x="105" y="207" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="395" y="207" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text></svg></figure>`;
 }
 
 const DIALOGUE_CATEGORIES=[
@@ -183,7 +187,7 @@ function kanaUnits(text){const units=[];for(const c of [...text]){if(/[ゃゅょ
 function activityNav(){if(state.view==='handwriting-menu'||state.view==='kanji-writing')return 'handwriting-menu';if(state.view==='dialogue-content'||state.view==='demonstratives-content')return 'dialogue';if(['vocabulary-menu','vocabulary-content','vocabulary-rebuild','write','write-menu'].includes(state.view))return 'vocabulary-menu';if(state.view==='activity')return state.activity?.kind.startsWith('dialogue')||state.activity?.kind==='demonstratives'?'dialogue':'dialogue';return state.view;}
 function activityCard(title,copy,label,attr,tone='',action='',symbol=''){return `<button class="mode-card ${tone}" ${attr}><span class="activity-icon">${icon(symbol||'bank')}</span><span class="card-copy"><span class="eyebrow muted">${label}</span><h2>${title}</h2><p>${copy}</p></span><span class="card-arrow" aria-hidden="true">${icon('arrow')}</span></button>`;}
 function demonstrativesContent(){
-  const cards=demonstrativeItems().map(q=>`<article class="paper guide-card" data-dialogue-guide="${q.id}"><h2 class="guide-pair jp" lang="ja">${esc(q.kana)}</h2>${demonstrativeGraphic(q,true)}<p class="guide-meaning">${esc(q.meaning)}</p><p class="jp" lang="ja">${esc(q.sentence.replace('{word}',q.kana))}</p><p class="muted">${esc(q.why)}</p></article>`);
+  const cards=demonstrativeItems().map(q=>`<article class="paper guide-card" data-dialogue-guide="${q.id}">${demonstrativeGraphic(q,true)}<div class="guide-card-body"><h2 class="guide-pair jp" lang="ja">${esc(q.kana)}</h2><p class="guide-meaning">${esc(q.meaning)}</p><p class="guide-clue">${esc(q.clue)}</p><div class="guide-example"><p class="jp" lang="ja">${esc(q.sentence.replace('{word}',q.kana))}</p></div><p class="guide-note muted">${esc(q.why)}</p></div></article>`);
   return dialogueSelector('wh-words')+`<div class="study-wrap dialogue-content demonstratives-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-demonstratives="practice">Matching ${icon('arrow')}</button><button class="button soft" data-open-demonstratives="rebuild">Rebuild ${icon('arrow')}</button></div>${guideCards(cards,'WH-words guide')}</div>`;
 }
 function dialogueSelector(selected){
@@ -200,7 +204,7 @@ function dialogueContent(){
   const category=DIALOGUE_CATEGORIES.find(c=>c.id===state.dialogueCategory);
   if(!category){state.dialogueCategory=DIALOGUE_CATEGORIES[0].id;return dialogueContent();}
   const items=dialogueItems(category.id);
-  const cards=items.map(q=>{const word=wordBy(q.word);return `<article class="paper guide-card dialogue-guide-entry" data-dialogue-guide="${q.id}">${dialogueGraphic(q)}${dialoguePrompt(q)}<span class="dialogue-role">You say</span><h3 class="jp" lang="ja">${esc(q.kana)}</h3><p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p><p class="muted">${esc(q.why)}</p></article>`;});
+  const cards=items.map(q=>{const word=wordBy(q.word);return `<article class="paper guide-card dialogue-guide-entry" data-dialogue-guide="${q.id}">${dialogueGraphic(q)}<div class="guide-card-body"><span class="dialogue-role">You say</span><h3 class="jp" lang="ja">${esc(q.kana)}</h3><p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p>${dialoguePrompt(q)}<p class="guide-note muted">${esc(q.why)}</p></div></article>`;});
   return dialogueSelector(category.id)+`<div class="study-wrap dialogue-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-dialogue="dialogue-choice">Matching ${icon('arrow')}</button><button class="button soft" data-open-dialogue="dialogue-tiles">Rebuild ${icon('arrow')}</button></div>${guideCards(cards,'Expression guide')}</div>`;
 }
 
@@ -242,8 +246,8 @@ function activityClick(target){const d=target.dataset;if(d.openDemonstratives){i
 
 function demonstrativeGraphic(q,compact=false){
   const age=q.word.startsWith('1-19'),object=q.word==='2-36';
-  const figure=object?'<rect x="225" y="93" width="50" height="58" rx="5" fill="#f5d577" stroke="#8c7039" stroke-width="2"/><path d="M234 94v56m8-40h25m-25 12h20" stroke="#8c7039" stroke-width="2"/>':luluPiggy(250,122,1.24);
-  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="wh-scene-${q.id}${compact?'-guide':''}"><title id="wh-scene-${q.id}${compact?'-guide':''}">${esc(q.clue)}</title>${lessonBackdrop()}${figure}<rect x="315" y="35" width="110" height="66" rx="16" fill="#fffaf0" stroke="#a36843" stroke-width="2"/><text x="370" y="79" text-anchor="middle" font-size="30" fill="#7e4a30">${age?'18?':'?'}</text></svg><figcaption>${esc(q.clue)}</figcaption></figure>`;
+  const figure=object?'<rect x="225" y="93" width="50" height="58" rx="5" fill="#f5d577" stroke="#8c7039" stroke-width="2"/><path d="M234 94v56m8-40h25m-25 12h20" stroke="#8c7039" stroke-width="2"/>':luluPiggy(250,122,1.24,'thinking');
+  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="wh-scene-${q.id}${compact?'-guide':''}"><title id="wh-scene-${q.id}${compact?'-guide':''}">${esc(q.clue)}</title>${lessonBackdrop()}${figure}<rect x="315" y="35" width="110" height="66" rx="16" fill="#fffaf0" stroke="#a36843" stroke-width="2"/><text x="370" y="79" text-anchor="middle" font-size="30" fill="#7e4a30">${age?'18?':'?'}</text></svg></figure>`;
 }
 function demonstrativeQuestion(q){
   return `${demonstrativeGraphic(q)}<div class="scene-sentence"><span class="eyebrow muted">${esc(q.clue)}</span><div class="jp" lang="ja">${esc(q.sentence).replace('{word}','<span class="scene-blank">_____</span>')}</div></div>`;

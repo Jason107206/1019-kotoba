@@ -52,16 +52,18 @@ function vocabularyTileClick(dataset){
   render();
 }
 
-// Dialogue handles introductions/greetings and replies; Vocabulary focuses on the other groups.
+// Keep every word taught by a Dialogue scene in Dialogue, including its WH-words.
+// Other introduction/reply forms were already outside Vocabulary.
+const DIALOGUE_WORD_IDS=new Set([...DIALOGUES,...demonstrativeWords].map(item=>item.word));
 const VOCABULARY_CATEGORIES=VOCAB_CATEGORIES.filter(category=>!['introductions','replies'].includes(category.id));
-const VOCABULARY_WORDS=WORDS.filter(word=>VOCABULARY_CATEGORIES.some(category=>category.id===vocabularySection(word)));
+const VOCABULARY_WORDS=WORDS.filter(word=>!DIALOGUE_WORD_IDS.has(word.id)&&VOCABULARY_CATEGORIES.some(category=>category.id===vocabularySection(word)));
 const VOCABULARY_WORD_IDS=new Set(VOCABULARY_WORDS.map(word=>word.id));
 
 // Shared vocabulary library and launch point for Recall and Rebuild.
 function vocabularyStudySet(key){
   let words=VOCABULARY_WORDS,label,description,section='main';
   if(key==='all'){
-    label='All words';description='Review every vocabulary form from Chapters 1–2.';
+    label='All words';description='Study the words not covered in Dialogue from Chapters 1–2.';
   }else if(/^chapter-[12]$/.test(key)){
     const ch=Number(key.slice(-1));section='chapter';words=VOCABULARY_WORDS.filter(w=>w.ch===ch);
     label=`Chapter ${ch} · p.${ch===1?1:6}`;description='Review the vocabulary from this chapter.';
@@ -98,21 +100,23 @@ const VOCAB_VISUALS={
   '2-c1':'💬','2-c2':'❗','2-c3':'🎁','2-c4a':'♡','2-c4b':'♡','2-c4c':'♡','2-c4d':'♡','2-c5':'💡💬','2-c6':'✖','2-c7':'💡'
 };
 const PIGGY_VISUAL_CATEGORIES=new Set(['people','occupations','questions','introductions','courtesy','replies']);
-const PIGGY_VISUAL_ACCENTS={
-  '1-01':'👋','1-02':'👉','1-03a':'👉','1-03b':'👉','1-04':'🪪','1-05':'🎈','1-06':'🌏',
-  '1-07':'📚','1-08':'🏫','1-09':'🎓','1-10':'🏢','1-11':'🪪','1-12':'🏦','1-13':'⚕️','1-14':'🔬',
-  '1-17a':'❓','1-17b':'❓','1-18':'🎂','1-19a':'🎂','1-19b':'🎂',
+const PIGGY_VISUAL_WORD_IDS=new Set(['1-06','2-07','2-08','2-32a','2-32b','2-33','2-34','2-35']);
+const PIGGY_VISUAL_POSES={
+  '1-01':'wave','1-02':'point','1-03a':'point','1-03b':'point','1-04':'bow','1-05':'wave','1-06':'point',
+  '1-07':'teacher','1-08':'teacher','1-09':'reading','1-10':'speaking','1-11':'speaking','1-12':'speaking','1-13':'doctor','1-14':'doctor',
+  '1-17a':'thinking','1-17b':'thinking','1-18':'thinking','1-19a':'thinking','1-19b':'thinking',
+  '2-07':'reading','2-08':'reading','2-32a':'gift','2-32b':'gift','2-33':'speaking','2-34':'speaking','2-35':'speaking',
 };
-function piggyAccent(word){return PIGGY_VISUAL_ACCENTS[word.id]||({introductions:'💬',courtesy:'♡',replies:'↔',people:'👋',occupations:'📚',questions:'❓'})[vocabularySection(word)]||'✦';}
+function piggyPose(word){return PIGGY_VISUAL_POSES[word.id]||({introductions:'bow',courtesy:'bow',replies:'speaking',people:'wave',occupations:'teacher',questions:'thinking'})[vocabularySection(word)]||'idle';}
 function vocabularyVisual(word){
   const id=`vocab-visual-${word.id}`,category=vocabularySection(word);
   let scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/><text x="250" y="128" text-anchor="middle" font-size="76" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${VOCAB_VISUALS[word.id]}</text>`;
-  if(PIGGY_VISUAL_CATEGORIES.has(category)||word.id==='1-06'){
-    scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/>${luluPiggy(250,100,1.32)}<circle cx="336" cy="57" r="30" fill="#ffe2ad"/><text x="336" y="69" text-anchor="middle" font-size="31" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${piggyAccent(word)}</text>`;
+  if(PIGGY_VISUAL_CATEGORIES.has(category)||PIGGY_VISUAL_WORD_IDS.has(word.id)){
+    scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/>${luluPiggy(250,100,1.55,piggyPose(word))}`;
   }
   if(category==='demonstratives'){
     const position={'2-01':95,'2-04':95,'2-02':250,'2-05':250,'2-03':415,'2-06':415}[word.id];
-    scene=`${luluPiggy(95,110,.9)}${luluPiggy(250,110,.9)}<text x="${position}" y="57" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
+    scene=`${luluPiggy(95,110,.9,'point')}${luluPiggy(250,110,.9)}<text x="${position}" y="57" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
   }
   return `<figure class="vocabulary-visual"><svg viewBox="0 0 500 200" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title>${lessonBackdrop(200,156)}${scene}</svg></figure>`;
 }
