@@ -198,10 +198,10 @@ const ZH_HANT = {
   "Choose words to write.": "選擇默寫詞彙。",
   "Practise every word, or focus on one chapter or category.": "可練習全部詞彙，或只選一課、一個分類。",
   "Write every vocabulary form from pages 1 and 6.": "默寫第 1、6 頁的全部詞彙形式。",
-  "By chapter": "按課次選擇",
+  "By chapter": "按課次",
   "Choose Chapter 1 or Chapter 2.": "選擇第 1 課或第 2 課。",
   "Choose chapter": "選擇課次",
-  "By category": "按詞彙分類選擇",
+  "By category": "按分類",
   "Choose a word group.": "選擇一組詞彙。",
   "Choose category": "選擇分類",
   "Choose a chapter.": "選擇課次。",
@@ -255,6 +255,7 @@ const ZH_HANT = {
   "Places": "場所",
   "Countries & nationality": "國家與國籍",
   "Questions & age": "疑問詞與年齡",
+  "This and That": "這個與那個",
   "This and that": "這個與那個",
   "Objects": "日常物品",
   "Food & drinks": "食物與飲品",
@@ -614,6 +615,10 @@ const ZH_HANT = {
   "Learning progress": "學習進度",
   "Chapter": "課次",
   "Category": "分類",
+  "All": "全部",
+  "Dialogue selection": "情境對話選擇",
+  "Practise the dialogue expressions from this chapter.": "練習這一課的情境對話說法。",
+  "Back to content": "返回內容頁",
   "Sentence pattern": "句型",
   "Vocabulary section": "詞彙類別",
   "Practice selection": "練習篩選",
@@ -667,6 +672,10 @@ const ZH_HANT = {
   "They say": "對方說",
   "Use hiragana tiles to spell what you would say.": "用平假名字卡，拼出這個情況下你會說的話。"
 };
+
+// Situation labels share the same localized data as the guide conversations.
+ZH_HANT[NOTICE_SITUATION[0]]=NOTICE_SITUATION[1];
+for(const [,en,zh] of THIS_THAT_SCENES)ZH_HANT[en]=zh;
 
 function translateText(value){
   const text=String(value),trimmed=text.trim();

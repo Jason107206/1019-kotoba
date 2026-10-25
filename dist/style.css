@@ -474,7 +474,7 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
 
 /* Content filters share Dialogue's chips and retain their own scroll offsets. */
 .vocabulary-selector { min-width: 0; }
-.vocabulary-filter-label { margin-top: var(--space-4); }
+.vocabulary-filter-label, .dialogue-filter-label { margin-top: var(--space-4); }
 .vocabulary-selector .dialogue-guide-actions { margin: var(--space-4) 0; }
 .vocabulary-filter-row { margin-bottom: var(--space-4); }
 .vocabulary-content { margin-top: var(--space-6); }

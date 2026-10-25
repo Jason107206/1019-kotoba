@@ -78,6 +78,10 @@ const assert=require('node:assert/strict');
     if(!titleStyles.has(key))titleStyles.set(key,title);
     assert.deepEqual(title,titleStyles.get(key),`${name}: shared Kotoba title`);
     assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
+    if(await page.evaluate(()=>isGamePage())){
+     assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
+     assert.equal(await page.locator('.topbar [data-action="gameBack"]').count(),1);
+    }else{
     assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
     assert.ok(await page.locator('.topbar').evaluate(bar=>bar.nextElementSibling.matches('.breadcrumb-row')));
     const crumb=await page.locator('.breadcrumbs').evaluate(nav=>{
@@ -85,6 +89,7 @@ const assert=require('node:assert/strict');
      return {px:parseFloat(getComputedStyle(nav).paddingLeft),padding,aligned:Math.abs(nav.querySelector('li').getBoundingClientRect().left-main.getBoundingClientRect().left-padding)<1};
     });
     assert.equal(crumb.px,crumb.padding);assert.ok(crumb.px>0&&crumb.aligned,'Breadcrumbs share responsive content padding');
+    }
     if(['recall','rebuild'].includes(name)){
      assert.equal(await page.locator('.page-head,.vocabulary-selector,.filters').count(),0);
      assert.equal(await page.locator('main h1.sr-only').count(),1);

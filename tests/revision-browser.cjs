@@ -64,20 +64,20 @@ const assert=require('node:assert/strict');
    const chipScroll=await page.locator('.vocabulary-filter-row').evaluate(row=>row.scrollLeft);
    await page.locator('[data-vocabulary-practice="vocabulary-rebuild"]').click();
    assert.equal(await ev(()=>state.round.ids.slice().sort().join(',')),ids);
-   await page.locator('[data-crumb-view="vocabulary-menu"]').click();
+   await page.locator('[data-action="gameBack"]').click();
    assert.equal(await ev(()=>state.vocabularyContentKey),'category-languages');
    assert.equal(await page.locator('.vocabulary-filter-row').evaluate(row=>row.scrollLeft),chipScroll);
    await page.locator('[data-vocabulary-practice="write"]').click();
    assert.equal(await ev(()=>state.round.ids.slice().sort().join(',')),ids);
    assert.equal(await page.locator('.page-head,.vocabulary-selector,.filters').count(),0);
-   await page.locator('[data-crumb-view="vocabulary-menu"]').click();
+   await page.locator('[data-action="gameBack"]').click();
    await page.locator('[data-vocabulary-browse="chapter"]').click();
    assert.equal(await page.locator('.vocabulary-filter-label').textContent(),language==='en'?'Chapter':'課次');
    await page.locator('[data-vocabulary-set="chapter-2"]').click();
    assert.equal(await page.locator('[data-vocabulary-guide]').count(),30);await layout();
    await ev(()=>{state.vocabularyContentKey='category-courtesy';render()});
    assert.equal(await ev(()=>state.vocabularyContentKey),'all');
-   await ev(()=>{state.dialogueCategory='replies';navigate('dialogue')});
+   await ev(()=>{state.dialogueBrowse='category';state.dialogueCategory='replies';navigate('dialogue')});
    assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
    assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
    assert.equal(await page.locator('.topbar .app-title').textContent(),'Kotoba');await layout();
@@ -133,6 +133,39 @@ const assert=require('node:assert/strict');
    await page.locator('#pwa-update').evaluate(b=>{b.disabled=false;b.hidden=true});
    const padding=await page.locator('.breadcrumbs').evaluate(nav=>[getComputedStyle(nav).paddingLeft,getComputedStyle(nav).paddingRight,getComputedStyle(nav.closest('main')).paddingLeft]);
    assert.equal(padding[0],padding[2]);assert.equal(padding[1],padding[2]);
+  }
+  // Every Dialogue chip immediately displays its full target and localized exchange.
+  for(const width of [360,1440])for(const language of ['en','zh-Hant']){
+   await page.setViewportSize({width,height:900});
+   await page.evaluate(language=>{state.language=language;state.dialogueBrowse='category';navigate('dialogue')},language);
+   for(const category of ['introductions','courtesy','replies','demonstratives']){
+    await retainScroll('.dialogue-filter-row',()=>page.evaluate(category=>selectDialogueCategory(category),category));
+    const ids=await ev(()=>dialogueItems(state.dialogueCategory).map(q=>q.id));
+    for(const id of ids){
+     await retainScroll('.expression-chip-row',()=>page.evaluate(id=>selectDialogueExpression(id),id));
+     assert.equal(await page.locator('[data-dialogue-guide]').getAttribute('data-dialogue-guide'),id);
+     const expected=await ev(()=>{const q=dialogueItems(state.dialogueCategory).find(q=>q.id===selectedDialogueExpression);return {target:wordBy(q.word).kana,turn:CONVERSATIONS[q.id][2].find(t=>t[0]==='you')[1]}});
+     assert.equal(await page.locator('.wh-target').textContent(),expected.target);
+     assert.equal(await page.locator('.conversation-turn.you .jp').textContent(),expected.turn);
+     assert.equal(await page.locator('.conversation-translation').count(),2);
+     await layout();
+    }
+   }
+   assert.equal(await page.locator('[data-dialogue-category="demonstratives"]').textContent(),language==='en'?'This and That':'這個與那個');
+   for(const kind of ['dialogue-choice','dialogue-tiles']){
+    await page.locator(`[data-open-dialogue="${kind}"]`).click();
+    assert.equal(await ev(()=>state.activity.ids.length),6);
+    assert.equal(await ev(()=>state.activity.items.every(q=>wordBy(q.word).ch===2&&vocabularySection(wordBy(q.word))==='demonstratives')),true);
+    assert.ok((await page.locator('.reply-bubble').textContent()).includes('_____'));
+    await page.locator('[data-action="gameBack"]').first().click();
+   }
+   await ev(()=>{selectDialogueCategory('replies');selectDialogueExpression('realise')});
+   const situation=language==='en'?'Suddenly notice something':'突然注意到某件事';
+   assert.equal(await page.locator('[data-dialogue-expression="realise"]').textContent(),situation);
+   for(const kind of ['dialogue-choice','dialogue-tiles']){
+    await page.evaluate(kind=>startActivity(kind,['realise'],'replies'),kind);
+    assert.equal(await page.locator('.exercise-situation').textContent(),situation);
+   }
   }
   await page.setViewportSize({width:390,height:900});
   await ev(()=>{state.language='en';startActivity('dialogue-tiles',['thanks-full'],'courtesy');checkActivity(null,true)});

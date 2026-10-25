@@ -15,8 +15,8 @@ assert.equal(ev('WORDS.filter(w=>w.group==="core").length'),62);
 const expectedCategoryCounts={people:6,occupations:8,places:2,nationality:11,questions:6,demonstratives:6,objects:25,food:2,languages:3,introductions:13,courtesy:7,replies:7};
 const expectedVocabularyCategoryCounts={people:6,occupations:8,places:2,nationality:11,questions:1,objects:25,food:2,languages:3};
 assert.equal(ev('VOCABULARY_WORDS.length'),58);assert.equal(ev('VOCABULARY_CATEGORIES.length'),8);
-assert.equal(ev('DIALOGUE_WORD_IDS.size'),19);
-assert.deepEqual(Array.from(ev('WORDS.filter(w=>DIALOGUE_WORD_IDS.has(w.id)&&!["introductions","replies"].includes(vocabularySection(w))).map(w=>w.id)')).sort(),['1-17a','1-17b','1-19a','1-19b','1-c4','2-36','2-c1','2-c3','2-c4c','2-c4d'].sort());
+assert.equal(ev('DIALOGUE_WORD_IDS.size'),25);
+assert.deepEqual(Array.from(ev('WORDS.filter(w=>DIALOGUE_WORD_IDS.has(w.id)&&!["introductions","replies"].includes(vocabularySection(w))).map(w=>w.id)')).sort(),['1-17a','1-17b','1-19a','1-19b','1-c4','2-01','2-02','2-03','2-04','2-05','2-06','2-36','2-c1','2-c3','2-c4c','2-c4d'].sort());
 assert.equal(ev('VOCABULARY_WORDS.every(w=>!DIALOGUE_WORD_IDS.has(w.id))'),true);
 assert.equal(ev('VOCAB_CATEGORIES.length'),12);
 assert.equal(ev('new Set(VOCAB_CATEGORIES.map(c=>c.id)).size'),12);
@@ -122,13 +122,13 @@ ev('resetFilters()');
 // Matching categories and dialogue modes stay separate from the quiz bank.
 assert.equal(ev('demonstrativeItems().length'),5);
 assert.equal(ev('dialogueItems("quiz").some(x=>x.added)'),false);
-assert.equal(ev('dialogueItems().length'),14);
+assert.equal(ev('dialogueItems().length'),20);
 assert.equal(ev('WORDS.some(w=>["なんじ","いくら","はじめましょう"].includes(w.kana))'),false);
 assert.equal(ev('kanaUnits("きょうし").join(",")'),'きょ,う,し');
 assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
 for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles']){
   ev(`startActivity('${kind}')`);
-  assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
+  assert.equal(elements.app.innerHTML.includes('class="breadcrumbs"'),!ev('isGamePage()'));
   const count=ev('state.activity.ids.length');
   for(let i=0;i<count;i++){
     ev(`state.activity.index=${i};prepareActivity();render()`);
@@ -319,13 +319,13 @@ for(const language of ['en','zh-Hant']){
  assert.equal(ev('state.view'),'demonstratives-content');
  assert.ok(elements.app.innerHTML.includes('guide-cards'));
  assert.equal((elements.app.innerHTML.match(/data-wh-expression=/g)||[]).length,5);
- assert.ok(elements.app.innerHTML.includes('data-open-demonstratives="practice"'));
+ assert.ok(elements.app.innerHTML.includes('data-open-dialogue="dialogue-choice"'));
  assert.ok(elements.app.innerHTML.includes(language==='en'?'WH-words guide':'疑問詞指南'));
  ev('activityClick({dataset:{openDemonstratives:"practice"}})');
  assert.equal(ev('state.view'),'activity');
  assert.equal(ev('state.activity.kind'),'demonstratives');
  assert.equal(ev('state.activity.ids.length'),5);
- assert.ok(elements.app.innerHTML.includes('data-crumb-view="dialogue"'));
+ assert.ok(elements.app.innerHTML.includes('data-action="gameBack"'));
  ev('navigate("demonstratives-content")');
  assert.ok(elements.app.innerHTML.includes('guide-cards'));
  assert.equal(ev('activityNav()'),'dialogue');
@@ -397,7 +397,7 @@ ev('navigate("write-menu")');assert.equal(ev('state.view'),'vocabulary-menu');
 for(const [key,count] of [['chapter-1',28],['chapter-2',30],...Object.entries(expectedVocabularyCategoryCounts).map(([category,count])=>[`category-${category}`,count])]){
   ev(`startWriteSet('${key}')`);
   assert.equal(ev('state.round.ids.length'),count);
-  assert.ok(elements.app.innerHTML.includes('data-crumb-view="vocabulary-menu"'));
+  assert.ok(elements.app.innerHTML.includes('data-action="gameBack"'));
   ev('run("restart")');
   assert.equal(ev('state.round.ids.length'),count);
   assert.equal(ev('state.round.ids.every(id=>state.writeSet.ids.includes(id))'),true);
@@ -406,7 +406,7 @@ ev('startWriteSet("category-places");state.round.missed=[state.round.ids[0]];run
 assert.equal(ev('state.round.ids.length'),1);
 ev('run("restart")');assert.equal(ev('state.round.ids.length'),2);
 ev('state.round.index=state.round.ids.length;render()');
-assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
+assert.equal(elements.app.innerHTML.includes('class="breadcrumbs"'),!ev('isGamePage()'));
 ev('navigate("mock")');
 assert.ok(!/Part A|Part B|A 部分|B 部分/.test(elements.app.innerHTML));
 console.log('PASS: bilingual Write menu, all/chapter/category sets, retry scope, and removed Part A/B labels.');
@@ -521,7 +521,7 @@ console.log('PASS: Back returns to the preceding subpage, including chapter/cate
 
 // Opening Dialogue shows the initial guide immediately and starts a scoped game.
 for(const kind of ['dialogue-choice','dialogue-tiles']){
-  ev('state.dialogueCategory="introductions";pageHistory.length=0;navigate("dialogue")');
+  ev('state.dialogueBrowse="category";state.dialogueCategory="introductions";pageHistory.length=0;navigate("dialogue")');
   assert.ok(elements.app.innerHTML.includes('data-dialogue-category="introductions" aria-pressed="true"'));
   assert.equal((elements.app.innerHTML.match(/data-dialogue-guide=/g)||[]).length,1);
   assert.ok(!elements.app.innerHTML.includes('class="mode-card'));
@@ -534,15 +534,15 @@ for(const kind of ['dialogue-choice','dialogue-tiles']){
 }
 
 // Dialogue categories lead to a guide, then either game; retries retain that category.
-const dialogueCategoryCounts={introductions:5,courtesy:5,replies:4};
-assert.equal(ev('new Set(DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id).map(q=>q.id))).size'),14);
-assert.equal(ev('DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id)).length'),14);
+const dialogueCategoryCounts={introductions:5,courtesy:5,replies:4,demonstratives:6};
+assert.equal(ev('new Set(DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id).map(q=>q.id))).size'),20);
+assert.equal(ev('DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id)).length'),20);
 assert.equal(ev('DIALOGUE_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
 for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entries(dialogueCategoryCounts)){
   ev(`state.language='${language}';pageHistory.length=0;navigate('dialogue')`);
   assert.ok(elements.app.innerHTML.includes('data-dialogue-category'));
   assert.ok(!elements.app.innerHTML.includes('class="page-head"'));
-  assert.equal((elements.app.innerHTML.match(/data-dialogue-category="(?:introductions|courtesy|replies|wh-words)"/g)||[]).length,4);
+  assert.equal((elements.app.innerHTML.match(/data-dialogue-category="(?:introductions|courtesy|replies|demonstratives|wh-words)"/g)||[]).length,5);
   clickData({dialogueCategory:category});
   assert.equal(ev('state.view'),'dialogue-content');
   assert.equal(ev('activityNav()'),'dialogue');
@@ -567,7 +567,7 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
       assert.equal(ev('state.activity.result'),true);
     }
     ev('activityAction("activityNext")');
-    assert.ok(elements.app.innerHTML.includes('data-crumb-view="dialogue"'));
+    assert.ok(elements.app.innerHTML.includes('data-action="gameBack"'));
     ev('state.activity.missed=[state.activity.ids[0]];activityAction("activityMissed")');
     assert.equal(ev('state.activity.ids.length'),1);
     assert.equal(ev('state.activity.category'),category);
@@ -579,7 +579,7 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
   }
   clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
 }
-console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all 14 scenes, category-only choices, scoped retries and guide return paths.');
+console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all 20 scenes, category-only choices, scoped retries and guide return paths.');
 
 // Expression guides show one selected conversation; WH-word guide cards remain visible.
 for(const language of ['en','zh-Hant'])for(const category of ['introductions','courtesy','replies','demonstratives']){
@@ -600,7 +600,7 @@ for(const language of ['en','zh-Hant'])for(const category of ['introductions','c
   clickData({action:'back'});
   assert.equal((elements.app.innerHTML.match(/<article class="paper guide-card/g)||[]).length,1);
 }
-assert.equal(ev('Object.keys(CONVERSATIONS).length'),14);
+assert.equal(ev('Object.keys(CONVERSATIONS).length'),20);
 assert.equal(ev('DIALOGUES.every(q=>CONVERSATIONS[q.id][2].some(turn=>turn[1].includes(wordBy(q.word).kana)))'),true);
 ev('state.language="en";openDialogueCategory("introductions")');
 assert.ok(elements.app.innerHTML.includes('data-dialogue-expression="meet" aria-pressed="true">Meeting someone for the first time</button>'));
@@ -710,7 +710,7 @@ assert.equal(ev('progress.words["1-09"]?.attempts||0'),typedAttempts);
 const handwritingAttempts=ev('progress.kanjiWriting["1-09"].attempts');
 ev('run("kanjiCorrect")');assert.equal(ev('progress.kanjiWriting["1-09"].attempts'),handwritingAttempts);
 assert.equal(JSON.parse(Object.values(storage)[0]).progress.kanjiWriting['1-09'].last,true);
-ev('run("next")');assert.ok(elements.app.innerHTML.includes('data-crumb-view="handwriting-menu"'));
+ev('run("next")');assert.ok(elements.app.innerHTML.includes('data-action="gameBack"'));
 ev('begin("kanji-writing",["1-09"]);run("kanjiReveal");run("kanjiMissed")');assert.equal(ev('state.round.missed.join(",")'),'1-09');
 console.log('PASS: Kanji Writing selection, per-character pads, pointer input and bounds, undo/clear/cancel, model reveal, independent self-check progress, retries and Vocabulary Recall naming.');
 
@@ -724,7 +724,7 @@ for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dia
   assert.ok(!html.includes('reply-feedback'));
   assert.ok(!html.includes(ev('esc(translateText(activityCurrent().why))')));
 }
-console.log('PASS: all 14 Dialogue scenes use speaker bubbles in both games and languages, with feedback hidden before grading.');
+console.log('PASS: all 20 Dialogue scenes use speaker bubbles in both games and languages, with feedback hidden before grading.');
 
 // Rebuild launches vocabulary or sentences, and replaces Matching before writing modes.
 for(const language of ['en','zh-Hant']){
@@ -820,7 +820,7 @@ for(const language of ['en','zh-Hant']){
   assert.equal(ev('state.view'),'vocabulary-menu');assert.equal(ev('state.vocabularyContentKey'),'category-occupations');
   assert.ok(elements.app.innerHTML.includes('data-vocabulary-browse'));
   for(const view of ['vocabulary-menu','write-menu','write','handwriting-menu','kanji-writing','bank','mock','sentences','demonstratives-content']){
-    ev(`navigate('${view}')`);assert.ok(elements.app.innerHTML.includes('class="breadcrumbs"'));
+    ev(`navigate('${view}')`);assert.equal(elements.app.innerHTML.includes('class="breadcrumbs"'),!ev('isGamePage()'));
     assert.ok(!elements.app.innerHTML.includes('data-action="back"')&&!elements.app.innerHTML.includes('page-back'));
   }
 }
@@ -907,3 +907,24 @@ for(const [id,cell] of [['1-10',0],['1-12',1],['1-14',2]]){
   }
 }
 console.log('PASS: distinct company, bank and research Lulu scenes are reused in both vocabulary games without browsing headings.');
+
+// All and chapter scopes include WH words and preserve their existing progress keys.
+for(const [browse,chapter] of [['all',1],['chapter',1],['chapter',2]])for(const kind of ['dialogue-choice','dialogue-tiles']){
+ ev(`state.dialogueBrowse='${browse}';state.dialogueChapter=${chapter};state.view='dialogue-content';render();startDialoguePractice('${kind}')`);
+ const ids=Array.from(ev('state.activity.ids'));
+ assert.equal(ids.length,browse==='all'?25:chapter===1?8:17);
+ for(const id of ids){
+  ev(`state.activity.index=state.activity.ids.indexOf('${id}');prepareActivity();render()`);
+  assert.ok(ev('state.activity.choices.length>=2'));
+  const progressKey=ev("`${WH_CONVERSATIONS[activityCurrent().word]?(isActivityRebuild(state.activity)?'wh-tiles':'demonstratives'):state.activity.kind}-${activityCurrent().id}`");
+  const attempts=ev(`progress.activities['${progressKey}']?.attempts||0`);
+  if(kind==='dialogue-tiles')ev('{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent())))a.chosen.push(a.tileBank.findIndex((t,i)=>t===unit&&!a.chosen.includes(i)));checkActivity()}');
+  else ev('checkActivity(activityCurrent().id)');
+  assert.equal(ev('state.activity.result'),true);
+  assert.equal(ev(`progress.activities['${progressKey}'].attempts`),attempts+1);
+ }
+ assert.equal(ev('state.activity.correct'),ids.length);
+ ev('activityAction("activityRestart")');assert.deepEqual(Array.from(ev('state.activity.ids')).sort(),ids.sort());
+ ev('run("gameBack")');assert.equal(ev('state.dialogueBrowse'),browse);assert.equal(ev('state.dialogueChapter'),chapter);
+}
+console.log('PASS: all/chapter games include 25 existing expressions, valid choices and unchanged Dialogue/WH progress keys.');
