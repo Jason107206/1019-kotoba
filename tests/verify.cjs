@@ -190,10 +190,10 @@ console.log('PASS: source coverage, strict spelling, 0/0.5/1 scoring, all 50 puz
 // Expression prompts show the incoming line without translating the answer.
 for(const kind of ['dialogue-choice','dialogue-tiles']){
   ev(`startActivity('${kind}',['likewise'])`);
-  assert.ok(elements.app.innerHTML.includes('<p class="dialogue-scene jp" lang="ja">よろしくおねがいします</p>'));
+  assert.ok(elements.app.innerHTML.includes('<p class="jp" lang="ja">よろしくおねがいします。</p>'));
   assert.ok(!/LINE TO SAY|The pleasure is mine|Someone has finished an introduction|highlighted/.test(elements.app.innerHTML));
   ev(`startActivity('${kind}',['meet'])`);
-  assert.ok(elements.app.innerHTML.includes('You meet someone for the first time.'));
+  assert.ok(elements.app.innerHTML.includes('Meeting someone for the first time.'));
   assert.ok(!/LINE TO SAY|Nice to meet you/.test(elements.app.innerHTML));
 }
 
@@ -203,7 +203,7 @@ assert.equal(ev('state.language'),'zh-Hant');
 assert.equal(ev('state.activity.chosen.length'),1);
 assert.equal(JSON.parse(Object.values(storage)[0]).language,'zh-Hant');
 assert.ok(!elements.app.innerHTML.includes('你會怎樣說？'));
-assert.ok(elements.app.innerHTML.includes('<p class="dialogue-scene jp" lang="ja">よろしくおねがいします</p>'));
+assert.ok(elements.app.innerHTML.includes('<p class="jp" lang="ja">よろしくおねがいします。</p>'));
 assert.ok(!/LINE TO SAY|The pleasure is mine/.test(elements.app.innerHTML));
 assert.equal(ev('DIALOGUES.every(d=>(!d.scene||ZH_HANT[d.scene])&&ZH_HANT[d.why])'),true);
 assert.equal(ev('SENTENCES.every(s=>ZH_HANT[s.prompt])'),true);
@@ -239,23 +239,28 @@ ev('navigate("hiragana")');assert.equal(ev('state.view'),'home');
 assert.equal(ev('typeof hiraganaView'),'undefined');
 console.log('PASS: language selector in logo header; removed Hiragana groups page, navigation and home link.');
 
-// Actual speech has a distinct bubble and speaker label in both languages and modes.
+// Exercise conversations show the opening line while hiding reply feedback until grading.
 for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dialogue-tiles']){
   ev(`state.language='${language}';startActivity('${kind}',['likewise'])`);
-  assert.ok(elements.app.innerHTML.includes('<blockquote class="dialogue-incoming">'));
-  assert.ok(elements.app.innerHTML.includes(language==='en'?'They say':'對方說'));
-  assert.ok(!elements.app.innerHTML.includes('dialogue-situation'));
-  assert.ok(!elements.app.innerHTML.includes('こちらこそ responds'));
+  assert.ok(elements.app.innerHTML.includes('class="conversation-turn listener"'));
+  assert.ok(elements.app.innerHTML.includes('class="conversation-turn you"'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Listener':'聽話者'));
+  assert.ok(!elements.app.innerHTML.includes('reply-feedback'));
+  assert.ok(!elements.app.innerHTML.includes('The pleasure is mine'));
   ev(`startActivity('${kind}',['offer'])`);
-  assert.ok(elements.app.innerHTML.includes('class="dialogue-situation"'));
-  assert.ok(elements.app.innerHTML.includes(language==='en'?'You give someone a pen.':'你把一枝筆遞給對方。'));
-  assert.ok(!elements.app.innerHTML.includes('dialogue-incoming'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'Offering someone a pen.':'遞筆給對方。'));
+  assert.ok(elements.app.innerHTML.includes('ペンがありません。'));
   assert.ok(!elements.app.innerHTML.includes('Use どうぞ when'));
-  assert.ok(!elements.app.innerHTML.includes('class="page-head"'));
-  ev('state.activity.checked=true;render()');
+  assert.ok(!elements.app.innerHTML.includes(language==='en'?'please / here you are':'請（讓別人做某事時）'));
+  assert.ok(!elements.app.innerHTML.includes('expression-figure'));
+  if(kind==='dialogue-tiles')ev('{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const i=a.tileBank.findIndex((text,index)=>text===unit&&!a.chosen.includes(index));a.chosen.push(i);}checkActivity();}');
+  else ev('checkActivity(activityCurrent().id)');
+  assert.ok(elements.app.innerHTML.includes('reply-feedback correct'));
+  if(kind==='dialogue-choice'&&language==='zh-Hant')assert.ok(elements.app.innerHTML.includes('✓</span> 正確'));
+  assert.ok(elements.app.innerHTML.includes(language==='en'?'please / here you are':'請（讓別人做某事時）'));
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Use どうぞ when you give someone something.':'把東西遞給對方時，可以說 どうぞ'));
 }
-console.log('PASS: simple bilingual expression prompts, distinct incoming dialogue, and explanations shown only after answering.');
+console.log('PASS: bilingual exercise conversations hide reply feedback until grading.');
 
 // Overview has one shared launcher per mode and combined vocabulary progress.
 for(const language of ['en','zh-Hant']){
@@ -428,7 +433,8 @@ for(const category of ['courtesy','wh-words']){
   assert.equal(ev('state.activity.kind'),category==='wh-words'?'wh-tiles':'dialogue-tiles');
   assert.deepEqual(Array.from(ev('breadcrumbItems().map(item=>item.label)')),['Kotoba','Dialogue','Rebuild']);
   const limit=ev('kanaUnits(vocabularyReading(activityCurrent())).length');
-  assert.equal((elements.app.innerHTML.match(/data-activity-slot=/g)||[]).length,limit);
+  if(category==='wh-words')assert.equal((elements.app.innerHTML.match(/data-activity-slot=/g)||[]).length,limit);
+  else{assert.equal((elements.app.innerHTML.match(/data-activity-slot=/g)||[]).length,0);assert.ok(elements.app.innerHTML.includes('class="reply-tokens"'));}
   clickData({action:'activityCheck'});assert.equal(ev('state.activity.checked'),false);
   const tile=ev('state.activity.tileBank.findIndex(unit=>unit===kanaUnits(vocabularyReading(activityCurrent()))[0])');
   clickData({activityTile:String(tile)});clickData({activityTile:String(tile)});
@@ -687,18 +693,17 @@ ev('run("next")');assert.ok(elements.app.innerHTML.includes('data-crumb-view="ha
 ev('begin("kanji-writing",["1-09"]);run("kanjiReveal");run("kanjiMissed")');assert.equal(ev('state.round.missed.join(",")'),'1-09');
 console.log('PASS: Kanji Writing selection, per-character pads, pointer input and bounds, undo/clear/cancel, model reveal, independent self-check progress, retries and Vocabulary Recall naming.');
 
-// Both Dialogue games illustrate every situation without giving the answer in the picture.
+// Both Dialogue games place Lulu beside every turn and keep feedback hidden.
 for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dialogue-tiles'])for(const id of ev('DIALOGUES.map(q=>q.id)')){
   ev(`state.language='${language}';startActivity('${kind}',['${id}'])`);
-  const figure=elements.app.innerHTML.match(/<figure class="expression-figure">[^]*?<\/figure>/)?.[0];
-  assert.ok(figure,`${kind}: ${id}`);
-  assert.ok(figure.includes('role="img"'));
-  assert.ok(figure.includes(`aria-labelledby="expression-scene-${id}"`));
-  assert.ok(figure.includes(language==='en'?'>You</text>':'>你</text>'));
-  assert.ok(!figure.includes(ev('activityCurrent().kana')));
-  assert.ok(!elements.app.innerHTML.includes(ev('esc(translateText(activityCurrent().why))')));
+  const html=elements.app.innerHTML;
+  assert.equal((html.match(/class="conversation-pig"/g)||[]).length,2,`${kind}: ${id}`);
+  assert.ok(html.indexOf('class="conversation-turn listener"')<html.indexOf('class="conversation-turn you"'));
+  assert.ok(!html.includes('class="expression-figure"'));
+  assert.ok(!html.includes('reply-feedback'));
+  assert.ok(!html.includes(ev('esc(translateText(activityCurrent().why))')));
 }
-console.log('PASS: all 14 Dialogue scenes illustrated in both games and languages, with answer explanations kept behind feedback.');
+console.log('PASS: all 14 Dialogue scenes use speaker bubbles in both games and languages, with feedback hidden before grading.');
 
 // Rebuild launches vocabulary or sentences, and replaces Matching before writing modes.
 for(const language of ['en','zh-Hant']){
