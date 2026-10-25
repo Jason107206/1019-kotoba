@@ -85,24 +85,34 @@ function startVocabularyPractice(mode){
   startWordPractice(mode,set.ids,set.label,set.key);
 }
 const VOCAB_VISUALS={
-  '1-01':'🙋','1-02':'🫵','1-03a':'👉🧑','1-03b':'👉👤','1-04':'🪪','1-05':'🧒','1-06':'🌏🧑',
-  '1-07':'🧑‍🏫','1-08':'🏫🧑‍🏫','1-09':'🧑‍🎓','1-10':'🏢🧑‍💼','1-11':'🪪🧑‍💼','1-12':'🏦🧑‍💼','1-13':'🧑‍⚕️','1-14':'🧑‍🔬',
-  '1-15':'🏫','1-16':'🏥','1-17a':'🧑❓','1-17b':'👤❓','1-18':'🎂','1-19a':'🎂❓','1-19b':'🎂❓','1-20':'✅','1-21':'❌',
-  '1-c1':'👋🤝','1-c2':'🌏✈️','1-c3a':'🙇🤝','1-c3b':'🙇🤝','1-c3c':'🙇🤝','1-c3d':'🙇🤝','1-c4':'🙋💬','1-c5':'🪪❓','1-c6':'👉🪪',
+  '1-01':'👋','1-02':'👉','1-03a':'👉','1-03b':'👉','1-04':'🪪','1-05':'🎈','1-06':'🌏',
+  '1-07':'📚','1-08':'🏫','1-09':'🎓','1-10':'🏢','1-11':'🪪','1-12':'🏦','1-13':'⚕️','1-14':'🔬',
+  '1-15':'🏫','1-16':'🏥','1-17a':'❓','1-17b':'❓','1-18':'🎂','1-19a':'🎂❓','1-19b':'🎂❓','1-20':'✅','1-21':'❌',
+  '1-c1':'👋🤝','1-c2':'🌏✈️','1-c3a':'🤝','1-c3b':'🤝','1-c3c':'🤝','1-c3d':'🤝','1-c4':'💬','1-c5':'🪪❓','1-c6':'👉🪪',
   '1-r1':'🇺🇸','1-r2':'🇬🇧','1-r3':'🇮🇳','1-r4':'🇮🇩','1-r5':'🇰🇷','1-r6':'🇹🇭','1-r7':'🇨🇳','1-r8':'🇩🇪','1-r9':'🇯🇵','1-r10':'🇧🇷',
   '2-01':'📕','2-02':'📕','2-03':'📕','2-04':'📕','2-05':'📕','2-06':'📕',
   '2-07':'📕','2-08':'📚','2-09':'📖','2-10':'📰','2-11':'📓','2-12':'📔','2-13':'🪪','2-14':'💳','2-15':'✏️','2-16':'🖊️','2-17':'✏️',
   '2-18':'🔑','2-19':'⌚','2-20':'☂️','2-21':'👜','2-22':'💿','2-23':'📺','2-24':'📻','2-25':'📷','2-26':'💻','2-27':'🚗','2-28':'🪑💻','2-29':'🪑',
   '2-30':'🍫','2-31':'☕','2-32a':'🎁','2-32b':'🎁','2-33':'🇬🇧💬','2-34':'🇯🇵💬','2-35':'🌏💬','2-36':'📦❓','2-37':'✅💬',
-  '2-d1':'🏠🙇','2-d2a':'🤝↔️','2-d2b':'🤝↔️','2-d2c':'🤝↔️','2-d2d':'🤝↔️',
-  '2-c1':'🙋💬','2-c2':'😮','2-c3':'🤲🎁','2-c4a':'🙏','2-c4b':'🙏','2-c4c':'🙇🙏','2-c4d':'🙇🙏','2-c5':'💡💬','2-c6':'🙅','2-c7':'💡'
+  '2-d1':'🏠','2-d2a':'🤝↔️','2-d2b':'🤝↔️','2-d2c':'🤝↔️','2-d2d':'🤝↔️',
+  '2-c1':'💬','2-c2':'❗','2-c3':'🎁','2-c4a':'♡','2-c4b':'♡','2-c4c':'♡','2-c4d':'♡','2-c5':'💡💬','2-c6':'✖','2-c7':'💡'
 };
+const PIGGY_VISUAL_CATEGORIES=new Set(['people','occupations','questions','introductions','courtesy','replies']);
+const PIGGY_VISUAL_ACCENTS={
+  '1-01':'👋','1-02':'👉','1-03a':'👉','1-03b':'👉','1-04':'🪪','1-05':'🎈','1-06':'🌏',
+  '1-07':'📚','1-08':'🏫','1-09':'🎓','1-10':'🏢','1-11':'🪪','1-12':'🏦','1-13':'⚕️','1-14':'🔬',
+  '1-17a':'❓','1-17b':'❓','1-18':'🎂','1-19a':'🎂','1-19b':'🎂',
+};
+function piggyAccent(word){return PIGGY_VISUAL_ACCENTS[word.id]||({introductions:'💬',courtesy:'♡',replies:'↔',people:'👋',occupations:'📚',questions:'❓'})[vocabularySection(word)]||'✦';}
 function vocabularyVisual(word){
   const id=`vocab-visual-${word.id}`,category=vocabularySection(word);
   let scene=`<circle cx="250" cy="100" r="76" fill="#fffefb"/><text x="250" y="128" text-anchor="middle" font-size="76" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${VOCAB_VISUALS[word.id]}</text>`;
+  if(PIGGY_VISUAL_CATEGORIES.has(category)||word.id==='1-06'){
+    scene=`<circle cx="250" cy="100" r="76" fill="#fffefb"/>${luluPiggy(250,101,1.02)}<circle cx="336" cy="57" r="30" fill="#eaddff"/><text x="336" y="69" text-anchor="middle" font-size="31" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${piggyAccent(word)}</text>`;
+  }
   if(category==='demonstratives'){
     const position={'2-01':95,'2-04':95,'2-02':250,'2-05':250,'2-03':415,'2-06':415}[word.id];
-    scene=`<path d="M40 156h420" stroke="#bccab0" stroke-width="2"/><circle cx="95" cy="109" r="17" fill="#d8775b"/><path d="M68 154v-15c0-25 54-25 54 0v15" fill="#d8775b"/><circle cx="250" cy="109" r="17" fill="#557a88"/><path d="M223 154v-15c0-25 54-25 54 0v15" fill="#557a88"/><text x="${position}" y="70" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
+    scene=`<path d="M40 156h420" stroke="#bccab0" stroke-width="2"/>${luluPiggy(95,115,.67,'#6750a4')}${luluPiggy(250,115,.67,'#3f6676')}<text x="${position}" y="70" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
   }
   return `<figure class="vocabulary-visual"><svg viewBox="0 0 500 200" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title><rect x="5" y="5" width="490" height="190" rx="24" fill="${['food','objects'].includes(category)?'#f7edca':category==='nationality'?'#e3eaf0':'#edf2e6'}"/>${scene}</svg></figure>`;
 }

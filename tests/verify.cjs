@@ -794,3 +794,12 @@ for(const language of ['en','zh-Hant']){
  ev('run("closeNavigation")');
 }
 console.log('PASS: Material navigation preserves answers, closes on destination changes and has bilingual accessible controls.');
+
+// The learner, listener and character prompts share the Lulu illustration.
+assert.equal((ev('dialogueGraphic(DIALOGUES[0])').match(/class="lulu-piggy"/g)||[]).length,2);
+assert.equal((ev('vocabularyVisual(wordBy("1-01"))').match(/class="lulu-piggy"/g)||[]).length,1);
+assert.equal((ev('vocabularyVisual(wordBy("1-09"))').match(/class="lulu-piggy"/g)||[]).length,1);
+assert.equal((ev('vocabularyVisual(wordBy("2-01"))').match(/class="lulu-piggy"/g)||[]).length,2);
+assert.equal((ev('demonstrativeGraphic(demonstrativeItems()[0])').match(/class="lulu-piggy"/g)||[]).length,1);
+assert.equal((ev('vocabularyVisual(wordBy("2-10"))').match(/class="lulu-piggy"/g)||[]).length,0);
+console.log('PASS: Lulu replaces human figures in dialogue, vocabulary, demonstratives and WH-word scenes while object cards keep their subject.');
