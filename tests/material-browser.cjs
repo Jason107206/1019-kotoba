@@ -60,6 +60,7 @@ const assert=require('node:assert/strict');
  ['mock-result',()=>finishMock()],
  ];
  let checks=0;
+ const titleStyles=new Map();
  for(const width of [320,390,768,1024,1440]){
   await page.setViewportSize({width,height:900});
   for(const language of ['en','zh-Hant']){
@@ -70,6 +71,25 @@ const assert=require('node:assert/strict');
     assert.ok(layout.body<=layout.width,`${width} ${language} ${name}: overflow ${layout.body}`);
     assert.equal(layout.h1,1,`${language} ${name}: heading`);
     assert.equal(layout.active,1,`${language} ${name}: active destination`);
+    const title=await page.locator('.topbar .app-title').evaluate(el=>{
+     const s=getComputedStyle(el);return [el.textContent,s.fontFamily,s.fontSize,s.fontWeight,s.color,el.getBoundingClientRect().top-el.closest('.topbar').getBoundingClientRect().top];
+    });
+    const key=`${width}:${language}`;
+    if(!titleStyles.has(key))titleStyles.set(key,title);
+    assert.deepEqual(title,titleStyles.get(key),`${name}: shared Kotoba title`);
+    assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
+    assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
+    assert.ok(await page.locator('.topbar').evaluate(bar=>bar.nextElementSibling.matches('.breadcrumb-row')));
+    const crumb=await page.locator('.breadcrumbs').evaluate(nav=>{
+     const main=nav.closest('main'),padding=parseFloat(getComputedStyle(main).paddingLeft);
+     return {px:parseFloat(getComputedStyle(nav).paddingLeft),padding,aligned:Math.abs(nav.querySelector('li').getBoundingClientRect().left-main.getBoundingClientRect().left-padding)<1};
+    });
+    assert.equal(crumb.px,crumb.padding);assert.ok(crumb.px>0&&crumb.aligned,'Breadcrumbs share responsive content padding');
+    if(['recall','rebuild'].includes(name)){
+     assert.equal(await page.locator('.page-head,.vocabulary-selector,.filters').count(),0);
+     assert.equal(await page.locator('main h1.sr-only').count(),1);
+     assert.equal(await page.locator('.round-info').count(),1);
+    }
     checks++;
    }
   }

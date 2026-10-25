@@ -613,6 +613,7 @@ const ZH_HANT = {
   "Study modes": "練習模式",
   "Learning progress": "學習進度",
   "Chapter": "課次",
+  "Category": "分類",
   "Sentence pattern": "句型",
   "Vocabulary section": "詞彙類別",
   "Practice selection": "練習篩選",

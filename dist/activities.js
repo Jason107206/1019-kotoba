@@ -237,9 +237,15 @@ function selectDialogueExpression(id){
   const scroll=row.scrollLeft;updateSelectedChips(row,'data-dialogue-expression',id);
   cards.innerHTML=localizeMarkup(conversationCard(q));row.scrollLeft=scroll;
 }
+// Highlight only the selected question word, escaping the surrounding Japanese.
+function whDialogueText(text,q){
+  const target=WH_CONVERSATIONS[q.word]?wordBy(q.word).kana:null;
+  const index=target?text.indexOf(target):-1;
+  return index<0?esc(text):`${esc(text.slice(0,index))}<strong class="wh-target">${esc(target)}</strong>${esc(text.slice(index+target.length))}`;
+}
 function conversationCard(q){
   const turns=CONVERSATIONS[q.id]?.[2]||WH_CONVERSATIONS[q.word],zh=state.language==='zh-Hant';
-  const dialogue=turns.map(([speaker,ja,en,translation])=>`<div class="conversation-turn ${speaker}">${conversationPig(speaker,CONVERSATION_POSES[q.id])}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${esc(ja)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
+  const dialogue=turns.map(([speaker,ja,en,translation])=>`<div class="conversation-turn ${speaker}">${conversationPig(speaker,CONVERSATION_POSES[q.id])}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${whDialogueText(ja,q)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
   return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}"><div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${dialogue}</div><p class="conversation-notes muted">${esc(q.why)}</p></div></article>`;
 }
 function dialogueItems(category=null){return DIALOGUES.filter(d=>!category||vocabularySection(wordBy(d.word))===category).map(d=>({...d,kana:wordBy(d.word).kana}));}

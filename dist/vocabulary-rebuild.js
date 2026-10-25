@@ -113,17 +113,24 @@ const PIGGY_VISUAL_POSES={
   '2-07':'reading','2-08':'reading','2-32a':'gift','2-32b':'gift','2-33':'speaking','2-34':'speaking','2-35':'speaking',
 };
 function piggyPose(word){return PIGGY_VISUAL_POSES[word.id]||({introductions:'bow',courtesy:'bow',replies:'speaking',people:'wave',occupations:'teacher',questions:'thinking'})[vocabularySection(word)]||'idle';}
-function vocabularyVisual(word){
+// Equal square cells keep all three occupations at the same visual scale.
+const LULU_OCCUPATIONS={'1-10':0,'1-11':0,'1-12':1,'1-14':2};
+function occupationPiggy(word){
+  const cell=LULU_OCCUPATIONS[word.id];
+  return `<svg class="lulu-piggy occupation-pig" data-occupation="${word.id}" x="157" y="7" width="186" height="186" viewBox="${cell*724} 0 724 724" aria-hidden="true"><image href="icons/lulu-occupations.png" width="2172" height="724"/></svg>`;
+}
+function vocabularyVisual(word,compact=false){
   const id=`vocab-visual-${word.id}`,category=vocabularySection(word);
   let scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/><text x="250" y="128" text-anchor="middle" font-size="76" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${VOCAB_VISUALS[word.id]}</text>`;
   if(PIGGY_VISUAL_CATEGORIES.has(category)||PIGGY_VISUAL_WORD_IDS.has(word.id)){
     scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/>${luluPiggy(250,100,1.55,piggyPose(word))}`;
   }
+  if(Object.hasOwn(LULU_OCCUPATIONS,word.id))scene=`<circle cx="250" cy="100" r="94" fill="#fffaf0"/>${occupationPiggy(word)}`;
   if(category==='demonstratives'){
     const position={'2-01':95,'2-04':95,'2-02':250,'2-05':250,'2-03':415,'2-06':415}[word.id];
     scene=`${luluPiggy(95,110,.9,'point')}${luluPiggy(250,110,.9)}<text x="${position}" y="57" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
   }
-  return `<figure class="vocabulary-visual"><svg viewBox="0 0 500 200" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title>${lessonBackdrop(200,156)}${scene}</svg></figure>`;
+  return `<figure class="vocabulary-visual"><svg viewBox="${compact?'150 0 200 200':'0 0 500 200'}" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title>${lessonBackdrop(200,156)}${scene}</svg></figure>`;
 }
 function vocabularyBrowse(mode){
   if(!['all','category','chapter'].includes(mode))return;
@@ -136,5 +143,5 @@ function vocabularyContent(){
   const mode=set.section==='main'?'all':set.section;
   const chips=(entries,attribute,selected)=>entries.map(([key,label])=>`<button class="dialogue-chip${key===selected?' selected':''}" data-${attribute}="${key}" aria-pressed="${key===selected}">${esc(label)}</button>`).join('');
   const filters=mode==='category'?VOCABULARY_CATEGORIES.map(c=>[`category-${c.id}`,c.label]):[1,2].map(ch=>[`chapter-${ch}`,`Chapter ${ch} · p.${ch===1?1:6}`]);
-  return `<div class="study-wrap vocabulary-selector"><div class="dialogue-chip-row vocabulary-mode-row" role="group" aria-label="Vocabulary selection">${chips([['all','All words'],['category','By category'],['chapter','By chapter']],'vocabulary-browse',mode)}</div><div class="dialogue-guide-actions"><button class="button primary" data-vocabulary-practice="write">Recall ${icon('arrow')}</button><button class="button soft" data-vocabulary-practice="vocabulary-rebuild">Rebuild ${icon('arrow')}</button></div>${mode==='all'?'':`<div class="dialogue-chip-row vocabulary-filter-row" data-chip-group="${mode}" role="group" aria-label="${mode==='category'?'By category':'By chapter'}">${chips(filters,'vocabulary-set',set.key)}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>${esc(set.description)}</p></div></div><div class="study-wrap dialogue-content vocabulary-content"><div class="guide-cards">${set.ids.map(id=>{const word=wordBy(id),spelling=hasKanji(word)?word.c:word.jp;return `<article class="paper guide-card vocabulary-guide-card" data-vocabulary-guide="${word.id}">${vocabularyVisual(word)}<span class="eyebrow muted">${sourceTag(word)}</span><h2 class="jp" lang="ja">${esc(spelling)}</h2>${spelling!==word.kana?`<p class="jp vocabulary-reading" lang="ja">${esc(word.kana)}</p>`:''}<p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p>${word.note?`<p class="small muted">${esc(word.note)}</p>`:''}</article>`;}).join('')}</div></div>`;
+  return `<div class="study-wrap vocabulary-selector"><div class="dialogue-chip-row vocabulary-mode-row" role="group" aria-label="Vocabulary selection">${chips([['all','All words'],['category','By category'],['chapter','By chapter']],'vocabulary-browse',mode)}</div>${mode==='all'?'':`<div class="field-label vocabulary-filter-label" id="vocabulary-filter-label">${mode==='category'?'Category':'Chapter'}</div><div class="dialogue-chip-row vocabulary-filter-row" data-chip-group="${mode}" role="group" aria-labelledby="vocabulary-filter-label">${chips(filters,'vocabulary-set',set.key)}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>${esc(set.description)}</p></div><div class="dialogue-guide-actions"><button class="button soft" data-vocabulary-practice="vocabulary-rebuild">Rebuild ${icon('arrow')}</button><button class="button primary" data-vocabulary-practice="write">Recall ${icon('arrow')}</button></div></div><div class="study-wrap dialogue-content vocabulary-content"><div class="guide-cards">${set.ids.map(id=>{const word=wordBy(id),spelling=hasKanji(word)?word.c:word.jp;return `<article class="paper guide-card vocabulary-guide-card" data-vocabulary-guide="${word.id}">${vocabularyVisual(word,true)}<span class="eyebrow muted">${sourceTag(word)}</span><h2 class="jp" lang="ja">${esc(spelling)}</h2>${spelling!==word.kana?`<p class="jp vocabulary-reading" lang="ja">${esc(word.kana)}</p>`:''}<p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p>${word.note?`<p class="small muted">${esc(word.note)}</p>`:''}</article>`;}).join('')}</div></div>`;
 }

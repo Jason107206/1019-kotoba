@@ -790,7 +790,7 @@ ev('run("vocabularyCheck")');assert.equal(ev('state.round.checked'),false);
 clickData({vocabularyReturn:'0'});assert.equal(ev('state.round.chosen.length'),0);
 chooseVocabularyAnswer();ev('run("vocabularyUndo")');assert.equal(ev('state.round.chosen.length'),ev('kanaUnits(vocabularyReading(wordBy(current()))).length-1'));
 ev('run("vocabularyClear")');assert.equal(ev('state.round.chosen.length'),0);
-chooseVocabularyAnswer();ev('state.round.chosen[0]=state.round.tileBank.findIndex(unit=>!kanaUnits(vocabularyReading(wordBy(current()))).includes(unit));run("vocabularyCheck")');
+chooseVocabularyAnswer();ev('state.round.chosen[0]=state.round.tileBank.findIndex(unit=>unit.length===kanaUnits(vocabularyReading(wordBy(current())))[0].length&&!kanaUnits(vocabularyReading(wordBy(current()))).includes(unit));run("vocabularyCheck")');
 assert.equal(ev('state.round.result'),false);assert.equal(ev('state.round.missed.join(",")'),'2-09');
 const attemptsAfterWrong=ev('progress.vocabularyRebuild["2-09"].attempts');ev('run("vocabularyCheck")');assert.equal(ev('progress.vocabularyRebuild["2-09"].attempts'),attemptsAfterWrong);
 ev('run("next")');assert.ok(elements.app.innerHTML.includes('Round complete'));
@@ -894,3 +894,16 @@ for(const key of ['category-demonstratives','category-courtesy']){
  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,58);
 }
 console.log('PASS: normalized Rebuild text, combined tiles, duplicate identity, wrong order, distinct kana, and obsolete category recovery.');
+
+// Occupation scenes are distinct, reusable and tied to the original word IDs.
+for(const [id,cell] of [['1-10',0],['1-12',1],['1-14',2]]){
+  const illustration=ev(`vocabularyVisual(wordBy("${id}"))`);
+  assert.ok(illustration.includes('icons/lulu-occupations.png'));
+  assert.ok(illustration.includes(`viewBox="${cell*724} 0 724 724"`));
+  for(const mode of ['write','vocabulary-rebuild']){
+    ev(`startWordPractice('${mode}',['${id}'],'Selected words')`);
+    assert.ok(elements.app.innerHTML.includes(`data-occupation="${id}"`));
+    assert.ok(!elements.app.innerHTML.includes('class="page-head"'));
+  }
+}
+console.log('PASS: distinct company, bank and research Lulu scenes are reused in both vocabulary games without browsing headings.');
