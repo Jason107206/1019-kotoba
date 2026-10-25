@@ -13,6 +13,12 @@ const ZH_HANT = {
 
   "Go back": "返回",
   "Dialogue category": "對話分類",
+  "Expression": "說法",
+  "Conversation": "對話",
+  "Watch conversation": "觀看對話",
+  "Replay": "重播",
+  "Show all": "顯示全部",
+  "Useful notes": "實用提示",
   "WH-words": "疑問詞",
   "WH-words.": "疑問詞。",
   "WH-words guide": "疑問詞指南",
