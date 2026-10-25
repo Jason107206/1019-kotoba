@@ -520,10 +520,10 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
   assert.equal(ev('state.view'),'dialogue-content');
   assert.equal(ev('activityNav()'),'dialogue');
   assert.equal((elements.app.innerHTML.match(/data-dialogue-guide=/g)||[]).length,1);
-  assert.equal((elements.app.innerHTML.match(/<option value=/g)||[]).length,count);
+  assert.equal((elements.app.innerHTML.match(/data-dialogue-expression=/g)||[]).length,count);
   assert.ok(elements.app.innerHTML.includes(language==='en'?'Expression guide':'說法指南'));
   for(const label of language==='en'?['Matching','Rebuild']:['配對練習','重組練習'])assert.ok(elements.app.innerHTML.includes(label));
-  for(const id of ev(`dialogueItems('${category}').map(q=>q.id)`))assert.ok(elements.app.innerHTML.includes(`<option value="${id}"`));
+  for(const id of ev(`dialogueItems('${category}').map(q=>q.id)`))assert.ok(elements.app.innerHTML.includes(`data-dialogue-expression="${id}"`));
   assert.ok(!elements.app.innerHTML.includes('undefined'));
   for(const kind of ['dialogue-choice','dialogue-tiles']){
     clickData({openDialogue:kind});
@@ -561,8 +561,8 @@ for(const language of ['en','zh-Hant'])for(const category of ['introductions','c
   const count=category==='demonstratives'?5:dialogueCategoryCounts[category];
   assert.equal((elements.app.innerHTML.match(/<article class="paper guide-card/g)||[]).length,category==='demonstratives'?count:1);
   if(category!=='demonstratives'){
-    assert.equal((elements.app.innerHTML.match(/<option value=/g)||[]).length,count);
-    assert.equal(ev('conversationStep'),1);
+    assert.equal((elements.app.innerHTML.match(/data-dialogue-expression=/g)||[]).length,count);
+    assert.equal((elements.app.innerHTML.match(/class="conversation-turn /g)||[]).length,2);
   }
   assert.ok(elements.app.innerHTML.includes('class="guide-cards"'));
   assert.ok(!elements.app.innerHTML.includes('undefined'));
@@ -576,20 +576,19 @@ for(const language of ['en','zh-Hant'])for(const category of ['introductions','c
 assert.equal(ev('Object.keys(CONVERSATIONS).length'),14);
 assert.equal(ev('DIALOGUES.every(q=>CONVERSATIONS[q.id][2].some(turn=>turn[1].includes(wordBy(q.word).kana)))'),true);
 ev('state.language="en";openDialogueCategory("introductions")');
-assert.ok(elements.app.innerHTML.includes('はじめまして。'));
-assert.equal((elements.app.innerHTML.match(/class="conversation-turn /g)||[]).length,1);
-ev('watchConversation()');
-assert.equal(ev('conversationPlaying'),true);
-const playbackTimer=ev('conversationTimer');timers.get(playbackTimer).fn();
-assert.equal(ev('conversationPlaying'),false);
+assert.ok(elements.app.innerHTML.includes('data-dialogue-expression="meet" aria-pressed="true">Meeting someone for the first time</button>'));
 assert.equal((elements.app.innerHTML.match(/class="conversation-turn /g)||[]).length,2);
 assert.ok(elements.app.innerHTML.includes('Nice to meet you too.'));
-ev('watchConversation()');assert.equal(ev('conversationPlaying'),true);
-const cancelledTimer=ev('conversationTimer');
-handlers.change({target:{value:'intro',hasAttribute:name=>name==='data-dialogue-expression'}});
-assert.equal(ev('selectedDialogueExpression'),'intro');assert.equal(ev('conversationPlaying'),false);assert.equal(ev('conversationStep'),1);assert.equal(timers.has(cancelledTimer),false);
-ev('showConversation()');assert.equal(ev('conversationStep'),2);
-ev('selectDialogueCategory("courtesy")');assert.equal(ev('selectedDialogueExpression'),ev('dialogueItems("courtesy")[0].id'));assert.equal(ev('conversationStep'),1);
+assert.ok(!elements.app.innerHTML.includes('data-conversation=')&&!elements.app.innerHTML.includes('conversation-situation'));
+clickData({dialogueExpression:'intro'});
+assert.equal(ev('selectedDialogueExpression'),'intro');
+assert.ok(elements.app.innerHTML.includes('data-dialogue-guide="intro"'));
+assert.ok(elements.app.innerHTML.includes('Likewise.'));
+ev('state.language="zh-Hant";render()');
+assert.ok(elements.app.innerHTML.includes('data-dialogue-expression="intro" aria-pressed="true">結束自我介紹</button>'));
+ev('selectDialogueCategory("courtesy")');
+assert.equal(ev('selectedDialogueExpression'),ev('dialogueItems("courtesy")[0].id'));
+assert.equal((elements.app.innerHTML.match(/class="conversation-turn /g)||[]).length,2);
 // Language and Update controls follow the breadcrumbs in the page header.
 for(const view of ['home','dialogue','vocabulary-menu']){
   ev(`navigate('${view}')`);
@@ -598,7 +597,7 @@ for(const view of ['home','dialogue','vocabulary-menu']){
   assert.ok(header.indexOf('pwa-update-slot')<header.indexOf('data-action="toggleLanguage"'));
   assert.ok(!html.match(/<aside[\s\S]*?<\/aside>/)[0].includes('data-action="toggleLanguage"'));
 }
-console.log('PASS: bilingual single-expression conversation guides, playback and breadcrumb language/update controls.');
+console.log('PASS: bilingual description chips, complete conversations and breadcrumb language/update controls.');
 
 // Write accepts a blank C only for no-kanji words, without changing mock grading.
 assert.equal(ev('WORDS.every(w=>gradeWord(w,w.kana,"",true).score===(w.c==="X"?1:.5))'),true);

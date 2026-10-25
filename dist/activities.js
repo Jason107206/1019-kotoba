@@ -197,25 +197,34 @@ const CONVERSATIONS={
   realise:['Recognising your umbrella.','認出自己的雨傘。',[['listener','これはあなたのかさですか。','Is this your umbrella?','這是你的雨傘嗎？'],['you','あ、わたしのかさです。','Oh, it’s my umbrella.','啊，是我的雨傘。']]],
   neighbour:['Greeting a new neighbour.','向新鄰居打招呼。',[['you','これからおせわになります。','I look forward to your kindness.','今後請多多關照。'],['listener','こちらこそよろしくおねがいします。','Likewise, nice to meet you.','我也是，請多多指教。']]]
 };
-let selectedDialogueExpression=null,conversationStep=1,conversationPlaying=false,conversationTimer=null;
-function stopConversation(){if(conversationTimer!==null)clearTimeout(conversationTimer);conversationTimer=null;conversationPlaying=false;}
-function selectDialogueExpression(id){if(!dialogueItems(state.dialogueCategory).some(q=>q.id===id))return;stopConversation();selectedDialogueExpression=id;conversationStep=1;render();}
-function showConversation(){stopConversation();conversationStep=CONVERSATIONS[selectedDialogueExpression][2].length;render();}
-function watchConversation(){
-  stopConversation();const id=selectedDialogueExpression,category=state.dialogueCategory,turns=CONVERSATIONS[id][2];
-  if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){conversationStep=turns.length;render();return;}
-  conversationStep=1;conversationPlaying=true;render();
-  const advance=()=>{if(state.view!=='dialogue-content'||selectedDialogueExpression!==id||state.dialogueCategory!==category){stopConversation();return;}conversationStep++;conversationPlaying=conversationStep<turns.length;render();if(conversationPlaying)conversationTimer=setTimeout(advance,1400);else conversationTimer=null;};
-  conversationTimer=setTimeout(advance,1400);
+let selectedDialogueExpression=null;
+function updateSelectedChips(row,attribute,id){row.querySelectorAll(`[${attribute}]`).forEach(chip=>{const selected=chip.getAttribute(attribute)===id;chip.classList.toggle('selected',selected);chip.setAttribute('aria-pressed',String(selected));});}
+function updateDialogueGuide(){
+  const selector=document.querySelector('.dialogue-selector'),content=document.querySelector('.dialogue-content');
+  if(!selector||!content||!document.createElement){render();return;}
+  const row=selector.querySelector('.dialogue-chip-row'),scroll=row.scrollLeft,wrapper=document.createElement('div');
+  wrapper.innerHTML=localizeMarkup(dialogueMenu());
+  selector.querySelector('.dialogue-intro').replaceWith(wrapper.querySelector('.dialogue-intro'));
+  content.replaceWith(wrapper.querySelector('.dialogue-content'));
+  updateSelectedChips(row,'data-dialogue-category',state.dialogueCategory);
+  row.scrollLeft=scroll;
+}
+function selectDialogueExpression(id){
+  const q=dialogueItems(state.dialogueCategory).find(item=>item.id===id);if(!q)return;
+  selectedDialogueExpression=id;
+  const row=document.querySelector('.expression-chip-row'),cards=document.querySelector('.expression-guide .guide-cards');
+  if(!row||!cards){render();return;}
+  const scroll=row.scrollLeft;updateSelectedChips(row,'data-dialogue-expression',id);
+  cards.innerHTML=localizeMarkup(conversationCard(q));row.scrollLeft=scroll;
 }
 function conversationCard(q){
-  const [scene,sceneZh,turns]=CONVERSATIONS[q.id],zh=state.language==='zh-Hant';
+  const turns=CONVERSATIONS[q.id][2],zh=state.language==='zh-Hant';
   const pose={meet:'wave',intro:'bow',likewise:'bow',excuse:'bow',name:'thinking',attention:'wave',offer:'point',thanks:'gift','thanks-full':'bow',understand:'thinking',incorrect:'point',surprise:'thinking',realise:'thinking',neighbour:'wave'}[q.id];
-  const dialogue=turns.map(([speaker,ja,en,translation],index)=>index>=conversationStep?'':`<div class="conversation-turn ${speaker}${conversationPlaying&&index===conversationStep-1?' active':''}"><svg class="conversation-pig" viewBox="0 0 120 120" aria-hidden="true">${luluPiggy(60,60,1,speaker==='you'?pose:'idle')}</svg><div class="conversation-bubble"><span class="dialogue-role">${speaker==='you'?'You':'Listener'}</span><p class="jp" lang="ja">${esc(ja)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
-  return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}"><div class="guide-card-body"><p class="conversation-situation">${esc(zh?sceneZh:scene)}</p><div class="conversation-stage" aria-label="Conversation" aria-live="polite">${dialogue}</div><div class="conversation-controls"><button class="button primary" data-conversation="watch">Watch conversation</button><button class="button soft" data-conversation="replay">Replay</button><button class="button soft" data-conversation="all">Show all</button></div><details class="conversation-notes"><summary>Useful notes</summary><p>${esc(q.why)}</p></details></div></article>`;
+  const dialogue=turns.map(([speaker,ja,en,translation])=>`<div class="conversation-turn ${speaker}"><svg class="conversation-pig" viewBox="0 0 120 120" aria-hidden="true">${luluPiggy(60,60,1,speaker==='you'?pose:'idle')}</svg><div class="conversation-bubble"><span class="dialogue-role">${speaker==='you'?'You':'Listener'}</span><p class="jp" lang="ja">${esc(ja)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
+  return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}"><div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${dialogue}</div><p class="conversation-notes muted">${esc(q.why)}</p></div></article>`;
 }
 function dialogueItems(category=null){return DIALOGUES.filter(d=>!category||vocabularySection(wordBy(d.word))===category).map(d=>({...d,kana:wordBy(d.word).kana}));}
-function openDialogueCategory(category){if(!DIALOGUE_CATEGORIES.some(c=>c.id===category))return;rememberPage();stopConversation();state.dialogueCategory=category;selectedDialogueExpression=dialogueItems(category)[0].id;conversationStep=1;navigate('dialogue-content',false);}
+function openDialogueCategory(category){if(!DIALOGUE_CATEGORIES.some(c=>c.id===category))return;rememberPage();const updating=!!document.querySelector('.dialogue-selector');state.dialogueCategory=category;selectedDialogueExpression=dialogueItems(category)[0].id;state.view='dialogue-content';if(updating)updateDialogueGuide();else navigate('dialogue-content',false);}
 
 function kanaUnits(text){const units=[];for(const c of [...text]){if(/[ゃゅょぁぃぅぇぉゎ]/u.test(c)&&units.length)units[units.length-1]+=c;else units.push(c);}return units;}
 function activityNav(){if(state.view==='handwriting-menu'||state.view==='kanji-writing')return 'handwriting-menu';if(state.view==='dialogue-content'||state.view==='demonstratives-content')return 'dialogue';if(['vocabulary-menu','vocabulary-content','vocabulary-rebuild','write','write-menu'].includes(state.view))return 'vocabulary-menu';if(state.view==='activity')return state.activity?.kind.startsWith('dialogue')||state.activity?.kind==='demonstratives'?'dialogue':'dialogue';return state.view;}
@@ -230,7 +239,7 @@ function dialogueSelector(selected){
   return `<div class="study-wrap dialogue-selector"><div class="dialogue-chip-row" role="group" aria-label="Dialogue category">${categories.map(item=>`<button class="dialogue-chip${item.id===selected?' selected':''}" data-dialogue-category="${item.id}" aria-pressed="${item.id===selected}">${esc(item.label)}</button>`).join('')}</div><div class="dialogue-intro"><h1>${esc(category.label)}</h1><p>${esc(category.description)}</p></div></div>`;
 }
 function selectDialogueCategory(category){
-  if(category==='wh-words'){rememberPage();stopConversation();state.dialogueCategory=category;navigate('demonstratives-content',false);}
+  if(category==='wh-words'){rememberPage();const updating=!!document.querySelector('.dialogue-selector');state.dialogueCategory=category;state.view='demonstratives-content';if(updating)updateDialogueGuide();else navigate('demonstratives-content',false);}
   else openDialogueCategory(category);
 }
 function dialogueMenu(){return state.dialogueCategory==='wh-words'?demonstrativesContent():dialogueContent();}
@@ -238,12 +247,12 @@ function dialogueContent(){
   const category=DIALOGUE_CATEGORIES.find(c=>c.id===state.dialogueCategory);
   if(!category){state.dialogueCategory=DIALOGUE_CATEGORIES[0].id;return dialogueContent();}
   const items=dialogueItems(category.id),selected=items.find(q=>q.id===selectedDialogueExpression)||items[0];selectedDialogueExpression=selected.id;
-  const selector=`<div class="expression-selector"><label class="field-label" for="dialogue-expression">Expression</label><div class="expression-select-wrap"><select id="dialogue-expression" class="filter expression-select jp" data-dialogue-expression>${items.map(q=>`<option value="${q.id}" ${q.id===selected.id?'selected':''}>${esc(q.kana)}</option>`).join('')}</select></div></div>`;
+  const selector=`<div class="expression-selector"><div class="expression-chip-row" role="group" aria-label="Expression">${items.map(q=>`<button class="dialogue-chip${q.id===selected.id?' selected':''}" data-dialogue-expression="${q.id}" aria-pressed="${q.id===selected.id}">${esc(CONVERSATIONS[q.id][state.language==='zh-Hant'?1:0].replace(/[。.!?？]+$/u,''))}</button>`).join('')}</div></div>`;
   return dialogueSelector(category.id)+`<div class="study-wrap dialogue-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-dialogue="dialogue-choice">Matching ${icon('arrow')}</button><button class="button soft" data-open-dialogue="dialogue-tiles">Rebuild ${icon('arrow')}</button></div><section class="expression-guide" aria-label="Expression guide"><div class="guide-heading"><h2>Expression guide</h2></div>${selector}<div class="guide-cards">${conversationCard(selected)}</div></section></div>`;
 }
 
 function isActivityRebuild(activity){return ['dialogue-tiles','wh-tiles'].includes(activity?.kind);}
-function startActivity(kind,ids,category=null){if(!['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles'].includes(kind))return;stopConversation();if(state.view!=='activity')rememberPage();const dialogue=kind.startsWith('dialogue');const items=dialogue?dialogueItems(category):demonstrativeItems();state.activity={kind,category,items,ids:ids||shuffle(items.map(x=>x.id)),index:0,correct:0,missed:[],checked:false,selected:null,chosen:[],tileBank:[],choices:[],result:false};state.view='activity';prepareActivity();render();window.scrollTo({top:0,behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+function startActivity(kind,ids,category=null){if(!['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles'].includes(kind))return;if(state.view!=='activity')rememberPage();const dialogue=kind.startsWith('dialogue');const items=dialogue?dialogueItems(category):demonstrativeItems();state.activity={kind,category,items,ids:ids||shuffle(items.map(x=>x.id)),index:0,correct:0,missed:[],checked:false,selected:null,chosen:[],tileBank:[],choices:[],result:false};state.view='activity';prepareActivity();render();window.scrollTo({top:0,behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
 function activityCurrent(){const a=state.activity;return a?.items.find(x=>x.id===a.ids[a.index]);}
 function relatedActivityItems(a,q){
   const category=vocabularySection(wordBy(q.word));
@@ -276,7 +285,7 @@ function activityTiles(q){
   return rebuildTileInputs(a,target,'activity')+(a.checked?'':rebuildTileControls(a,kanaUnits(target).length,'activity'));
 }
 function activityAction(action){const a=state.activity;if(!a)return;switch(action){case'activityBack':state.dialogueCategory=a.kind.startsWith('dialogue')?a.category||'introductions':'wh-words';navigate('dialogue',false);break;case'activityNext':a.index++;prepareActivity();render();break;case'activityRestart':startActivity(a.kind,undefined,a.category);break;case'activityMissed':startActivity(a.kind,shuffle(a.missed),a.category);break;case'activityClear':if(!a.checked)a.chosen=[];render();break;case'activityUndo':if(!a.checked)a.chosen.pop();render();break;case'activityCheck':checkActivity();break;case'activityReveal':checkActivity(null,true);break;}}
-function activityClick(target){const d=target.dataset;if(d.openDemonstratives){if(d.openDemonstratives==='guide'){selectDialogueCategory('wh-words');}else if(d.openDemonstratives==='practice')startActivity('demonstratives');else if(d.openDemonstratives==='rebuild')startActivity('wh-tiles');return true;}if(d.dialogueCategory){selectDialogueCategory(d.dialogueCategory);return true;}if(d.conversation){if(d.conversation==='all')showConversation();else watchConversation();return true;}if(d.openDialogue){startActivity(d.openDialogue,undefined,['dialogue','dialogue-content'].includes(state.view)?state.dialogueCategory:null);return true;}if(d.activityChoice){checkActivity(d.activityChoice);return true;}if(d.activityTile!==undefined){const a=state.activity;if(!a||a.checked||!isActivityRebuild(a)||!activityCurrent())return true;const i=Number(d.activityTile),limit=kanaUnits(vocabularyReading(activityCurrent())).length;if(Number.isInteger(i)&&i>=0&&i<a.tileBank.length&&!a.chosen.includes(i)&&a.chosen.length<limit)a.chosen.push(i);render();return true;}if(d.activityReturn!==undefined){const a=state.activity;const i=Number(d.activityReturn);if(a&&!a.checked&&isActivityRebuild(a)&&Number.isInteger(i)&&i>=0&&i<a.chosen.length)a.chosen.splice(i,1);render();return true;}if(d.action?.startsWith('activity')){activityAction(d.action);return true;}return false;}
+function activityClick(target){const d=target.dataset;if(d.openDemonstratives){if(d.openDemonstratives==='guide'){selectDialogueCategory('wh-words');}else if(d.openDemonstratives==='practice')startActivity('demonstratives');else if(d.openDemonstratives==='rebuild')startActivity('wh-tiles');return true;}if(d.dialogueCategory){selectDialogueCategory(d.dialogueCategory);return true;}if(d.dialogueExpression){selectDialogueExpression(d.dialogueExpression);return true;}if(d.openDialogue){startActivity(d.openDialogue,undefined,['dialogue','dialogue-content'].includes(state.view)?state.dialogueCategory:null);return true;}if(d.activityChoice){checkActivity(d.activityChoice);return true;}if(d.activityTile!==undefined){const a=state.activity;if(!a||a.checked||!isActivityRebuild(a)||!activityCurrent())return true;const i=Number(d.activityTile),limit=kanaUnits(vocabularyReading(activityCurrent())).length;if(Number.isInteger(i)&&i>=0&&i<a.tileBank.length&&!a.chosen.includes(i)&&a.chosen.length<limit)a.chosen.push(i);render();return true;}if(d.activityReturn!==undefined){const a=state.activity;const i=Number(d.activityReturn);if(a&&!a.checked&&isActivityRebuild(a)&&Number.isInteger(i)&&i>=0&&i<a.chosen.length)a.chosen.splice(i,1);render();return true;}if(d.action?.startsWith('activity')){activityAction(d.action);return true;}return false;}
 
 function demonstrativeGraphic(q,compact=false){
   const age=q.word.startsWith('1-19'),object=q.word==='2-36';
