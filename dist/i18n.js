@@ -111,6 +111,7 @@ const ZH_HANT = {
   "Reply to a greeting.": "回應對方的問候。",
   "You": "你",
   "Listener": "聽話者",
+  "Colleague": "同事",
 
   "Introduction": "自我介紹",
   "Polite expressions": "禮貌用語",
@@ -651,8 +652,8 @@ const ZH_HANT = {
   "えっ shows surprise. Remember the small っ.": "えっ 表示「咦！」，用來表達驚訝。別漏寫小字 っ。",
   "You suddenly see that the umbrella is yours.": "你突然發現那把傘是自己的。",
   "Use あ when you suddenly notice something.": "突然發現或想起某件事時，可以說 あ。",
-  "You have just moved in. Greet your new neighbour.": "你剛搬來，正在向新鄰居打招呼。",
-  "これからおせわになります asks for someone’s kindness or help from now on.": "これからおせわになります 表示「今後請多多關照」，例如剛搬來時向鄰居打招呼。",
+  "Greeting your colleagues for the first time.": "初次向同事打招呼。",
+  "これからおせわになります asks for someone’s kindness or help from now on.": "これからおせわになります 表示「今後請多多關照」，例如初次向同事打招呼時。",
   "Read the situation or what the other person says. Choose your answer or build it with hiragana.": "看看發生了什麼，或讀讀對方的話。你可以選答案，也可以用平假名拼出答案。",
   "Choose your answer": "選擇答案",
   "Tap the tiles to spell your answer. Small kana like ょ stay with the letter before them.": "按順序點選假名字卡，拼出答案。ょ 等小字會和前面的假名放在同一張卡上。",

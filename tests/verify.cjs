@@ -262,6 +262,24 @@ for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dia
 }
 console.log('PASS: bilingual exercise conversations hide reply feedback until grading.');
 
+for(const language of ['en','zh-Hant']){
+  ev(`state.language='${language}';openDialogueCategory('introductions');selectDialogueExpression('neighbour')`);
+  const description=language==='en'?'Greeting your colleagues for the first time.':'初次向同事打招呼。';
+  const speaker=language==='en'?'Colleague':'同事';
+  assert.ok(elements.app.innerHTML.includes(description.slice(0,-1)+'</button>'));
+  assert.ok(elements.app.innerHTML.includes(`<span class="dialogue-role">${speaker}</span>`));
+  assert.ok(!elements.app.innerHTML.match(/<article[^]*?<\/article>/)[0].includes(description));
+  for(const kind of ['dialogue-choice','dialogue-tiles']){
+    ev(`startActivity('${kind}',['neighbour'],'introductions')`);
+    assert.ok(elements.app.innerHTML.includes(`<p class="exercise-situation">${description}</p>`));
+    assert.ok(elements.app.innerHTML.includes(`<span class="dialogue-role">${speaker}</span>`));
+    assert.ok(!elements.app.innerHTML.includes('new neighbour'));
+  }
+}
+assert.equal(ev('CONVERSATIONS.neighbour[0]'),ev('DIALOGUES.find(q=>q.id==="neighbour").scene'));
+assert.equal(ev('wordBy("2-d1").kana'),'これからおせわになります');
+console.log('PASS: colleague context is shared by the guide and both exercises without changing the Japanese answer.');
+
 // Overview has one shared launcher per mode and combined vocabulary progress.
 for(const language of ['en','zh-Hant']){
   ev(`state.language='${language}';navigate('home')`);

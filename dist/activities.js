@@ -139,7 +139,7 @@ const DIALOGUES=[
     "id": "neighbour",
     "word": "2-d1",
     "family": "neighbour",
-    "scene": "You have just moved in. Greet your new neighbour.",
+    "scene": "Greeting your colleagues for the first time.",
     "why": "これからおせわになります asks for someone’s kindness or help from now on."
   }
 ];
@@ -165,14 +165,13 @@ function dialogueGraphic(q){
   const gift='<rect x="219" y="123" width="62" height="49" rx="4" fill="#f4d780" stroke="#876d35" stroke-width="2"/><path d="M250 123v49m-33-39h66m-33-10c-27-1-23-26-8-18l8 18c25-1 25-25 9-18Z" fill="none" stroke="#d36f55" stroke-width="5"/>';
   const badge='<rect x="211" y="113" width="78" height="54" rx="7" fill="#fff" stroke="#698a96" stroke-width="2"/><circle cx="230" cy="132" r="8" fill="#e3eada"/><path d="M220 152q10-17 20 0m8-25h29m-29 12h21" stroke="#698a96" stroke-width="3" fill="none"/>';
   const pen='<g transform="rotate(25 250 148)"><rect x="244" y="110" width="12" height="64" rx="4" fill="#557a88"/><path d="m244 174 6 14 6-14" fill="#d5b975"/></g><path d="M184 151h42m-11-9 11 9-11 9" stroke="#d36f55" stroke-width="4" fill="none"/>';
-  const house='<path d="m207 134 43-39 43 39v53h-86Z" fill="#f7edca" stroke="#8c7851" stroke-width="2"/><path d="M238 187v-33h24v33m-47-47h14v14h-14m57-14h14v14h-14" fill="#fff" stroke="#8c7851" stroke-width="2"/>';
   const books='<path d="M212 172v-51h34v51Zm42 0v-62h34v62Z" fill="#f4d780" stroke="#8c7851" stroke-width="2"/><path d="m239 91 22 22m0-22-22 22" stroke="#c36b53" stroke-width="4"/>';
   const bulb='<circle cx="250" cy="126" r="24" fill="#f7df86" stroke="#b18a39" stroke-width="2"/><path d="M237 149v15h26v-15m-22 22h18m-9-85V76m-39 45h-12m90 0h12m-78-27-8-8m69 8 8-8" stroke="#b18a39" stroke-width="3" fill="none"/>';
   const umbrella='<path d="M212 133a38 38 0 0 1 76 0Z" fill="#d8e9f1" stroke="#557a88" stroke-width="2"/><path d="M250 132v43c0 17 20 17 20 0" fill="none" stroke="#557a88" stroke-width="4"/>';
-  const props={meet:badge,intro:badge,likewise:badge,excuse:badge,name:badge,attention:'',offer:pen,thanks:gift,'thanks-full':gift,understand:bulb,incorrect:books,surprise:bulb,realise:umbrella,neighbour:house};
+  const props={meet:badge,intro:badge,likewise:badge,excuse:badge,name:badge,attention:'',offer:pen,thanks:gift,'thanks-full':gift,understand:bulb,incorrect:books,surprise:bulb,realise:umbrella,neighbour:badge};
   const symbols={meet:'…',intro:'…',likewise:'↔',excuse:'?',name:'?',attention:'…',offer:'→',thanks:'♡','thanks-full':'♡',understand:'!',incorrect:'×',surprise:'!',realise:'!',neighbour:'…'};
   const pose={meet:'wave',intro:'bow',likewise:'bow',excuse:'speaking',name:'thinking',attention:'wave',offer:'point',thanks:'gift','thanks-full':'bow',understand:'teacher',incorrect:'point',surprise:'thinking',realise:'thinking',neighbour:'wave'}[q.id]||'speaking';
-  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="expression-scene-${q.id}"><title id="expression-scene-${q.id}">${esc(q.scene||'Reply to a greeting.')}</title>${lessonBackdrop()}${luluPiggy(105,137,1.08,q.incoming?'thinking':pose)}${luluPiggy(395,137,1.08,q.incoming?'speaking':'idle')}${bubble(105,symbols[q.id]||'…')}${q.id==='likewise'?bubble(395,'↔'):''}${props[q.id]||''}<text x="105" y="207" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="395" y="207" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text></svg></figure>`;
+  return `<figure class="expression-figure"><svg viewBox="0 0 500 225" role="img" aria-labelledby="expression-scene-${q.id}"><title id="expression-scene-${q.id}">${esc(q.scene||'Reply to a greeting.')}</title>${lessonBackdrop()}${luluPiggy(105,137,1.08,q.incoming?'thinking':pose)}${luluPiggy(395,137,1.08,q.incoming?'speaking':'idle')}${bubble(105,symbols[q.id]||'…')}${q.id==='likewise'?bubble(395,'↔'):''}${props[q.id]||''}<text x="105" y="207" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="395" y="207" text-anchor="middle" fill="#3f6676" font-size="14">${q.id==='neighbour'?'Colleague':'Listener'}</text></svg></figure>`;
 }
 
 const DIALOGUE_CATEGORIES=[
@@ -195,7 +194,7 @@ const CONVERSATIONS={
   incorrect:['Correcting a misunderstanding.','更正誤會。',[['listener','これはじしょですか。','Is this a dictionary?','這是字典嗎？'],['you','ちがいます。','No, that’s not right.','不是的。']]],
   surprise:['Hearing surprising news.','聽到意外消息。',[['listener','あの人はせんせいです。','That person is a teacher.','那個人是老師。'],['you','えっ。','What? Really?','咦？真的嗎？']]],
   realise:['Recognising your umbrella.','認出自己的雨傘。',[['listener','これはあなたのかさですか。','Is this your umbrella?','這是你的雨傘嗎？'],['you','あ、わたしのかさです。','Oh, it’s my umbrella.','啊，是我的雨傘。']]],
-  neighbour:['Greeting a new neighbour.','向新鄰居打招呼。',[['you','これからおせわになります。','I look forward to your kindness.','今後請多多關照。'],['listener','こちらこそよろしくおねがいします。','Likewise, nice to meet you.','我也是，請多多指教。']]]
+  neighbour:[DIALOGUES.find(q=>q.id==='neighbour').scene,'初次向同事打招呼。',[['you','これからおせわになります。','I look forward to your kindness.','今後請多多關照。'],['listener','こちらこそよろしくおねがいします。','Likewise, nice to meet you.','我也是，請多多指教。']]]
 };
 const EXERCISE_OPENINGS={
   meet:['listener','たなかです。','I’m Tanaka.','我姓田中。'],
@@ -208,6 +207,7 @@ const EXERCISE_OPENINGS={
 };
 const CONVERSATION_POSES={meet:'wave',intro:'bow',likewise:'bow',excuse:'bow',name:'thinking',attention:'wave',offer:'point',thanks:'gift','thanks-full':'bow',understand:'thinking',incorrect:'point',surprise:'thinking',realise:'thinking',neighbour:'wave'};
 function conversationPig(speaker,pose){return `<svg class="conversation-pig" viewBox="0 0 120 120" aria-hidden="true">${luluPiggy(60,60,1,speaker==='you'?pose:'idle')}</svg>`;}
+function conversationSpeaker(q,speaker){return speaker==='you'?'You':q.id==='neighbour'?'Colleague':'Listener';}
 let selectedDialogueExpression=null;
 function updateSelectedChips(row,attribute,id){row.querySelectorAll(`[${attribute}]`).forEach(chip=>{const selected=chip.getAttribute(attribute)===id;chip.classList.toggle('selected',selected);chip.setAttribute('aria-pressed',String(selected));});}
 function updateDialogueGuide(){
@@ -230,7 +230,7 @@ function selectDialogueExpression(id){
 }
 function conversationCard(q){
   const turns=CONVERSATIONS[q.id][2],zh=state.language==='zh-Hant';
-  const dialogue=turns.map(([speaker,ja,en,translation])=>`<div class="conversation-turn ${speaker}">${conversationPig(speaker,CONVERSATION_POSES[q.id])}<div class="conversation-bubble"><span class="dialogue-role">${speaker==='you'?'You':'Listener'}</span><p class="jp" lang="ja">${esc(ja)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
+  const dialogue=turns.map(([speaker,ja,en,translation])=>`<div class="conversation-turn ${speaker}">${conversationPig(speaker,CONVERSATION_POSES[q.id])}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${esc(ja)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
   return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}"><div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${dialogue}</div><p class="conversation-notes muted">${esc(q.why)}</p></div></article>`;
 }
 function dialogueItems(category=null){return DIALOGUES.filter(d=>!category||vocabularySection(wordBy(d.word))===category).map(d=>({...d,kana:wordBy(d.word).kana}));}
@@ -292,7 +292,7 @@ function dialogueExercise(q,tileMode){
   const feedback=a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status"><div><span aria-hidden="true">${a.result?'✓':'✕'}</span> <strong>${a.result?'Correct!':'The correct answer is:'}</strong></div>${a.result?'':`<p class="jp" lang="ja">${esc(q.kana)}</p>`}<p>${esc(zh?word.zh:word.en)}</p><p>${esc(q.why)}</p></div>`:'';
   const bank=tileMode?`<div class="activity-tile-bank" role="group" aria-label="Hiragana bank">${a.tileBank.map((unit,index)=>`<button class="tile jp ${a.chosen.includes(index)?'selected':''}" lang="ja" data-activity-tile="${index}" ${a.checked||a.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`:`<div class="options activity-options">${a.choices.map((item,index)=>`<button class="option jp ${a.checked&&item.id===q.id?'correct':a.checked&&item.id===a.selected?'wrong':''}" data-activity-choice="${item.id}" ${a.checked?'disabled':''}><span class="number">${index+1}</span><span>${esc(item.kana)}</span>${a.checked&&item.id===q.id?'<span class="option-state"><span aria-hidden="true">✓</span> Correct</span>':a.checked&&item.id===a.selected?'<span class="option-state"><span aria-hidden="true">✕</span> Your choice</span>':''}</button>`).join('')}</div>`;
   const controls=a.checked?button('Next '+icon('arrow'),'activityNext','primary'):tileMode?button('Undo','activityUndo','ghost',a.chosen.length?'':'disabled')+button('Clear','activityClear','ghost',a.chosen.length?'':'disabled')+button('Check answer','activityCheck','primary',a.chosen.length===kanaUnits(vocabularyReading(q)).length?'':'disabled'):'';
-  return `<h1 class="sr-only">${tileMode?'Rebuild':'Matching'}</h1><section class="study-wrap conversation-exercise">${roundBar(a)}<section class="paper"><p class="exercise-situation">${esc(zh?CONVERSATIONS[q.id][1]:CONVERSATIONS[q.id][0])}</p><div class="conversation-stage"><div class="conversation-turn listener">${conversationPig('listener')}<div class="conversation-bubble"><span class="dialogue-role">Listener</span><p class="jp" lang="ja">${esc(opening[1])}</p><p class="conversation-translation">${esc(zh?opening[3]:opening[2])}</p></div></div><div class="conversation-turn you">${conversationPig('you',CONVERSATION_POSES[q.id])}<div class="conversation-bubble reply-bubble ${a.checked?(a.result?'correct':'wrong'):''}"><span class="dialogue-role">You</span>${response}${feedback}</div></div></div>${bank}${controls?`<div class="card-actions activity-controls">${controls}</div>`:''}${tileMode&&!a.checked?'<div class="activity-reveal"><button class="scope-link" data-action="activityReveal">Show answer & mark for review</button></div>':''}</section></section>`;
+  return `<h1 class="sr-only">${tileMode?'Rebuild':'Matching'}</h1><section class="study-wrap conversation-exercise">${roundBar(a)}<section class="paper"><p class="exercise-situation">${esc(zh?CONVERSATIONS[q.id][1]:CONVERSATIONS[q.id][0])}</p><div class="conversation-stage"><div class="conversation-turn listener">${conversationPig('listener')}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,'listener')}</span><p class="jp" lang="ja">${esc(opening[1])}</p><p class="conversation-translation">${esc(zh?opening[3]:opening[2])}</p></div></div><div class="conversation-turn you">${conversationPig('you',CONVERSATION_POSES[q.id])}<div class="conversation-bubble reply-bubble ${a.checked?(a.result?'correct':'wrong'):''}"><span class="dialogue-role">You</span>${response}${feedback}</div></div></div>${bank}${controls?`<div class="card-actions activity-controls">${controls}</div>`:''}${tileMode&&!a.checked?'<div class="activity-reveal"><button class="scope-link" data-action="activityReveal">Show answer & mark for review</button></div>':''}</section></section>`;
 }
 function activityPage(){const a=state.activity;if(!a)return dialogueMenu();const dialogue=a.kind.startsWith('dialogue');if(a.index>=a.ids.length)return header('Round complete.','Give yourself another chance with the items you missed.')+`<div class="study-wrap paper result-center"><div class="result-score">${a.correct}<small> / ${a.ids.length}</small></div><p class="muted" style="margin-top:15px">${a.missed.length?`${a.missed.length} items are ready for another look.`:'Every answer correct in this round.'}</p><div class="card-actions">${a.missed.length?button('Practise missed items','activityMissed','coral'):''}${button('New round','activityRestart','primary')}</div><div class="result-back">${button('Go back','activityBack','ghost')}</div></div>`;
 const q=activityCurrent(),tileMode=isActivityRebuild(a);
