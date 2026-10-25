@@ -1,0 +1,106 @@
+'use strict';
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined,headless:true,args:['--no-sandbox']});
+ try{
+  const context=await browser.newContext({serviceWorkers:'block'}),page=await context.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(process.env.KOTOBA_TEST_URL||'http://127.0.0.1:4173');
+  const ev=fn=>page.evaluate(fn);
+  let screens=0;
+  async function layout(){
+   const result=await ev(()=>({overflow:document.documentElement.scrollWidth>innerWidth,headings:document.querySelectorAll('main h1').length,install:!!document.querySelector('#pwa-install,.pwa-actions')}));
+   assert.equal(result.overflow,false,'No horizontal page overflow');assert.equal(result.headings,1);assert.equal(result.install,false);screens++;
+  }
+  async function retainScroll(selector,action){
+   const before=await page.locator(selector).evaluate(row=>{row.scrollLeft=row.scrollWidth-row.clientWidth;return row.scrollLeft;});
+   await action();
+   const after=await page.locator(selector).evaluate(row=>row.scrollLeft);
+   assert.ok(Math.abs(after-before)<=1,`${selector}: scroll reset ${before} → ${after}`);
+  }
+  for(const width of [360,390,1440])for(const language of ['en','zh-Hant']){
+   await page.setViewportSize({width,height:900});
+   await page.evaluate(language=>{state.language=language;navigate('vocabulary-menu')},language);
+   await page.locator('[data-vocabulary-browse="all"]').click();
+   assert.equal(await page.locator('[data-vocabulary-guide]').count(),58);
+   assert.equal(await page.locator('.vocabulary-filter-row').count(),0);await layout();
+   await page.locator('[data-vocabulary-browse="category"]').click();
+   assert.equal(await page.locator('[data-vocabulary-set]').count(),8);
+   assert.equal(await page.locator('[data-vocabulary-set="category-demonstratives"],[data-vocabulary-set="category-courtesy"]').count(),0);
+   // Click the final visible chip without browser auto-scroll changing the baseline.
+   await retainScroll('.vocabulary-filter-row',()=>ev(()=>document.querySelector('[data-vocabulary-set="category-languages"]').click()));
+   assert.equal(await page.locator('[data-vocabulary-guide]').count(),3);await layout();
+   const ids=await ev(()=>vocabularyStudySet(state.vocabularyContentKey).ids.slice().sort().join(','));
+   await page.locator('[data-vocabulary-practice="vocabulary-rebuild"]').click();
+   assert.equal(await ev(()=>state.round.ids.slice().sort().join(',')),ids);
+   await page.locator('[data-crumb-view="vocabulary-menu"]').click();
+   assert.equal(await ev(()=>state.vocabularyContentKey),'category-languages');
+   await page.locator('[data-vocabulary-browse="chapter"]').click();
+   await page.locator('[data-vocabulary-set="chapter-2"]').click();
+   assert.equal(await page.locator('[data-vocabulary-guide]').count(),30);await layout();
+   await ev(()=>{state.vocabularyContentKey='category-courtesy';render()});
+   assert.equal(await ev(()=>state.vocabularyContentKey),'all');
+   await ev(()=>{state.dialogueCategory='replies';navigate('dialogue')});
+   assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
+   assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
+   assert.equal(await page.locator('.topbar .app-title').textContent(),'Kotoba');await layout();
+   await page.locator('[data-dialogue-category="wh-words"]').click();
+   assert.equal(await page.locator('[data-wh-expression]').count(),5);
+   for(const word of ['1-17a','1-17b','1-19a','1-19b','2-36']){
+    await retainScroll('.wh-chip-row',()=>page.evaluate(word=>document.querySelector(`[data-wh-expression="wh-words-${word}"]`).click(),word));
+    assert.equal(await page.locator('.conversation-turn').count(),2);
+    assert.equal(await page.locator('.conversation-translation').count(),2);
+    assert.equal(await page.locator('.expression-figure').count(),0);await layout();
+   }
+   await page.locator('[data-action="toggleLanguage"]').click();
+   assert.equal(await ev(()=>selectedWhExpression),'wh-words-2-36');await layout();
+   await page.locator('[data-action="toggleLanguage"]').click();
+   for(const kind of ['dialogue-choice','dialogue-tiles','demonstratives','wh-tiles']){
+    await page.evaluate(kind=>startActivity(kind,kind.startsWith('dialogue')?['thanks-full']:['wh-words-1-19b'],kind.startsWith('dialogue')?'courtesy':null),kind);
+    assert.equal(await page.locator('.conversation-exercise .paper').count(),0);
+    assert.equal(await page.locator('.topbar .menu-button').count(),0);
+    assert.equal(await page.locator('.topbar .back-button').count(),1);
+    assert.equal(await page.locator('.reply-feedback').count(),0);await layout();
+    if(kind.endsWith('tiles')){
+     await ev(()=>{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent())))a.chosen.push(a.tileBank.findIndex((text,i)=>text===unit&&!a.chosen.includes(i)));render()});
+     await page.locator('[data-action="activityCheck"]').click();
+    }else await ev(()=>checkActivity(activityCurrent().id));
+    assert.equal(await ev(()=>state.activity.result),true);
+    assert.equal(await page.locator('.reply-feedback .feedback-lulu.happy').count(),1);
+    assert.equal(await page.locator('.reply-bubble .reply-feedback').count(),0);
+    await layout();
+    await ev(()=>activityAction('activityRestart'));
+    if(kind.endsWith('tiles'))await page.locator('[data-action="activityReveal"]').click();
+    else await ev(()=>checkActivity(state.activity.choices.find(q=>q.id!==activityCurrent().id).id));
+    assert.equal(await ev(()=>state.activity.result),false);
+    assert.equal(await page.locator('.feedback-lulu.encouraging').count(),1);await layout();
+    await page.locator('.topbar .back-button').click();
+    assert.equal(await ev(()=>state.view),'dialogue');
+    assert.equal(await ev(()=>state.dialogueCategory),kind.startsWith('dialogue')?'courtesy':'wh-words');
+   }
+   // A directly opened activity still has an explicit destination, independent of history.
+   await ev(()=>{pageHistory.length=0;startActivity('dialogue-tiles',['thanks-full'],'courtesy');pageHistory.length=0;});
+   await page.locator('.back-button').click();assert.equal(await ev(()=>state.dialogueCategory),'courtesy');
+   // Update remains compact with its icon and coordinated green disabled style.
+   await ev(()=>{document.getElementById('pwa-update').hidden=false});await layout();
+   assert.equal(await page.locator('#pwa-update .icon').count(),1);
+   const background=await page.locator('#pwa-update').evaluate(b=>getComputedStyle(b).backgroundColor);
+   assert.equal(background,'rgb(50, 105, 65)');
+   await page.locator('#pwa-update').evaluate(b=>b.disabled=true);
+   assert.equal(await page.locator('#pwa-update').evaluate(b=>getComputedStyle(b).opacity),'1');
+   await page.locator('#pwa-update').evaluate(b=>{b.disabled=false;b.hidden=true});
+   const padding=await page.locator('.breadcrumbs button').first().evaluate(b=>[getComputedStyle(b).paddingLeft,getComputedStyle(b).paddingRight,getComputedStyle(b).paddingTop]);
+   assert.deepEqual(padding,['0px','0px','8px']);
+  }
+  await page.setViewportSize({width:390,height:900});
+  await ev(()=>{state.language='en';startActivity('dialogue-tiles',['thanks-full'],'courtesy');checkActivity(null,true)});
+  await page.screenshot({path:'/tmp/kotoba-dialogue-390.png',fullPage:true});
+  await ev(()=>{openVocabularyContent('category-languages')});
+  await page.screenshot({path:'/tmp/kotoba-vocabulary-390.png',fullPage:true});
+  await ev(()=>selectDialogueCategory('wh-words'));
+  await page.screenshot({path:'/tmp/kotoba-wh-390.png',fullPage:true});
+  assert.deepEqual(errors,[]);
+  console.log(`PASS: ${screens} layouts at 360, 390 and 1440px in both languages; scoped vocabulary chips, retained scroll offsets, WH conversations, all game feedback, direct back navigation, Update states, zero breadcrumb horizontal padding and no page errors.`);
+ }finally{await browser.close()}
+})().catch(e=>{console.error(e);process.exitCode=1});

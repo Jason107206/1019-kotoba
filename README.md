@@ -42,15 +42,17 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 ## Rebuild and simulated dialogue
 
-Overview has one Vocabulary mode combining Recall and Rebuild. Vocabulary opens its shared content page directly. Use the dropdown to select all 66 Vocabulary words, a chapter, or one of 10 categories; there are no separate selection menus. All 19 forms used in Dialogue scenes and WH-word questions are excluded from Vocabulary’s menus, content, Recall and Rebuild sets, including the all-word and chapter selections. The 11 additional introduction/reply forms remain outside Vocabulary as before. All 96 forms remain in the separate All words reference; saved progress is retained. The page follows Dialogue’s layout: a dropdown, the selection’s title and description, Recall / Rebuild buttons, and a vertical illustrated card for every selected word. Cards include taught spelling, hiragana, Chinese/English meanings and any usage notes. All words have an accessible visual; demonstratives show object positions relative to the speaker and listener. The dropdown switches between all words, either chapter and every category. Both practice buttons use the current selection; restarts and missed-item rounds preserve it. Breadcrumbs use Kotoba / Vocabulary / Recall or Rebuild; the Vocabulary ancestor returns directly to the current selection’s content. Recall and Rebuild retain their separate saved progress. Sentence Rebuild remains a separate Overview mode. Build each hiragana reading from shuffled kana tiles mixed with similar alternatives: voicing, small kana, long vowels and visually similar forms. For example, the bank for そうじ includes そ, ぞ, う, じ, し and っじ. All relevant alternatives are included, and repeated target kana have separate tiles. Small-kana combinations stay together; placeholder ～ is omitted. Kana-only words use their meaning as the prompt, while kanji-bearing words show their taught spelling. Correctness depends on the assembled reading, with manual Next, missed-item replay and independent saved progress. Sentence Rebuild retains the existing 50 puzzles and pattern filters. The standalone Matching mode has been removed.
+Overview has one Vocabulary mode combining Recall and Rebuild. Its content page has All words / By category / By chapter chips, followed by the two game buttons and the selected mode’s category or chapter chips. The selection immediately filters the compact illustrated word list and both games. Chip rows scroll horizontally on mobile and keep their scroll offsets during selection and language redraws. Vocabulary contains 58 forms across eight categories; This and That and Polite Expressions & Thanks are excluded. Obsolete category selections return to All words. All 96 forms remain in the separate All words reference and the existing mock coverage is retained.
 
-Breadcrumbs show Kotoba, the current mode and the activity. Vocabulary and Dialogue omit their selection/category levels. Ancestors are clickable; Back links are removed. The Update control sits immediately left of the language switch with the same pill styling, and retains explicit update/reload behavior across page renders.
+Rebuild compares the assembled Japanese text in order after canonical Unicode composition and removal of whitespace, invisible formatting and placeholder tildes. Identical duplicate tiles can swap identities; repeated character counts and different Japanese spellings still matter. Check readiness uses text length rather than the original tile count, so an equivalent assembly with combined tiles can be submitted. Recall and Rebuild retain separate progress, manual Next, missed-item practice and existing scoring.
+
+Breadcrumbs show Kotoba, the current mode and the activity. Dialogue Content and its games place breadcrumbs below the top bar, which contains Kotoba and the language selector. Games have a back arrow with an explicit destination to the selected Dialogue category. The green Update button includes a refresh icon and preserves explicit update activation and loading/disabled behavior. Breadcrumb buttons retain their vertical padding and have zero horizontal padding.
 
 Vocabulary Recall, Dialogue and Rebuild keep the answer and feedback visible until the user selects Next. After the last answer, Next opens the round results. The timed mock keeps its existing submission flow.
 
-WH-words uses five syllabus question words: だれ, どなた, なんさい, おいくつ and なん. Illustrated guides explain standard and polite forms, and the game asks learners to complete a sentence blank. The age suffix さい is excluded because it is not a question word. The category opens its guide before practice and returns to Dialogue.
+WH-words uses five syllabus question words: だれ, どなた, なんさい, おいくつ and なん. Selectable chips open complete two-speaker conversations using the same bubbles, Lulu characters, primary Japanese text and English/Traditional Chinese translations as Replies. Short usage notes explain the standard/polite distinctions. Both Matching and Rebuild remain available; さい stays excluded because it is not a question word.
 
-Dialogue shows a dropdown for Introduction (5 scenes), Polite expressions (5 scenes), Replies (4 scenes), and WH-words (5 visual questions), with the selected guide and practice buttons directly below it. The selected category’s title and description appear directly under the dropdown. All four categories offer Matching and Rebuild. Each expression category opens a content page with expression guides, usage explanations, and the Matching / Rebuild buttons. Both games use only that category’s scenes; restarts and missed-item rounds retain the category, and Back returns to its guide before the category menu. Across the three categories, Dialogue offers related expression choices or hiragana construction for all 14 syllabus scenes. Choices come from the same communicative category; Rebuild shares Vocabulary’s numbered answer slots, similar-kana alternatives, selected-tile styling, Clear/Undo/Check controls and reveal-as-review action. Repeated correct tiles remain separate, and placeholder ～ is omitted. Small-kana combinations stay together; small っ stays separate. Duplicate tiles are tracked by position, with correctness based on the resulting text. Each scene has feedback and missed-item replay. Equivalent thank-you variants are excluded as distractors in the same question. Activity progress is stored independently.
+Dialogue retains Introduction (5 scenes), Polite expressions (5 scenes), Replies (4 scenes), and WH-words (5 questions). Expression chips select a complete conversation immediately. Matching and Rebuild use the selected category and preserve it across restarts, missed-item practice and return navigation. Their games appear directly on the page background with compact progress, the situation, speaker bubbles and choices or a tile bank. Rebuild builds the answer in the learner’s bubble. Separate happy and encouraging Lulu illustrations sit beside feedback below the answer area. Corrective notes, editing, reveal, Check and manual Next remain available.
 
 ## Overview
 
@@ -58,7 +60,7 @@ Overview has one responsive study-card navigation in the order Dialogue, Vocabul
 
 ## Visual expression guides
 
-Dialogue content pages show separate expression cards stacked vertically, with illustrated SVG scenes. Introduction, Polite expressions and Replies have a visual scene for each expression in both the guide and the choice/hiragana-building games; WH-words has five illustrated question-word cards. Matching and Rebuild buttons sit below the selected title and description, above the expression guides. Dialogue and Vocabulary titles and descriptions share Overview’s typography at each screen size. Each scene has an accessible description.
+Dialogue content pages use selectable expression chips and complete conversations with compact Lulu characters beside their speakers. WH-words shares this layout. Vocabulary uses the same chip, typography and action components with compact illustrated word entries. Shared 4dp spacing tokens standardize page sections, cards, chips, controls and navigation.
 
 ## Kanji Writing and Vocabulary Recall
 
@@ -66,7 +68,7 @@ Recall is one of the two practice options within Vocabulary; it still checks typ
 
 ## Progressive Web App
 
-Kotoba includes an installable web app manifest, 192px/512px icons, a maskable icon and an Apple touch icon. Installation is offered through the Install app button when the browser supports it. The native prompt opens only after the user selects Install app; no invitation appears automatically on first visit. On iPhone/iPad, use Safari’s Share → Add to Home Screen. Installation and offline support require HTTPS (GitHub Pages) or localhost. Open the deployed app online once to finish caching; the installed app then opens offline with every study mode, including Kanji Writing. Progress continues to use browser localStorage.
+Kotoba includes an installable web app manifest, 192px/512px icons, a maskable icon and an Apple touch icon. The website has no Install app button or automatic installation invitation. Browser installation remains available through the browser’s own controls; on iPhone/iPad, use Safari’s Share → Add to Home Screen. Installation and offline support require HTTPS (GitHub Pages) or localhost. Open the deployed app online once to finish caching; the installed app then opens offline with every study mode, including Kanji Writing. Progress continues to use browser localStorage.
 
 The manifest, start URL, service worker and assets use relative paths, supporting both the GitHub Actions deployment at the project root and branch publishing under `dist/`. In branch publishing, the installed app starts directly at `dist/`, so its offline launch does not depend on the root redirect.
 
@@ -80,7 +82,7 @@ node tests/pwa.cjs
 node tests/verify.cjs
 ```
 
-The Pages workflow runs these steps automatically. `tests/pwa.cjs` verifies manifest/icon sizes, asset coverage, generated-worker freshness, offline fetch behavior, both Pages paths, scope isolation, manual-only installation and explicit update activation without browser tests.
+The Pages workflow runs these steps automatically. `tests/pwa.cjs` verifies manifest/icon sizes, asset coverage, generated-worker freshness, offline fetch behavior, both Pages paths, scope isolation, absence of installation buttons and explicit update activation without browser tests.
 
 ## Material 3 interface
 
@@ -100,6 +102,9 @@ python -m http.server 4173 --directory dist
 
 # Terminal 2 (use your installed Chromium path, or omit for Playwright's browser)
 CHROMIUM_PATH=/usr/bin/chromium node tests/material-browser.cjs
+CHROMIUM_PATH=/usr/bin/chromium node tests/revision-browser.cjs
 ```
 
 Set `KOTOBA_TEST_URL` to test another local URL. This suite checks 23 screen states at 320, 390, 768, 1024 and 1440 pixels in both interface languages, including overflow, active navigation, headings, drawer focus and resizing, modal dismissal, input retention, and word search. It uses an isolated browser context and does not change real learner progress.
+
+The revision browser suite adds 138 layout checks at 360, 390 and 1440 pixels in both languages, covering Vocabulary chip selection and scroll retention, WH conversations, correct/incorrect game feedback, explicit return navigation, the green Update control and zero horizontal breadcrumb padding.

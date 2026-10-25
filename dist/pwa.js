@@ -1,24 +1,15 @@
 'use strict';
 (()=>{
-  const install=document.getElementById('pwa-install'),update=document.getElementById('pwa-update');
-  let installPrompt=null,waitingWorker=null,updateRequested=false;
+  const update=document.getElementById('pwa-update');
+  let waitingWorker=null,updateRequested=false;
   const labels=()=>{
     const zh=document.documentElement.lang==='zh-Hant';
-    install.textContent=zh?'安裝應用程式':'Install app';
-    update.textContent=zh?'更新':'Update';
+    update.innerHTML='<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5m10-4a8 8 0 0 0-14-2m14 12a8 8 0 0 1-14-2"/></svg><span>'+(zh?'更新':'Update')+'</span>';
   };
   const mountUpdate=()=>{const slot=document.getElementById('pwa-update-slot');if(slot&&update.parentNode!==slot)slot.append(update);};
   mountUpdate();new MutationObserver(mountUpdate).observe(document.getElementById('app'),{childList:true});
   labels();new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-  window.addEventListener('beforeinstallprompt',event=>{
-    event.preventDefault();installPrompt=event;install.hidden=false;
-  });
-  window.addEventListener('appinstalled',()=>{installPrompt=null;install.hidden=true;});
-  install.addEventListener('click',async()=>{
-    const prompt=installPrompt;if(!prompt)return;
-    installPrompt=null;install.hidden=true;
-    try{await prompt.prompt();await prompt.userChoice;}catch{/* Browser controls installation availability. */}
-  });
+  window.addEventListener('beforeinstallprompt',event=>event.preventDefault());
   if(!('serviceWorker' in navigator)||!window.isSecureContext)return;
   const offerUpdate=worker=>{waitingWorker=worker;update.hidden=false;};
   update.addEventListener('click',()=>{

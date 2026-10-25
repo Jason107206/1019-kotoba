@@ -661,6 +661,8 @@ const ZH_HANT = {
   "Choose what you would say in Japanese.": "選出這個情況下你會說的日語。",
   "Put your answer here.": "在這裡拼出答案。",
   "Situation": "情境",
+  "Back to Dialogue": "返回情境對話",
+  "Vocabulary selection": "詞彙選擇",
   "They say": "對方說",
   "Use hiragana tiles to spell what you would say.": "用平假名字卡，拼出這個情況下你會說的話。"
 };

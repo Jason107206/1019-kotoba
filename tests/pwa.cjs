@@ -62,10 +62,10 @@ function client({supported=true,secure=true,waiting=true,controller=true,install
   const next=client();await next.winEvents.load();next.update.events.click();assert.equal(next.messages[0].type,'ACTIVATE_UPDATE');assert.equal(next.state.reloads,0);next.swEvents.controllerchange();assert.equal(next.state.reloads,1);
   const fresh=client({waiting:false,controller:false,installing:true});await fresh.winEvents.load();fresh.worker.state='installed';fresh.workerEvents.statechange();assert.equal(fresh.update.hidden,true);
   const updating=client({waiting:false,installing:true});await updating.winEvents.load();updating.worker.state='installed';updating.workerEvents.statechange();assert.equal(updating.update.hidden,false);
-  let prevented=false;c.winEvents.beforeinstallprompt({preventDefault:()=>prevented=true,prompt:async()=>c.state.prompted++,userChoice:Promise.resolve({outcome:'accepted'})});assert.equal(prevented,true);assert.equal(c.install.hidden,false);assert.equal(c.state.prompted,0);await c.install.events.click();assert.equal(c.state.prompted,1);assert.equal(c.install.hidden,true);
-  c.document.documentElement.lang='zh-Hant';c.observer();assert.equal(c.install.textContent,'安裝應用程式');assert.equal(c.update.textContent,'更新');
+  let prevented=false;c.winEvents.beforeinstallprompt({preventDefault:()=>prevented=true,prompt:async()=>c.state.prompted++});assert.equal(prevented,true);assert.equal(c.install.hidden,true);assert.equal(c.state.prompted,0);assert.ok(!html.includes('pwa-install')&&!html.includes('pwa-actions'));
+  c.document.documentElement.lang='zh-Hant';c.observer();assert.ok(c.update.innerHTML.includes('更新'));assert.ok(c.update.innerHTML.includes('<svg'));
   assert.equal(client({supported:false}).winEvents.load,undefined);assert.equal(client({secure:false}).winEvents.load,undefined);
   assert.equal(c.update.parentNode,c.extra['pwa-update-slot']);c.update.parentNode=null;c.observers[0]();assert.equal(c.update.parentNode,c.extra['pwa-update-slot']);
   assert.ok(!html.includes('pwa-welcome'));
-  console.log('PASS: PWA icons/manifest, reproducible cache revision, complete offline assets, both Pages paths, cache isolation, safe updates, manual-only installation and bilingual controls.');
+  console.log('PASS: PWA icons/manifest, reproducible cache revision, complete offline assets, both Pages paths, cache isolation, safe updates, no install button and bilingual controls.');
 })().catch(error=>{console.error(error);process.exitCode=1;});
