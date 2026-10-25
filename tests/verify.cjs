@@ -260,7 +260,7 @@ for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dia
   assert.ok(elements.app.innerHTML.includes(language==='en'?'please / here you are':'請（讓別人做某事時）'));
   const explanation=language==='en'?'Use どうぞ when you give someone something.':'把東西遞給對方時，可以說 どうぞ';
   const html=elements.app.innerHTML;
-  assert.ok(html.includes(`<p class="activity-explanation muted">${explanation}`));
+  assert.ok(html.includes(`<p class="activity-explanation">${explanation}`));
   assert.ok(html.indexOf(explanation) < html.indexOf('data-action="activityNext"'));
 }
 console.log('PASS: bilingual exercise conversations hide reply feedback until grading.');

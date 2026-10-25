@@ -19,6 +19,28 @@ const assert=require('node:assert/strict');
    const after=await page.locator(selector).evaluate(row=>row.scrollLeft);
    assert.ok(Math.abs(after-before)<=1,`${selector}: scroll reset ${before} → ${after}`);
   }
+  async function feedbackCard(correct){
+   const details=await page.locator('.reply-feedback').evaluate(card=>{
+    const style=getComputedStyle(card),rect=card.getBoundingClientRect(),body=card.parentElement;
+    const bank=body.querySelector('.activity-tile-bank,.activity-options').getBoundingClientRect();
+    const explanation=card.querySelector('.activity-explanation'),copy=card.querySelector('.feedback-copy');
+    const luminance=color=>color.match(/[\d.]+/g).slice(0,3).map(Number).map(n=>{n/=255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4;}).reduce((sum,n,i)=>sum+n*[.2126,.7152,.0722][i],0);
+    const text=luminance(style.color),background=luminance(style.backgroundColor);
+    return {background:style.backgroundColor,contrast:(Math.max(text,background)+.05)/(Math.min(text,background)+.05),border:style.borderTopWidth,radius:parseFloat(style.borderTopLeftRadius),padding:parseFloat(style.paddingTop),widthMatches:Math.abs(rect.width-bank.width)<1,leftMatches:Math.abs(rect.left-bank.left)<1,explanation:explanation.textContent,below:explanation.getBoundingClientRect().top>=Math.max(copy.getBoundingClientRect().bottom,card.querySelector('.feedback-lulu').getBoundingClientRect().bottom),controlsNext:card.nextElementSibling.matches('.activity-controls'),status:card.getAttribute('role'),icon:copy.textContent.trim().charAt(0)};
+   });
+   assert.equal(details.background,correct?'rgb(214, 238, 221)':'rgb(249, 222, 220)');
+   assert.ok(details.contrast>=4.5,'Feedback text meets normal-text contrast');
+   assert.equal(details.border,'1px');assert.ok(details.radius>=12&&details.padding>=16);
+   assert.ok(details.widthMatches&&details.leftMatches,'Card aligns with answer bank');
+   assert.equal(details.explanation,await ev(()=>translateText(activityCurrent().why)));
+   assert.ok(details.below&&details.controlsNext,'Explanation sits underneath; controls immediately follow card');
+   assert.equal(details.status,'status');assert.equal(details.icon,correct?'✓':'✕');
+   const before=await ev(()=>JSON.stringify(state.activity));
+   await ev(()=>run('toggleLanguage'));
+   assert.equal(await page.locator('.reply-feedback .activity-explanation').textContent(),await ev(()=>translateText(activityCurrent().why)));
+   await ev(()=>run('toggleLanguage'));
+   assert.equal(await ev(()=>JSON.stringify(state.activity)),before,'Language switching preserves the graded answer');
+  }
   for(const width of [360,390,1440])for(const language of ['en','zh-Hant']){
    await page.setViewportSize({width,height:900});
    await page.evaluate(language=>{state.language=language;navigate('vocabulary-menu')},language);
@@ -69,12 +91,13 @@ const assert=require('node:assert/strict');
     assert.equal(await ev(()=>state.activity.result),true);
     assert.equal(await page.locator('.reply-feedback .feedback-lulu.happy').count(),1);
     assert.equal(await page.locator('.reply-bubble .reply-feedback').count(),0);
+    await feedbackCard(true);
     await layout();
     await ev(()=>activityAction('activityRestart'));
     if(kind.endsWith('tiles'))await page.locator('[data-action="activityReveal"]').click();
     else await ev(()=>checkActivity(state.activity.choices.find(q=>q.id!==activityCurrent().id).id));
     assert.equal(await ev(()=>state.activity.result),false);
-    assert.equal(await page.locator('.feedback-lulu.encouraging').count(),1);await layout();
+    assert.equal(await page.locator('.feedback-lulu.encouraging').count(),1);await feedbackCard(false);await layout();
     await page.locator('.topbar .back-button').click();
     assert.equal(await ev(()=>state.view),'dialogue');
     assert.equal(await ev(()=>state.dialogueCategory),kind.startsWith('dialogue')?'courtesy':'wh-words');
