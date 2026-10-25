@@ -85,7 +85,7 @@ const DIALOGUES=[
     "word": "2-c1",
     "family": "attention",
     "scene": "You want to speak to someone but are unsure how to start.",
-    "why": "Use あのう to get someone’s attention or when you are unsure how to start. Keep the final う."
+    "why": "あのう gets attention or shows hesitation. The final う distinguishes it from the noun modifier あの."
   },
   {
     "id": "offer",
@@ -177,9 +177,9 @@ function dialogueGraphic(q){
 
 const DIALOGUE_CATEGORIES=[
   {id:'introductions',label:'Introduction',description:'Meeting people, asking names and making introductions.'},
-  {id:'courtesy',label:'Polite expressions',description:'Getting attention, offering something and saying thank you.'},
+  {id:'courtesy',label:'Polite expressions',description:'Politely interrupting, offering something and saying thank you.',excludedWords:['2-c1']},
   {id:'replies',label:'Replies',description:'Responding, showing surprise and correcting a misunderstanding.'},
-  {...VOCAB_CATEGORIES.find(c=>c.id==='demonstratives'),label:'This and That'}
+  {...VOCAB_CATEGORIES.find(c=>c.id==='demonstratives'),label:'This and That',includedWords:['2-c1']}
 ];
 // Each expression has a short exchange rather than a repeated generic reply.
 const CONVERSATIONS={
@@ -207,6 +207,40 @@ const THIS_THAT_SCENES=[
  ['2-05','Identify the owner of a book near the listener','指出靠近對方的書的主人','これはだれのほんですか。','Whose book is this?','這是誰的書？','{word}ほんはわたしのです。','That book is mine.','那本書是我的。','その comes directly before a noun and points to something near the listener.'],
  ['2-06','Identify the owner of a book far from both people','指出離雙方都遠的書的主人','あれはだれのほんですか。','Whose book is that over there?','那邊的是誰的書？','{word}ほんはわたしのです。','That book over there is mine.','那邊那本書是我的。','あの comes directly before a noun and points to something far from both people. あのう gets attention.']
 ];
+// Scene locations are relative to the learner; the opening speaker sees the same book
+// from the opposite side. Keep labels and geometry attached to the vocabulary IDs.
+const THIS_THAT_VISUALS={
+  '2-01':{location:'you',labels:['This','這個']},
+  '2-02':{location:'listener',labels:['That','那個']},
+  '2-03':{location:'far',labels:['That over there','那個（遠處）']},
+  '2-04':{location:'you',labels:['This · Noun','這 · 名詞']},
+  '2-05':{location:'listener',labels:['That · Noun','那 · 名詞']},
+  '2-06':{location:'far',labels:['That over there · Noun','那（遠處）· 名詞']},
+  '2-c1':{location:'attention',labels:['Get attention','引起注意']}
+};
+const THIS_THAT_LOCATIONS={
+  you:['The book is beside you.','書本在你身旁。'],
+  listener:['The book is beside the listener.','書本在聽者身旁。'],
+  far:['The book is far from both people.','書本離雙方都遠。']
+};
+function attentionScene(q){
+  const caption=state.language==='zh-Hant'?'揮手引起聽話者的注意。':'Wave to get the listener’s attention.';
+  return `<figure class="demonstrative-scene attention-scene" data-scene-expression="${q.id}"><svg viewBox="0 0 500 260" role="img" aria-labelledby="attention-title-${q.id}"><title id="attention-title-${q.id}">${esc(caption)}</title><rect width="500" height="260" rx="16" fill="#fff6e7"/><ellipse cx="110" cy="205" rx="65" ry="14" fill="#eee3fa"/><ellipse cx="390" cy="205" rx="65" ry="14" fill="#f8e3e8"/><g data-scene-person="you">${luluPiggy(110,157,1.3,'wave')}</g><g data-scene-person="listener">${luluPiggy(390,157,1.3,'idle')}</g><path d="M46 12h128q16 0 16 16v33q0 16-16 16h-43l-21 17 3-17H46q-16 0-16-16V28q0-16 16-16Z" fill="#eee3fa" stroke="#84619c" stroke-width="2"/><path d="M335 12h110q16 0 16 16v33q0 16-16 16h-34l-21 17 3-17h-58q-16 0-16-16V28q0-16 16-16Z" fill="#f8e3e8" stroke="#b57c90" stroke-width="2"/><text x="110" y="55" text-anchor="middle" fill="#582686" font-size="30" lang="ja">あのう</text><text x="390" y="55" text-anchor="middle" fill="#74465e" font-size="30" lang="ja">はい。</text><text x="110" y="247" text-anchor="middle" fill="#582686" font-size="20">${esc(translateText('You'))}</text><text x="390" y="247" text-anchor="middle" fill="#74465e" font-size="20">${esc(translateText('Listener'))}</text></svg><figcaption>${esc(caption)}</figcaption></figure>`;
+}
+function demonstrativeScene(q){
+  const scene=THIS_THAT_VISUALS[q.word];if(!scene)return '';
+  if(scene.location==='attention')return attentionScene(q);
+  const location=scene.location,far=location==='far',x=far?250:location==='you'?165:335,y=far?65:165;
+  const zh=state.language==='zh-Hant',caption=THIS_THAT_LOCATIONS[location][zh?1:0];
+  const nearZone=far?'':`<ellipse cx="${location==='you'?116:384}" cy="181" rx="105" ry="53" fill="#eee3fa" opacity=".65"/>`;
+  const learnerPose=location==='you'?'idle':'point',listenerPose=location==='listener'?'idle':'point';
+  const path=far?'M120 166 Q155 95 211 77 M380 166 Q345 95 289 77':location==='you'?'M380 173 Q305 128 208 160':'M120 173 Q195 128 292 160';
+  return `<figure class="demonstrative-scene" data-object-location="${location}"><svg viewBox="0 ${far?0:85} 500 ${far?275:190}" role="img" aria-labelledby="distance-title-${q.id}"><title id="distance-title-${q.id}">${esc(caption)}</title><rect width="500" height="275" rx="16" fill="#fff6e7"/>${far?'<path d="M25 115h450" stroke="#eadbc5" stroke-width="2"/>':''}${nearZone}<path d="${path}" fill="none" stroke="#84619c" stroke-width="3" stroke-dasharray="5 7" stroke-linecap="round"/><ellipse cx="${x}" cy="${y+5}" rx="49" ry="43" fill="#f8e8a9" stroke="#c5a355" stroke-width="2"/><g class="scene-book" data-x="${x}" data-y="${y}" transform="translate(${x} ${y}) rotate(-8)"><path d="M-31-31H25Q31-31 31-25V30H-25Q-31 30-31 24Z" fill="#90ac94" stroke="#845537" stroke-width="4" stroke-linejoin="round"/><path d="M-23 21H30V30H-23Q-30 26-23 21Z" fill="#fff7df" stroke="#845537" stroke-width="3"/><path d="M-20-29V19M-9-17H18M-9-7H12" fill="none" stroke="#566e55" stroke-width="3" stroke-linecap="round"/></g><g data-scene-person="you">${luluPiggy(70,175,1.3,learnerPose)}</g><g data-scene-person="listener" transform="translate(860 0) scale(-1 1)">${luluPiggy(430,175,1.3,listenerPose)}</g><text x="70" y="260" text-anchor="middle" fill="#582686" font-size="20">${zh?'你':'You'}</text><text x="430" y="260" text-anchor="middle" fill="#74465e" font-size="20">${zh?'聽者':'Listener'}</text></svg><figcaption>${esc(caption)} <span>${zh?'指示詞隨說話者的位置改變。':'The demonstrative depends on who is speaking.'}</span></figcaption></figure>`;
+}
+function dialogueExpressionLabel(q){
+  const labels=THIS_THAT_VISUALS[q.word]?.labels||CONVERSATIONS[q.id];
+  return labels?labels[state.language==='zh-Hant'?1:0].replace(/[。.!?？]+$/u,''):translateText(q.meaning);
+}
 for(const [word,en,zh,opening,openingEn,openingZh,sentence,replyEn,replyZh,why] of THIS_THAT_SCENES){
   const id=`this-that-${word}`,entry=WORDS.find(w=>w.id===word);
   DIALOGUES.push({id,word,family:id,scene:en,sentence,why});
@@ -252,9 +286,10 @@ function expressionDialogueText(text,q){
 function conversationCard(q){
   const turns=CONVERSATIONS[q.id]?.[2]||WH_CONVERSATIONS[q.word],zh=state.language==='zh-Hant';
   const dialogue=turns.map(([speaker,ja,en,translation])=>`<div class="conversation-turn ${speaker}">${conversationPig(speaker,CONVERSATION_POSES[q.id])}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${speaker==='you'?expressionDialogueText(ja,q):esc(ja)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
-  return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}"><div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${dialogue}</div><p class="conversation-notes muted">${esc(q.why)}</p></div></article>`;
+  return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}">${demonstrativeScene(q)}<div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${dialogue}</div><p class="conversation-notes muted">${esc(q.why)}</p></div></article>`;
 }
-function dialogueItems(category=null){return DIALOGUES.filter(d=>!category||vocabularySection(wordBy(d.word))===category).map(d=>({...d,kana:wordBy(d.word).kana}));}
+function dialogueInCategory(q,category){const group=DIALOGUE_CATEGORIES.find(c=>c.id===category);return (vocabularySection(wordBy(q.word))===category||group?.includedWords?.includes(q.word))&&!group?.excludedWords?.includes(q.word);}
+function dialogueItems(category=null){return DIALOGUES.filter(d=>!category||dialogueInCategory(d,category)).map(d=>({...d,kana:wordBy(d.word).kana}));}
 function openDialogueCategory(category){selectDialogueCategory(category);}
 function allDialogueItems(){return [...dialogueItems(),...demonstrativeItems().map(q=>({...q,family:q.id}))];}
 function dialogueCategories(){return [...DIALOGUE_CATEGORIES,{id:'wh-words',label:'WH-words',description:'Practise standard and polite questions about age, people and “what”.'}];}
@@ -262,7 +297,7 @@ function dialogueStudySet(){
   const mode=state.dialogueBrowse||'all',all=allDialogueItems();
   if(mode==='category'){
     const category=dialogueCategories().find(c=>c.id===state.dialogueCategory)||dialogueCategories()[0];
-    return {key:`category-${category.id}`,label:category.label,description:category.description,items:all.filter(q=>category.id==='wh-words'?!!WH_CONVERSATIONS[q.word]:!WH_CONVERSATIONS[q.word]&&vocabularySection(wordBy(q.word))===category.id)};
+    return {key:`category-${category.id}`,label:category.label,description:category.description,items:all.filter(q=>category.id==='wh-words'?!!WH_CONVERSATIONS[q.word]:!WH_CONVERSATIONS[q.word]&&dialogueInCategory(q,category.id))};
   }
   if(mode==='chapter')return {key:`chapter-${state.dialogueChapter}`,label:`Chapter ${state.dialogueChapter} · p.${state.dialogueChapter===1?1:6}`,description:'Practise the dialogue expressions from this chapter.',items:all.filter(q=>wordBy(q.word).ch===state.dialogueChapter)};
   return {key:'all',label:'Dialogue',description:'Practise expressions, replies and question words.',items:all};
@@ -294,7 +329,7 @@ function dialogueMenu(){return dialogueContent();}
 function dialogueContent(){
   const set=dialogueStudySet(),items=set.items,selected=items.find(q=>q.id===selectedDialogueExpression)||items[0];selectedDialogueExpression=selected.id;
   const wh=state.dialogueBrowse==='category'&&state.dialogueCategory==='wh-words';if(wh)selectedWhExpression=selected.id;
-  const selector=`<div class="expression-selector"><div class="expression-chip-row${wh?' wh-chip-row':''}" data-chip-group="${set.key}" role="group" aria-label="Expression">${items.map(q=>`<button class="dialogue-chip${q.id===selected.id?' selected':''}" data-${wh?'wh-expression':'dialogue-expression'}="${q.id}" aria-pressed="${q.id===selected.id}">${esc(CONVERSATIONS[q.id]?CONVERSATIONS[q.id][state.language==='zh-Hant'?1:0].replace(/[。.!?？]+$/u,''):translateText(q.meaning))}</button>`).join('')}</div></div>`;
+  const selector=`<div class="expression-selector"><div class="expression-chip-row${wh?' wh-chip-row':''}" data-chip-group="${set.key}" role="group" aria-label="Expression">${items.map(q=>`<button class="dialogue-chip${q.id===selected.id?' selected':''}" data-${wh?'wh-expression':'dialogue-expression'}="${q.id}" aria-pressed="${q.id===selected.id}">${esc(dialogueExpressionLabel(q))}</button>`).join('')}</div></div>`;
   return dialogueSelector()+`<div class="study-wrap dialogue-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-dialogue="dialogue-choice">Matching ${icon('arrow')}</button><button class="button soft" data-open-dialogue="dialogue-tiles">Rebuild ${icon('arrow')}</button></div><section class="expression-guide" aria-label="Expression guide"><div class="guide-heading"><h2>${wh?'WH-words guide':'Expression guide'}</h2></div>${selector}<div class="guide-cards">${conversationCard(selected)}</div></section></div>`;
 }
 

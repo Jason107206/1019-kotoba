@@ -16,7 +16,7 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
     await page.locator(`[data-dialogue-browse="${mode}"]`).click();
     if(filter)await page.locator(`[data-dialogue-${mode==="category"?'category':'chapter'}="${filter}"]`).click();
     const ids=await ev(()=>dialogueStudySet().items.map(q=>q.id).sort());
-    assert.equal(ids.length,mode==='all'?25:mode==='category'?({introductions:5,courtesy:5,replies:4,demonstratives:6,'wh-words':5})[filter]:filter==='1'?8:17);
+    assert.equal(ids.length,mode==='all'?25:mode==='category'?({introductions:5,courtesy:4,replies:4,demonstratives:7,'wh-words':5})[filter]:filter==='1'?8:17);
     assert.equal(await page.locator('.dialogue-filter-label,.dialogue-filter-row').count(),mode==='all'?0:2);
     if(mode!=='all')assert.equal(await page.locator('.dialogue-filter-label').textContent(),language==='en'?(mode==='category'?'Category':'Chapter'):(mode==='category'?'分類':'課次'));
     assert.equal(await page.locator('.expression-chip-row button').count(),ids.length);

@@ -675,6 +675,7 @@ const ZH_HANT = {
 
 // Situation labels share the same localized data as the guide conversations.
 ZH_HANT[NOTICE_SITUATION[0]]=NOTICE_SITUATION[1];
+ZH_HANT['Politely interrupting, offering something and saying thank you.']='禮貌地打擾對方、遞交物品和表達謝意。';
 for(const [,en,zh] of THIS_THAT_SCENES)ZH_HANT[en]=zh;
 
 function translateText(value){

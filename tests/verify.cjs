@@ -473,7 +473,7 @@ for(const category of ['courtesy','wh-words']){
   assert.equal(ev('Object.values(progress.activities).reduce((sum,item)=>sum+item.attempts,0)'),before+1);
   clickData({action:'activityRestart'});
   assert.equal(ev('state.activity.revealed'),false);
-  assert.equal(ev('state.activity.ids.length'),5);
+  assert.equal(ev('state.activity.ids.length'),category==='courtesy'?4:5);
   ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const i=a.tileBank.findIndex((text,index)=>text===unit&&!a.chosen.includes(index));activityClick({dataset:{activityTile:String(i)}});}}`);
   ev('state.language="en";run("toggleLanguage")');
   assert.equal(ev('state.activity.chosen.length'),ev('kanaUnits(vocabularyReading(activityCurrent())).length'));
@@ -534,7 +534,7 @@ for(const kind of ['dialogue-choice','dialogue-tiles']){
 }
 
 // Dialogue categories lead to a guide, then either game; retries retain that category.
-const dialogueCategoryCounts={introductions:5,courtesy:5,replies:4,demonstratives:6};
+const dialogueCategoryCounts={introductions:5,courtesy:4,replies:4,demonstratives:7};
 assert.equal(ev('new Set(DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id).map(q=>q.id))).size'),20);
 assert.equal(ev('DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id)).length'),20);
 assert.equal(ev('DIALOGUE_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
@@ -559,7 +559,7 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
     assert.equal(ev('state.activity.ids.length'),count);
     for(let index=0;index<count;index++){
       ev(`state.activity.index=${index};prepareActivity();render()`);
-      assert.equal(ev(`state.activity.choices.every(q=>vocabularySection(wordBy(q.word))==='${category}')`),true);
+      assert.equal(ev(`state.activity.choices.every(q=>dialogueInCategory(q,'${category}'))`),true);
       assert.equal(ev('new Set(state.activity.choices.map(q=>q.kana)).size'),ev('state.activity.choices.length'));
       if(['dialogue-tiles','wh-tiles'].includes(kind)){
         ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){a.chosen.push(a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i)));}checkActivity();}`);
@@ -928,3 +928,20 @@ for(const [browse,chapter] of [['all',1],['chapter',1],['chapter',2]])for(const 
  ev('run("gameBack")');assert.equal(ev('state.dialogueBrowse'),browse);assert.equal(ev('state.dialogueChapter'),chapter);
 }
 console.log('PASS: all/chapter games include 25 existing expressions, valid choices and unchanged Dialogue/WH progress keys.');
+
+// The attention expression remains in all/chapter pools, but never in Polite expressions.
+assert.equal(ev("dialogueItems('courtesy').some(q=>q.word==='2-c1')"),false);
+assert.equal(ev("dialogueItems().some(q=>q.word==='2-c1')"),true);
+assert.equal(ev("dialogueItems('demonstratives').some(q=>q.word==='2-06')"),true);
+for(const kind of ['dialogue-choice','dialogue-tiles']){
+ ev(`startActivity('${kind}',undefined,'courtesy')`);
+ assert.equal(ev("state.activity.items.some(q=>q.word==='2-c1')"),false);
+}
+console.log('PASS: Polite expressions excludes あのう in shared category guides and both games; あの remains intact.');
+
+assert.equal(ev("dialogueItems('demonstratives').filter(q=>q.word==='2-c1').length"),1);
+assert.equal(ev("allDialogueItems().filter(q=>q.word==='2-c1').length"),1);
+for(const kind of ['dialogue-choice','dialogue-tiles']){
+ ev(`startActivity('${kind}',undefined,'demonstratives')`);
+ assert.equal(ev("state.activity.items.filter(q=>q.id==='attention').length"),1);
+}

@@ -154,9 +154,9 @@ const assert=require('node:assert/strict');
    assert.equal(await page.locator('[data-dialogue-category="demonstratives"]').textContent(),language==='en'?'This and That':'這個與那個');
    for(const kind of ['dialogue-choice','dialogue-tiles']){
     await page.locator(`[data-open-dialogue="${kind}"]`).click();
-    assert.equal(await ev(()=>state.activity.ids.length),6);
-    assert.equal(await ev(()=>state.activity.items.every(q=>wordBy(q.word).ch===2&&vocabularySection(wordBy(q.word))==='demonstratives')),true);
-    assert.ok((await page.locator('.reply-bubble').textContent()).includes('_____'));
+    assert.equal(await ev(()=>state.activity.ids.length),7);
+    assert.equal(await ev(()=>state.activity.items.every(q=>wordBy(q.word).ch===2&&dialogueInCategory(q,'demonstratives'))),true);
+    if(await ev(()=>!!activityCurrent().sentence))assert.ok((await page.locator('.reply-bubble').textContent()).includes('_____'));
     await page.locator('[data-action="gameBack"]').first().click();
    }
    await ev(()=>{selectDialogueCategory('replies');selectDialogueExpression('realise')});
