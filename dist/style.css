@@ -280,6 +280,8 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .activity-tile-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .activity-tile-bank .tile { min-width: 44px; min-height: 48px; padding: 8px 10px; box-shadow: none; }
 .activity-tile-bank .tile.selected { opacity: .4; }
+.conversation-exercise .activity-explanation { margin-top: 16px; line-height: 1.5; }
+.conversation-exercise .activity-explanation + .activity-controls { margin-top: 8px; }
 .conversation-exercise .activity-controls { justify-content: flex-start; gap: 8px; margin-top: 16px; }
 .conversation-exercise .activity-controls .button { min-width: 0; padding-inline: 16px; }
 .activity-reveal { margin-top: 4px; }
