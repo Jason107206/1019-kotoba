@@ -5,7 +5,7 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
  for(const width of [320,390,1440])for(const language of ['en','zh-Hant']){
   await page.setViewportSize({width,height:900});await page.evaluate(language=>{state.language=language;selectDialogueCategory('wh-words')},language);
   const ids=await page.evaluate(()=>dialogueStudySet().items.map(q=>q.id));
-  for(const id of ids){const chip=page.locator(`[data-dialogue-expression="${id}"]`);await chip.scrollIntoViewIfNeeded();await chip.click();assert.equal(await page.locator('.expression-chip-row [aria-pressed="true"]').count(),1);assert.equal(await page.locator('.expression-chip-row .selected').getAttribute('data-dialogue-expression'),id);assert.equal(await page.locator('.conversation-card').getAttribute('data-dialogue-guide'),id);assert.equal(await page.locator('.conversation-notes').textContent(),await page.evaluate(()=>translateText(dialogueStudySet().items.find(q=>q.id===selectedDialogueExpression).why)));assert.equal(await page.locator('.wh-target').textContent(),await page.evaluate(()=>wordBy(dialogueStudySet().items.find(q=>q.id===selectedDialogueExpression).word).kana));}
+  for(const id of ids){const chip=page.locator(`[data-dialogue-expression="${id}"]`);await chip.scrollIntoViewIfNeeded();await chip.click();assert.equal(await page.locator('.expression-chip-row [aria-pressed="true"]').count(),1);assert.equal(await page.locator('.expression-chip-row .selected').getAttribute('data-dialogue-expression'),id);assert.equal(await page.locator('.conversation-card').getAttribute('data-dialogue-guide'),id);assert.equal(await page.locator('.conversation-notes').textContent(),await page.evaluate(()=>translateText(dialogueStudySet().items.find(q=>q.id===selectedDialogueExpression).why)));assert.equal(await page.locator('.wh-target').textContent(),await page.evaluate(()=>(()=>{const q=dialogueStudySet().items.find(q=>q.id===selectedDialogueExpression);return q.target||wordBy(q.word).kana})()));}
   for(const kind of ['dialogue-choice','dialogue-tiles']){
    await page.evaluate(kind=>{startDialoguePractice(kind);state.activity.ids=['wh-words-2-36'];state.activity.index=0;prepareActivity();render()},kind);
    assert.equal(await page.locator('.inline-answer').textContent(),'＿＿＿');assert.equal(await page.locator('.reply-tokens,.reply-placeholder').count(),0);
@@ -14,13 +14,13 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
    await page.evaluate(()=>{state.activity.index=0;prepareActivity();render()});assert.equal(await page.locator('.inline-answer').textContent(),'＿＿＿');
    await page.evaluate(()=>selectDialogueCategory('wh-words'));
   }
-  // A long-answer fixture exercises the layout without adding learning content.
-  await page.evaluate(()=>{startDialoguePractice('dialogue-tiles');const q={...activityCurrent(),sentence:'そちらは{word}ですか。'};state.activity.tileBank=[...'なんじからなんじまで'];state.activity.chosen=state.activity.tileBank.map((_,i)=>i);document.querySelector('#app').innerHTML=localizeMarkup(dialogueExercise(q,true));});
+  // Use the existing Chapter 4 opening-hours conversation for the long mobile answer.
+  await page.evaluate(()=>{selectDialogueCategory('wh-words');startDialoguePractice('dialogue-tiles');state.activity.ids=['ch4-schedule-question'];state.activity.index=0;prepareActivity();const a=state.activity;for(const unit of kanaUnits(activityCurrent().kana))a.chosen.push(a.tileBank.findIndex((t,i)=>t===unit&&!a.chosen.includes(i)));render();});
   assert.equal(await page.locator('.inline-reply').textContent(),'そちらはなんじからなんじまでですか。');assert.equal(await page.locator('.inline-answer').evaluate(el=>getComputedStyle(el).textDecorationLine),'underline');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.evaluate(()=>openVocabularyContent('chapter-4'));assert.ok(await page.locator('[data-vocabulary-guide]').count()>0);const shared=await page.evaluate(()=>WORDS.find(w=>w.jp==='そちら').id);assert.equal(await page.locator(`[data-vocabulary-guide="${shared}"]`).count(),1);
   if(language==='zh-Hant')assert.equal(await page.locator('.dialogue-intro h1').textContent(),'第 4 課');
   await page.evaluate(()=>openVocabularyContent('chapter-3'));assert.equal(await page.locator(`[data-vocabulary-guide="${shared}"]`).count(),1);
-  await page.evaluate(()=>{state.dialogueBrowse='category';state.dialogueCategory='location-direction';dialogueContent()});assert.equal(await page.evaluate(()=>state.dialogueCategory),'introductions');
+  await page.evaluate(()=>{state.dialogueBrowse='category';state.dialogueCategory='locations';dialogueContent()});assert.equal(await page.evaluate(()=>state.dialogueCategory),'introductions');
   await page.evaluate(()=>selectDialogueCategory('replies'));assert.ok(!await page.evaluate(()=>dialogueStudySet().items.some(q=>wordBy(q.word).jp.includes('たいへん'))));
   if(width===320&&language==='zh-Hant')await page.screenshot({path:'/tmp/kotoba-import-mobile.png',fullPage:true});
  }

@@ -738,3 +738,10 @@ Object.assign(ZH_HANT, {'Expressions':'表達用語','Imported content awaiting 
 Object.assign(ZH_HANT, {'Offer something to someone.':'向某人提供某物。','Someone misidentifies something. Correct them.':'對方錯認了某物，請加以更正。'});
 
 Object.assign(ZH_HANT, {'Chapters 1–6':'第 1–6 課','Vocabulary: Chapters 1–6 · Grammar: Chapters 1–2':'詞彙：第 1–6 課 · 文法：第 1–2 課','Choose a mode to practise vocabulary from Chapters 1–6 and sentence patterns from Chapters 1–2.':'選擇模式，練習第 1–6 課詞彙及第 1–2 課句型。','Vocabulary includes the Chapters 1–6 CSV and the original Chapters 1–2 textbook entries. Imported entries without meanings or complete readings are available to browse and await review before practice.':'詞彙包括第 1–6 課 CSV 及原有第 1–2 課教材內容。欠缺意思或完整讀音的匯入項目可供瀏覽，核對後才可用於練習。','The mock quiz retains its original Chapters 1–2 scope.':'模擬測驗維持原有第 1–2 課範圍。'});
+
+Object.assign(ZH_HANT, {
+ 'Ask about people, places, time, prices and other details.':'詢問人物、地點、時間、價格及其他資訊。',
+ 'Choose a mode to practise vocabulary and sentence patterns from Chapters 1–6.':'選擇模式，練習第 1 至 6 課詞彙及已有的句型。',
+ 'Textbook Chapters 1–6 · Mock: Chapters 1–2':'課本第 1 至 6 課 · 模擬測驗：第 1 至 2 課',
+ 'Choose a chapter from 1 to 6.':'選擇第 1 至 6 課。','6 chapters':'6 課'
+});

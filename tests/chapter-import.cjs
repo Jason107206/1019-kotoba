@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const {parseCSV,importRows}=require('../scripts/import-chapters.cjs');
-const c=vm.createContext({});vm.runInContext(fs.readFileSync('dist/content.js','utf8'),c);
+const c=vm.createContext({});for(const name of ['content','chapter-content','csv-content'])vm.runInContext(fs.readFileSync(`dist/${name}.js`,'utf8'),c);
 const words=vm.runInContext('WORDS',c),cats=vm.runInContext('VOCAB_CATEGORIES',c),rows=parseCSV(fs.readFileSync('data/chapters_1_6.csv','utf8'));
 const before=JSON.stringify(words),report=importRows(words,cats,rows);
 assert.equal(rows.length,328);assert.equal(report.added,0);assert.equal(report.updated,0);assert.equal(report.unchanged,328);assert.equal(report.unresolved,0);assert.equal(JSON.stringify(words),before);
@@ -10,7 +10,7 @@ assert.ok(words.find(w=>w.jp==='そちら').chapters.includes(3));assert.ok(word
 for(let ch=1;ch<=6;ch++)assert.ok(words.some(w=>(w.chapters||[w.ch]).includes(ch)));
 assert.ok(words.filter(w=>w.id.startsWith('csv-')).every(w=>!w.en&&!w.zh&&w.reviewIssues.length));
 assert.ok(words.every(w=>cats.some(c=>c.ids.includes(w.id))));
-assert.equal(vm.runInContext('WORDS.filter(wordGameReady).length',c),96);
+assert.equal(vm.runInContext('WORDS.filter(wordGameReady).length',c),211);
 const row={japanese:'はし',kanji:'',chapter:'3',category:'Vocabulary',page:''};
 const senses=[{id:'bridge',jp:'はし',kana:'はし',c:'橋',en:'bridge',zh:'橋',ch:1},{id:'chopsticks',jp:'はし',kana:'はし',c:'箸',en:'chopsticks',zh:'筷子',ch:2}];
 assert.equal(importRows(senses,[],[row]).unresolved,1);assert.equal(senses.length,2);

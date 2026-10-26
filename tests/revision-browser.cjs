@@ -56,7 +56,7 @@ const assert=require('node:assert/strict');
    assert.equal(await page.locator('.vocabulary-filter-label').textContent(),language==='en'?'Category':'分類');
    assert.ok(await page.locator('.vocabulary-filter-row').evaluate(row=>row.previousElementSibling.matches('.vocabulary-filter-label')&&row.nextElementSibling.matches('.dialogue-intro')));
    assert.equal(await page.locator('[data-vocabulary-set]').count(),await ev(()=>VOCABULARY_CATEGORIES.length));
-   assert.equal(await page.locator('[data-vocabulary-set="category-demonstratives"],[data-vocabulary-set="category-courtesy"]').count(),2);
+   assert.equal(await page.locator('[data-vocabulary-set="category-demonstratives"],[data-vocabulary-set="category-introductions"]').count(),0);
    // Click the final visible chip without browser auto-scroll changing the baseline.
    await retainScroll('.vocabulary-filter-row',()=>ev(()=>document.querySelector('[data-vocabulary-set="category-languages"]').click()));
    assert.equal(await page.locator('[data-vocabulary-guide]').count(),3);await layout();
@@ -75,14 +75,14 @@ const assert=require('node:assert/strict');
    assert.equal(await page.locator('.vocabulary-filter-label').textContent(),language==='en'?'Chapter':'課次');
    await page.locator('[data-vocabulary-set="chapter-2"]').click();
    assert.equal(await page.locator('[data-vocabulary-guide]').count(),await ev(()=>vocabularyStudySet('chapter-2').ids.length));await layout();
-   await ev(()=>{state.vocabularyContentKey='category-location-direction';render()});
+   await ev(()=>{state.vocabularyContentKey='category-unknown';render()});
    assert.equal(await ev(()=>state.vocabularyContentKey),'all');
    await ev(()=>{state.dialogueBrowse='category';state.dialogueCategory='replies';navigate('dialogue')});
    assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
    assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
    assert.equal(await page.locator('.topbar .app-title').textContent(),'Kotoba');await layout();
    await page.locator('[data-dialogue-category="wh-words"]').click();
-   assert.equal(await page.locator('[data-dialogue-expression]').count(),5);
+   assert.equal(await page.locator('[data-dialogue-expression]').count(),17);
    for(const word of ['1-17a','1-17b','1-19a','1-19b','2-36']){
     await retainScroll('.wh-chip-row',()=>page.evaluate(word=>document.querySelector(`[data-dialogue-expression="wh-words-${word}"]`).click(),word));
     assert.equal(await page.locator('.conversation-turn').count(),2);
@@ -144,18 +144,18 @@ const assert=require('node:assert/strict');
     for(const id of ids){
      await retainScroll('.expression-chip-row',()=>page.evaluate(id=>selectDialogueExpression(id),id));
      assert.equal(await page.locator('[data-dialogue-guide]').getAttribute('data-dialogue-guide'),id);
-     const expected=await ev(()=>{const q=dialogueItems(state.dialogueCategory).find(q=>q.id===selectedDialogueExpression);return {target:wordBy(q.word).kana,turn:CONVERSATIONS[q.id][2].find(t=>t[0]==='you')[1]}});
+     const expected=await ev(()=>{const q=dialogueItems(state.dialogueCategory).find(q=>q.id===selectedDialogueExpression);return {target:q.target||wordBy(q.word).kana,turn:CONVERSATIONS[q.id][2].find(t=>t[0]==='you')[1]}});
      assert.equal(await page.locator('.wh-target').textContent(),expected.target);
      assert.equal(await page.locator('.conversation-turn.you .jp').textContent(),expected.turn);
-     assert.equal(await page.locator('.conversation-translation').count(),2);
+     assert.equal(await page.locator('.conversation-translation').count(),await ev(()=>CONVERSATIONS[selectedDialogueExpression][2].length));
      await layout();
     }
    }
    assert.equal(await page.locator('[data-dialogue-category="demonstratives"]').textContent(),language==='en'?'This and That':'這個與那個');
    for(const kind of ['dialogue-choice','dialogue-tiles']){
     await page.locator(`[data-open-dialogue="${kind}"]`).click();
-    assert.equal(await ev(()=>state.activity.ids.length),7);
-    assert.equal(await ev(()=>state.activity.items.every(q=>wordBy(q.word).ch===2&&dialogueInCategory(q,'demonstratives'))),true);
+    assert.equal(await ev(()=>state.activity.ids.length),13);
+    assert.equal(await ev(()=>state.activity.items.every(q=>[2,3].includes(wordBy(q.word).ch)&&dialogueInCategory(q,'demonstratives'))),true);
     if(await ev(()=>!!activityCurrent().sentence))assert.equal(await page.locator('.reply-bubble .inline-answer').textContent(),'＿＿＿');
     await page.locator('[data-action="gameBack"]').first().click();
    }

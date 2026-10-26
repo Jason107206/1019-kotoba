@@ -3,14 +3,14 @@ const elements={app:{innerHTML:''},toast:{style:{},textContent:''}};
 const handlers={};let storage={'kotoba-ch12-v1':JSON.stringify({language:'en'})};
 const timers=new Map();let timerId=0;
 const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>handlers[e]=f},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:(fn,delay)=>{const id=++timerId;timers.set(id,{fn,delay});return id;},clearTimeout:id=>timers.delete(id)});
-vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/i18n.js','utf8')+'\n'+fs.readFileSync('dist/kanji-writing.js','utf8')+'\n'+fs.readFileSync('dist/vocabulary-rebuild.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync('dist/content.js','utf8')+'\n'+fs.readFileSync('dist/chapter-content.js','utf8')+'\n'+fs.readFileSync('dist/csv-content.js','utf8')+'\n'+fs.readFileSync('dist/hiragana.js','utf8')+'\n'+fs.readFileSync('dist/activities.js','utf8')+'\n'+fs.readFileSync('dist/chapter-dialogues.js','utf8')+'\n'+fs.readFileSync('dist/i18n.js','utf8')+'\n'+fs.readFileSync('dist/kanji-writing.js','utf8')+'\n'+fs.readFileSync('dist/vocabulary-rebuild.js','utf8')+'\n'+fs.readFileSync('dist/chapter-ui.js','utf8')+'\n'+fs.readFileSync('dist/app.js','utf8'),ctx);
 const ev=s=>vm.runInContext(s,ctx);
-assert.equal(ev('WORDS.length'),335);
+assert.equal(ev('WORDS.length'),338);
 assert.equal(ev('SENTENCES.length'),50);
 assert.equal(ev('PATTERNS.length'),16);
-assert.equal(ev('new Set(WORDS.map(x=>x.id)).size'),335);
+assert.equal(ev('new Set(WORDS.map(x=>x.id)).size'),338);
 assert.equal(ev('new Set(SENTENCES.map(x=>x.id)).size'),50);
-assert.equal(ev('WORDS.filter(w=>w.group==="core"&&wordGameReady(w)).length'),62);
+assert.equal(ev('WORDS.filter(w=>w.group==="core"&&wordGameReady(w)).length'),151);
 // All syllabus forms belong to one meaningful category, independently of their printed source group.
 const expectedCategoryCounts=Object.fromEntries(ev('VOCAB_CATEGORIES.map(c=>[c.id,WORDS.filter(w=>vocabularySection(w)===c.id).length])'));
 const expectedVocabularyCategoryCounts=Object.fromEntries(ev('VOCABULARY_CATEGORIES.map(c=>[c.id,VOCABULARY_WORDS.filter(w=>wordGameReady(w)&&vocabularySection(w)===c.id).length])'));
@@ -18,10 +18,10 @@ const libraryCount=ev('VOCABULARY_WORDS.length'),practiceCount=ev('VOCABULARY_WO
 assert.equal(ev('DIALOGUE_WORD_IDS.size'),25);
 assert.deepEqual(Array.from(ev('WORDS.filter(w=>DIALOGUE_WORD_IDS.has(w.id)&&!["introductions","replies"].includes(vocabularySection(w))).map(w=>w.id)')).sort(),['1-17a','1-17b','1-19a','1-19b','1-c4','2-01','2-02','2-03','2-04','2-05','2-06','2-36','2-c1','2-c3','2-c4c','2-c4d'].sort());
 assert.equal(ev('VOCABULARY_WORDS.every(w=>!DIALOGUE_WORD_IDS.has(w.id))'),true);
-assert.equal(ev('VOCAB_CATEGORIES.length'),14);
-assert.equal(ev('new Set(VOCAB_CATEGORIES.map(c=>c.id)).size'),14);
-assert.equal(ev('VOCAB_CATEGORY_BY_WORD.size'),335);
-assert.equal(ev('VOCAB_CATEGORIES.flatMap(c=>c.ids).length'),335);
+assert.equal(ev('VOCAB_CATEGORIES.length'),21);
+assert.equal(ev('new Set(VOCAB_CATEGORIES.map(c=>c.id)).size'),21);
+assert.equal(ev('VOCAB_CATEGORY_BY_WORD.size'),338);
+assert.equal(ev('VOCAB_CATEGORIES.flatMap(c=>c.ids).length'),338);
 assert.equal(ev('VOCAB_CATEGORIES.every(c=>c.ids.every(id=>!!wordBy(id)))'),true);
 assert.equal(ev('WORDS.every(w=>!!vocabularySection(w))'),true);
 assert.equal(ev('VOCAB_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
@@ -35,7 +35,7 @@ for(const [id,category] of [['1-04','people'],['1-09','occupations'],['1-06','na
 ev('resetFilters();navigate("bank")');
 assert.equal((elements.app.innerHTML.match(/data-word-category=/g)||[]).length,categoryCount);
 const bankIds=[...elements.app.innerHTML.matchAll(/data-word-id="([^"]+)"/g)].map(match=>match[1]);
-assert.equal(bankIds.length,335);assert.equal(new Set(bankIds).size,335);
+assert.equal(bankIds.length,338);assert.equal(new Set(bankIds).size,338);
 assert.ok(!elements.app.innerHTML.includes('Other main vocabulary'));
 ev('state.search="coffee";render()');
 assert.ok(elements.app.innerHTML.includes('data-word-category="food"'));
@@ -97,12 +97,12 @@ assert.equal(ev('WORDS.filter(wordGameReady).every(w=>HIRAGANA_KEYS.some(([k])=>
 assert.equal(ev('hiraganaInitial({jp:"コーヒー"})'),'こ');
 assert.equal(ev('hiraganaInitial({kana:"～からきました"})'),'か');
 ev('resetFilters();state.filter.kana="が"');
-assert.equal(ev('pool("write").length'),1);
+assert.equal(ev('pool("write").length'),2);
 assert.equal(ev('pool("sentences").length'),50);
 ev('resetFilters()');
 
 assert.equal(ev('WORDS.some(w=>/^1-r1[1-7]$/.test(w.id))'),false);
-assert.equal(ev('/ミラー|サントス|ワン|カリナ|グプタ|テレーザ|IMC|AKC|神戸|富士|さくら大学/.test(JSON.stringify({WORDS:WORDS.filter(wordGameReady),SENTENCES}))'),false);
+assert.equal(ev('/ミラー|サントス|ワン|カリナ|グプタ|テレーザ|IMC|AKC|神戸|富士|さくら大学/.test(JSON.stringify({WORDS:WORDS.filter(w=>w.ch<=2&&wordGameReady(w)),SENTENCES}))'),false);
 
 ev('navigate("bank")');
 assert.ok(!elements.app.innerHTML.includes('data-view="cards"'));
@@ -122,8 +122,8 @@ ev('resetFilters()');
 // Matching categories and dialogue modes stay separate from the quiz bank.
 assert.equal(ev('demonstrativeItems().length'),5);
 assert.equal(ev('dialogueItems("quiz").some(x=>x.added)'),false);
-assert.equal(ev('dialogueItems().length'),20);
-assert.equal(ev('WORDS.filter(wordGameReady).some(w=>["なんじ","いくら","はじめましょう"].includes(w.kana))'),false);
+assert.equal(ev('dialogueItems().length'),68);
+assert.equal(ev('WORDS.some(w=>["はじめましょう"].includes(w.kana))'),false);
 assert.equal(ev('kanaUnits("きょうし").join(",")'),'きょ,う,し');
 assert.equal(ev('kanaUnits("えっ").join(",")'),'え,っ');
 for(const kind of ['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles']){
@@ -175,8 +175,8 @@ ev('mock.done=true;resetFilters()');
 
 
 // Every activity answer must now come from the syllabus bank.
-assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].every(q=>WORDS.some(w=>w.kana===q.kana))'),true);
-assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].some(q=>["なんじ","いくら","はじめましょう"].includes(q.kana))'),false);
+assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].every(q=>q.lesson?q.turns.some(t=>t[1].includes(q.kana)):WORDS.some(w=>w.kana===q.kana))'),true);
+assert.equal(ev('[...demonstrativeItems(),...dialogueItems()].some(q=>["はじめましょう"].includes(q.kana))'),false);
 assert.equal(ev('demonstrativeItems().every(q=>vocabularySection(wordBy(q.word))==="questions"&&q.word!=="1-18")'),true);
 for(const id of ['1-17a','1-17b','1-19a','1-19b','2-36']){
   const html=ev(`demonstrativeQuestion(demonstrativeItems().find(x=>x.word==='${id}'))`);
@@ -318,7 +318,7 @@ for(const language of ['en','zh-Hant']){
  ev('activityClick({dataset:{dialogueCategory:"wh-words"}})');
  assert.equal(ev('state.view'),'demonstratives-content');
  assert.ok(elements.app.innerHTML.includes('guide-cards'));
- assert.equal((elements.app.innerHTML.match(/data-dialogue-expression=/g)||[]).length,5);
+ assert.equal((elements.app.innerHTML.match(/data-dialogue-expression=/g)||[]).length,ev('dialogueStudySet().items.length'));
  assert.ok(elements.app.innerHTML.includes('data-open-dialogue="dialogue-choice"'));
  assert.ok(elements.app.innerHTML.includes(language==='en'?'WH-words guide':'疑問詞指南'));
  ev('activityClick({dataset:{openDemonstratives:"practice"}})');
@@ -330,7 +330,7 @@ for(const language of ['en','zh-Hant']){
  assert.ok(elements.app.innerHTML.includes('guide-cards'));
  assert.equal(ev('activityNav()'),'dialogue');
 }
-console.log('PASS: Dialogue menu → illustrated content → five WH-word questions, with guide return path.');
+console.log('PASS: Dialogue menu → illustrated content → WH-word questions, with guide return path.');
 
 // Mode navigation is available through Overview cards only.
 for(const view of ['dialogue','vocabulary-menu','write-menu','handwriting-menu','vocabulary-menu','bank','mock']){
@@ -340,8 +340,8 @@ for(const view of ['dialogue','vocabulary-menu','write-menu','handwriting-menu',
 ev('navigate("home")');assert.ok(elements.app.innerHTML.includes('class="nav overview-nav"'));
 
 // Vocabulary opens set selection, then illustrated content with both practice modes.
-for(const category of ['introductions','replies','demonstratives','courtesy']){
-  assert.equal(ev(`vocabularyStudySet('category-${category}')?.ids.every(id=>!DIALOGUE_WORD_IDS.has(id))??true`),true);
+for(const category of ['introductions','demonstratives']){
+  assert.equal(ev(`vocabularyStudySet('category-${category}')`),null);
 }
 for(const mode of ['write','vocabulary-rebuild']){
   ev(`startWordSet('${mode}','all')`);
@@ -367,21 +367,21 @@ for(const language of ['en','zh-Hant']){
   assert.ok(elements.app.innerHTML.indexOf('data-vocabulary-browse')<elements.app.innerHTML.indexOf('<h1>'));
   ev('openVocabularyContent("chapter-1")');
   assert.equal(ev('state.vocabularyContentKey'),'chapter-1');
-  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,ev('VOCABULARY_WORDS.filter(w=>wordChapters(w).includes(1)).length'));
+  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,ev('vocabularyStudySet("chapter-1").ids.length'));
   handlers.click({target:{closest:()=>({disabled:false,dataset:{vocabularyPractice:'write'}})}});
   assert.equal(ev('state.view'),'write');
-  assert.equal(ev('state.round.ids.length'),ev('vocabularyStudySet("chapter-1").ids.filter(id=>wordGameReady(wordBy(id))).length'));
+  assert.equal(ev('state.round.ids.length'),28);
   assert.equal(ev('state.round.ids.every(id=>wordBy(id).ch===1)'),true);
   ev('navigateBreadcrumb({crumbView:"vocabulary-menu"})');
   handlers.click({target:{closest:()=>({disabled:false,dataset:{vocabularyPractice:'vocabulary-rebuild'}})}});
   assert.equal(ev('state.view'),'vocabulary-rebuild');
-  assert.equal(ev('state.round.ids.length'),ev('vocabularyStudySet("chapter-1").ids.filter(id=>wordGameReady(wordBy(id))).length'));
-  ev('run("restart")');assert.equal(ev('state.round.ids.length'),ev('vocabularyStudySet("chapter-1").ids.filter(id=>wordGameReady(wordBy(id))).length'));
+  assert.equal(ev('state.round.ids.length'),28);
+  ev('run("restart")');assert.equal(ev('state.round.ids.length'),28);
   ev('navigateBreadcrumb({crumbView:"vocabulary-menu"})');
   assert.ok(elements.app.innerHTML.includes('data-vocabulary-set="chapter-1" aria-pressed="true"'));
   ev('run("toggleLanguage")');
   assert.equal(ev('state.vocabularyContentKey'),'chapter-1');
-  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,ev('VOCABULARY_WORDS.filter(w=>wordChapters(w).includes(1)).length'));
+  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,ev('vocabularyStudySet("chapter-1").ids.length'));
 }
 for(const key of ['chapter-2',...Object.keys(expectedVocabularyCategoryCounts).filter(id=>expectedVocabularyCategoryCounts[id]).map(id=>'category-'+id)]){
   ev(`openVocabularyContent('${key}')`);
@@ -394,7 +394,7 @@ for(const key of ['chapter-2',...Object.keys(expectedVocabularyCategoryCounts).f
   }
 }
 ev('navigate("write-menu")');assert.equal(ev('state.view'),'vocabulary-menu');
-for(const [key,count] of [['chapter-1',ev('vocabularyStudySet("chapter-1").ids.filter(id=>wordGameReady(wordBy(id))).length')],['chapter-2',ev('vocabularyStudySet("chapter-2").ids.filter(id=>wordGameReady(wordBy(id))).length')],...Object.entries(expectedVocabularyCategoryCounts).filter(([,count])=>count).map(([category,count])=>[`category-${category}`,count])]){
+for(const [key,count] of [['chapter-1',28],['chapter-2',30],...Object.entries(expectedVocabularyCategoryCounts).filter(([,count])=>count).map(([category,count])=>[`category-${category}`,count])]){
   ev(`startWriteSet('${key}')`);
   assert.equal(ev('state.round.ids.length'),count);
   assert.ok(elements.app.innerHTML.includes('data-action="gameBack"'));
@@ -404,7 +404,7 @@ for(const [key,count] of [['chapter-1',ev('vocabularyStudySet("chapter-1").ids.f
 }
 ev('startWriteSet("category-places");state.round.missed=[state.round.ids[0]];run("repeatMissed")');
 assert.equal(ev('state.round.ids.length'),1);
-ev('run("restart")');assert.equal(ev('state.round.ids.length'),2);
+ev('run("restart")');assert.equal(ev('state.round.ids.length'),27);
 ev('state.round.index=state.round.ids.length;render()');
 assert.equal(elements.app.innerHTML.includes('class="breadcrumbs"'),!ev('isGamePage()'));
 ev('navigate("mock")');
@@ -473,7 +473,7 @@ for(const category of ['courtesy','wh-words']){
   assert.equal(ev('Object.values(progress.activities).reduce((sum,item)=>sum+item.attempts,0)'),before+1);
   clickData({action:'activityRestart'});
   assert.equal(ev('state.activity.revealed'),false);
-  assert.equal(ev('state.activity.ids.length'),category==='courtesy'?4:5);
+  assert.equal(ev('state.activity.ids.length'),category==='courtesy'?9:5);
   ev(`{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const i=a.tileBank.findIndex((text,index)=>text===unit&&!a.chosen.includes(index));activityClick({dataset:{activityTile:String(i)}});}}`);
   ev('state.language="en";run("toggleLanguage")');
   assert.equal(ev('state.activity.chosen.length'),ev('kanaUnits(vocabularyReading(activityCurrent())).length'));
@@ -534,9 +534,9 @@ for(const kind of ['dialogue-choice','dialogue-tiles']){
 }
 
 // Dialogue categories lead to a guide, then either game; retries retain that category.
-const dialogueCategoryCounts={introductions:5,courtesy:4,replies:4,demonstratives:7};
-assert.equal(ev('new Set(DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id).map(q=>q.id))).size'),20);
-assert.equal(ev('DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id)).length'),20);
+const dialogueCategoryCounts=Object.fromEntries(ev('DIALOGUE_CATEGORIES.map(c=>[c.id,dialogueItems(c.id).length])'));
+assert.equal(ev('new Set(DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id).map(q=>q.id))).size'),56);
+assert.equal(ev('DIALOGUE_CATEGORIES.flatMap(c=>dialogueItems(c.id)).length'),56);
 assert.equal(ev('DIALOGUE_CATEGORIES.every(c=>ZH_HANT[c.label]&&ZH_HANT[c.description])'),true);
 for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entries(dialogueCategoryCounts)){
   ev(`state.language='${language}';pageHistory.length=0;navigate('dialogue')`);
@@ -579,7 +579,7 @@ for(const language of ['en','zh-Hant'])for(const [category,count] of Object.entr
   }
   clickData({action:'back'});assert.equal(ev('state.view'),'dialogue');
 }
-console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all 20 scenes, category-only choices, scoped retries and guide return paths.');
+console.log('PASS: bilingual Dialogue categories → category guide → choice/hiragana game, all retained scenes, category-only choices, scoped retries and guide return paths.');
 
 // Expression guides show one selected conversation; WH-word guide cards remain visible.
 for(const language of ['en','zh-Hant'])for(const category of ['introductions','courtesy','replies','demonstratives']){
@@ -600,8 +600,8 @@ for(const language of ['en','zh-Hant'])for(const category of ['introductions','c
   clickData({action:'back'});
   assert.equal((elements.app.innerHTML.match(/<article class="paper guide-card/g)||[]).length,1);
 }
-assert.equal(ev('Object.keys(CONVERSATIONS).length'),20);
-assert.equal(ev('DIALOGUES.every(q=>CONVERSATIONS[q.id][2].some(turn=>turn[1].includes(wordBy(q.word).kana)))'),true);
+assert.equal(ev('Object.keys(CONVERSATIONS).length'),68);
+assert.equal(ev('DIALOGUES.every(q=>CONVERSATIONS[q.id][2].some(turn=>turn[1].includes(q.target||wordBy(q.word).kana)))'),true);
 ev('state.language="en";openDialogueCategory("introductions")');
 assert.ok(elements.app.innerHTML.includes('data-dialogue-expression="meet" aria-pressed="true">Meeting someone for the first time</button>'));
 assert.equal((elements.app.innerHTML.match(/class="conversation-turn /g)||[]).length,2);
@@ -724,7 +724,7 @@ for(const language of ['en','zh-Hant'])for(const kind of ['dialogue-choice','dia
   assert.ok(!html.includes('reply-feedback'));
   assert.ok(!html.includes(ev('esc(translateText(activityCurrent().why))')));
 }
-console.log('PASS: all 20 Dialogue scenes use speaker bubbles in both games and languages, with feedback hidden before grading.');
+console.log('PASS: all retained Dialogue scenes use speaker bubbles in both games and languages, with feedback hidden before grading.');
 
 // Rebuild launches vocabulary or sentences, and replaces Matching before writing modes.
 for(const language of ['en','zh-Hant']){
@@ -889,7 +889,7 @@ ev(`startWordPractice('vocabulary-rebuild',['1-07'],'Wrong order');state.round.t
 assert.equal(ev('state.round.result'),false);
 ev(`startActivity('dialogue-tiles',['thanks']);state.activity.tileBank=['あ','り','か\\u3099','と','う','こ\\u3099','ざ','い','ま','す'];state.activity.chosen=[0,1,2,3,4,5,6,7,8,9];checkActivity()`);
 assert.equal(ev('state.activity.result'),true,'Dialogue uses the same canonical-text comparison');
-for(const key of ['category-location-direction','category-unknown']){
+for(const key of ['category-demonstratives']){
  ev(`openVocabularyContent('${key}')`);assert.equal(ev('state.vocabularyContentKey'),'all');
  assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,libraryCount);
 }
@@ -912,7 +912,7 @@ console.log('PASS: distinct company, bank and research Lulu scenes are reused in
 for(const [browse,chapter] of [['all',1],['chapter',1],['chapter',2]])for(const kind of ['dialogue-choice','dialogue-tiles']){
  ev(`state.dialogueBrowse='${browse}';state.dialogueChapter=${chapter};state.view='dialogue-content';render();startDialoguePractice('${kind}')`);
  const ids=Array.from(ev('state.activity.ids'));
- assert.equal(ids.length,browse==='all'?25:chapter===1?8:17);
+ assert.equal(ids.length,browse==='all'?73:chapter===1?8:17);
  for(const id of ids){
   ev(`state.activity.index=state.activity.ids.indexOf('${id}');prepareActivity();render()`);
   assert.ok(ev('state.activity.choices.length>=2'));
@@ -927,7 +927,7 @@ for(const [browse,chapter] of [['all',1],['chapter',1],['chapter',2]])for(const 
  ev('activityAction("activityRestart")');assert.deepEqual(Array.from(ev('state.activity.ids')).sort(),ids.sort());
  ev('run("gameBack")');assert.equal(ev('state.dialogueBrowse'),browse);assert.equal(ev('state.dialogueChapter'),chapter);
 }
-console.log('PASS: all/chapter games include 25 existing expressions, valid choices and unchanged Dialogue/WH progress keys.');
+console.log('PASS: all/chapter games include 73 expressions, valid choices and unchanged Dialogue/WH progress keys.');
 
 // The attention expression remains in all/chapter pools, but never in Polite expressions.
 assert.equal(ev("dialogueItems('courtesy').some(q=>q.word==='2-c1')"),false);
