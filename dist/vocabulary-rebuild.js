@@ -13,7 +13,8 @@ function similarKanaUnits(unit){
   return [...new Set(candidates)];
 }
 function vocabularyTileBank(word){
-  const target=kanaUnits(vocabularyReading(word)),alternatives=[...new Set(target.flatMap(similarKanaUnits))].filter(unit=>!target.includes(unit));
+  const target=kanaUnits(vocabularyReading(word)),alternatives=[...new Set([...target.flatMap(similarKanaUnits),...(word.distractors||[]).flatMap(kanaUnits)])].filter(unit=>!target.includes(unit));
+  if(!alternatives.length)alternatives.push(...['に','と','は','が','を','で','の','か'].filter(unit=>!target.includes(unit)).slice(0,4));
   // Keep every repeated target tile, so words such as せんせい can be assembled.
   return shuffle([...target,...alternatives]);
 }
@@ -59,19 +60,19 @@ function vocabularyTileClick(dataset){
 
 // Keep every word taught by a Dialogue scene in Dialogue, including its WH-words.
 // Other introduction/reply forms were already outside Vocabulary.
-const DIALOGUE_WORD_IDS=new Set([...DIALOGUES,...demonstrativeWords].map(item=>item.word));
-const VOCABULARY_CATEGORIES=VOCAB_CATEGORIES.filter(category=>!['introductions','replies','demonstratives','courtesy'].includes(category.id));
-const VOCABULARY_WORDS=WORDS.filter(word=>!DIALOGUE_WORD_IDS.has(word.id)&&VOCABULARY_CATEGORIES.some(category=>category.id===vocabularySection(word)));
+const DIALOGUE_WORD_IDS=new Set([...DIALOGUES.filter(q=>!q.lesson),...demonstrativeWords].map(item=>item.word));
+const VOCABULARY_CATEGORIES=VOCAB_CATEGORIES.filter(category=>!['introductions','demonstratives'].includes(category.id));
+const VOCABULARY_WORDS=WORDS.filter(word=>(wordChapters(word).some(ch=>ch>=3)||!DIALOGUE_WORD_IDS.has(word.id)&&!['courtesy','replies'].includes(vocabularySection(word)))&&VOCABULARY_CATEGORIES.some(category=>category.id===vocabularySection(word)));
 const VOCABULARY_WORD_IDS=new Set(VOCABULARY_WORDS.map(word=>word.id));
 
 // Shared vocabulary library and launch point for Recall and Rebuild.
 function vocabularyStudySet(key){
   let words=VOCABULARY_WORDS,label,description,section='main';
   if(key==='all'){
-    label='All words';description='Study the words not covered in Dialogue from Chapters 1–2.';
-  }else if(/^chapter-[12]$/.test(key)){
-    const ch=Number(key.slice(-1));section='chapter';words=VOCABULARY_WORDS.filter(w=>w.ch===ch);
-    label=`Chapter ${ch} · p.${ch===1?1:6}`;description='Review the vocabulary from this chapter.';
+    label='All words';description='Study vocabulary from Chapters 1–4.';
+  }else if(/^chapter-[1-4]$/.test(key)){
+    const ch=Number(key.slice(-1));section='chapter';words=VOCABULARY_WORDS.filter(w=>inChapter(w,ch));
+    label=chapterLabel(ch);description='Review the vocabulary from this chapter.';
   }else{
     const category=VOCABULARY_CATEGORIES.find(c=>key===`category-${c.id}`);if(!category)return null;
     section='category';words=VOCABULARY_WORDS.filter(w=>vocabularySection(w)===category.id);
@@ -142,6 +143,6 @@ function vocabularyContent(){
   state.vocabularyContentKey=set.key;
   const mode=set.section==='main'?'all':set.section;
   const chips=(entries,attribute,selected)=>entries.map(([key,label])=>`<button class="dialogue-chip${key===selected?' selected':''}" data-${attribute}="${key}" aria-pressed="${key===selected}">${esc(label)}</button>`).join('');
-  const filters=mode==='category'?VOCABULARY_CATEGORIES.map(c=>[`category-${c.id}`,c.label]):[1,2].map(ch=>[`chapter-${ch}`,`Chapter ${ch} · p.${ch===1?1:6}`]);
+  const filters=mode==='category'?VOCABULARY_CATEGORIES.map(c=>[`category-${c.id}`,c.label]):CHAPTERS.map(ch=>[`chapter-${ch}`,chapterLabel(ch)]);
   return `<div class="study-wrap vocabulary-selector"><div class="dialogue-chip-row vocabulary-mode-row" role="group" aria-label="Vocabulary selection">${chips([['all','All words'],['category','By category'],['chapter','By chapter']],'vocabulary-browse',mode)}</div>${mode==='all'?'':`<div class="field-label vocabulary-filter-label" id="vocabulary-filter-label">${mode==='category'?'Category':'Chapter'}</div><div class="dialogue-chip-row vocabulary-filter-row" data-chip-group="${mode}" role="group" aria-labelledby="vocabulary-filter-label">${chips(filters,'vocabulary-set',set.key)}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>${esc(set.description)}</p></div><div class="dialogue-guide-actions"><button class="button soft" data-vocabulary-practice="vocabulary-rebuild">Rebuild ${icon('arrow')}</button><button class="button primary" data-vocabulary-practice="write">Recall ${icon('arrow')}</button></div></div><div class="study-wrap dialogue-content vocabulary-content"><div class="guide-cards">${set.ids.map(id=>{const word=wordBy(id),spelling=hasKanji(word)?word.c:word.jp;return `<article class="paper guide-card vocabulary-guide-card" data-vocabulary-guide="${word.id}">${vocabularyVisual(word,true)}<span class="eyebrow muted">${sourceTag(word)}</span><h2 class="jp" lang="ja">${esc(spelling)}</h2>${spelling!==word.kana?`<p class="jp vocabulary-reading" lang="ja">${esc(word.kana)}</p>`:''}<p class="guide-meaning">${esc(word.zh)} · ${esc(word.en)}</p>${word.note?`<p class="small muted">${esc(word.note)}</p>`:''}</article>`;}).join('')}</div></div>`;
 }

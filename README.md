@@ -1,8 +1,14 @@
-# Kotoba — Chapters 1–2
+# Kotoba — Chapters 1–4
 
 Buildless study game for GitHub Pages. `dist/` is the entire deployable application.
 
-## Source boundaries
+## Chapters 3–4
+
+Vocabulary and Dialogue now include Chapters 3 and 4, with 84 numbered textbook entries plus conversation expressions and related vocabulary. Optional spellings/readings produce 54 Chapter 3 forms and 62 Chapter 4 forms; shared そちら is stored once with both memberships. There are 173 Vocabulary forms and 74 Dialogue scenes/questions in All, including 49 new original conversations.
+
+See [source coverage and validation](docs/chapters-3-4.md) for page boundaries, reading decisions, game coverage and missing listening audio. Sentence Rebuild and the timed mock retain the existing Chapter 1–2 assessment scope. Existing progress keys and active mock deadlines are preserved.
+
+## Original Chapter 1–2 source boundaries
 
 Transcribed and visually checked against the user-provided textbook extract:
 - PDF p.1 (printed pp.28–29): Chapter 1, 21 main rows, 6 expressions, 17 related words.
@@ -10,7 +16,7 @@ Transcribed and visually checked against the user-provided textbook extract:
 - Grammar: Chapter 1 PDF pp.2–5; Chapter 2 pp.7–10.
 - Assessment format: Chapters Quiz Information Sheet, Chapter 1–2 section only.
 
-The selected vocabulary has 96 separate recall forms after splitting polite pairs and optional forms. Seven fictional company/institution names are excluded at the user’s request. There are 62 main-vocabulary forms, 10 country names and 24 expression forms. Named fictional characters in sentence puzzles are replaced with syllabus pronouns and generic roles; all 50 puzzles and 16 pattern groups are retained.
+The original Chapter 1–2 vocabulary has 96 separate recall forms after splitting polite pairs and optional forms. Seven fictional company/institution names are excluded at the user’s request. There are 62 main-vocabulary forms, 10 country names and 24 expression forms. Named fictional characters in sentence puzzles are replaced with syllabus pronouns and generic roles; all 50 puzzles and 16 pattern groups are retained.
 
 Column B follows the sheet's literal Hiragana instruction, including hiragana readings for printed katakana loanwords. Original spelling is retained in the word reference. Column C accepts the printed Japanese vocabulary-column form. In Write, forms without kanji accept either a blank C field or X; the timed mock follows the sheet and requires X. Do not introduce alternative kanji for words printed only in kana. Placeholder tilde is ignored in answer grading. Traditional Chinese meanings are labels, not Japanese answer variants.
 
@@ -32,7 +38,7 @@ Original uploaded PDFs, original hosting configuration, and credentials are not 
 
 ## Vocabulary sections
 
-Every vocabulary form belongs to one of 12 categories by meaning and use: people and forms of address, jobs and roles, places, countries and nationality, questions and age, this/that, objects, food and drinks, languages, introductions and greetings, polite expressions and thanks, or replies and reactions. Polite and optional variants stay in the same category. The word reference groups its rows by category and supports chapter, first-hiragana and progress filters. Vocabulary Recall and Vocabulary Rebuild use the same category definitions. The original 62 printed core forms remain eligible for mock quiz sampling. The word reference can also start a writing round for its filtered and searched selection.
+Every vocabulary form belongs to one of 19 categories by meaning and use: people and forms of address, jobs and roles, places, countries and nationality, questions and age, this/that, objects, food and drinks, languages, introductions and greetings, polite expressions and thanks, or replies and reactions. Polite and optional variants stay in the same category. The word reference groups its rows by category and supports chapter, first-hiragana and progress filters. Vocabulary Recall and Vocabulary Rebuild use the same category definitions. The original 62 printed core forms remain eligible for mock quiz sampling. The word reference can also start a writing round for its filtered and searched selection.
 
 ## Kanji display
 
@@ -42,7 +48,7 @@ The repository root also contains a relative entry page for branch-based GitHub 
 
 ## Rebuild and simulated dialogue
 
-Overview has one Vocabulary mode combining Recall and Rebuild. Its content page has All words / By category / By chapter chips, followed by the two game buttons and the selected mode’s category or chapter chips. The selection immediately filters the compact illustrated word list and both games. Chip rows scroll horizontally on mobile and keep their scroll offsets during selection and language redraws. Vocabulary contains 58 forms across eight categories; This and That and Polite Expressions & Thanks are excluded. Obsolete category selections return to All words. All 96 forms remain in the separate All words reference and the existing mock coverage is retained.
+Overview has one Vocabulary mode combining Recall and Rebuild. Its content page has All words / By category / By chapter chips, followed by the two game buttons and the selected mode’s category or chapter chips. The selection immediately filters the compact illustrated word list and both games. Chip rows scroll horizontally on mobile and keep their scroll offsets during selection and language redraws. Vocabulary contains 173 forms across 17 categories, including the new chapter expressions. Legacy Dialogue-only forms remain in their established section. All 211 forms remain in the separate All words reference and the existing mock coverage is retained.
 
 Rebuild compares the assembled Japanese text in order after canonical Unicode composition and removal of whitespace, invisible formatting and placeholder tildes. Identical duplicate tiles can swap identities; repeated character counts and different Japanese spellings still matter. Check readiness uses text length rather than the original tile count, so an equivalent assembly with combined tiles can be submitted. Recall and Rebuild retain separate progress, manual Next, missed-item practice and existing scoring.
 
@@ -52,7 +58,7 @@ Vocabulary Recall, Dialogue and Rebuild keep the answer and feedback visible unt
 
 WH-words uses five syllabus question words: だれ, どなた, なんさい, おいくつ and なん. Selectable chips open complete two-speaker conversations using the same bubbles, Lulu characters, primary Japanese text and English/Traditional Chinese translations as Replies. The selected question word is highlighted within the Japanese conversation using bold accent text on a subtle background; surrounding Japanese and both translations retain their normal styling. Short usage notes explain the standard/polite distinctions. Both Matching and Rebuild remain available; さい stays excluded because it is not a question word.
 
-Dialogue retains Introduction (5 scenes), Polite expressions (4 scenes), Replies (4 scenes), This and That (7 Chapter 2 scenes), and WH-words (5 questions). Expression chips select a complete conversation immediately. Each learner bubble highlights the complete target from the selected vocabulary entry using the same treatment as WH-words. This and That reuses これ・それ・あれ and この・その・あの, with near-speaker, near-listener and far-from-both contexts and sentence frames in both games. The realisation situation is “Suddenly notice something” / “突然注意到某件事” in guides and games. Dialogue Content uses All / By category / By chapter chips above its optional localized secondary label and filter row. All exposes 25 expressions, including WH-words; chapters derive from each expression’s existing vocabulary entry (8 in Chapter 1, 17 in Chapter 2). One complete conversation stays visible. Matching and Rebuild use this exact filtered set and retain it through restarts, missed-item practice, and returning to the same selected expression. Chip scroll offsets are retained by row, filter and language. Their games appear directly on the page background with compact progress, the situation, speaker bubbles and choices or a tile bank. Rebuild builds the answer in the learner’s bubble. After grading, a rounded green or red feedback card spans the answer area: happy or encouraging Lulu sits beside the status and translation, with the usage explanation underneath and manual Next directly below the card. Feedback and conversation Lulu use the same responsive square size, with matching visible scale after transparent margins. Status text and icons accompany the colors. Corrective notes, editing, reveal, Check and missed-item practice remain available. WH-word guide chips show English or Traditional Chinese meanings without hiragana.
+Dialogue retains Introduction (5 scenes), Polite expressions (4 scenes), Replies (4 scenes), This and That (7 Chapter 2 scenes), and WH-words (5 questions). Expression chips select a complete conversation immediately. Each learner bubble highlights the complete target from the selected vocabulary entry using the same treatment as WH-words. This and That reuses これ・それ・あれ and この・その・あの, with near-speaker, near-listener and far-from-both contexts and sentence frames in both games. The realisation situation is “Suddenly notice something” / “突然注意到某件事” in guides and games. Dialogue Content uses All / By category / By chapter chips above its optional localized secondary label and filter row. All exposes 74 expressions, including WH-words. Explicit chapter membership keeps each lesson in scope (8 in Chapter 1, 17 in Chapter 2, 24 in Chapter 3, and 25 in Chapter 4). One complete conversation stays visible. Matching and Rebuild use this exact filtered set and retain it through restarts, missed-item practice, and returning to the same selected expression. Chip scroll offsets are retained by row, filter and language. Their games appear directly on the page background with compact progress, the situation, speaker bubbles and choices or a tile bank. Rebuild builds the answer in the learner’s bubble. After grading, a rounded green or red feedback card spans the answer area: happy or encouraging Lulu sits beside the status and translation, with the usage explanation underneath and manual Next directly below the card. Feedback and conversation Lulu use the same responsive square size, with matching visible scale after transparent margins. Status text and icons accompany the colors. Corrective notes, editing, reveal, Check and missed-item practice remain available. WH-word guide chips show English or Traditional Chinese meanings without hiragana.
 
 ## Overview
 
@@ -60,7 +66,7 @@ Overview has one responsive study-card navigation in the order Dialogue, Vocabul
 
 ## Visual expression guides
 
-Dialogue content pages use selectable expression chips and complete conversations with compact Lulu characters beside their speakers. WH-words shares this layout. Vocabulary uses the same chip, typography and action components with compact illustrated word entries. Shared 4dp spacing tokens standardize page sections, cards, chips, controls and navigation. Vocabulary Content keeps All words / By category / By chapter at the top, followed by a localized secondary label and chips when appropriate, the selected heading and description, then Rebuild and Recall in that order. Both games inherit the selected words; returning to Content preserves the selection and chip scroll positions. Recall and Rebuild omit visible page headings and browse controls so progress and the question begin directly below the breadcrumbs.
+Dialogue content pages use selectable expression chips and complete conversations with compact Lulu characters beside their speakers. WH-words shares this layout. Vocabulary uses the same chip, typography and action components with compact illustrated word entries. Shared 4dp spacing tokens standardize page sections, cards, chips, controls and navigation. Vocabulary Content keeps All words / By category / By chapter at the top, followed by a localized secondary label and chips when appropriate, the selected heading and description, then Rebuild and Recall in that order. Both games inherit the selected words; returning to Content preserves the selection and chip scroll positions. Recall and Rebuild omit visible page headings and browse controls so progress and the question begin directly below the app bar.
 
 ## Kanji Writing and Vocabulary Recall
 
@@ -80,6 +86,7 @@ After changing anything in `dist/`, regenerate the offline worker before testing
 node scripts/build-pwa.cjs
 node tests/pwa.cjs
 node tests/verify.cjs
+node tests/chapters-3-4.cjs
 ```
 
 The Pages workflow runs these steps automatically. `tests/pwa.cjs` verifies manifest/icon sizes, asset coverage, generated-worker freshness, offline fetch behavior, both Pages paths, scope isolation, absence of installation buttons and explicit update activation without browser tests.
@@ -111,6 +118,6 @@ Set `KOTOBA_TEST_URL` to test another local URL. This suite checks 23 screen sta
 
 The revision browser suite adds 218 layout checks at 360, 390 and 1440 pixels in both languages, covering Vocabulary control order, selected game destinations and scroll retention, WH highlights, feedback card contrast and Lulu sizing, explicit return navigation, the green Update control and responsive breadcrumb padding. The broader suite also checks the shared app title on every route, breadcrumbs on content pages, and back buttons on game pages.
 
-The Dialogue modes browser suite checks All, every category and both chapters at 320, 390 and 1440px in both languages, including filtered question pools, retries, highlights, retained scrolling, and content destinations from all game back buttons.
+The Dialogue modes browser suite checks All, every category and all four chapters at 320, 390 and 1440px in both languages, including filtered question pools, retries, highlights, retained scrolling, and content destinations from all game back buttons.
 
 This and That shows a shared book scene above each complete conversation. Object placement is relative to the learner, while the listener’s question uses the opposite perspective. Short localized chips keep standalone and noun-modifying forms distinct. あのう joins This and That with a separate waving Lulu scene and a usage note distinguishing it from あの + noun. It is included in both This and That games, All and Chapter 2, and excluded from Polite Expressions.
