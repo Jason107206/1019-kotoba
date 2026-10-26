@@ -496,3 +496,11 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
 .update-button:active { background: #1b4427; border-color: #1b4427; }
 .update-button:focus-visible { outline-color: #326941; }
 .update-button:disabled { background: #d6eedd; border-color: #829b88; color: #374e3d; opacity: 1; }
+
+/* The answer is part of the learner's sentence and wraps with its text. */
+.inline-reply { overflow-wrap: anywhere; line-height: 2.3; }
+.inline-answer { text-decoration: underline; text-underline-offset: .24em; text-decoration-thickness: 2px; white-space: normal; }
+.inline-answer-token { display: inline; font: inherit; line-height: inherit; color: inherit; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer; text-decoration: inherit; }
+.inline-answer-token:disabled { opacity: 1; cursor: default; }
+.inline-answer-token:focus-visible { outline: 2px solid var(--md-primary); }
+.reply-bubble { min-width: 0; }

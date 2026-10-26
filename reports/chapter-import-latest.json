@@ -1,0 +1,5451 @@
+{
+  "added": 0,
+  "updated": 0,
+  "unchanged": 328,
+  "unresolved": 0,
+  "records": [
+    {
+      "row": 2,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c7"
+      ],
+      "issues": []
+    },
+    {
+      "row": 3,
+      "status": "unchanged",
+      "source": {
+        "japanese": "アイエムシー(IMC)",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3c7d4b08462bc4f1"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 4,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あいます[ともだちに～]",
+        "kanji": "会います[友達に～]",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-7177af3f64881d19"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 5,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あさ",
+        "kanji": "朝",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-388af0640c608442"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 6,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あさごはん",
+        "kanji": "朝ごはん",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-49dbdb19c4ed703b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 7,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あさって",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-86033a7fcffd7a42"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 8,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あした",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-20a18f0fe3a79474"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 9,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あすか",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ed0fd250bb393be6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 10,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あそこ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-2149fde02ce70ba4"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 11,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あちら",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-dcbf18e73d466200"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 12,
+      "status": "unchanged",
+      "source": {
+        "japanese": "アップルぎんこう",
+        "kanji": "アップル銀行",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a20e75f39da44b49"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 13,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あなた",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-02"
+      ],
+      "issues": []
+    },
+    {
+      "row": 14,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あの～",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-06"
+      ],
+      "issues": []
+    },
+    {
+      "row": 15,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あのう",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c1"
+      ],
+      "issues": []
+    },
+    {
+      "row": 16,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あの かた",
+        "kanji": "あの 方",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-03b"
+      ],
+      "issues": []
+    },
+    {
+      "row": 17,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あの ひと",
+        "kanji": "あの 人",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-03a"
+      ],
+      "issues": []
+    },
+    {
+      "row": 18,
+      "status": "unchanged",
+      "source": {
+        "japanese": "アメリカ",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r1"
+      ],
+      "issues": []
+    },
+    {
+      "row": 19,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ありがとう ございました。",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-9eebca0faf03e6d1"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 20,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ありがとう [ございます]。",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c4a",
+        "2-c4c"
+      ],
+      "issues": []
+    },
+    {
+      "row": 21,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あるいて",
+        "kanji": "歩いて",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f50227659b484b36"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 22,
+      "status": "unchanged",
+      "source": {
+        "japanese": "あれ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-03"
+      ],
+      "issues": []
+    },
+    {
+      "row": 23,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いいえ",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-21"
+      ],
+      "issues": []
+    },
+    {
+      "row": 24,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いいですね。",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-8b77245faf60fc4f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 25,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いきます",
+        "kanji": "行きます",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-e5f8b4417ebfe19c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 26,
+      "status": "unchanged",
+      "source": {
+        "japanese": "イギリス",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r2"
+      ],
+      "issues": []
+    },
+    {
+      "row": 27,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いくつ",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5820ce9c10bf95fb"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 28,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いくら",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ab968e2cd360cb94"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 29,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いしゃ",
+        "kanji": "医者",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-13"
+      ],
+      "issues": []
+    },
+    {
+      "row": 30,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いす",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-29"
+      ],
+      "issues": []
+    },
+    {
+      "row": 31,
+      "status": "unchanged",
+      "source": {
+        "japanese": "イタリア",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-7b7a65b97e017a61"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 32,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いつ",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-da275c2671ca3790"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 33,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いつか",
+        "kanji": "5日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5c0a9a882b9d9a39"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 34,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いっしょに",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ddb642595b09a8d7"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 35,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いつも",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c3c059abac5ad613"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 36,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いま",
+        "kanji": "今",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-7f048f05fae2b351"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 37,
+      "status": "unchanged",
+      "source": {
+        "japanese": "いらっしゃいませ。",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-d9340bfd67eb4f1c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 38,
+      "status": "unchanged",
+      "source": {
+        "japanese": "インド",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r3"
+      ],
+      "issues": []
+    },
+    {
+      "row": 39,
+      "status": "unchanged",
+      "source": {
+        "japanese": "インドネシア",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r4"
+      ],
+      "issues": []
+    },
+    {
+      "row": 40,
+      "status": "unchanged",
+      "source": {
+        "japanese": "うけつけ",
+        "kanji": "受付",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-47abc6e5208cad6d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 41,
+      "status": "unchanged",
+      "source": {
+        "japanese": "うち",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9ee89070e9ecd580"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 42,
+      "status": "unchanged",
+      "source": {
+        "japanese": "うりば",
+        "kanji": "売り場",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c7b62612eee2fd68"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 43,
+      "status": "unchanged",
+      "source": {
+        "japanese": "えいが",
+        "kanji": "映画",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-31d9b81b01c8caf1"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 44,
+      "status": "unchanged",
+      "source": {
+        "japanese": "えいご",
+        "kanji": "英語",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-33"
+      ],
+      "issues": []
+    },
+    {
+      "row": 45,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ええ",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-9a3a4421ce87643e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 46,
+      "status": "unchanged",
+      "source": {
+        "japanese": "エーケーシー(AKC)",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-bd7ed3e561d8f856"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 47,
+      "status": "unchanged",
+      "source": {
+        "japanese": "えき",
+        "kanji": "駅",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-96faf26ff6e24abe"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 48,
+      "status": "unchanged",
+      "source": {
+        "japanese": "エスカレーター",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-59ad683a4f84dd5e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 49,
+      "status": "unchanged",
+      "source": {
+        "japanese": "えっ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c2"
+      ],
+      "issues": []
+    },
+    {
+      "row": 50,
+      "status": "unchanged",
+      "source": {
+        "japanese": "エレベーター",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-357a6ee57f2f4f5e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 51,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…えん",
+        "kanji": "…円",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-89e7a999c484607d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 52,
+      "status": "unchanged",
+      "source": {
+        "japanese": "えんぴつ",
+        "kanji": "鉛筆",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-15"
+      ],
+      "issues": []
+    },
+    {
+      "row": 53,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おいくつ",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-19b"
+      ],
+      "issues": []
+    },
+    {
+      "row": 54,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おおさかじょう",
+        "kanji": "大阪城",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f0a8ad38c4b26077"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 55,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おおさかデパート",
+        "kanji": "大阪デパート",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a22105b120419229"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 56,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おきます",
+        "kanji": "起きます",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5e7d0ce40b26cb2b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 57,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おくに",
+        "kanji": "お国",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8976cfb218dc9695"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 58,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おさけ",
+        "kanji": "お酒",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-466ef427aeaa04c0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 59,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おちゃ",
+        "kanji": "お茶",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-73d6ed4fb078beac"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 60,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おてあらい",
+        "kanji": "お手洗い",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5c19674bccff38cc"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 61,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おととい／おととい",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-eac5be1a132a8628"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 62,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おなまえは？",
+        "kanji": "お名前は？",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-c5"
+      ],
+      "issues": []
+    },
+    {
+      "row": 63,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おはなみ",
+        "kanji": "お花見",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-36a14c686f5072d1"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 64,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おみやげ",
+        "kanji": "お土産",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-32b"
+      ],
+      "issues": []
+    },
+    {
+      "row": 65,
+      "status": "unchanged",
+      "source": {
+        "japanese": "おわります",
+        "kanji": "終わります",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8ad6592be9552403"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 66,
+      "status": "unchanged",
+      "source": {
+        "japanese": "カード",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-14"
+      ],
+      "issues": []
+    },
+    {
+      "row": 67,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…かい(がい)",
+        "kanji": "…階",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-edd304f5c1f4ba4d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 68,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かいぎ",
+        "kanji": "会議",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c9f11c91beceba8f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 69,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かいぎしつ",
+        "kanji": "会議室",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a3c7305e35ec0bb3"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 70,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かいしゃ",
+        "kanji": "会社",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-42c30b5cfe318433"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 71,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かいしゃいん",
+        "kanji": "会社員",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-10"
+      ],
+      "issues": []
+    },
+    {
+      "row": 72,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かいだん",
+        "kanji": "階段",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c04f54886314a802"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 73,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かいます",
+        "kanji": "買います",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-df823f0054e95444"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 74,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かえります",
+        "kanji": "帰ります",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a24023d5cf432e72"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 75,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かぎ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-18"
+      ],
+      "issues": []
+    },
+    {
+      "row": 76,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かきます",
+        "kanji": "書きます",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-d0b1c1b9cff1afa8"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 77,
+      "status": "unchanged",
+      "source": {
+        "japanese": "がくせい",
+        "kanji": "学生",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-09"
+      ],
+      "issues": []
+    },
+    {
+      "row": 78,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かさ",
+        "kanji": "傘",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-20"
+      ],
+      "issues": []
+    },
+    {
+      "row": 79,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かぞく",
+        "kanji": "家族",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-85fc29e4499613fa"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 80,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…がつ",
+        "kanji": "…月",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-a0827d7777003ef6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 81,
+      "status": "unchanged",
+      "source": {
+        "japanese": "がっこう",
+        "kanji": "学校",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3b693859f9dedc50"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 82,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かのじょ",
+        "kanji": "彼女",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3ba73c6ea36b4989"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 83,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かばん",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-21"
+      ],
+      "issues": []
+    },
+    {
+      "row": 84,
+      "status": "unchanged",
+      "source": {
+        "japanese": "カメラ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-25"
+      ],
+      "issues": []
+    },
+    {
+      "row": 85,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かようび",
+        "kanji": "火曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8c5648c4373536d6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 86,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～から",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-bc24d192836412e5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 87,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～から きました。",
+        "kanji": "～から 来ました。",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-c2"
+      ],
+      "issues": []
+    },
+    {
+      "row": 88,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かれ",
+        "kanji": "彼",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-d4dffb5a5b803637"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 89,
+      "status": "unchanged",
+      "source": {
+        "japanese": "かんこく",
+        "kanji": "韓国",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r5"
+      ],
+      "issues": []
+    },
+    {
+      "row": 90,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ききます",
+        "kanji": "聞きます",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-75b0e4c01e1d84c5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 91,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きのう／きのう",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-0ade0376ffe6e67d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 92,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きます",
+        "kanji": "来ます",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-d210788ec91c38a2"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 93,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きゅうこう",
+        "kanji": "急行",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-97d70ee391716129"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 94,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ぎゅうにゅう",
+        "kanji": "牛乳",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c5e1b6f79ac06f78"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 95,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きょう",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-0399b8dc98b5e1f7"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 96,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きょうし",
+        "kanji": "教師",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-08"
+      ],
+      "issues": []
+    },
+    {
+      "row": 97,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きょうしつ",
+        "kanji": "教室",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ec4cba5d7986cb2e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 98,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きょねん",
+        "kanji": "去年",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a868b59281a163d0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 99,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ぎんこう",
+        "kanji": "銀行",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-97ecc501b1cb7c5c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 100,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ぎんこういん",
+        "kanji": "銀行員",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-12"
+      ],
+      "issues": []
+    },
+    {
+      "row": 101,
+      "status": "unchanged",
+      "source": {
+        "japanese": "きんようび",
+        "kanji": "金曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ef428a083ebfc416"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 102,
+      "status": "unchanged",
+      "source": {
+        "japanese": "[～を] ください。",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-7429b0353d78ce6c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 103,
+      "status": "unchanged",
+      "source": {
+        "japanese": "くだもの",
+        "kanji": "果物",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c95c5a42a2c4dc0f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 104,
+      "status": "unchanged",
+      "source": {
+        "japanese": "くつ",
+        "kanji": "靴",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a8af0a9b35d000ee"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 105,
+      "status": "unchanged",
+      "source": {
+        "japanese": "くに",
+        "kanji": "国",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8471042aadac7ed5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 106,
+      "status": "unchanged",
+      "source": {
+        "japanese": "くるま",
+        "kanji": "車",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-27"
+      ],
+      "issues": []
+    },
+    {
+      "row": 107,
+      "status": "unchanged",
+      "source": {
+        "japanese": "けさ",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-20cc9112529e17dc"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 108,
+      "status": "unchanged",
+      "source": {
+        "japanese": "げつようび",
+        "kanji": "月曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-fd367b096e229af0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 109,
+      "status": "unchanged",
+      "source": {
+        "japanese": "けんきゅうしゃ",
+        "kanji": "研究者",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-14"
+      ],
+      "issues": []
+    },
+    {
+      "row": 110,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～ご",
+        "kanji": "～語",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-35"
+      ],
+      "issues": []
+    },
+    {
+      "row": 111,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こうしえん",
+        "kanji": "甲子園",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-28e2535376fd8952"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 112,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こうちゃ",
+        "kanji": "紅茶",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8f8245c5ed921c82"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 113,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こうべびょういん",
+        "kanji": "神戸病院",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-24110f167642a49c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 114,
+      "status": "unchanged",
+      "source": {
+        "japanese": "コーヒー",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-31"
+      ],
+      "issues": []
+    },
+    {
+      "row": 115,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ここ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-736ca436d91bce5f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 116,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ごご",
+        "kanji": "午後",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-88e16b624f08ea7d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 117,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ここのか",
+        "kanji": "9日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c221dba0167ae1e9"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 118,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ごぜん",
+        "kanji": "午前",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-22ae083e6a1b254f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 119,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こちら",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5b6dad8bf63aea6d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 120,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こちらこそ [どうぞ] よろしく [おねがいします]。",
+        "kanji": "こちらこそ [どうぞ] よろしく [お願いします]。",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-d2a",
+        "2-d2b",
+        "2-d2c",
+        "2-d2d"
+      ],
+      "issues": []
+    },
+    {
+      "row": 121,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こちらは ～さんです。",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-c6"
+      ],
+      "issues": []
+    },
+    {
+      "row": 122,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ことし",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-30b189ebcd7003c3"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 123,
+      "status": "unchanged",
+      "source": {
+        "japanese": "この～",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-04"
+      ],
+      "issues": []
+    },
+    {
+      "row": 124,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ごはん",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-6bcbca4ff9d1339c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 125,
+      "status": "unchanged",
+      "source": {
+        "japanese": "これ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-01"
+      ],
+      "issues": []
+    },
+    {
+      "row": 126,
+      "status": "unchanged",
+      "source": {
+        "japanese": "これから おせわに なります。",
+        "kanji": "これから お世話に なります。",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-d1"
+      ],
+      "issues": []
+    },
+    {
+      "row": 127,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こんげつ",
+        "kanji": "今月",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c803b519e3fc772d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 128,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こんしゅう",
+        "kanji": "今週",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-17a1e9fa6d674c24"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 129,
+      "status": "unchanged",
+      "source": {
+        "japanese": "こんばん",
+        "kanji": "今晩",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ac175b9b3739e283"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 130,
+      "status": "unchanged",
+      "source": {
+        "japanese": "コンピューター",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-26"
+      ],
+      "issues": []
+    },
+    {
+      "row": 131,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…さい",
+        "kanji": "…歳",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-18"
+      ],
+      "issues": []
+    },
+    {
+      "row": 132,
+      "status": "unchanged",
+      "source": {
+        "japanese": "さかな",
+        "kanji": "魚",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5d4309a567cd471b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 133,
+      "status": "unchanged",
+      "source": {
+        "japanese": "さくらだいがく",
+        "kanji": "さくら大学",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5babde796c69ee99"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 134,
+      "status": "unchanged",
+      "source": {
+        "japanese": "さけ",
+        "kanji": "酒",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b4278971fe60aaba"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 135,
+      "status": "unchanged",
+      "source": {
+        "japanese": "サッカー",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-7dc41055c5283da3"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 136,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ざっし",
+        "kanji": "雑誌",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-09"
+      ],
+      "issues": []
+    },
+    {
+      "row": 137,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～さん",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-04"
+      ],
+      "issues": []
+    },
+    {
+      "row": 138,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…じ",
+        "kanji": "…時",
+        "chapter": "4",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-2d18eee2beaa33a9"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 139,
+      "status": "unchanged",
+      "source": {
+        "japanese": "シーディー(CD)",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5f75683c732e90c5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 140,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しけん",
+        "kanji": "試験",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-50f1e3f0d55ae59e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 141,
+      "status": "unchanged",
+      "source": {
+        "japanese": "じしょ",
+        "kanji": "辞書",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-08"
+      ],
+      "issues": []
+    },
+    {
+      "row": 142,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しつれいですが",
+        "kanji": "失礼ですが",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-c4"
+      ],
+      "issues": []
+    },
+    {
+      "row": 143,
+      "status": "unchanged",
+      "source": {
+        "japanese": "じてんしゃ",
+        "kanji": "自転車",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5a10eafbbd35a055"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 144,
+      "status": "unchanged",
+      "source": {
+        "japanese": "じどうはんばいき",
+        "kanji": "自動販売機",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f47438960f134c01"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 145,
+      "status": "unchanged",
+      "source": {
+        "japanese": "します",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-e1fe9fe823893e71"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 146,
+      "status": "unchanged",
+      "source": {
+        "japanese": "じむしょ",
+        "kanji": "事務所",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b630f288931b1e0d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 147,
+      "status": "unchanged",
+      "source": {
+        "japanese": "じゃ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-e0254d6a929be2c4"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 148,
+      "status": "unchanged",
+      "source": {
+        "japanese": "シャープペンシル",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-17"
+      ],
+      "issues": []
+    },
+    {
+      "row": 149,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しゃいん",
+        "kanji": "社員",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-11"
+      ],
+      "issues": []
+    },
+    {
+      "row": 150,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ジャカルタ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-6108692c5a4192be"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 151,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しゃしん",
+        "kanji": "写真",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-636d771fbcf06c13"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 152,
+      "status": "unchanged",
+      "source": {
+        "japanese": "じゃ、また [あした]。",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-e71873a7c50a3455"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 153,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ジュース",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-59fc344c5d6c0e5b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 154,
+      "status": "unchanged",
+      "source": {
+        "japanese": "じゅうよっか",
+        "kanji": "14日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b18a5ba6256ca74e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 155,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しゅくだい",
+        "kanji": "宿題",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-e8e2f46fabc20cd4"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 156,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しょくどう",
+        "kanji": "食堂",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9f28616c1abd0df0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 157,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～じん",
+        "kanji": "～人",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-06"
+      ],
+      "issues": []
+    },
+    {
+      "row": 158,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しんおおさか",
+        "kanji": "新大阪",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c91023ffad8c20d9"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 159,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しんかんせん",
+        "kanji": "新幹線",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-75cc337163f92d4a"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 160,
+      "status": "unchanged",
+      "source": {
+        "japanese": "しんぶん",
+        "kanji": "新聞",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-10"
+      ],
+      "issues": []
+    },
+    {
+      "row": 161,
+      "status": "unchanged",
+      "source": {
+        "japanese": "スイス",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-2fc9f222399f3db8"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 162,
+      "status": "unchanged",
+      "source": {
+        "japanese": "すいます[たばこを～]",
+        "kanji": "吸います",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8c8770a8bd199980"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 163,
+      "status": "unchanged",
+      "source": {
+        "japanese": "すいようび",
+        "kanji": "水曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-af1a037008532065"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 164,
+      "status": "unchanged",
+      "source": {
+        "japanese": "スーパー",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3e715ed68e25a4b2"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 165,
+      "status": "unchanged",
+      "source": {
+        "japanese": "すみません",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-47173ba7dbcc1ba8"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 166,
+      "status": "unchanged",
+      "source": {
+        "japanese": "せん",
+        "kanji": "千",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3121bf370e394d08"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 167,
+      "status": "unchanged",
+      "source": {
+        "japanese": "せんげつ",
+        "kanji": "先月",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-23b4d2461d6440ab"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 168,
+      "status": "unchanged",
+      "source": {
+        "japanese": "せんしゅう",
+        "kanji": "先週",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3c6769841cb20689"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 169,
+      "status": "unchanged",
+      "source": {
+        "japanese": "せんせい",
+        "kanji": "先生",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-07"
+      ],
+      "issues": []
+    },
+    {
+      "row": 170,
+      "status": "unchanged",
+      "source": {
+        "japanese": "そう",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-37"
+      ],
+      "issues": []
+    },
+    {
+      "row": 171,
+      "status": "unchanged",
+      "source": {
+        "japanese": "そうですか。",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c5"
+      ],
+      "issues": []
+    },
+    {
+      "row": 172,
+      "status": "unchanged",
+      "source": {
+        "japanese": "そうですね。",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-626cfb072a80fcbb"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 173,
+      "status": "unchanged",
+      "source": {
+        "japanese": "そこ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ab7df75a603e51de"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 174,
+      "status": "unchanged",
+      "source": {
+        "japanese": "そちら",
+        "kanji": "",
+        "chapter": "3, 4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9f118c1d866c7b12"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 175,
+      "status": "unchanged",
+      "source": {
+        "japanese": "その～",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-05"
+      ],
+      "issues": []
+    },
+    {
+      "row": 176,
+      "status": "unchanged",
+      "source": {
+        "japanese": "それ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-02"
+      ],
+      "issues": []
+    },
+    {
+      "row": 177,
+      "status": "unchanged",
+      "source": {
+        "japanese": "それから",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1d44190694449872"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 178,
+      "status": "unchanged",
+      "source": {
+        "japanese": "タイ",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r6"
+      ],
+      "issues": []
+    },
+    {
+      "row": 179,
+      "status": "unchanged",
+      "source": {
+        "japanese": "だいがく",
+        "kanji": "大学",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-15"
+      ],
+      "issues": []
+    },
+    {
+      "row": 180,
+      "status": "unchanged",
+      "source": {
+        "japanese": "たいへんですね。",
+        "kanji": "大変ですね。",
+        "chapter": "4",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-fe800f6d19179334"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 181,
+      "status": "unchanged",
+      "source": {
+        "japanese": "タクシー",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-6cec773780557979"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 182,
+      "status": "unchanged",
+      "source": {
+        "japanese": "たばこ",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-39827ceb3d02520a"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 183,
+      "status": "unchanged",
+      "source": {
+        "japanese": "たべます",
+        "kanji": "食べます",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-47e0d02b093eaa10"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 184,
+      "status": "unchanged",
+      "source": {
+        "japanese": "たまご",
+        "kanji": "卵",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9d3438acae746a2b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 185,
+      "status": "unchanged",
+      "source": {
+        "japanese": "だれ",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-17a"
+      ],
+      "issues": []
+    },
+    {
+      "row": 186,
+      "status": "unchanged",
+      "source": {
+        "japanese": "たんじょうび",
+        "kanji": "誕生日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9c2a0dad1676a16c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 187,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ちか",
+        "kanji": "地下",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-15fcfa0f2e316f12"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 188,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ちがいます。",
+        "kanji": "違います。",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c6"
+      ],
+      "issues": []
+    },
+    {
+      "row": 189,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ちかてつ",
+        "kanji": "地下鉄",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8fea79d5439bf91d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 190,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～ちゃん",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-05"
+      ],
+      "issues": []
+    },
+    {
+      "row": 191,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ちゅうごく",
+        "kanji": "中国",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r7"
+      ],
+      "issues": []
+    },
+    {
+      "row": 192,
+      "status": "unchanged",
+      "source": {
+        "japanese": "チョコレート",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-30"
+      ],
+      "issues": []
+    },
+    {
+      "row": 193,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ちょっと",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f66659321ab61768"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 194,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ついたち",
+        "kanji": "1日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c2a089d9c108210d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 195,
+      "status": "unchanged",
+      "source": {
+        "japanese": "つぎの",
+        "kanji": "次の",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-184a04e7c5d4fccd"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 196,
+      "status": "unchanged",
+      "source": {
+        "japanese": "つくえ",
+        "kanji": "机",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-28"
+      ],
+      "issues": []
+    },
+    {
+      "row": 197,
+      "status": "unchanged",
+      "source": {
+        "japanese": "つるや",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-e0ef263ea957a0ed"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 198,
+      "status": "unchanged",
+      "source": {
+        "japanese": "てがみ",
+        "kanji": "手紙",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c11a3275fec09a2b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 199,
+      "status": "unchanged",
+      "source": {
+        "japanese": "てちょう",
+        "kanji": "手帳",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-12"
+      ],
+      "issues": []
+    },
+    {
+      "row": 200,
+      "status": "unchanged",
+      "source": {
+        "japanese": "テニス",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1981cf9bdbeb6a22"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 201,
+      "status": "unchanged",
+      "source": {
+        "japanese": "デパート",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b39f72fcf4f7e700"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 202,
+      "status": "unchanged",
+      "source": {
+        "japanese": "テレビ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-23"
+      ],
+      "issues": []
+    },
+    {
+      "row": 203,
+      "status": "unchanged",
+      "source": {
+        "japanese": "でんしゃ",
+        "kanji": "電車",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-877ca5f99e8338a8"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 204,
+      "status": "unchanged",
+      "source": {
+        "japanese": "でんわ",
+        "kanji": "電話",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f20e55f3aa3b9c16"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 205,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～と～",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-09ef7fdadc105ce9"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 206,
+      "status": "unchanged",
+      "source": {
+        "japanese": "トイレ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-257eb66feb0a09a6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 207,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ドイツ",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r8"
+      ],
+      "issues": []
+    },
+    {
+      "row": 208,
+      "status": "unchanged",
+      "source": {
+        "japanese": "どう いたしまして。",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-1d26a3f31f546046"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 209,
+      "status": "unchanged",
+      "source": {
+        "japanese": "どうぞ。",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c3"
+      ],
+      "issues": []
+    },
+    {
+      "row": 210,
+      "status": "unchanged",
+      "source": {
+        "japanese": "[どうぞ] よろしく [おねがいします]。",
+        "kanji": "[どうぞ] よろしく [お願いします]。",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-c3a",
+        "1-c3b",
+        "1-c3c",
+        "1-c3d"
+      ],
+      "issues": []
+    },
+    {
+      "row": 211,
+      "status": "unchanged",
+      "source": {
+        "japanese": "どうも。",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-db54bd3debae83c5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 212,
+      "status": "unchanged",
+      "source": {
+        "japanese": "[どうも] ありがとう ございました。",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-9eebca0faf03e6d1"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 213,
+      "status": "unchanged",
+      "source": {
+        "japanese": "[どうも] ありがとう [ございます]。",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "2-c4a",
+        "2-c4b",
+        "2-c4c",
+        "2-c4d"
+      ],
+      "issues": []
+    },
+    {
+      "row": 214,
+      "status": "unchanged",
+      "source": {
+        "japanese": "とおか",
+        "kanji": "10日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9c701220455cac91"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 215,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ときどき",
+        "kanji": "時々",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-6b187d085f20d980"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 216,
+      "status": "unchanged",
+      "source": {
+        "japanese": "とけい",
+        "kanji": "時計",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-19"
+      ],
+      "issues": []
+    },
+    {
+      "row": 217,
+      "status": "unchanged",
+      "source": {
+        "japanese": "どこ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-eeb21f6be3d69376"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 218,
+      "status": "unchanged",
+      "source": {
+        "japanese": "としょかん",
+        "kanji": "図書館",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a49f4fd74e4b776a"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 219,
+      "status": "unchanged",
+      "source": {
+        "japanese": "どちら",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-804aba7ce89c0b43"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 220,
+      "status": "unchanged",
+      "source": {
+        "japanese": "とっきゅう",
+        "kanji": "特急",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ee51b3e0ae0fd355"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 221,
+      "status": "unchanged",
+      "source": {
+        "japanese": "どなた",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-17b"
+      ],
+      "issues": []
+    },
+    {
+      "row": 222,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ともだち",
+        "kanji": "友達",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-66356e973c57c474"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 223,
+      "status": "unchanged",
+      "source": {
+        "japanese": "どようび",
+        "kanji": "土曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-0f0af44cce4a281f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 224,
+      "status": "unchanged",
+      "source": {
+        "japanese": "とります[しゃしんを～]",
+        "kanji": "撮ります[写真を～]",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-cc1157bdb7daec7d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 225,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なに",
+        "kanji": "何",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-61d84228493517e8"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 226,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なのか",
+        "kanji": "7日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5702f6977f743b93"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 227,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なん",
+        "kanji": "何",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-36"
+      ],
+      "issues": []
+    },
+    {
+      "row": 228,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんがい",
+        "kanji": "何階",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-6c2b8b903cb99e2e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 229,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんがつ",
+        "kanji": "何月",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c8125aa6b2d08005"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 230,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんさい",
+        "kanji": "何歳",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-19a"
+      ],
+      "issues": []
+    },
+    {
+      "row": 231,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんじ",
+        "kanji": "何時",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-02f9970a520aca34"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 232,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんですか。",
+        "kanji": "何ですか。",
+        "chapter": "6",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-5b2bd2f1b059a707"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 233,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんにち",
+        "kanji": "何日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9211080b604c7214"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 234,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんねん",
+        "kanji": "何年",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-37a34299f8aac5ba"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 235,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんばん",
+        "kanji": "何番",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9eed675097e32f3a"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 236,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんぷん",
+        "kanji": "何分",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-cf9d68d877adf1cd"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 237,
+      "status": "unchanged",
+      "source": {
+        "japanese": "なんようび",
+        "kanji": "何曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-709bbe360bfb0610"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 238,
+      "status": "unchanged",
+      "source": {
+        "japanese": "にく",
+        "kanji": "肉",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b7e64825c6bfc605"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 239,
+      "status": "unchanged",
+      "source": {
+        "japanese": "にじゅうよっか",
+        "kanji": "24日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-80e2b972cd3e2a7b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 240,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…にち",
+        "kanji": "…日",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-7102dff50ca5a822"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 241,
+      "status": "unchanged",
+      "source": {
+        "japanese": "にちようび",
+        "kanji": "日曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-4079e2a4d9c90208"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 242,
+      "status": "unchanged",
+      "source": {
+        "japanese": "にほん",
+        "kanji": "日本",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r9"
+      ],
+      "issues": []
+    },
+    {
+      "row": 243,
+      "status": "unchanged",
+      "source": {
+        "japanese": "にほんご",
+        "kanji": "日本語",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-34"
+      ],
+      "issues": []
+    },
+    {
+      "row": 244,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ニューヨーク",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-d5eb58bc9fda4560"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 245,
+      "status": "unchanged",
+      "source": {
+        "japanese": "にわ",
+        "kanji": "庭",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-fe19f59584c74922"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 246,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ネクタイ",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-53301c9bbfca67e7"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 247,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ねます",
+        "kanji": "寝ます",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-8605d60ced6fcfc3"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 248,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…ねん",
+        "kanji": "…年",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-7b39f2af6e32e892"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 249,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ノート",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-11"
+      ],
+      "issues": []
+    },
+    {
+      "row": 250,
+      "status": "unchanged",
+      "source": {
+        "japanese": "のみます",
+        "kanji": "飲みます",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-94a36930bfbb9722"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 251,
+      "status": "unchanged",
+      "source": {
+        "japanese": "はい",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-20"
+      ],
+      "issues": []
+    },
+    {
+      "row": 252,
+      "status": "unchanged",
+      "source": {
+        "japanese": "はじめまして。",
+        "kanji": "初めまして。",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-c1"
+      ],
+      "issues": []
+    },
+    {
+      "row": 253,
+      "status": "unchanged",
+      "source": {
+        "japanese": "バス",
+        "kanji": "",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-866bfdb4796056e3"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 254,
+      "status": "unchanged",
+      "source": {
+        "japanese": "はたらきます",
+        "kanji": "働きます",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ed8b2091e64b9057"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 255,
+      "status": "unchanged",
+      "source": {
+        "japanese": "はつか",
+        "kanji": "20日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-baf16aec6f47fddc"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 256,
+      "status": "unchanged",
+      "source": {
+        "japanese": "はなみ",
+        "kanji": "花見",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-59357d2a2ba16d1d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 257,
+      "status": "unchanged",
+      "source": {
+        "japanese": "パワーでんき",
+        "kanji": "パワー電気",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-28b35d9b1a29e3bd"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 258,
+      "status": "unchanged",
+      "source": {
+        "japanese": "はん",
+        "kanji": "半",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-65b30d156c2fe4df"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 259,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ばん",
+        "kanji": "晩",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ff36cec9ccb3b7f6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 260,
+      "status": "unchanged",
+      "source": {
+        "japanese": "パン",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-de32617ea8103232"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 261,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ばんごう",
+        "kanji": "番号",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-d4c367f50c5fdddb"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 262,
+      "status": "unchanged",
+      "source": {
+        "japanese": "バンコク",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f8aa1519a9a40a91"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 263,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ばんごはん",
+        "kanji": "晩ごはん",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-affaad7513b5d4c8"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 264,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…ばんせん",
+        "kanji": "…番線",
+        "chapter": "5",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-4f20834e51a03b0c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 265,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ビール",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c90996b5e92d7c1e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 266,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ひこうき",
+        "kanji": "飛行機",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c98d6b858839265e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 267,
+      "status": "unchanged",
+      "source": {
+        "japanese": "びじゅつかん",
+        "kanji": "美術館",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c0f29d3056decb53"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 268,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ビデオ",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-a21d0ee87a3c3deb"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 269,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ひと",
+        "kanji": "人",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-d174a32922550b37"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 270,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ひとりで",
+        "kanji": "一人で",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-ad4bed84d1d20277"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 271,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ひゃく",
+        "kanji": "百",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-fabae63a62509b27"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 272,
+      "status": "unchanged",
+      "source": {
+        "japanese": "びょういん",
+        "kanji": "病院",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-16"
+      ],
+      "issues": []
+    },
+    {
+      "row": 273,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ひる",
+        "kanji": "昼",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f0808db02826751c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 274,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ひるごはん",
+        "kanji": "昼ごはん",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1e0b486bbcdc48d6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 275,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ひるやすみ",
+        "kanji": "昼休み",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-2027eb0abebd2ddc"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 276,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ふじだいがく",
+        "kanji": "富士大学",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1c673828b19f140f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 277,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ふつう",
+        "kanji": "普通",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3236ade61764e870"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 278,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ふつか",
+        "kanji": "2日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-7048eafe3ccb9af5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 279,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ふね",
+        "kanji": "船",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-337bdbc7d43ef9ad"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 280,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ブラジル",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-r10"
+      ],
+      "issues": []
+    },
+    {
+      "row": 281,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ブラジルエアー",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-7397e594beb9d693"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 282,
+      "status": "unchanged",
+      "source": {
+        "japanese": "フランス",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-2b5c2978ec80433f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 283,
+      "status": "unchanged",
+      "source": {
+        "japanese": "フランスや",
+        "kanji": "フランス屋",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b199fcf6b483fa68"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 284,
+      "status": "unchanged",
+      "source": {
+        "japanese": "…ふん(…ぷん)",
+        "kanji": "…分",
+        "chapter": "4",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-1e29ff5690e69b84"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 285,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ペキン",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-34928d4434867cd0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 286,
+      "status": "unchanged",
+      "source": {
+        "japanese": "へや",
+        "kanji": "部屋",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-40d939631b618203"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 287,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ベルリン",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-5d624a3f65c5328e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 288,
+      "status": "unchanged",
+      "source": {
+        "japanese": "べんきょうします",
+        "kanji": "勉強します",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-453767b05cb5e14e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 289,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ボールペン",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-16"
+      ],
+      "issues": []
+    },
+    {
+      "row": 290,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ほん",
+        "kanji": "本",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-07"
+      ],
+      "issues": []
+    },
+    {
+      "row": 291,
+      "status": "unchanged",
+      "source": {
+        "japanese": "まいあさ",
+        "kanji": "毎朝",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1a940afe26c9027e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 292,
+      "status": "unchanged",
+      "source": {
+        "japanese": "まいにち",
+        "kanji": "毎日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-6fde4246c2fe47b2"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 293,
+      "status": "unchanged",
+      "source": {
+        "japanese": "まいにちや",
+        "kanji": "毎日屋",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3395ecf63186e543"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 294,
+      "status": "unchanged",
+      "source": {
+        "japanese": "まいばん",
+        "kanji": "毎晩",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-6ebd4ea5ad7d225d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 295,
+      "status": "unchanged",
+      "source": {
+        "japanese": "～まで",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-cb864db04f6b762e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 296,
+      "status": "unchanged",
+      "source": {
+        "japanese": "まん",
+        "kanji": "万",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-d8eedc840c49b87b"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 297,
+      "status": "unchanged",
+      "source": {
+        "japanese": "みず",
+        "kanji": "水",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-4eb49f0d02d973b0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 298,
+      "status": "unchanged",
+      "source": {
+        "japanese": "みせ",
+        "kanji": "店",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-c1bbf30546c0876e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 299,
+      "status": "unchanged",
+      "source": {
+        "japanese": "[～を] みせて ください。",
+        "kanji": "[～を] 見せて ください。",
+        "chapter": "3",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-468ba0b25a9e4eec"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV",
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "row": 300,
+      "status": "unchanged",
+      "source": {
+        "japanese": "みっか",
+        "kanji": "3日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-4da5f65019726165"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 301,
+      "status": "unchanged",
+      "source": {
+        "japanese": "みどりとしょかん",
+        "kanji": "みどり図書館",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-66de446833eb258e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 302,
+      "status": "unchanged",
+      "source": {
+        "japanese": "みます",
+        "kanji": "見ます",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1ff1d8b46cf7910c"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 303,
+      "status": "unchanged",
+      "source": {
+        "japanese": "みやげ",
+        "kanji": "土産",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-32a"
+      ],
+      "issues": []
+    },
+    {
+      "row": 304,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ミルク",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-bc3c569041e86eb6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 305,
+      "status": "unchanged",
+      "source": {
+        "japanese": "むいか",
+        "kanji": "6日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b65570a0efd59fe4"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 306,
+      "status": "unchanged",
+      "source": {
+        "japanese": "めいし",
+        "kanji": "名刺",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-13"
+      ],
+      "issues": []
+    },
+    {
+      "row": 307,
+      "status": "unchanged",
+      "source": {
+        "japanese": "メキシコ",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-15a68a335b8ce750"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 308,
+      "status": "unchanged",
+      "source": {
+        "japanese": "もくようび",
+        "kanji": "木曜日",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f993b8b74d1919f7"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 309,
+      "status": "unchanged",
+      "source": {
+        "japanese": "やさい",
+        "kanji": "野菜",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-0bad5ff77209d4f0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 310,
+      "status": "unchanged",
+      "source": {
+        "japanese": "やすみ",
+        "kanji": "休み",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-0b01393623a71f8d"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 311,
+      "status": "unchanged",
+      "source": {
+        "japanese": "やすみます",
+        "kanji": "休みます",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-7e477c4b4eb8f05a"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 312,
+      "status": "unchanged",
+      "source": {
+        "japanese": "やまとびじゅつかん",
+        "kanji": "やまと美術館",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1e3eb74820c8a86e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 313,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ゆうびんきょく",
+        "kanji": "郵便局",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-b11fbdb1483f75a8"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 314,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ようか",
+        "kanji": "8日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-98d3825988ce5f0a"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 315,
+      "status": "unchanged",
+      "source": {
+        "japanese": "よっか",
+        "kanji": "4日",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-db95619e9dabec3f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 316,
+      "status": "unchanged",
+      "source": {
+        "japanese": "よみます",
+        "kanji": "読みます",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-41e7fb780375c38e"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 317,
+      "status": "unchanged",
+      "source": {
+        "japanese": "よる",
+        "kanji": "夜",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-36fa32ead5a6c7e0"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 318,
+      "status": "unchanged",
+      "source": {
+        "japanese": "よろしく [おねがいします]",
+        "kanji": "よろしく [お願いします]",
+        "chapter": "1",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "1-c3a",
+        "1-c3c"
+      ],
+      "issues": []
+    },
+    {
+      "row": 319,
+      "status": "unchanged",
+      "source": {
+        "japanese": "らいげつ",
+        "kanji": "来月",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-9263b75441c6fb63"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 320,
+      "status": "unchanged",
+      "source": {
+        "japanese": "らいしゅう",
+        "kanji": "来週",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-3fd555b0c01ae8b3"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 321,
+      "status": "unchanged",
+      "source": {
+        "japanese": "らいねん",
+        "kanji": "来年",
+        "chapter": "5",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-07d7f60a32c5d106"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 322,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ラジオ",
+        "kanji": "",
+        "chapter": "2",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "2-24"
+      ],
+      "issues": []
+    },
+    {
+      "row": 323,
+      "status": "unchanged",
+      "source": {
+        "japanese": "レポート",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-1dcf2c3f1c019d5f"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 324,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ロサンゼルス",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-da11587177383cd6"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 325,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ロビー",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-55da2a85702fd5bb"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 326,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ロンドン",
+        "kanji": "",
+        "chapter": "4",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-78cc2edda06fb703"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 327,
+      "status": "unchanged",
+      "source": {
+        "japanese": "ワイン",
+        "kanji": "",
+        "chapter": "3",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "csv-f830be35a53680d5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 328,
+      "status": "unchanged",
+      "source": {
+        "japanese": "わかりました。",
+        "kanji": "",
+        "chapter": "6",
+        "page": "",
+        "category": "Expression"
+      },
+      "ids": [
+        "csv-43dcdb53d41a80e5"
+      ],
+      "issues": [
+        "Meaning and translations absent from CSV"
+      ]
+    },
+    {
+      "row": 329,
+      "status": "unchanged",
+      "source": {
+        "japanese": "わたし",
+        "kanji": "",
+        "chapter": "1",
+        "page": "",
+        "category": "Vocabulary"
+      },
+      "ids": [
+        "1-01"
+      ],
+      "issues": []
+    }
+  ],
+  "needsReview": 240,
+  "sourceRows": 328,
+  "totalWords": 335,
+  "existingIdsPreserved": true,
+  "repeat": {
+    "added": 0,
+    "updated": 0,
+    "unchanged": 328,
+    "unresolved": 0
+  }
+}

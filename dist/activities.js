@@ -91,7 +91,7 @@ const DIALOGUES=[
     "id": "offer",
     "word": "2-c3",
     "family": "offer",
-    "scene": "You give someone a pen.",
+    "scene": "Offer something to someone.",
     "why": "Use どうぞ when you give someone something."
   },
   {
@@ -119,7 +119,7 @@ const DIALOGUES=[
     "id": "incorrect",
     "word": "2-c6",
     "family": "incorrect",
-    "scene": "Someone says your book is a dictionary. They are wrong.",
+    "scene": "Someone misidentifies something. Correct them.",
     "why": "Use ちがいます to say that something is not correct."
   },
   {
@@ -189,8 +189,8 @@ const CONVERSATIONS={
   excuse:['Politely interrupting someone.','禮貌地打擾對方。',[['you','しつれいですが。','Excuse me.','不好意思。'],['listener','はい。','Yes?','請說。']]],
   name:['Asking someone’s name.','詢問對方的名字。',[['you','おなまえは。','What is your name?','請問你叫什麼名字？'],['listener','たなかです。','I’m Tanaka.','我姓田中。']]],
   attention:['Getting someone’s attention.','引起對方注意。',[['you','あのう。','Um, excuse me.','那個，不好意思。'],['listener','はい。','Yes?','請說。']]],
-  offer:['Offering someone a pen.','遞筆給對方。',[['you','どうぞ。','Here you go.','請收下。'],['listener','ありがとうございます。','Thank you.','謝謝。']]],
-  thanks:['Receiving a gift.','收到禮物。',[['listener','どうぞ。','Here you go.','請收下。'],['you','ありがとうございます。','Thank you very much.','非常感謝。']]],
+  offer:['Offer something to someone','向某人提供某物',[['you','どうぞ。','Here you go.','請收下。'],['listener','ありがとうございます。','Thank you.','謝謝。']]],
+  thanks:['Thank someone politely','禮貌地感謝對方',[['listener','どうぞ。','Here you go.','請收下。'],['you','ありがとうございます。','Thank you very much.','非常感謝。']]],
   'thanks-full':['Thanking someone for their help.','感謝對方的幫忙。',[['listener','おてつだいします。','I’ll help you.','我來幫你。'],['you','どうもありがとうございます。','Thank you very much.','真的非常感謝。']]],
   understand:['Learning something new.','得知新消息。',[['listener','あの人はせんせいです。','That person is a teacher.','那個人是老師。'],['you','そうですか。','I see.','原來如此。']]],
   incorrect:['Correcting a misunderstanding.','更正誤會。',[['listener','これはじしょですか。','Is this a dictionary?','這是字典嗎？'],['you','ちがいます。','No, that’s not right.','不是的。']]],
@@ -203,9 +203,9 @@ const THIS_THAT_SCENES=[
  ['2-01','Name an object near you','說出靠近自己的物品','それはなんですか。','What is that?','那是什麼？','{word}はほんです。','This is a book.','這是書。','これ stands alone and refers to something near the speaker. この must come before a noun.'],
  ['2-02','Name an object near the listener','說出靠近對方的物品','これはなんですか。','What is this?','這是什麼？','{word}はほんです。','That is a book.','那是書。','それ stands alone and refers to something near the listener. その must come before a noun.'],
  ['2-03','Name an object far from both people','說出離雙方都遠的物品','あれはなんですか。','What is that over there?','那邊的是什麼？','{word}はほんです。','That over there is a book.','那邊的是書。','あれ stands alone and refers to something far from both people. あの must come before a noun.'],
- ['2-04','Identify the owner of a book near you','指出靠近自己的書的主人','それはだれのほんですか。','Whose book is that?','那是誰的書？','{word}ほんはわたしのです。','This book is mine.','這本書是我的。','この comes directly before a noun and points to something near the speaker.'],
- ['2-05','Identify the owner of a book near the listener','指出靠近對方的書的主人','これはだれのほんですか。','Whose book is this?','這是誰的書？','{word}ほんはわたしのです。','That book is mine.','那本書是我的。','その comes directly before a noun and points to something near the listener.'],
- ['2-06','Identify the owner of a book far from both people','指出離雙方都遠的書的主人','あれはだれのほんですか。','Whose book is that over there?','那邊的是誰的書？','{word}ほんはわたしのです。','That book over there is mine.','那邊那本書是我的。','あの comes directly before a noun and points to something far from both people. あのう gets attention.']
+ ['2-04','Identify the owner of an object near you','指出靠近自己的物品的主人','それはだれのほんですか。','Whose book is that?','那是誰的書？','{word}ほんはわたしのです。','This book is mine.','這本書是我的。','この comes directly before a noun and points to something near the speaker.'],
+ ['2-05','Identify the owner of an object near the listener','指出靠近對方的物品的主人','これはだれのほんですか。','Whose book is this?','這是誰的書？','{word}ほんはわたしのです。','That book is mine.','那本書是我的。','その comes directly before a noun and points to something near the listener.'],
+ ['2-06','Identify the owner of an object far from both people','指出離雙方都遠的物品的主人','あれはだれのほんですか。','Whose book is that over there?','那邊的是誰的書？','{word}ほんはわたしのです。','That book over there is mine.','那邊那本書是我的。','あの comes directly before a noun and points to something far from both people. あのう gets attention.']
 ];
 // Scene locations are relative to the learner; the opening speaker sees the same book
 // from the opposite side. Keep labels and geometry attached to the vocabulary IDs.
@@ -238,7 +238,8 @@ function demonstrativeScene(q){
   return `<figure class="demonstrative-scene" data-object-location="${location}"><svg viewBox="0 ${far?0:85} 500 ${far?275:190}" role="img" aria-labelledby="distance-title-${q.id}"><title id="distance-title-${q.id}">${esc(caption)}</title><rect width="500" height="275" rx="16" fill="#fff6e7"/>${far?'<path d="M25 115h450" stroke="#eadbc5" stroke-width="2"/>':''}${nearZone}<path d="${path}" fill="none" stroke="#84619c" stroke-width="3" stroke-dasharray="5 7" stroke-linecap="round"/><ellipse cx="${x}" cy="${y+5}" rx="49" ry="43" fill="#f8e8a9" stroke="#c5a355" stroke-width="2"/><g class="scene-book" data-x="${x}" data-y="${y}" transform="translate(${x} ${y}) rotate(-8)"><path d="M-31-31H25Q31-31 31-25V30H-25Q-31 30-31 24Z" fill="#90ac94" stroke="#845537" stroke-width="4" stroke-linejoin="round"/><path d="M-23 21H30V30H-23Q-30 26-23 21Z" fill="#fff7df" stroke="#845537" stroke-width="3"/><path d="M-20-29V19M-9-17H18M-9-7H12" fill="none" stroke="#566e55" stroke-width="3" stroke-linecap="round"/></g><g data-scene-person="you">${luluPiggy(70,175,1.3,learnerPose)}</g><g data-scene-person="listener" transform="translate(860 0) scale(-1 1)">${luluPiggy(430,175,1.3,listenerPose)}</g><text x="70" y="260" text-anchor="middle" fill="#582686" font-size="20">${zh?'你':'You'}</text><text x="430" y="260" text-anchor="middle" fill="#74465e" font-size="20">${zh?'聽者':'Listener'}</text></svg><figcaption>${esc(caption)} <span>${zh?'指示詞隨說話者的位置改變。':'The demonstrative depends on who is speaking.'}</span></figcaption></figure>`;
 }
 function dialogueExpressionLabel(q){
-  const labels=THIS_THAT_VISUALS[q.word]?.labels||CONVERSATIONS[q.id];
+  const placeLabels={'ここ':['Here','這裡'],'そこ':['There','那裡'],'あそこ':['Over there','那邊（遠處）']};
+  const labels=placeLabels[wordBy(q.word)?.kana]||THIS_THAT_VISUALS[q.word]?.labels||CONVERSATIONS[q.id];
   return labels?labels[state.language==='zh-Hant'?1:0].replace(/[。.!?？]+$/u,''):translateText(q.meaning);
 }
 for(const [word,en,zh,opening,openingEn,openingZh,sentence,replyEn,replyZh,why] of THIS_THAT_SCENES){
@@ -275,6 +276,7 @@ function selectDialogueExpression(id){
   const row=document.querySelector('.expression-chip-row'),cards=document.querySelector('.expression-guide .guide-cards');
   if(!row||!cards){render();return;}
   const scroll=row.scrollLeft;updateSelectedChips(row,'data-dialogue-expression',id);
+  if(row.classList.contains('wh-chip-row'))selectedWhExpression=id;
   cards.innerHTML=localizeMarkup(conversationCard(q));row.scrollLeft=scroll;
 }
 // Highlight the complete selected vocabulary expression, escaping surrounding Japanese.
@@ -296,14 +298,14 @@ function dialogueCategories(){return [...DIALOGUE_CATEGORIES,{id:'wh-words',labe
 function dialogueStudySet(){
   const mode=state.dialogueBrowse||'all',all=allDialogueItems();
   if(mode==='category'){
-    const category=dialogueCategories().find(c=>c.id===state.dialogueCategory)||dialogueCategories()[0];
+    const category=dialogueCategories().find(c=>c.id===state.dialogueCategory)||dialogueCategories()[0];state.dialogueCategory=category.id;
     return {key:`category-${category.id}`,label:category.label,description:category.description,items:all.filter(q=>category.id==='wh-words'?!!WH_CONVERSATIONS[q.word]:!WH_CONVERSATIONS[q.word]&&dialogueInCategory(q,category.id))};
   }
-  if(mode==='chapter')return {key:`chapter-${state.dialogueChapter}`,label:`Chapter ${state.dialogueChapter} · p.${state.dialogueChapter===1?1:6}`,description:'Practise the dialogue expressions from this chapter.',items:all.filter(q=>wordBy(q.word).ch===state.dialogueChapter)};
+  if(mode==='chapter')return {key:`chapter-${state.dialogueChapter}`,label:`Chapter ${state.dialogueChapter} · p.${state.dialogueChapter===1?1:6}`,description:'Practise the dialogue expressions from this chapter.',items:all.filter(q=>wordChapters(wordBy(q.word)).includes(state.dialogueChapter))};
   return {key:'all',label:'Dialogue',description:'Practise expressions, replies and question words.',items:all};
 }
 function dialogueBrowse(mode){if(!['all','category','chapter'].includes(mode))return;rememberPage();state.dialogueBrowse=mode;state.view='dialogue-content';render();}
-function selectDialogueChapter(chapter){if(!allDialogueItems().some(q=>wordBy(q.word).ch===Number(chapter)))return;rememberPage();state.dialogueBrowse='chapter';state.dialogueChapter=Number(chapter);state.view='dialogue-content';render();}
+function selectDialogueChapter(chapter){if(!allDialogueItems().some(q=>wordChapters(wordBy(q.word)).includes(Number(chapter))))return;rememberPage();state.dialogueBrowse='chapter';state.dialogueChapter=Number(chapter);state.view='dialogue-content';render();}
 function startDialoguePractice(kind){
   const set=dialogueStudySet(),wh=state.dialogueBrowse==='category'&&state.dialogueCategory==='wh-words';
   const scope={browse:state.dialogueBrowse,chapter:state.dialogueChapter,category:state.dialogueCategory,selected:selectedDialogueExpression,ids:set.items.map(q=>q.id)};
@@ -317,7 +319,7 @@ function demonstrativesContent(){return dialogueContent();}
 function dialogueSelector(){
   const mode=state.dialogueBrowse,set=dialogueStudySet();
   const chips=(entries,attribute,selected)=>entries.map(([key,label])=>`<button class="dialogue-chip${key===selected?' selected':''}" data-${attribute}="${key}" aria-pressed="${key===selected}">${esc(label)}</button>`).join('');
-  const chapters=[...new Set(allDialogueItems().map(q=>wordBy(q.word).ch))].sort();
+  const chapters=[...new Set(allDialogueItems().flatMap(q=>wordChapters(wordBy(q.word))))].sort();
   const entries=mode==='category'?dialogueCategories().map(c=>[c.id,c.label]):chapters.map(ch=>[String(ch),`Chapter ${ch} · p.${ch===1?1:6}`]);
   return `<div class="study-wrap dialogue-selector"><div class="dialogue-chip-row dialogue-mode-row" role="group" aria-label="Dialogue selection">${chips([['all','All'],['category','By category'],['chapter','By chapter']],'dialogue-browse',mode)}</div>${mode==='all'?'':`<div class="field-label dialogue-filter-label" id="dialogue-filter-label">${mode==='category'?'Category':'Chapter'}</div><div class="dialogue-chip-row dialogue-filter-row" data-chip-group="${mode}" role="group" aria-labelledby="dialogue-filter-label">${chips(entries,mode==='category'?'dialogue-category':'dialogue-chapter',mode==='category'?state.dialogueCategory:String(state.dialogueChapter))}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>${esc(set.description)}</p></div></div>`;
 }
@@ -327,9 +329,9 @@ function selectDialogueCategory(category){
 }
 function dialogueMenu(){return dialogueContent();}
 function dialogueContent(){
-  const set=dialogueStudySet(),items=set.items,selected=items.find(q=>q.id===selectedDialogueExpression)||items[0];selectedDialogueExpression=selected.id;
+  const set=dialogueStudySet(),items=set.items,selected=items.find(q=>q.id===selectedDialogueExpression)||items[0];if(!selected)return dialogueSelector();selectedDialogueExpression=selected.id;
   const wh=state.dialogueBrowse==='category'&&state.dialogueCategory==='wh-words';if(wh)selectedWhExpression=selected.id;
-  const selector=`<div class="expression-selector"><div class="expression-chip-row${wh?' wh-chip-row':''}" data-chip-group="${set.key}" role="group" aria-label="Expression">${items.map(q=>`<button class="dialogue-chip${q.id===selected.id?' selected':''}" data-${wh?'wh-expression':'dialogue-expression'}="${q.id}" aria-pressed="${q.id===selected.id}">${esc(dialogueExpressionLabel(q))}</button>`).join('')}</div></div>`;
+  const selector=`<div class="expression-selector"><div class="expression-chip-row${wh?' wh-chip-row':''}" data-chip-group="${set.key}" role="group" aria-label="Expression">${items.map(q=>`<button class="dialogue-chip${q.id===selected.id?' selected':''}" data-dialogue-expression="${q.id}" aria-pressed="${q.id===selected.id}">${esc(dialogueExpressionLabel(q))}</button>`).join('')}</div></div>`;
   return dialogueSelector()+`<div class="study-wrap dialogue-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-dialogue="dialogue-choice">Matching ${icon('arrow')}</button><button class="button soft" data-open-dialogue="dialogue-tiles">Rebuild ${icon('arrow')}</button></div><section class="expression-guide" aria-label="Expression guide"><div class="guide-heading"><h2>${wh?'WH-words guide':'Expression guide'}</h2></div>${selector}<div class="guide-cards">${conversationCard(selected)}</div></section></div>`;
 }
 
@@ -362,11 +364,16 @@ function dialoguePrompt(q){
 function dialogueExercise(q,tileMode){
   const a=state.activity,zh=state.language==='zh-Hant',wh=!!WH_CONVERSATIONS[q.word],opening=wh?['listener','こんにちは。','Hello.','你好。']:EXERCISE_OPENINGS[q.id]||CONVERSATIONS[q.id][2][0],word=wordBy(q.word);
   const situation=wh?q.clue:zh?CONVERSATIONS[q.id][1]:CONVERSATIONS[q.id][0];
-  const response=tileMode?`<div class="reply-tokens" role="group" aria-label="Your hiragana answer">${a.chosen.length?a.chosen.map((id,index)=>`<button class="reply-token jp" lang="ja" data-activity-return="${index}" aria-label="Return ${esc(a.tileBank[id])} to word bank" ${a.checked?'disabled':''}>${esc(a.tileBank[id])}</button>`).join(''):'<span class="reply-placeholder">Build your reply</span>'}</div>`:a.checked?`<p class="jp" lang="ja">${esc(a.choices.find(item=>item.id===a.selected)?.kana||'—')}</p>`:'<p class="reply-placeholder">Choose your reply</p>';
+  const answer=tileMode?activityAnswer():a.checked?(a.choices.find(item=>item.id===a.selected)?.kana||''):'';
+  const inline=tileMode?a.chosen.map((id,index)=>`<button class="inline-answer-token jp" lang="ja" data-activity-return="${index}" aria-label="Return ${esc(a.tileBank[id])} to word bank" ${a.checked?'disabled':''}>${esc(a.tileBank[id])}</button>`).join(''):esc(answer);
+  const blank=`<span class="inline-answer${answer?' filled':''}" aria-label="Your hiragana answer">${inline||'<span aria-hidden="true">＿＿＿</span>'}</span>`;
+  const template=q.sentence||'{word}';
+  const parts=template.split('{word}');
+  const response=`<p class="jp inline-reply" lang="ja">${esc(parts[0])}${blank}${esc(parts.slice(1).join('{word}'))}</p>`;
   const feedback=a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status"><span class="feedback-lulu ${a.result?'happy':'encouraging'}" aria-hidden="true"></span><div class="feedback-copy"><div><span aria-hidden="true">${a.result?'✓':'✕'}</span> <strong>${a.result?'Correct!':'The correct answer is:'}</strong></div>${a.result?'':`<p class="jp" lang="ja">${esc(q.kana)}</p>`}<p>${esc(zh?word.zh:word.en)}</p></div><p class="activity-explanation">${esc(q.why)}</p></div>`:'';
   const bank=tileMode?`<div class="activity-tile-bank" role="group" aria-label="Hiragana bank">${a.tileBank.map((unit,index)=>`<button class="tile jp ${a.chosen.includes(index)?'selected':''}" lang="ja" data-activity-tile="${index}" ${a.checked||a.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`:`<div class="options activity-options">${a.choices.map((item,index)=>`<button class="option jp ${a.checked&&item.id===q.id?'correct':a.checked&&item.id===a.selected?'wrong':''}" data-activity-choice="${item.id}" ${a.checked?'disabled':''}><span class="number">${index+1}</span><span>${esc(item.kana)}</span>${a.checked&&item.id===q.id?'<span class="option-state"><span aria-hidden="true">✓</span> Correct</span>':a.checked&&item.id===a.selected?'<span class="option-state"><span aria-hidden="true">✕</span> Your choice</span>':''}</button>`).join('')}</div>`;
   const controls=a.checked?button('Next '+icon('arrow'),'activityNext','primary'):tileMode?button('Undo','activityUndo','ghost',a.chosen.length?'':'disabled')+button('Clear','activityClear','ghost',a.chosen.length?'':'disabled')+button('Check answer','activityCheck','primary',rebuildReady(activityAnswer(),vocabularyReading(q))?'':'disabled'):'';
-  return `<h1 class="sr-only">${tileMode?'Rebuild':'Matching'}</h1><section class="study-wrap conversation-exercise">${roundBar(a)}<div class="exercise-body"><p class="exercise-situation">${esc(situation)}</p><div class="conversation-stage"><div class="conversation-turn listener">${conversationPig('listener')}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,'listener')}</span><p class="jp" lang="ja">${esc(opening[1])}</p><p class="conversation-translation">${esc(zh?opening[3]:opening[2])}</p></div></div><div class="conversation-turn you">${conversationPig('you',CONVERSATION_POSES[q.id])}<div class="conversation-bubble reply-bubble ${a.checked?(a.result?'correct':'wrong'):''}"><span class="dialogue-role">You</span>${wh||q.sentence?`<p class="jp" lang="ja">${esc(q.sentence).replace('{word}','_____')}</p>`:''}${response}</div></div></div>${bank}${feedback}${controls?`<div class="card-actions activity-controls">${controls}</div>`:''}${tileMode&&!a.checked?'<div class="activity-reveal"><button class="scope-link" data-action="activityReveal">Show answer & mark for review</button></div>':''}</div></section>`;
+  return `<h1 class="sr-only">${tileMode?'Rebuild':'Matching'}</h1><section class="study-wrap conversation-exercise">${roundBar(a)}<div class="exercise-body"><p class="exercise-situation">${esc(situation)}</p><div class="conversation-stage"><div class="conversation-turn listener">${conversationPig('listener')}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,'listener')}</span><p class="jp" lang="ja">${esc(opening[1])}</p><p class="conversation-translation">${esc(zh?opening[3]:opening[2])}</p></div></div><div class="conversation-turn you">${conversationPig('you',CONVERSATION_POSES[q.id])}<div class="conversation-bubble reply-bubble ${a.checked?(a.result?'correct':'wrong'):''}"><span class="dialogue-role">You</span>${response}</div></div></div>${bank}${feedback}${controls?`<div class="card-actions activity-controls">${controls}</div>`:''}${tileMode&&!a.checked?'<div class="activity-reveal"><button class="scope-link" data-action="activityReveal">Show answer & mark for review</button></div>':''}</div></section>`;
 }
 function activityPage(){const a=state.activity;if(!a)return dialogueMenu();const dialogue=a.kind.startsWith('dialogue');if(a.index>=a.ids.length)return header('Round complete.','Give yourself another chance with the items you missed.')+`<div class="study-wrap paper result-center"><div class="result-score">${a.correct}<small> / ${a.ids.length}</small></div><p class="muted" style="margin-top:var(--space-4)">${a.missed.length?`${a.missed.length} items are ready for another look.`:'Every answer correct in this round.'}</p><div class="card-actions">${a.missed.length?button('Practise missed items','activityMissed','coral'):''}${button('New round','activityRestart','primary')}</div><div class="result-back">${button('Go back','activityBack','ghost')}</div></div>`;
 const q=activityCurrent(),tileMode=isActivityRebuild(a);

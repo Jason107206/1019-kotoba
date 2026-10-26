@@ -684,6 +684,8 @@ function translateText(value){
   let translated=ZH_HANT[trimmed];
   if(translated===undefined){
     const rules=[
+      [/^Chapter (\d+)$/,(_,n)=>`第 ${n} 課`],
+      [/^Ch\. ([\d, ]+) · (.*)$/,(_,chs,group)=>`第 ${chs} 課 · ${ZH_HANT[group]||group}`],
       [/^(\d+) correct so far$/,(_,n)=>`目前答對 ${n} 題`],
       [/^(\d+) \/ (\d+) · (\d+) correct$/,(_,i,n,c)=>`${i} / ${n} · 答對 ${c} 題`],
       [/^(\d+) \/ (\d+) units$/,(_,i,n)=>`${i} / ${n} 張字卡`],
@@ -730,3 +732,9 @@ function localizeMarkup(html){
   // Translate rendered text and accessible labels, never URLs, values or event attributes.
   return html.replace(/<[^>]*>|[^<]+/g,part=>part.startsWith('<')?part.replace(/\b(aria-label|placeholder)="([^"]*)"/g,(_,key,value)=>`${key}="${translate(value)}"`):translate(part));
 }
+
+Object.assign(ZH_HANT, {'Expressions':'表達用語','Imported content awaiting meaning review.':'匯入內容，待核對意思。','Meaning or reading needs review':'意思或讀音有待核對','All chapters':'所有課次','Study the words not covered in Dialogue from Chapters 1–6.':'學習第 1 至 6 課中未列於情境對話的詞彙。','Offer something to someone':'向某人提供某物'});
+
+Object.assign(ZH_HANT, {'Offer something to someone.':'向某人提供某物。','Someone misidentifies something. Correct them.':'對方錯認了某物，請加以更正。'});
+
+Object.assign(ZH_HANT, {'Chapters 1–6':'第 1–6 課','Vocabulary: Chapters 1–6 · Grammar: Chapters 1–2':'詞彙：第 1–6 課 · 文法：第 1–2 課','Choose a mode to practise vocabulary from Chapters 1–6 and sentence patterns from Chapters 1–2.':'選擇模式，練習第 1–6 課詞彙及第 1–2 課句型。','Vocabulary includes the Chapters 1–6 CSV and the original Chapters 1–2 textbook entries. Imported entries without meanings or complete readings are available to browse and await review before practice.':'詞彙包括第 1–6 課 CSV 及原有第 1–2 課教材內容。欠缺意思或完整讀音的匯入項目可供瀏覽，核對後才可用於練習。','The mock quiz retains its original Chapters 1–2 scope.':'模擬測驗維持原有第 1–2 課範圍。'});

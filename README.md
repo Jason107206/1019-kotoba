@@ -1,3 +1,9 @@
+## Chapters 1–6 CSV update
+
+Vocabulary now includes `data/chapters_1_6.csv`. Read [the import audit](reports/chapter-import.md) for counts, mapping, unresolved fields, and Dialogue source limits. The CSV supplies no meanings or conversations; incomplete entries remain browsable and are excluded from games requiring them.
+
+Run `node scripts/import-chapters.cjs` to merge the CSV into the current static database. This preserves IDs and metadata, unions chapter memberships, flags ambiguous senses, and verifies repeatability. The initial audit is in `reports/chapter-import.json`; the most recent run is in `reports/chapter-import-latest.json`. Run `node tests/chapter-import.cjs`, `node tests/verify.cjs`, then `node scripts/build-pwa.cjs` and `node tests/pwa.cjs` after changes.
+
 # Kotoba — Chapters 1–2
 
 Buildless study game for GitHub Pages. `dist/` is the entire deployable application.
