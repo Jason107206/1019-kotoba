@@ -44,7 +44,7 @@ assert.equal(ev('rebuildCorrect("か\u3099い","がい")'),true);
 for(const lang of ['en','zh-Hant'])for(const ch of [3,4]){
  ev(`state.language='${lang}';selectDialogueChapter(${ch})`);
  const ids=plain(ev('dialogueStudySet().items.map(q=>q.id)'));
- assert.equal(ids.length,ch===3?24:24);
+ assert.equal(ids.length,ch===3?19:4);
  assert.equal(ev(`dialogueStudySet().items.every(q=>q.ch===${ch})`),true);
  for(const id of ids){
   ev(`selectDialogueExpression('${id}')`);
@@ -83,19 +83,10 @@ const clock=ev('lessonScene(CHAPTER_DIALOGUES.find(q=>q.id==="ch4-time-pm"))');
 assert.ok(clock.includes('data-hour="4" data-minute="8"'));
 assert.ok(clock.includes('rotate(124 100 100)'));assert.ok(clock.includes('rotate(48 100 100)'));
 assert.ok(clock.includes('04:08'));assert.ok(clock.includes('PM'));
-// The shorter telephone reading is valid, but missing/reordered digits are not.
-for(const id of ['ch3-floor-answer','ch4-phone-answer']){
- const readings=plain(ev(`CHAPTER_DIALOGUES.find(q=>q.id==='${id}').acceptedReadings`));
- for(const reading of readings){
-  ev(`selectDialogueChapter(${id.startsWith('ch3')?3:4});startDialoguePractice('dialogue-tiles');state.activity.index=state.activity.ids.indexOf('${id}');prepareActivity()`);
-  ev(`for(const unit of kanaUnits(${JSON.stringify(reading)})){const a=state.activity;const index=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));if(index<0)throw Error('missing alternate tile');activityClick({dataset:{activityTile:String(index)}})}checkActivity()`);
-  assert.equal(ev('state.activity.result'),true,reading);
- }
-}
-ev(`selectDialogueChapter(4);startDialoguePractice('dialogue-tiles');state.activity.index=state.activity.ids.indexOf('ch4-phone-answer');prepareActivity();for(const unit of kanaUnits('ごにななごのにななごに')){const a=state.activity;a.chosen.push(a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i)))}checkActivity()`);
-assert.equal(ev('state.activity.result'),false);
-ev('selectDialogueChapter(4);startDialoguePractice("dialogue-choice");state.activity.index=state.activity.ids.indexOf("ch4-past-negative");prepareActivity();checkActivity(state.activity.choices.find(q=>q.id!==activityCurrent().id).id)');
-assert.equal(ev('state.activity.result'),false);assert.ok(app.innerHTML.includes('reply-feedback wrong'));assert.ok(app.innerHTML.includes('feedback-lulu encouraging'));
+// Removed numerical scenes remain in the source registry, outside Dialogue pools.
+for(const id of ['ch3-floor-answer','ch4-phone-answer','ch4-past-negative'])assert.equal(ev(`CHAPTER_DIALOGUES.some(q=>q.id==='${id}')&&!allDialogueItems().some(q=>q.id==='${id}')`),true);
+const phoneReadings=plain(ev('CHAPTER_DIALOGUES.find(q=>q.id==="ch4-phone-answer").acceptedReadings'));
+assert.ok(phoneReadings.includes('ごにななごのにななにご'));
 // The timed assessment keeps its original distribution and all old IDs.
 for(let i=0;i<10;i++){ev('startMock()');assert.equal(ev('mock.a.every(q=>wordBy(q.id).ch<=2)&&mock.b.every(q=>sentenceBy(q.id).ch<=2)'),true);}
 console.log('PASS: Chapters 3–4 complete source rows, variants, shared membership, exact readings, all scoped modes, bilingual complete guides, grading visibility, numeric scenes, retries, and legacy progress/mock compatibility.');
@@ -107,7 +98,7 @@ for(const id of ['ch3-where','ch3-where-polite','ch3-floor-question','ch4-time-q
 for(const kind of ['dialogue-choice','dialogue-tiles']){ev(`startDialoguePractice('${kind}')`);assert.equal(ev('state.activity.ids.includes("ch4-schedule-question")'),true);}
 ev('selectDialogueCategory("demonstratives")');
 for(const [id,en,zh] of [['ch3-location-01','Here','這裡'],['ch3-location-02','There','那裡'],['ch3-location-03','Over there','那邊（遠處）']]){assert.equal(ev(`dialogueStudySet().items.some(q=>q.id==='${id}')`),true);ev('state.language="en"');assert.equal(ev(`dialogueExpressionLabel(allDialogueItems().find(q=>q.id==='${id}'))`),en);ev('state.language="zh-Hant"');assert.equal(ev(`dialogueExpressionLabel(allDialogueItems().find(q=>q.id==='${id}'))`),zh);}
-assert.equal(ev('allDialogueItems().length'),73);assert.equal(ev('new Set(allDialogueItems().map(q=>q.id)).size'),73);
+assert.equal(ev('allDialogueItems().length'),48);assert.equal(ev('new Set(allDialogueItems().map(q=>q.id)).size'),48);
 assert.equal(ev('allDialogueItems().some(q=>q.id==="ch4-empathy")'),false);assert.equal(ev('wordBy("4-e1").kana'),'たいへんですね');assert.notEqual(ev('vocabularySection(wordBy("4-e1"))'),'replies');
 for(const category of ev('dialogueCategories().map(c=>c.id)'))for(const kind of ['dialogue-choice','dialogue-tiles']){ev(`selectDialogueCategory('${category}');startDialoguePractice('${kind}')`);assert.equal(ev('state.activity.items.some(q=>q.id==="ch4-empathy")'),false);}
 ev('state.dialogueBrowse="category";state.dialogueCategory="locations";dialogueContent()');assert.equal(ev('state.dialogueCategory'),'introductions');

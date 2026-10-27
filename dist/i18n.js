@@ -745,3 +745,10 @@ Object.assign(ZH_HANT, {
  'Textbook Chapters 1–6 · Mock: Chapters 1–2':'課本第 1 至 6 課 · 模擬測驗：第 1 至 2 課',
  'Choose a chapter from 1 to 6.':'選擇第 1 至 6 課。','6 chapters':'6 課'
 });
+
+Object.assign(ZH_HANT, {
+ 'Number Matching':'數字配對','Match numbers, dates and numerical expressions with their hiragana readings.':'配對數字、日期及數量表達的平假名讀音。',
+ 'Match the expression with its hiragana reading.':'選出符合畫面內容的平假名讀音。',
+ 'Expression type':'表達類型','General practice':'綜合練習','Generated combinations without chapter references appear in General practice.':'沒有課次資料的組合表達列於綜合練習。',
+ 'Start matching':'開始配對','Fraction':'分數','Round progress':'回合進度','Completed rounds':'已完成回合'
+});

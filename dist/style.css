@@ -153,7 +153,7 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .stat-total { font-size: 18px; color: var(--muted); }
 .stat-label { font-size: 14px; font-weight: 500; margin-top: var(--space-3); }
 .stat-detail { font-size: 12px; color: var(--muted); margin-top: var(--space-3); }
-.overview-meter, .progress-bar { height: 4px; overflow: hidden; border-radius: 4px; background: var(--md-secondary-container); }
+.overview-meter { height: 4px; overflow: hidden; border-radius: 4px; background: var(--md-secondary-container); }
 .overview-meter { margin-top: var(--space-5); }
 .overview-meter span, .progress-fill { display: block; height: 100%; background: var(--md-primary); border-radius: inherit; transition: width var(--md-motion); }
 .mode-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
@@ -188,8 +188,6 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 /* Shared practice, guide, feedback and result surfaces. */
 .study-wrap { max-width: 800px; margin: 0 auto; }
 .paper { padding: var(--space-8); background: var(--md-surface-container-lowest); border: 1px solid var(--md-outline-variant); border-radius: 24px; }
-.round-info { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); font-size: 12px; font-weight: 500; color: var(--muted); }
-.progress-bar { margin: var(--space-3) 0 var(--space-6); }
 .card-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
 .card-actions .button { min-width: 120px; }
 .shortcut { text-align: center; font-size: 12px; color: var(--muted); margin-top: var(--space-4); }
@@ -274,8 +272,6 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .wh-target { color: #582686; background: #f4e8ff; border-radius: 4px; font-weight: 750; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .conversation-translation { margin-top: var(--space-1); font-size: 14px; line-height: 1.5; }
 .conversation-notes { margin-top: var(--space-4); font-size: 14px; line-height: 1.6; }
-.conversation-exercise .round-info { font-size: 12px; }
-.conversation-exercise .progress-bar { margin: var(--space-2) 0 var(--space-4); }
 .conversation-exercise { max-width: 720px; }
 .exercise-situation { margin-bottom: var(--space-4); font-size: 16px; font-weight: 500; line-height: 1.5; }
 .conversation-exercise .conversation-stage { gap: var(--space-3); }
@@ -512,3 +508,50 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
 .inline-answer-token:disabled { opacity: 1; cursor: default; }
 .inline-answer-token:focus-visible { outline: 2px solid var(--md-primary); }
 .reply-bubble { min-width: 0; }
+/* One shared progress tracker, anchored to the bottom edge of every game app bar. */
+.topbar { position: relative; }
+.game-round { flex: none; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+.game-progress { position: absolute; inset: auto 0 0; height: 4px; overflow: hidden; background: var(--md-secondary-container); }
+.game-progress > span { display: block; height: 100%; background: var(--md-primary); transition: width .2s; }
+.number-selector .dialogue-intro { margin-bottom: var(--space-6); }
+.number-selector .field-label { margin-top: var(--space-4); }
+.number-exercise { padding-top: var(--space-6); }
+.number-prompt { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: var(--space-4); min-height: 220px; margin: 0 0 var(--space-6); text-align: center; color: var(--md-on-surface); }
+.number-prompt figcaption { color: var(--muted); font-size: 14px; }
+.number-value { display: block; font-size: clamp(30px, 7vw, 64px); line-height: 1.35; font-weight: 600; letter-spacing: .015em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.number-value small { font-size: .4em; font-weight: 500; }
+.number-calendar { display: grid; min-width: 130px; border-top: 6px solid var(--md-primary); padding: var(--space-3) var(--space-5); border-radius: 8px; background: var(--md-surface-container); }
+.number-calendar strong { font-size: 64px; line-height: 1.3; }
+.number-fraction { display: inline-grid; font-size: 48px; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.number-fraction span { padding: 0 var(--space-4); }
+.number-fraction span:first-child { border-bottom: 3px solid currentColor; }
+.number-age { display: flex; align-items: center; gap: var(--space-4); }
+.number-age svg { width: 48px; height: 48px; color: var(--md-primary); }
+.number-floor, .number-clock, .number-price { display: grid; gap: var(--space-2); justify-items: center; }
+.number-floor > span:first-child { font-size: 24px; color: var(--md-primary); }
+.number-clock .number-value { letter-spacing: .06em; }
+.number-clock > span { font-weight: 600; color: var(--md-primary); }
+.number-price .number-value { font-size: clamp(29px, 6vw, 56px); }
+.number-week { width: 100%; max-width: 480px; }
+.number-week > div { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-block: var(--space-4); }
+.number-week > div > span { padding: 12px 0; font-size: 13px; border-radius: 10px; }
+.number-week .active { background: var(--md-primary); color: var(--md-on-primary); font-weight: 600; }
+.number-timeline { display: flex; align-items: center; width: 100%; max-width: 460px; gap: var(--space-3); }
+.timeline-point { flex: 1; font-size: 15px; padding: var(--space-3); border-radius: 12px; }
+.timeline-point::before { content: ''; display: block; width: 12px; height: 12px; border: 2px solid var(--md-outline); border-radius: 50%; margin: 0 auto var(--space-3); }
+.timeline-point.target { background: var(--md-primary-container); font-weight: 600; }
+.timeline-point.target::before { border-color: var(--md-primary); background: var(--md-primary); }
+.timeline-track { flex: .5; height: 2px; background: var(--md-outline); }
+@media (max-width: 359px) {
+ .topbar .back-button { width: 40px; height: 44px; padding: 10px; }
+ .game-round { font-size: 12px; }
+ .topbar .app-title { font-size: 18px; }
+ .topbar .language-switch { padding-inline: 8px; }
+}
+
+@media (max-width: 599px) {
+ .game-topbar .game-round { position: absolute; left: 52px; top: calc(50% + 18px); font-size: 11px; line-height: 1.2; }
+ .game-topbar .update-button > span { display: none; }
+ .game-topbar .update-button { padding: 10px; min-height: 44px; min-width: 40px; }
+}
+@media (max-width: 359px) { .game-topbar .game-round { left: 44px; } }

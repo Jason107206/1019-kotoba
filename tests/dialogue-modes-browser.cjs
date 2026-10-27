@@ -11,12 +11,12 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
    await page.setViewportSize({width,height:900});
    await page.evaluate(language=>{state.language=language;dialogueBrowse('all')},language);
    assert.deepEqual(await page.locator('[data-dialogue-browse]').allTextContents(),language==='en'?['All','By category','By chapter']:['全部','按分類','按課次']);
-   const cases=[['all',null],...['introductions','courtesy','replies','demonstratives','wh-words','places','numbers','time','days','activities','schedules'].map(c=>['category',c]),...[1,2,3,4].map(ch=>['chapter',String(ch)])];
+   const cases=[['all',null],...['introductions','courtesy','replies','demonstratives','wh-words'].map(c=>['category',c]),...[1,2,3,4].map(ch=>['chapter',String(ch)])];
    for(const [mode,filter] of cases){
     await page.locator(`[data-dialogue-browse="${mode}"]`).click();
     if(filter)await page.locator(`[data-dialogue-${mode==="category"?'category':'chapter'}="${filter}"]`).click();
     const ids=await ev(()=>dialogueStudySet().items.map(q=>q.id).sort());
-    assert.equal(ids.length,mode==='all'?73:mode==='category'?({introductions:5,courtesy:9,replies:4,demonstratives:13,'wh-words':17,places:3,numbers:3,time:5,days:1,activities:9,schedules:4})[filter]:({1:8,2:17,3:24,4:24})[filter]);
+    assert.equal(ids.length,mode==='all'?48:mode==='category'?({introductions:5,courtesy:9,replies:4,demonstratives:13,'wh-words':17,places:3,numbers:3,time:5,days:1,activities:9,schedules:4})[filter]:({1:8,2:17,3:19,4:4})[filter]);
     assert.equal(await page.locator('.dialogue-filter-label,.dialogue-filter-row').count(),mode==='all'?0:2);
     if(mode!=='all')assert.equal(await page.locator('.dialogue-filter-label').textContent(),language==='en'?(mode==='category'?'Category':'Chapter'):(mode==='category'?'分類':'課次'));
     assert.equal(await page.locator('.expression-chip-row button').count(),ids.length);

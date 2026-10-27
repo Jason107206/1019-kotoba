@@ -1,3 +1,5 @@
+> This is the CSV import audit. Subsequent Dialogue filtering and Number Matching coverage are documented in [the current game update](../docs/number-matching.md); the imported vocabulary records and memberships remain unchanged.
+
 # Chapters 1–6 import audit
 
 The final import includes the remote Chapters 3–4 update (`1920993`). That update supplies the location, time, and longer question conversations absent from the original checkout. All source conversations and existing IDs were preserved except the requested Replies conversation removal.

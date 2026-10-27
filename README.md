@@ -1,3 +1,7 @@
+## Number Matching and Dialogue games
+
+Number Matching now offers 502 questions across ten numerical expression types, with chapter and type filters, exact hiragana choices, and the existing Lulu feedback. Dialogue games follow source turn order, reuse Content’s object scenes, and retain only the communication categories. Every game shows completion progress in the app bar. See [coverage, reading rules and verification](docs/number-matching.md).
+
 ## Chapters 1–6 CSV and Dialogue update
 
 The Chapters 1–6 CSV is merged with the original Chapters 1–4 textbook data. See [the import audit](reports/chapter-import.md) for counts, the review queue, and category migrations. Records without meanings or complete readings remain browsable and are excluded from games requiring them.

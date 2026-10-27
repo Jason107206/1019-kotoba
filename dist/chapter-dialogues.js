@@ -110,3 +110,9 @@ const reusableLessonLabels={
  'ch3-country':['Which country?','哪個國家？'], 'ch3-company':['Which company?','哪家公司？'], 'ch3-university':['Which university?','哪所大學？']
 };
 for(const q of CHAPTER_DIALOGUES)if(reusableLessonLabels[q.id])q.labels=reusableLessonLabels[q.id];
+
+// Dialogue retains communication expressions; the source lesson registry stays intact
+// for vocabulary, number practice, and existing progress IDs.
+const REMOVED_DIALOGUE_CATEGORIES=new Set(['numbers','time','days','activities','schedules','places']);
+for(let i=DIALOGUE_CATEGORIES.length-1;i>=0;i--)if(REMOVED_DIALOGUE_CATEGORIES.has(DIALOGUE_CATEGORIES[i].id))DIALOGUE_CATEGORIES.splice(i,1);
+for(let i=DIALOGUES.length-1;i>=0;i--)if(REMOVED_DIALOGUE_CATEGORIES.has(DIALOGUES[i].category))DIALOGUES.splice(i,1);

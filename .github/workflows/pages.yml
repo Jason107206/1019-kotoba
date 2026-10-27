@@ -36,6 +36,8 @@ jobs:
         run: node tests/chapter-import.cjs
       - name: Verify game content and scoring
         run: node tests/verify.cjs
+      - name: Verify Number Matching and shared game progress
+        run: node tests/number-matching.cjs
       - name: Verify Chapters 3 and 4
         run: node tests/chapters-3-4.cjs
       - name: Configure Pages
