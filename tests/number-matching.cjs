@@ -73,5 +73,5 @@ for(const browse of ['all','category','chapter']){
 }
 for(const mode of ['write','vocabulary-rebuild','kanji-writing','sentences']){ev(`state.view='${mode}';begin('${mode}',[${mode==='sentences'?'"p1-1"':'"1-09"'}]);completeRound(false)`);assert.equal(ev('gameProgress().completed'),1);assert.equal(ev('state.round.correct'),0);}
 for(const q of ev('NUMBER_QUESTIONS'))assert.equal(ev(`numberPrompt(NUMBER_QUESTIONS.find(q=>q.id===${JSON.stringify(q.id)})).includes(${JSON.stringify(q.kana)})`),false);
-assert.equal(ev('allDialogueItems().length'),48);assert.equal(ev('WORDS.length'),338);
+assert.equal(ev('allDialogueItems().length'),41);assert.equal(ev('WORDS.length'),338);
 console.log('PASS: all number readings and variants in both reconstruction modes; curriculum scopes, duplicate/Unicode tiles, ordered validation, retry, navigation, feedback, progress, footer visibility, numeric categories/sorting and compact table.');

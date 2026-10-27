@@ -39,7 +39,7 @@ function lessonNotes(q){return state.language==='zh-Hant'?q.whyZh:q.why;}
 function lessonConversationCard(q){
  const zh=state.language==='zh-Hant';
  const turns=q.turns.map(([speaker,ja,en,cn])=>`<div class="conversation-turn ${speaker}">${conversationPig(speaker,'speaking')}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${speaker==='you'?expressionDialogueText(ja,q):esc(ja)}</p><p class="conversation-translation">${esc(zh?cn:en)}</p></div></div>`).join('');
- return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}">${lessonScene(q)}<div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${turns}</div><p class="conversation-notes muted">${esc(lessonNotes(q))}</p>${lessonReadingGuide(q)}</div></article>`;
+ return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}">${lessonScene(q)}<div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${turns}</div><p class="conversation-notes muted">${esc(lessonNotes(q))}</p>${lessonReadingGuide(q)}${dialogueExamples(q)}</div></article>`;
 }
 function lessonReadingGuide(q){
  if(!['numbers','time'].includes(q.originalCategory||q.category))return '';

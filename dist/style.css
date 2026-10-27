@@ -580,3 +580,29 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
  .number-table .jp { font-size: 15px; }
  .number-table thead th, .number-note, .number-variants { font-size: 12px; }
 }
+
+/* Equivalent forms share one entry and one completed game round. */
+.dialogue-form-example + .dialogue-form-example, .dialogue-support-example + .dialogue-support-example, .paired-answer + .paired-answer { border-top: 1px solid var(--md-outline-variant); margin-top: 16px; padding-top: 16px; }
+.dialogue-form-example .small { margin-top: 8px; }
+.paired-exercise .conversation-turn.you { width: 100%; }
+.paired-answer { min-width: 0; }
+.paired-answer h2 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.paired-answer .activity-tile-bank { margin-top: 8px; }
+.paired-form-controls { margin-top: 8px; }
+.paired-form-controls .button { min-height: 44px; padding: 8px 16px; }
+.pair-instruction { margin-bottom: 16px; line-height: 1.5; }
+.pair-selection-count { margin-top: 16px; color: var(--md-primary); }
+.paired-options .option.selected { outline: 2px solid var(--md-primary); background: var(--md-primary-container); color: var(--md-on-primary-container); }
+.pair-check { margin-left: auto; }
+.pair-form-feedback { margin-top: 12px; }
+.pair-form-feedback.correct, .form-status { font-weight: 600; }
+.paired-answer.correct .form-status { color: var(--md-success); }
+.paired-answer.wrong .form-status { color: var(--md-error); }
+.dialogue-example-turn { margin-top: 8px; }
+.dialogue-extra-example { border-top: 1px solid var(--md-outline-variant); margin-top: 16px; padding-top: 16px; }
+@media (max-width: 599px) {
+ .paired-exercise { --lulu-size: 40px; }
+ .paired-exercise .conversation-bubble { padding: 12px; }
+ .paired-exercise .activity-tile-bank { gap: 4px; }
+ .paired-exercise .activity-tile-bank .tile { min-width: 44px; min-height: 44px; }
+}

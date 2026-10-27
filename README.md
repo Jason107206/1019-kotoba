@@ -1,3 +1,7 @@
+## Dialogue forms and targets
+
+Dialogue pairs equivalent normal/polite forms in one entry. Matching requires both selections; Rebuild has independent character banks and partial feedback. Targets include の where needed and preserve fixed supporting text inline. Time-range particles are taught in Sentence Structure, and the two removed shopping expressions remain available only in their independent Vocabulary records. See [scope, source and verification details](docs/dialogue-pairs.md).
+
 ## Number Content and practice
 
 Numbers opens a browsable content page with a compact expression/readings table and pronunciation notes. Whole numbers are grouped as Ones, Tens, Hundreds and Thousands, with 10,000 included in Thousands. All / By Category / By Chapter controls provide one scope for segment-based Matching and character-based Rebuild. Chapter scopes include the verified reading rules taught by their source records. Both games restore the content selection on return.

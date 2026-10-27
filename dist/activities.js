@@ -42,7 +42,7 @@ const demonstrativeWords=[
     "symbol": "?"
   }
 ];
-function demonstrativeItems(){return demonstrativeWords.map(q=>{const w=wordBy(q.word);return {...q,id:`wh-words-${w.id}`,kana:w.kana,zh:w.zh};});}
+function demonstrativeItems(){return dialogueContentItems().filter(q=>q.id.startsWith('wh-words-'));}
 const NOTICE_SITUATION=['Suddenly notice something','突然注意到某件事'];
 const DIALOGUES=[
   {
@@ -270,29 +270,29 @@ function conversationSpeaker(q,speaker){return speaker==='you'?'You':q.id==='nei
 let selectedDialogueExpression=null;
 function updateSelectedChips(row,attribute,id){row.querySelectorAll(`[${attribute}]`).forEach(chip=>{const selected=chip.getAttribute(attribute)===id;chip.classList.toggle('selected',selected);chip.setAttribute('aria-pressed',String(selected));});}
 function selectDialogueExpression(id){
-  const q=dialogueStudySet().items.find(item=>item.id===id);if(!q)return;
+  id=resolveDialogueId(id);const q=dialogueStudySet().items.find(item=>item.id===id);if(!q)return;
   selectedDialogueExpression=id;
   const row=document.querySelector('.expression-chip-row'),cards=document.querySelector('.expression-guide .guide-cards');
   if(!row||!cards){render();return;}
   const scroll=row.scrollLeft;updateSelectedChips(row,'data-dialogue-expression',id);if(row.classList.contains('wh-chip-row'))selectedWhExpression=id;
   cards.innerHTML=localizeMarkup(conversationCard(q));row.scrollLeft=scroll;
 }
-// Highlight the complete selected vocabulary expression, escaping surrounding Japanese.
+// Highlight only the explicit target slot, preserving its fixed context.
 function expressionDialogueText(text,q){
-  const target=q.target||wordBy(q.word)?.kana;
-  const index=target?text.indexOf(target):-1;
-  return index<0?esc(text):`${esc(text.slice(0,index))}<strong class="wh-target">${esc(target)}</strong>${esc(text.slice(index+target.length))}`;
+  if(q.answerSlot&&text===q.turns[q.answerSlot.turn][1])return dialogueTemplate(q,`<strong class="wh-target">${esc(q.target||q.kana)}</strong>`);
+  return esc(text);
 }
 function conversationCard(q){
+  if(q.forms)return pairedConversationCard(q);
   if(q.lesson)return lessonConversationCard(q);
-  const turns=CONVERSATIONS[q.id]?.[2]||WH_CONVERSATIONS[q.word],zh=state.language==='zh-Hant';
+  const turns=q.turns||CONVERSATIONS[q.id]?.[2]||WH_CONVERSATIONS[q.word],zh=state.language==='zh-Hant';
   const dialogue=turns.map(([speaker,ja,en,translation])=>`<div class="conversation-turn ${speaker}">${conversationPig(speaker,CONVERSATION_POSES[q.id])}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${speaker==='you'?expressionDialogueText(ja,q):esc(ja)}</p><p class="conversation-translation">${esc(zh?translation:en)}</p></div></div>`).join('');
-  return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}">${demonstrativeScene(q)}<div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${dialogue}</div><p class="conversation-notes muted">${esc(q.lesson?lessonNotes(q):q.why)}</p></div></article>`;
+  return `<article class="paper guide-card conversation-card" data-dialogue-guide="${q.id}">${demonstrativeScene(q)}<div class="guide-card-body"><div class="conversation-stage" aria-label="Conversation">${dialogue}</div><p class="conversation-notes muted">${esc(dialogueUsage(q))}</p></div></article>`;
 }
-function dialogueInCategory(q,category){if(category==='wh-words')return questionAnswer(q);const group=DIALOGUE_CATEGORIES.find(c=>c.id===category);return (q.category?q.category===category:(vocabularySection(wordBy(q.word))===category||group?.includedWords?.includes(q.word))&&!group?.excludedWords?.includes(q.word));}
-function dialogueItems(category=null){return DIALOGUES.filter(d=>!category||dialogueInCategory(d,category)).map(d=>({...d,kana:d.kana||wordBy(d.word).kana}));}
+function dialogueInCategory(q,category){if(category==='wh-words')return q.category==='wh-words'||questionAnswer(q);const group=DIALOGUE_CATEGORIES.find(c=>c.id===category);return (q.category?q.category===category:(vocabularySection(wordBy(q.word))===category||group?.includedWords?.includes(q.word))&&!group?.excludedWords?.includes(q.word));}
+function dialogueItems(category=null){return dialogueContentItems().filter(d=>!d.id.startsWith('wh-words-')&&(!category||dialogueInCategory(d,category)));}
 function openDialogueCategory(category){selectDialogueCategory(category);}
-function allDialogueItems(){return [...dialogueItems(),...demonstrativeItems().map(q=>({...q,family:q.id}))];}
+function allDialogueItems(){return dialogueContentItems();}
 function dialogueCategories(){return [...DIALOGUE_CATEGORIES,{id:'wh-words',label:'WH-words',description:'Ask about people, places, time, prices and other details.'}];}
 function dialogueStudySet(){
   const mode=state.dialogueBrowse||'all',all=allDialogueItems();
@@ -300,11 +300,11 @@ function dialogueStudySet(){
     const category=dialogueCategories().find(c=>c.id===state.dialogueCategory)||dialogueCategories()[0];state.dialogueCategory=category.id;
     return {key:`category-${category.id}`,label:category.label,description:category.description,items:all.filter(q=>dialogueInCategory(q,category.id))};
   }
-  if(mode==='chapter')return {key:`chapter-${state.dialogueChapter}`,label:chapterLabel(state.dialogueChapter),description:'Practise the dialogue expressions from this chapter.',items:all.filter(q=>(q.ch?q.ch===state.dialogueChapter:inChapter(wordBy(q.word),state.dialogueChapter)))};
+  if(mode==='chapter')return {key:`chapter-${state.dialogueChapter}`,label:chapterLabel(state.dialogueChapter),description:'Practise the dialogue expressions from this chapter.',items:all.filter(q=>dialogueChapters(q).includes(Number(state.dialogueChapter)))};
   return {key:'all',label:'Dialogue',description:'Practise expressions, replies and question words.',items:all};
 }
 function dialogueBrowse(mode){if(!['all','category','chapter'].includes(mode))return;rememberPage();state.dialogueBrowse=mode;state.view='dialogue-content';render();}
-function selectDialogueChapter(chapter){if(!allDialogueItems().some(q=>(q.ch?q.ch===Number(chapter):inChapter(wordBy(q.word),chapter))))return;rememberPage();state.dialogueBrowse='chapter';state.dialogueChapter=Number(chapter);state.view='dialogue-content';render();}
+function selectDialogueChapter(chapter){if(!allDialogueItems().some(q=>dialogueChapters(q).includes(Number(chapter))))return;rememberPage();state.dialogueBrowse='chapter';state.dialogueChapter=Number(chapter);state.view='dialogue-content';render();}
 function startDialoguePractice(kind){
   const set=dialogueStudySet(),wh=state.dialogueBrowse==='category'&&state.dialogueCategory==='wh-words';
   const scope={browse:state.dialogueBrowse,chapter:state.dialogueChapter,category:state.dialogueCategory,selected:selectedDialogueExpression,ids:set.items.map(q=>q.id)};
@@ -318,7 +318,7 @@ function demonstrativesContent(){return dialogueContent();}
 function dialogueSelector(){
   const mode=state.dialogueBrowse,set=dialogueStudySet();
   const chips=(entries,attribute,selected)=>entries.map(([key,label])=>`<button class="dialogue-chip${key===selected?' selected':''}" data-${attribute}="${key}" aria-pressed="${key===selected}">${esc(label)}</button>`).join('');
-  const chapters=[...new Set(allDialogueItems().flatMap(q=>q.ch?[q.ch]:wordChapters(wordBy(q.word))))].sort();
+  const chapters=[...new Set(allDialogueItems().flatMap(dialogueChapters))].sort();
   const entries=mode==='category'?dialogueCategories().map(c=>[c.id,c.label]):chapters.map(ch=>[String(ch),chapterLabel(ch)]);
   return `<div class="study-wrap dialogue-selector"><div class="dialogue-chip-row dialogue-mode-row" role="group" aria-label="Dialogue selection">${chips([['all','All'],['category','By category'],['chapter','By chapter']],'dialogue-browse',mode)}</div>${mode==='all'?'':`<div class="field-label dialogue-filter-label" id="dialogue-filter-label">${mode==='category'?'Category':'Chapter'}</div><div class="dialogue-chip-row dialogue-filter-row" data-chip-group="${mode}" role="group" aria-labelledby="dialogue-filter-label">${chips(entries,mode==='category'?'dialogue-category':'dialogue-chapter',mode==='category'?state.dialogueCategory:String(state.dialogueChapter))}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>${esc(set.description)}</p></div></div>`;
 }
@@ -328,14 +328,14 @@ function selectDialogueCategory(category){
 }
 function dialogueMenu(){return dialogueContent();}
 function dialogueContent(){
-  const set=dialogueStudySet(),items=set.items,selected=items.find(q=>q.id===selectedDialogueExpression)||items[0];if(!selected)return dialogueSelector();selectedDialogueExpression=selected.id;
+  const set=dialogueStudySet(),items=set.items,selected=items.find(q=>q.id===resolveDialogueId(selectedDialogueExpression))||items[0];if(!selected)return dialogueSelector();selectedDialogueExpression=selected.id;
   const wh=state.dialogueBrowse==='category'&&state.dialogueCategory==='wh-words';if(wh)selectedWhExpression=selected.id;
   const selector=`<div class="expression-selector"><div class="expression-chip-row${wh?' wh-chip-row':''}" data-chip-group="${set.key}" role="group" aria-label="Expression">${items.map(q=>`<button class="dialogue-chip${q.id===selected.id?' selected':''}" data-dialogue-expression="${q.id}" aria-pressed="${q.id===selected.id}">${esc(dialogueExpressionLabel(q))}</button>`).join('')}</div></div>`;
   return dialogueSelector()+`<div class="study-wrap dialogue-content"><div class="dialogue-guide-actions"><button class="button primary" data-open-dialogue="dialogue-choice">Matching ${icon('arrow')}</button><button class="button soft" data-open-dialogue="dialogue-tiles">Rebuild ${icon('arrow')}</button></div><section class="expression-guide" aria-label="Expression guide"><div class="guide-heading"><h2>${wh?'WH-words guide':'Expression guide'}</h2></div>${selector}<div class="guide-cards">${conversationCard(selected)}</div></section></div>`;
 }
 
 function isActivityRebuild(activity){return ['dialogue-tiles','wh-tiles'].includes(activity?.kind);}
-function startActivity(kind,ids,category=null,scope=null){if(!['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles'].includes(kind))return;if(state.view!=='activity')rememberPage();if(category&&!dialogueCategories().some(c=>c.id===category))category='introductions';const dialogue=kind.startsWith('dialogue');let items=scope?allDialogueItems().filter(q=>scope.ids.includes(q.id)):dialogue?dialogueItems(category):demonstrativeItems();if(!items.length)items=dialogueItems('introductions');const validIds=ids?.filter(id=>items.some(q=>q.id===id));state.activity={kind,category,scope,items,ids:validIds?.length?validIds:shuffle(items.map(x=>x.id)),index:0,correct:0,missed:[],checked:false,selected:null,chosen:[],tileBank:[],choices:[],result:false};state.view='activity';prepareActivity();render();window.scrollTo({top:0,behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+function startActivity(kind,ids,category=null,scope=null){if(!['demonstratives','dialogue-choice','dialogue-tiles','wh-tiles'].includes(kind))return;if(state.view!=='activity')rememberPage();if(category&&!dialogueCategories().some(c=>c.id===category))category='introductions';const dialogue=kind.startsWith('dialogue');let items=scope?allDialogueItems().filter(q=>scope.ids.map(resolveDialogueId).includes(q.id)):dialogue?dialogueItems(category):demonstrativeItems();if(!items.length)items=dialogueItems('introductions');const validIds=ids?[...new Set(ids.map(resolveDialogueId).filter(id=>items.some(q=>q.id===id)))]:null;state.activity={kind,category,scope,items,ids:validIds?.length?validIds:shuffle(items.map(x=>x.id)),index:0,correct:0,missed:[],checked:false,selected:null,chosen:[],tileBank:[],choices:[],result:false};state.view='activity';prepareActivity();render();window.scrollTo({top:0,behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
 function activityCurrent(){const a=state.activity;return a?.items.find(x=>x.id===a.ids[a.index]);}
 function relatedActivityItems(a,q){
   const category=vocabularySection(wordBy(q.word));
@@ -343,19 +343,20 @@ function relatedActivityItems(a,q){
   if(a.scope&&candidates.length<3)candidates.push(...a.items.filter(item=>item.id!==q.id&&!candidates.includes(item)&&item.family!==q.family));
   const seen=new Set([q.kana]);return shuffle(candidates).filter(item=>{const key=item.kana;if(seen.has(key))return false;seen.add(key);return true;});
 }
-function prepareActivity(){const a=state.activity,q=activityCurrent();if(!q)return;a.checked=false;a.selected=null;a.chosen=[];a.result=false;a.choices=shuffle([q,...(q.lesson?q.distractors.map((kana,i)=>({id:`${q.id}-d${i}`,kana,word:q.word,category:q.category,family:`${q.id}-d${i}`})):relatedActivityItems(a,q).slice(0,3))]);a.revealed=false;if(isActivityRebuild(a))a.tileBank=vocabularyTileBank(q);}
-function activityAnswer(){const a=state.activity;return a.chosen.map(id=>a.tileBank[id]).join('');}
+function prepareActivity(){const a=state.activity,q=activityCurrent();if(!q)return;a.checked=false;a.selected=null;a.chosen=[];a.selections=[];a.formAnswers=null;a.formResults=null;a.activeForm=null;a.result=false;a.choices=shuffle([q,...(q.lesson?q.distractors.map((kana,i)=>({id:`${q.id}-d${i}`,kana,word:q.word,category:q.category,family:`${q.id}-d${i}`})):relatedActivityItems(a,q).slice(0,3))]);a.revealed=false;if(q.forms)preparePairedActivity(q);else if(isActivityRebuild(a))a.tileBank=vocabularyTileBank(q);}
+function activityAnswer(){const a=state.activity;return activityCurrent()?.forms?dialogueFormAnswer(a.activeForm||'normal'):a.chosen.map(id=>a.tileBank[id]).join('');}
 function activityReadings(q){return [vocabularyReading(q),...(q.acceptedReadings||[]).map(rebuildText)];}
-function activityReady(q){return activityReadings(q).some(target=>rebuildReady(activityAnswer(),target));}
+function activityReady(q){return q.forms?q.forms.every(form=>activityReadings(form).some(target=>rebuildReady(dialogueFormAnswer(form.role),target))):activityReadings(q).some(target=>rebuildReady(activityAnswer(),target));}
 function checkActivity(choice=null,reveal=false){
   const a=state.activity,q=activityCurrent();if(!q||a.checked)return;
   const tiles=isActivityRebuild(a);
   if(reveal&&!tiles)return;
   if(tiles&&!reveal&&!activityReady(q))return;
-  if(!tiles&&!a.choices.some(c=>c.id===choice))return;
-  a.selected=choice;a.revealed=reveal;a.result=!reveal&&(tiles?activityReadings(q).some(target=>rebuildCorrect(activityAnswer(),target)):choice===q.id);a.checked=true;
+  if(!tiles&&(q.forms?a.selections.length!==2:!a.choices.some(c=>c.id===choice)))return;
+  a.formResults=q.forms?pairedActivityResults(q,reveal):null;
+  a.selected=choice;a.revealed=reveal;a.result=q.forms?Object.values(a.formResults).every(Boolean):!reveal&&(tiles?activityReadings(q).some(target=>rebuildCorrect(activityAnswer(),target)):choice===q.id);a.checked=true;
   if(a.result)a.correct++;else if(!a.missed.includes(q.id))a.missed.push(q.id);
-  record('activities',`${WH_CONVERSATIONS[q.word]?(tiles?'wh-tiles':'demonstratives'):a.kind}-${q.id}`,a.result);render();
+  recordDialogueActivity(q);render();
 }
 function dialoguePrompt(q){
   const situation=q.scene?`<div class="dialogue-situation"><span class="dialogue-role">Situation</span><p class="dialogue-scene">${esc(q.scene)}</p></div>`:'';
@@ -363,24 +364,24 @@ function dialoguePrompt(q){
   return situation+incoming;
 }
 function dialogueExercise(q,tileMode){
-  const a=state.activity,zh=state.language==='zh-Hant',wh=!!WH_CONVERSATIONS[q.word],word=wordBy(q.word);
-  const turns=q.turns||CONVERSATIONS[q.id]?.[2]||WH_CONVERSATIONS[q.word],target=q.target||q.kana;
-  const learner=turns.find(turn=>turn[0]==='you');
-  const template=q.sentence||(learner?.[1].includes(target)?learner[1].replace(target,'{word}'):'{word}');
-  const situation=wh?q.clue:zh?CONVERSATIONS[q.id][1]:CONVERSATIONS[q.id][0];
+  if(q.forms)return pairedDialogueExercise(q,tileMode);
+  const a=state.activity,zh=state.language==='zh-Hant',word=wordBy(q.word);
+  const turns=q.turns;
+  const template=q.answerSlot?`${q.answerSlot.before}{word}${q.answerSlot.after}`:q.sentence;
+  const situation=zh?(CONVERSATIONS[q.id]?.[1]||q.sceneZh||translateText(q.scene||q.clue)):(CONVERSATIONS[q.id]?.[0]||q.scene||q.clue);
   const answer=tileMode?activityAnswer():a.checked?(a.choices.find(item=>item.id===a.selected)?.kana||''):'';
   const inline=tileMode?a.chosen.map((id,index)=>`<button class="inline-answer-token jp" lang="ja" data-activity-return="${index}" aria-label="Return ${esc(a.tileBank[id])} to word bank" ${a.checked?'disabled':''}>${esc(a.tileBank[id])}</button>`).join(''):esc(answer);
   const blank=`<span class="inline-answer${answer?' filled':''}" aria-label="Your hiragana answer">${inline||'<span aria-hidden="true">＿＿＿</span>'}</span>`;
   const parts=template.split('{word}');
   const response=`<p class="jp inline-reply" lang="ja">${esc(parts[0])}${blank}${esc(parts.slice(1).join('{word}'))}</p>`;
-  const feedback=a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status"><span class="feedback-lulu ${a.result?'happy':'encouraging'}" aria-hidden="true"></span><div class="feedback-copy"><div><span aria-hidden="true">${a.result?'✓':'✕'}</span> <strong>${a.result?'Correct!':'The correct answer is:'}</strong></div>${a.result?'':`<p class="jp" lang="ja">${esc(q.kana)}</p>`}<p>${esc(q.lesson?(zh?q.replyZh:q.replyEn):(zh?word.zh:word.en))}</p></div><p class="activity-explanation">${esc(q.lesson?lessonNotes(q):q.why)}</p></div>`:'';
+  const feedback=a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status"><span class="feedback-lulu ${a.result?'happy':'encouraging'}" aria-hidden="true"></span><div class="feedback-copy"><div><span aria-hidden="true">${a.result?'✓':'✕'}</span> <strong>${a.result?'Correct!':'The correct answer is:'}</strong></div>${a.result?'':`<p class="jp" lang="ja">${esc(q.kana)}</p>`}<p>${esc(q.lesson?(zh?q.replyZh:q.replyEn):(zh?word.zh:word.en))}</p></div><p class="activity-explanation">${esc(dialogueUsage(q))}</p></div>`:'';
   const bank=tileMode?`<div class="activity-tile-bank" role="group" aria-label="Hiragana bank">${a.tileBank.map((unit,index)=>`<button class="tile jp ${a.chosen.includes(index)?'selected':''}" lang="ja" data-activity-tile="${index}" ${a.checked||a.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`:`<div class="options activity-options">${a.choices.map((item,index)=>`<button class="option jp ${a.checked&&item.id===q.id?'correct':a.checked&&item.id===a.selected?'wrong':''}" data-activity-choice="${item.id}" ${a.checked?'disabled':''}><span class="number">${index+1}</span><span>${esc(item.kana)}</span>${a.checked&&item.id===q.id?'<span class="option-state"><span aria-hidden="true">✓</span> Correct</span>':a.checked&&item.id===a.selected?'<span class="option-state"><span aria-hidden="true">✕</span> Your choice</span>':''}</button>`).join('')}</div>`;
   const controls=a.checked?button('Next '+icon('arrow'),'activityNext','primary'):tileMode?button('Undo','activityUndo','ghost',a.chosen.length?'':'disabled')+button('Clear','activityClear','ghost',a.chosen.length?'':'disabled')+button('Check answer','activityCheck','primary',activityReady(q)?'':'disabled'):'';
   let learnerShown=false;
-  const conversation=turns.map(([speaker,ja,en,cn])=>{
+  const conversation=turns.map(([speaker,ja,en,cn],turnIndex)=>{
     if(speaker==='you'&&!learnerShown){learnerShown=true;return `<div class="conversation-turn you">${conversationPig('you',CONVERSATION_POSES[q.id])}<div class="conversation-bubble reply-bubble ${a.checked?(a.result?'correct':'wrong'):''}"><span class="dialogue-role">You</span>${response}</div></div>`;}
     // A later response can repeat the learner's phrase. Reveal it after grading.
-    const safe=!a.checked&&target.length>=2?ja.split(target).join('…'):ja;
+    const safe=dialogueTurnText(q,turnIndex,a.checked);
     return `<div class="conversation-turn ${speaker}">${conversationPig(speaker)}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${esc(safe)}</p><p class="conversation-translation">${esc(zh?cn:en)}</p></div></div>`;
   }).join('');
   const scene=THIS_THAT_VISUALS[q.word]?.location!=='attention'&&THIS_THAT_VISUALS[q.word]?demonstrativeScene(q):q.lesson?lessonScene(q):'';
@@ -394,8 +395,8 @@ function activityTiles(q){
   const a=state.activity,target=vocabularyReading(q);
   return rebuildTileInputs(a,target,'activity')+(a.checked?'':rebuildTileControls(a,target,'activity'));
 }
-function activityAction(action){const a=state.activity;if(!a)return;switch(action){case'activityBack':if(a.scope){state.dialogueBrowse=a.scope.browse;state.dialogueChapter=a.scope.chapter;state.dialogueCategory=a.scope.category;selectedDialogueExpression=a.scope.selected;}else{state.dialogueBrowse='category';state.dialogueCategory=a.kind.startsWith('dialogue')?a.category||'introductions':'wh-words';}navigate('dialogue',false);break;case'activityNext':a.index++;prepareActivity();render();break;case'activityRestart':startActivity(a.kind,undefined,a.category,a.scope);break;case'activityMissed':startActivity(a.kind,shuffle(a.missed),a.category,a.scope);break;case'activityClear':if(!a.checked)a.chosen=[];render();break;case'activityUndo':if(!a.checked)a.chosen.pop();render();break;case'activityCheck':checkActivity();break;case'activityReveal':checkActivity(null,true);break;}}
-function activityClick(target){const d=target.dataset;if(d.dialogueBrowse){dialogueBrowse(d.dialogueBrowse);return true;}if(d.dialogueChapter){selectDialogueChapter(d.dialogueChapter);return true;}if(d.openDemonstratives){if(d.openDemonstratives==='guide'){selectDialogueCategory('wh-words');}else if(d.openDemonstratives==='practice')startActivity('demonstratives');else if(d.openDemonstratives==='rebuild')startActivity('wh-tiles');return true;}if(d.dialogueCategory){selectDialogueCategory(d.dialogueCategory);return true;}if(d.whExpression){selectWhExpression(d.whExpression);return true;}if(d.dialogueExpression){selectDialogueExpression(d.dialogueExpression);return true;}if(d.openDialogue){startDialoguePractice(d.openDialogue);return true;}if(d.activityChoice){checkActivity(d.activityChoice);return true;}if(d.activityTile!==undefined){const a=state.activity;if(!a||a.checked||!isActivityRebuild(a)||!activityCurrent())return true;const i=Number(d.activityTile),limit=Math.max(...activityReadings(activityCurrent()).map(r=>kanaUnits(r).length));if(Number.isInteger(i)&&i>=0&&i<a.tileBank.length&&!a.chosen.includes(i)&&a.chosen.length<limit)a.chosen.push(i);render();return true;}if(d.activityReturn!==undefined){const a=state.activity;const i=Number(d.activityReturn);if(a&&!a.checked&&isActivityRebuild(a)&&Number.isInteger(i)&&i>=0&&i<a.chosen.length)a.chosen.splice(i,1);render();return true;}if(d.action?.startsWith('activity')){activityAction(d.action);return true;}return false;}
+function activityAction(action){const a=state.activity;if(!a)return;if(activityCurrent()?.forms&&!a.checked&&['activityUndo','activityClear'].includes(action)){const part=a.formAnswers[a.activeForm];if(action==='activityUndo')part.chosen.pop();else part.chosen.splice(0);render();return;}switch(action){case'activityBack':if(a.scope){state.dialogueBrowse=a.scope.browse;state.dialogueChapter=a.scope.chapter;state.dialogueCategory=a.scope.category;selectedDialogueExpression=a.scope.selected;}else{state.dialogueBrowse='category';state.dialogueCategory=a.kind.startsWith('dialogue')?a.category||'introductions':'wh-words';}navigate('dialogue',false);break;case'activityNext':a.index++;prepareActivity();render();break;case'activityRestart':startActivity(a.kind,undefined,a.category,a.scope);break;case'activityMissed':startActivity(a.kind,shuffle(a.missed),a.category,a.scope);break;case'activityClear':if(!a.checked)a.chosen=[];render();break;case'activityUndo':if(!a.checked)a.chosen.pop();render();break;case'activityCheck':checkActivity();break;case'activityReveal':checkActivity(null,true);break;}}
+function activityClick(target){const d=target.dataset;if(pairedActivityClick(d))return true;if(d.dialogueBrowse){dialogueBrowse(d.dialogueBrowse);return true;}if(d.dialogueChapter){selectDialogueChapter(d.dialogueChapter);return true;}if(d.openDemonstratives){if(d.openDemonstratives==='guide'){selectDialogueCategory('wh-words');}else if(d.openDemonstratives==='practice')startActivity('demonstratives');else if(d.openDemonstratives==='rebuild')startActivity('wh-tiles');return true;}if(d.dialogueCategory){selectDialogueCategory(d.dialogueCategory);return true;}if(d.whExpression){selectWhExpression(d.whExpression);return true;}if(d.dialogueExpression){selectDialogueExpression(d.dialogueExpression);return true;}if(d.openDialogue){startDialoguePractice(d.openDialogue);return true;}if(d.activityChoice){selectActivityChoice(d.activityChoice);return true;}if(d.activityTile!==undefined){const a=state.activity;if(!a||a.checked||!isActivityRebuild(a)||!activityCurrent())return true;const i=Number(d.activityTile),limit=Math.max(...activityReadings(activityCurrent()).map(r=>kanaUnits(r).length));if(Number.isInteger(i)&&i>=0&&i<a.tileBank.length&&!a.chosen.includes(i)&&a.chosen.length<limit)a.chosen.push(i);render();return true;}if(d.activityReturn!==undefined){const a=state.activity;const i=Number(d.activityReturn);if(a&&!a.checked&&isActivityRebuild(a)&&Number.isInteger(i)&&i>=0&&i<a.chosen.length)a.chosen.splice(i,1);render();return true;}if(d.action?.startsWith('activity')){activityAction(d.action);return true;}return false;}
 
 function demonstrativeGraphic(q,compact=false){
   const age=q.word.startsWith('1-19'),object=q.word==='2-36';

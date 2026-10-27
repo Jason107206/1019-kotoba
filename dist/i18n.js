@@ -760,3 +760,17 @@ Object.assign(ZH_HANT, {
 });
 
 Object.assign(ZH_HANT, {'Number / Expression':'數字／表達方式','Hiragana':'平假名','Usage / Reading Note':'用法／讀音提示','Number expressions and readings':'數字表達方式及讀音'});
+
+Object.assign(ZH_HANT, {
+ 'Normal':'一般','Polite':'禮貌','Two ways to say it':'兩種說法',
+ 'Select both the normal and polite forms.':'請選出一般及禮貌兩種說法。',
+ 'Build both the normal and polite forms.':'請分別拼出一般及禮貌兩種說法。',
+ 'Select both forms':'選出兩種說法','Review both forms':'核對兩種說法','Needs correction':'需要修正',
+ '0 / 2 selected':'已選 0 / 2','1 / 2 selected':'已選 1 / 2','2 / 2 selected':'已選 2 / 2',
+ 'Time-range example':'時間範圍例句','18 study groups · Sentence Structure':'18 個句型・句子結構',
+ 'All 18 sentence groups':'全部 18 個句型','It is open from nine to six.':'從九點開到六點。',
+ 'I study from seven to nine.':'我從七點讀書到九點。','I work from Monday to Friday.':'我從星期一工作到星期五。'
+});
+for(const pattern of RANGE_PATTERNS){ZH_HANT[pattern.title]=pattern.zhTitle;ZH_HANT[pattern.tip]=pattern.zhTip;}
+
+Object.assign(ZH_HANT, {'Sentence Structure includes 54 practice sentences in 18 groups, including Chapter 4 time ranges with から and まで. The timed mock retains its Chapters 1–2 scope.':'句子結構包含 18 組、共 54 個練習句子，包括第 4 課以 から 及 まで 表達時間範圍的句型。計時模擬測驗維持第 1 至 2 課範圍。','What are your opening hours?':'請問你們從幾點開到幾點？'});
