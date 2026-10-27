@@ -758,3 +758,5 @@ Object.assign(ZH_HANT, {
  'Number selection':'數字選擇','Explore numerical expressions and their readings.':'瀏覽數量表達及其讀音。',
  'Previous page':'上一頁','Next page':'下一頁','Arrange your answer':'排列答案'
 });
+
+Object.assign(ZH_HANT, {'Number / Expression':'數字／表達方式','Hiragana':'平假名','Usage / Reading Note':'用法／讀音提示','Number expressions and readings':'數字表達方式及讀音'});

@@ -1,6 +1,6 @@
 ## Number Content and practice
 
-Numbers opens a browsable content page with readings, visual examples and pronunciation notes. All / By Category / By Chapter controls provide one scope for segment-based Matching and character-based Rebuild. Chapter scopes include the verified reading rules taught by their source records. Both games restore the content selection on return.
+Numbers opens a browsable content page with a compact expression/readings table and pronunciation notes. Whole numbers are grouped as Ones, Tens, Hundreds and Thousands, with 10,000 included in Thousands. All / By Category / By Chapter controls provide one scope for segment-based Matching and character-based Rebuild. Chapter scopes include the verified reading rules taught by their source records. Both games restore the content selection on return.
 
 Every game now shares a spaced app bar with the counter below the title, bottom-edge progress, and no site footer. See [coverage, chapter rules and verification](docs/number-matching.md).
 

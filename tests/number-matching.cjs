@@ -14,13 +14,35 @@ assert.equal(ev('fractionReading(15,100)'),'ひゃくぶんのじゅうご');ass
 assert.equal(ev('decimalReading("0.368")'),'れいてんさんろくはち');assert.equal(ev('decimalReading("0.007")'),'れいてんぜろぜろなな');assert.equal(ev('decimalReading("12.30")'),'じゅうにてんさんぜろ');
 for(const bad of ['integerReading(-1)','integerReading(100000000)','fractionReading(1,0)','dateReading(4,31)','dateReading(2,29)','decimalReading(".3")','clockReading(13,8,"AM")'])assert.throws(()=>ev(bad));
 assert.equal(ev('new Set(NUMBER_QUESTIONS.map(q=>q.id)).size'),ev('NUMBER_QUESTIONS.length'));
-assert.equal(ev('NUMBER_TYPES.every(([type])=>NUMBER_QUESTIONS.some(q=>q.type===type))'),true);
+assert.equal(ev('NUMBER_TYPES.every(([type])=>NUMBER_QUESTIONS.some(q=>numberCategory(q)===type))'),true);
 assert.equal(ev('NUMBER_QUESTIONS.every(q=>/^[ぁ-ゖー]+$/u.test(q.kana))'),true);
 assert.equal(ev('NUMBER_QUESTIONS.every(q=>q.sourceIds.every(id=>WORDS.some(w=>w.id===id)))'),true);
 
 assert.equal(ev('NUMBER_QUESTIONS.filter(q=>["fractions","decimals"].includes(q.type)).every(q=>!q.chapters.length)'),true);
 assert.equal(ev('NUMBER_QUESTIONS.every(q=>q.chapters.every(ch=>q.sourceIds.some(id=>wordChapters(WORDS.find(w=>w.id===id)).includes(ch))||(q.chapterRules||[]).some(id=>{const rule=NUMBER_CHAPTER_SCOPES.find(r=>r.id===id);return rule.type===q.type&&rule.chapters.includes(ch)&&rule.sourceIds.every(id=>wordChapters(WORDS.find(w=>w.id===id)).includes(ch))})))'),true);
 for(const [chapter,type,minimum] of [[1,'ages',40],[3,'whole',75],[3,'floors',30],[3,'money',20],[4,'clock',120],[4,'weekdays',7],[5,'dates',100]])assert.ok(ev(`NUMBER_QUESTIONS.filter(q=>q.type==='${type}'&&q.chapters.includes(${chapter})).length`)>=minimum);
+// Place-value categories partition the supported standalone numbers without changing IDs.
+ev("state.view='number-menu';state.language='en'");
+const ranges=[['ones',0,9],['tens',10,99],['hundreds',100,999],['thousands',1000,10000]];
+assert.deepEqual(Array.from(ev('NUMBER_TYPES.slice(0,4).map(t=>t[0])')),ranges.map(r=>r[0]));
+for(const [category,min,max] of ranges){
+ ev(`state.numberBrowse='category';state.numberType='${category}';state.numberPage=0;render()`);
+ const values=Array.from(ev('numberSelection().items.map(q=>q.value)'));
+ assert.ok(values.length);assert.ok(values.every(n=>n>=min&&n<=max));assert.deepEqual(values,values.slice().sort((a,b)=>a-b));
+ assert.equal(ev('numberSelection().items.every(q=>q.type==="whole")'),true);
+ assert.ok(app.innerHTML.includes('class="number-table'));assert.ok(!app.innerHTML.includes('number-content-grid'));assert.ok(!app.innerHTML.includes('<article'));
+ if(category==='ones'||category==='tens')assert.ok(!app.innerHTML.includes('Usage / Reading Note'));
+ else assert.ok(app.innerHTML.includes('Usage / Reading Note'));
+}
+assert.equal(ev('NUMBER_QUESTIONS.filter(q=>q.type==="whole"&&q.value===10000).length'),1);
+assert.equal(ev('NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===10000).kana'),'いちまん');
+assert.equal(ev('numberCategory(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===10000))'),'thousands');
+assert.equal(ev('NUMBER_QUESTIONS.filter(q=>q.type==="whole").every(q=>q.value<=10000)'),true);
+assert.equal(ev('NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===10000).chapters.includes(3)'),true);
+ev(`state.numberType='whole';numberSelection()`);assert.equal(ev('state.numberType'),'ones');
+ev(`state.numberBrowse='all';state.numberPage=0;render()`);assert.ok(app.innerHTML.includes('scope="rowgroup"'));assert.ok(app.innerHTML.includes('data-number-group="ones"'));
+assert.equal(ev('numberContentDetail(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===300)).irregular'),true);
+assert.equal(ev('numberContentDetail(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===125)).note'),'');
 const ids=Array.from(ev('NUMBER_QUESTIONS.map(q=>q.id)'));
 for(const mode of ['matching','rebuild'])for(const id of ids){
  ev(`state.numberBrowse='all';startNumberPractice('${mode}',[${JSON.stringify(id)}])`);
@@ -52,4 +74,4 @@ for(const browse of ['all','category','chapter']){
 for(const mode of ['write','vocabulary-rebuild','kanji-writing','sentences']){ev(`state.view='${mode}';begin('${mode}',[${mode==='sentences'?'"p1-1"':'"1-09"'}]);completeRound(false)`);assert.equal(ev('gameProgress().completed'),1);assert.equal(ev('state.round.correct'),0);}
 for(const q of ev('NUMBER_QUESTIONS'))assert.equal(ev(`numberPrompt(NUMBER_QUESTIONS.find(q=>q.id===${JSON.stringify(q.id)})).includes(${JSON.stringify(q.kana)})`),false);
 assert.equal(ev('allDialogueItems().length'),48);assert.equal(ev('WORDS.length'),338);
-console.log('PASS: all number readings and variants in both reconstruction modes; curriculum scopes, duplicate/Unicode tiles, ordered validation, retry, navigation, feedback, progress and footer visibility.');
+console.log('PASS: all number readings and variants in both reconstruction modes; curriculum scopes, duplicate/Unicode tiles, ordered validation, retry, navigation, feedback, progress, footer visibility, numeric categories/sorting and compact table.');

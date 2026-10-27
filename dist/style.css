@@ -551,12 +551,21 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
 .timeline-point.target::before { border-color: var(--md-primary); background: var(--md-primary); }
 .timeline-track { flex: .5; height: 2px; background: var(--md-outline); }
 
-.number-content-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
-.number-guide { min-width: 0; padding: 16px; }
-.number-guide .number-prompt { min-height: 160px; margin-bottom: 16px; gap: 8px; }
-.number-guide .number-value { font-size: clamp(24px,4vw,40px); }
-.number-guide .number-fraction { font-size: 36px; }
-.number-reading { margin-bottom: 8px; overflow-wrap: anywhere; }
+.number-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 15px; line-height: 1.6; }
+.number-table th, .number-table td { padding: 12px 16px; text-align: left; vertical-align: top; overflow-wrap: anywhere; border-bottom: 1px solid var(--md-outline-variant); }
+.number-table thead th { color: var(--md-on-surface-variant); font-size: 13px; font-weight: 600; }
+.number-table th:first-child { width: 36%; }
+.number-table.has-notes th:first-child { width: 28%; }
+.number-table.has-notes thead th:nth-child(2) { width: 38%; }
+.number-table .number-group-row th { padding-block: 8px; color: var(--md-primary); background: var(--md-surface-container); font-size: 14px; font-weight: 600; }
+.number-expression { font-variant-numeric: tabular-nums; font-weight: 500; }
+.number-table .jp { font-size: 17px; }
+.number-irregular { color: var(--md-primary); background: var(--md-primary-container); border-radius: 4px; padding-inline: 2px; font-weight: 600; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.number-variants { display: block; margin-top: 4px; font-size: 13px; color: var(--md-on-surface-variant); }
+.number-note, .number-expression-unit { color: var(--md-on-surface-variant); font-size: 13px; }
+.number-table-fraction { display: inline-grid; text-align: center; line-height: 1.4; }
+.number-table-fraction span { padding-inline: 8px; }
+.number-table-fraction span:first-child { border-bottom: 1px solid currentColor; }
 .number-pagination { margin-top: 24px; align-items: center; }
 .number-answer { min-height: 64px; }
 .number-tile-bank { margin-top: 16px; }
@@ -566,5 +575,8 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
  .game-topbar .language-switch { min-height: 48px; padding: 8px 12px; }
  .game-topbar .update-button > span { display: none; }
  .game-topbar .update-button { padding: 12px; min-width: 48px; min-height: 48px; }
- .number-content-grid { grid-template-columns: minmax(0,1fr); }
+ .number-table th, .number-table td { padding: 8px; }
+ .number-table, .number-table .number-group-row th { font-size: 13px; }
+ .number-table .jp { font-size: 15px; }
+ .number-table thead th, .number-note, .number-variants { font-size: 12px; }
 }

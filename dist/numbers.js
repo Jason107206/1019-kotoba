@@ -1,6 +1,6 @@
 'use strict';
 // Number content and both games share one bank and database-backed curriculum scopes.
-const NUMBER_TYPES=[['whole','Whole numbers','整數'],['dates','Dates','日期'],['fractions','Fractions','分數'],['ages','Ages','年齡'],['floors','Floors','樓層'],['clock','Clock times','時刻'],['weekdays','Weekdays','星期'],['money','Money','金額'],['relative','Relative time','相對時間'],['decimals','Decimals','小數']];
+const NUMBER_TYPES=[['ones','Ones','個位數'],['tens','Tens','十位數'],['hundreds','Hundreds','百位數'],['thousands','Thousands','千位數'],['dates','Dates','日期'],['fractions','Fractions','分數'],['ages','Ages','年齡'],['floors','Floors','樓層'],['clock','Clock times','時刻'],['weekdays','Weekdays','星期'],['money','Money','金額'],['relative','Relative time','相對時間'],['decimals','Decimals','小數']];
 const NUMBER_DIGITS=['ぜろ','いち','に','さん','よん','ご','ろく','なな','はち','きゅう'];
 function integerReading(value){
  if(!Number.isSafeInteger(value)||value<0||value>99999999)throw RangeError('Integer outside verified range');
@@ -50,7 +50,7 @@ for(const w of WORDS){const match=w.c.match(/^([月火水木金土日])曜日$/u
 // Existing age examples: 9歳 in p7 and じゅうはっさい in the age conversations.
 addNumberQuestion('ages',9,ageReading(9),['1-18'],[1]);addNumberQuestion('ages',18,ageReading(18),['1-19a','1-19b'],[1]);
 // Add varied values; database-backed chapter rules resolve their scopes below.
-const wholeValues=[...Array.from({length:40},(_,i)=>i),42,55,64,70,77,88,99,101,125,215,333,468,600,800,999,1001,1250,3333,8008,10001,98765,8750000,10000000,99999999];
+const wholeValues=[...Array.from({length:40},(_,i)=>i),42,55,64,70,77,88,99,101,125,215,333,468,600,800,999,1001,1250,3333,8008];
 wholeValues.forEach(n=>addNumberQuestion('whole',n,integerReading(n)));
 for(let month=1;month<=12;month++)for(let day=1;day<=(month===4?30:28);day++)if(month===4||[1,4,7,14,20,24,28].includes(day))addNumberQuestion('dates',[month,day],dateReading(month,day));
 for(const denominator of [2,3,4,8,10,100])for(const numerator of [1,2,3,5,15])addNumberQuestion('fractions',[numerator,denominator],fractionReading(numerator,denominator));
@@ -64,6 +64,8 @@ const relativeWords=[['おととい','day',-2],['きのう','day',-1],['きょ�
 for(const [form,unit,offset] of relativeWords){const w=WORDS.find(w=>w.c===form||w.kana===form);if(w?.kana)numberSource('relative',[unit,offset],w.kana,w);}
 for(const offset of [-4,-3,-2,2,3,4])addNumberQuestion('relative',['week',offset],integerReading(Math.abs(offset))+'しゅうかん'+(offset<0?'まえ':'ご'));
 for(const whole of [0,1,2,3,10,12])for(const digits of ['05','30','368','007','101']){const value=`${whole}.${digits}`;addNumberQuestion('decimals',value,decimalReading(value));}
+// Keep whole-number IDs and reading rules stable; browsing uses place-value groups.
+function numberCategory(q){return q.type==='whole'?(q.value<10?'ones':q.value<100?'tens':q.value<1000?'hundreds':'thousands'):q.type;}
 function numberTypeLabel(type){const row=NUMBER_TYPES.find(t=>t[0]===type);return row?.[state.language==='zh-Hant'?2:1]||'All';}
 // Chapter rules require actual source records with a common chapter membership.
 // A source example and a curriculum-derived membership retain separate provenance.
@@ -141,10 +143,11 @@ function numberTileBank(q,mode){
 }
 function numberSelection(){
  if(!['all','category','chapter'].includes(state.numberBrowse))state.numberBrowse='all';
+ if(state.numberType==='whole')state.numberType='ones';
  if(!NUMBER_TYPES.some(t=>t[0]===state.numberType))state.numberType=NUMBER_TYPES[0][0];
  const available=[...new Set(NUMBER_QUESTIONS.flatMap(q=>q.chapters))].sort();
  if(!available.map(String).includes(state.numberChapter))state.numberChapter=String(available[0]);
- const items=NUMBER_QUESTIONS.filter(q=>state.numberBrowse==='all'||(state.numberBrowse==='category'?q.type===state.numberType:q.chapters.includes(Number(state.numberChapter))));
+ const items=NUMBER_QUESTIONS.filter(q=>state.numberBrowse==='all'||(state.numberBrowse==='category'?numberCategory(q)===state.numberType:q.chapters.includes(Number(state.numberChapter)))).sort((a,b)=>NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(a))-NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(b))||(a.type==='whole'&&b.type==='whole'?a.value-b.value:0));
  return {items,available,key:state.numberBrowse==='all'?'all':state.numberBrowse==='category'?`category-${state.numberType}`:`chapter-${state.numberChapter}`,label:state.numberBrowse==='all'?'Numbers':state.numberBrowse==='category'?numberTypeLabel(state.numberType):chapterLabel(state.numberChapter)};
 }
 const NUMBER_NOTES={
@@ -160,13 +163,58 @@ const NUMBER_NOTES={
  decimals:['Read てん for the point, then read each digit in order, including zeros.','小數點讀「てん」，之後逐位順序讀出數字，包括零。']
 };
 function numberNotes(q){return NUMBER_NOTES[q.type][state.language==='zh-Hant'?1:0];}
+// Compact study notes are specific to the row; longer guidance remains in feedback.
+function numberContentDetail(q){
+ const v=q.value,zh=state.language==='zh-Hant';let note='',irregular=false;
+ const set=(en,cn,special=false)=>{note=zh?cn:en;irregular=special;};
+ if(q.type==='whole'){
+  const changes=[300,600,800,3000,8000].filter(n=>integerSegments(v).includes(integerReading(n)));
+  if(changes.length)set('Sound change: '+changes.map(n=>integerReading(n)).join(' / '),'音變：'+changes.map(n=>integerReading(n)).join('／'),true);
+  else if(v===10000)set('万 = 10,000.','萬：10,000。');
+ }
+ else if(q.type==='dates'&&([4,7,9].includes(v[0])||[1,2,3,4,5,6,7,8,9,10,14,17,19,20,24,27,29].includes(v[1])))set('Irregular month or day reading.','月份或日期的特殊讀音。',true);
+ else if(q.type==='fractions')set('Denominator + ぶんの + numerator.','分母＋ぶんの＋分子。');
+ else if(q.type==='ages'&&(v===20||[1,8].includes(v%10)||v%10===0&&v<100))set(v===20?'20 years old: はたち.':'Contracted さい ending.',v===20?'20 歲：はたち。':'さい 前有促音。',true);
+ else if(q.type==='floors'&&[0,1,3,6,8].includes(v%10))set('Floor counter sound change.','樓層量詞的音變。',true);
+ else if(q.type==='clock'){
+  const special=[4,7,9,12].includes(v[0])||v[1]>0&&[0,1,3,4,6,8].includes(v[1]%10);
+  if(special)set(v[0]===12?'12 AM / PM uses れいじ.':'Hour or minute counter reading.',v[0]===12?'12 AM／PM 使用 れいじ。':'時或分量詞的特殊讀法。',true);
+ }
+ else if(q.type==='money')set('Amount + えん (Japanese yen).','金額＋えん（日圓）。');
+ else if(q.type==='decimals')set('After てん, read every digit.','てん 後逐位讀出數字。');
+ return {note,irregular};
+}
+function numberTableExpression(q){
+ const v=q.value,zh=state.language==='zh-Hant',number=n=>n.toLocaleString('en-US');
+ if(q.type==='whole')return number(v);
+ if(q.type==='decimals')return v;
+ if(q.type==='dates')return zh?`${v[0]}月${v[1]}日`:`${NUMBER_MONTH_NAMES[v[0]-1]} ${v[1]}`;
+ if(q.type==='fractions')return `<span class="number-table-fraction" aria-label="${esc(zh?`${v[0]} 分子，${v[1]} 分母`:`Numerator ${v[0]}, denominator ${v[1]}`)}"><span>${number(v[0])}</span><span>${number(v[1])}</span></span>`;
+ if(q.type==='ages')return zh?`${v}歲`:`${v} years old`;
+ if(q.type==='floors')return `${v}F`;
+ if(q.type==='clock')return `${v[0]}:${String(v[1]).padStart(2,'0')} ${v[2]}${zh?(v[2]==='AM'?'（上午）':'（下午）'):''}`;
+ if(q.type==='weekdays')return (zh?['星期一','星期二','星期三','星期四','星期五','星期六','星期日']:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])[v-1];
+ if(q.type==='money')return `¥${number(v)} <span class="number-expression-unit">${zh?'日圓':'JPY'}</span>`;
+ return esc(relativeLabel(v));
+}
+function numberContentTable(items,shown){
+ const notes=items.some(q=>numberContentDetail(q).note),columns=notes?3:2;
+ const groups=NUMBER_TYPES.map(([id])=>{
+  const entries=shown.filter(q=>numberCategory(q)===id);if(!entries.length)return '';
+  return `<tbody data-number-group="${id}">${state.numberBrowse==='category'?'':`<tr class="number-group-row"><th scope="rowgroup" colspan="${columns}">${esc(numberTypeLabel(id))}</th></tr>`}${entries.map(q=>{
+   const detail=numberContentDetail(q),alternatives=numberReadings(q).filter(r=>r!==q.kana);
+   return `<tr data-number-guide="${esc(q.id)}"><th scope="row" class="number-expression">${numberTableExpression(q)}</th><td lang="ja" class="jp"><span class="number-reading${detail.irregular?' number-irregular':''}">${esc(q.kana)}</span>${alternatives.length?`<span class="number-variants">${alternatives.map(esc).join(' / ')}</span>`:''}</td>${notes?`<td class="number-note">${esc(detail.note)}</td>`:''}</tr>`;
+  }).join('')}</tbody>`;
+ }).join('');
+ return `<table class="number-table${notes?' has-notes':''}"><caption class="sr-only">${esc(translateText('Number expressions and readings'))}</caption><thead><tr><th scope="col">Number / Expression</th><th scope="col">Hiragana</th>${notes?'<th scope="col">Usage / Reading Note</th>':''}</tr></thead>${groups}</table>`;
+}
 function numberMenu(){
  const set=numberSelection(),chips=(entries,attribute,selected)=>entries.map(([id,label])=>`<button class="dialogue-chip${id===selected?' selected':''}" data-${attribute}="${id}" aria-pressed="${id===selected}">${esc(label)}</button>`).join('');
  const entries=state.numberBrowse==='category'?NUMBER_TYPES.map(t=>[t[0],numberTypeLabel(t[0])]):set.available.map(ch=>[String(ch),chapterLabel(ch)]);
  const label=state.numberBrowse==='category'?'Category':'Chapter';
  const pageSize=12,last=Math.max(0,Math.ceil(set.items.length/pageSize)-1);state.numberPage=Math.max(0,Math.min(last,Number(state.numberPage)||0));
  const shown=set.items.slice(state.numberPage*pageSize,(state.numberPage+1)*pageSize);
- return `<section class="study-wrap dialogue-selector number-selector"><div class="dialogue-chip-row number-mode-row" role="group" aria-label="Number selection">${chips([['all','All'],['category','By category'],['chapter','By chapter']],'number-browse',state.numberBrowse)}</div>${state.numberBrowse==='all'?'':`<div class="field-label number-filter-label">${label}</div><div class="dialogue-chip-row number-filter-row" data-chip-group="${state.numberBrowse}" role="group" aria-label="${label}">${chips(entries,state.numberBrowse==='category'?'number-type':'number-chapter',state.numberBrowse==='category'?state.numberType:state.numberChapter)}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>Explore numerical expressions and their readings.</p></div><div class="dialogue-guide-actions"><button class="button primary" data-number-practice="matching">Matching ${icon('arrow')}</button><button class="button soft" data-number-practice="rebuild">Rebuild ${icon('arrow')}</button></div><p class="small muted">${set.items.length} forms</p></section><section class="study-wrap number-content"><div class="number-content-grid">${shown.map(q=>`<article class="paper number-guide" data-number-guide="${esc(q.id)}">${numberPrompt(q)}<p class="jp number-reading" lang="ja">${esc(q.kana)}</p>${numberReadings(q).length>1?`<p class="jp small" lang="ja">${numberReadings(q).slice(1).map(esc).join(' / ')}</p>`:''}<p class="small muted">${esc(numberNotes(q))}</p></article>`).join('')}</div><div class="card-actions number-pagination">${button('Previous page','numberPreviousPage','ghost',state.numberPage?'':'disabled')}<span>${state.numberPage+1} / ${last+1}</span>${button('Next page','numberNextPage','ghost',state.numberPage<last?'':'disabled')}</div></section>`;
+ return `<section class="study-wrap dialogue-selector number-selector"><div class="dialogue-chip-row number-mode-row" role="group" aria-label="Number selection">${chips([['all','All'],['category','By category'],['chapter','By chapter']],'number-browse',state.numberBrowse)}</div>${state.numberBrowse==='all'?'':`<div class="field-label number-filter-label">${label}</div><div class="dialogue-chip-row number-filter-row" data-chip-group="${state.numberBrowse}" role="group" aria-label="${label}">${chips(entries,state.numberBrowse==='category'?'number-type':'number-chapter',state.numberBrowse==='category'?state.numberType:state.numberChapter)}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>Explore numerical expressions and their readings.</p></div><div class="dialogue-guide-actions"><button class="button primary" data-number-practice="matching">Matching ${icon('arrow')}</button><button class="button soft" data-number-practice="rebuild">Rebuild ${icon('arrow')}</button></div><p class="small muted">${set.items.length} forms</p></section><section class="study-wrap number-content">${numberContentTable(set.items,shown)}<div class="card-actions number-pagination">${button('Previous page','numberPreviousPage','ghost',state.numberPage?'':'disabled')}<span>${state.numberPage+1} / ${last+1}</span>${button('Next page','numberNextPage','ghost',state.numberPage<last?'':'disabled')}</div></section>`;
 }
 function startNumberPractice(mode='matching',ids=null,scope=null){
  if(!['matching','rebuild'].includes(mode))return;
@@ -184,7 +232,7 @@ function checkNumberMatching(reveal=false){const r=state.numberRound,q=numberCur
 function relativeLabel(value){const [unit,offset]=value,zh=state.language==='zh-Hant';if(unit==='day'&&Math.abs(offset)<=2)return (zh?{'-2':'前天','-1':'昨天','0':'今天','1':'明天','2':'後天'}:{'-2':'The day before yesterday','-1':'Yesterday','0':'Today','1':'Tomorrow','2':'The day after tomorrow'})[offset];if(unit!=='day'&&Math.abs(offset)===1)return zh?({week:offset<0?'上週':'下週',month:offset<0?'上個月':'下個月',year:offset<0?'去年':'明年'})[unit]:`${offset<0?'Last':'Next'} ${unit}`;if(!offset)return zh?({day:'今天',week:'本週',month:'本月',year:'今年'})[unit]:({day:'Today',week:'This week',month:'This month',year:'This year'})[unit];const n=Math.abs(offset);return zh?`${n}${({day:'天',week:'週',month:'個月',year:'年'})[unit]}${offset<0?'前':'後'}`:offset<0?`${n} ${unit}${n===1?'':'s'} ago`:`In ${n} ${unit}${n===1?'':'s'}`;}
 const NUMBER_MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
 function numberPrompt(q){
- const v=q.value,zh=state.language==='zh-Hant',label=numberTypeLabel(q.type),number=n=>n.toLocaleString('en-US');let visual='';
+ const v=q.value,zh=state.language==='zh-Hant',label=numberTypeLabel(numberCategory(q)),number=n=>n.toLocaleString('en-US');let visual='';
  if(q.type==='whole'||q.type==='decimals')visual=`<strong class="number-value">${esc(q.type==='whole'?number(v):v)}</strong>`;
  if(q.type==='dates'){const [month,day]=v;visual=`<div class="number-calendar"><span>${zh?`${month}月`:NUMBER_MONTH_NAMES[month-1]}</span><strong>${day}</strong><span>${zh?'日':'Day'}</span></div>`;}
  if(q.type==='fractions')visual=`<div class="number-fraction" aria-label="${esc(zh?`${v[0]} 分子，${v[1]} 分母`:`Numerator ${v[0]}, denominator ${v[1]}`)}"><span>${number(v[0])}</span><span>${number(v[1])}</span></div>`;
