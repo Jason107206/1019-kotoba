@@ -1,47 +1,47 @@
-# Dialogue and Number Matching update
+# Number Content, Matching and Rebuild
 
-Dialogue now contains 48 expressions in Introduction, Polite expressions, Replies, This and That, and WH-words. Numbers/floors, time, days/weekdays, activities, schedules/events, and places no longer appear as Dialogue categories or exclusive entries in All, By Chapter, or game pools. Regrouped questions and place demonstratives retain their IDs, conversations and chapters. All 338 Vocabulary records remain intact; the underlying chapter lesson registry is retained for other functions.
+Numbers opens a content page with All / By Category / By Chapter controls, visual examples, hiragana readings, accepted variants, and concise bilingual pronunciation notes. Twelve examples appear per page. The Matching and Rebuild buttons practise the entire selected scope, including examples on other pages. Returning from either game restores the selection, page and filter scrolling.
 
-Dialogue exercises render the source conversation in its actual order. In Getting someone’s attention, the learner’s inline blank/answer comes first and the listener’s はい follows. A response that repeats the missing Japanese phrase stays masked until grading. Object exercises call the same `demonstrativeScene` as Content, retaining the book, Lulu positions, distance cues and speaker perspectives throughout answering and feedback. The attention guide illustration, which contains あのう, is not shown as an answer-revealing game scene.
+The shared bank still contains 502 unique numerical expressions across all ten types: 81 whole numbers, 107 dates, 30 fractions, 46 ages, 30 floors, 125 times, 7 weekdays, 26 prices, 20 relative-time expressions and 30 decimals. Original word IDs, readings, progress and chapter memberships remain intact.
 
-Every game uses one tracker in the app bar: a compact counter plus a bar on its bottom edge. Progress counts completed rounds, including wrong or revealed answers. Vocabulary, Rebuild, Kanji Writing, Sentence Rebuild, Dialogue, Number Matching and the mock share this component. The mock updates completion as answers are entered. Scoring, result pages and manual advancement remain separate from completion.
+## Chapter scopes
 
-## Number Matching coverage
+Chapter selection now includes rule-supported values instead of only printed example values. Each rule records the IDs of its source vocabulary and requires a common chapter membership among those records. Memberships inferred from reading rules are recorded separately in each question’s `chapterRules` field; existing direct-example metadata remains intact.
 
-The separate Number Matching database has 502 questions. It reuses existing tables, vocabulary readings and chapter lesson values; validated rules supply additional combinations. No expression type from the request is unsupported.
+| Chapter | Scope | Expressions |
+| --- | --- | ---: |
+| 1 | Ages supported by 歳 / 何歳, within the verified 1–99 scope | 45 |
+| 3 | Positive cardinal numbers using 百 / 千 / 万, floor counters and yen prices | 136 |
+| 4 | Hours, minutes, AM/PM, weekdays and existing relative-day words | 137 |
+| 5 | Month/day readings and existing week/month/year expressions | 116 |
 
-| Type | Questions | Prompt |
-| --- | ---: | --- |
-| Whole numbers | 81 | Large numeral with thousands separators |
-| Dates | 107 | Month/day calendar |
-| Fractions | 30 | Numerator over denominator, with localized label |
-| Ages | 46 | Person symbol and age |
-| Floors | 30 | Floor indicator |
-| Clock times | 125 | Digital time and explicit AM/PM |
-| Weekdays | 7 | Highlighted calendar strip |
-| Money | 26 | Amount and explicit Japanese yen / JPY label |
-| Relative time | 20 | Timeline with Today and highlighted target |
-| Decimals | 30 | Exact displayed decimal digits |
+The chapter scopes cover 434 expressions. The remaining 68 are available under All and By Category: fractions, decimals, supplemental multi-week offsets, zero and the 100-year age expression. No chapter is assigned to a type without a database basis. In particular, no unsupported Chapters 2 or 6 scope is created. Both games and the content browser call the same selection function.
 
-English and Traditional Chinese labels share the existing typography, chips, answer buttons and feedback components. Games use an open layout with happy/encouraging Lulu feedback and manual Next, New round and retry controls. Type and chapter selections persist; invalid or empty selections recover to a valid scope.
+The current verified integer range is 0–99,999,999; age and floor exercises remain within their tested bounds. Month/day calendars exclude invalid dates and omit leap day without a year. Fraction presentation is not reduced, and decimal strings preserve every displayed digit, including zeros. Midnight/noon AM/PM uses 午前0時/午後0時 readings to avoid ambiguity.
 
-## Reading rules and provenance
+## Reconstruction
 
-- Integer composition supports 0–99,999,999 using existing hundred/thousand exceptions and 万 grouping. Prices append えん; clocks include ごぜん or ごご when AM/PM is displayed.
-- Ages include いっさい, はっさい, contracted tens and はたち. Floors reuse the source counter readings and contractions. Hours retain よじ, しちじ and くじ. Minutes retain their ふん/ぷん distinctions and contractions. English 12 AM/PM is read as 午前0時/午後0時 (ごぜんれいじ/ごごれいじ), avoiding ambiguity at midnight and noon.
-- Dates reuse supplied CSV readings and implement irregular month/day forms, including しがつ, しちがつ, くがつ, ついたち, よっか, はつか, and the 14/17/19/24/27/29 forms. Invalid calendar dates are excluded; leap day is omitted because no year is shown.
-- Fractions read the denominator, then ぶんの, then the numerator. Displayed fractions are never reduced.
-- Decimals use strings, preserving the order, leading zero digits after the point, and trailing zeros. Every fractional digit is read separately.
-- Relative time reuses the source day/week/month/year vocabulary; supplemental multi-week offsets use verified 週間前/週間後 composition.
-- Chapter metadata is attached only to complete values present in existing vocabulary, numerical tables or lesson scenes. Other combinations are General practice. Fractions, decimals, generated month/day combinations and supplemental multi-week offsets have no fabricated chapter assignment.
-- Four distinct same-type readings appear per round. Nearby values or similar structures are preferred as distractors. Alternate readings of the correct value are not offered as wrong choices. Prompt markup and accessibility labels never expose the hiragana answer.
+Matching uses meaningful reading segments: place-value groups, month/day names, counter units, periods, fraction parts and individual decimal digits. Sound contractions stay attached to their counters. For example, 125 uses `ひゃく / にじゅう / ご`, and 15/100 uses `ひゃく / ぶんの / じゅう / ご`.
 
-`NUMBER_RULES`, `NUMBER_QUESTIONS`, `sourceIds`, and `chapters` are defined in `dist/numbers.js`. They do not alter Vocabulary or the repeatable CSV import.
+Rebuild uses individual hiragana characters. Small kana remain separate characters; Unicode combining marks stay attached to their kana after NFC normalization. Repeated segments and characters keep separate tile identities. Accepted source readings contribute the extra tiles needed to assemble those variants.
+
+Both modes use the same ordered-text validator, independently of tile identity. Learners can return tiles, undo, clear, check, or reveal and mark for review. The canonical answer and pronunciation note appear only at feedback. Happy and encouraging Lulu cards, scoring, manual Next, retry and results follow the existing game behavior. Matching progress remains in `numberMatching`; Rebuild has its own `numberRebuild` namespace.
+
+## Shared game layout
+
+Every game, including results and the mock, uses the same non-sticky app bar and content column:
+
+- Horizontal padding: 16px below 600px, 24px on larger screens.
+- Controls: 48px touch targets with 16px top padding.
+- Title and round counter: stacked with a 4px gap.
+- Progress: 8px below the control row, at the bottom edge of the bar.
+- Game content: starts 24px below the progress bar.
+
+The former absolute counter offsets, narrower Dialogue column, duplicate Number top padding and game footer are removed. Breadcrumbs and “correct so far” remain absent from games. The site footer and sidebar footer note remain on content and other non-game pages. Neither is rendered in games. Completion counts remain independent of accuracy.
 
 ## Verification
 
-- `node tests/number-matching.cjs`: all 502 pools/choices, irregular readings, exact fractions/decimals, unsupported-range guards, provenance, filters, retries, completion tracking, answer non-disclosure, removed-category recovery, and learner-first turns.
-- `node tests/verify.cjs`: existing scoring, persistence, navigation, keyboard behavior, shared games and the original mock.
-- `node tests/chapters-3-4.cjs` and `node tests/chapter-import.cjs`: original records, readings, memberships and import repeatability remain intact.
-- `CHROMIUM_PATH=/usr/bin/chromium node tests/dialogue-numbers-browser.cjs`: 384 layout checks in both languages at 320, 390 and 1440px, including all numerical types, actual mock input events, app-bar Update controls, correct/wrong feedback, inline answering and the shared object scenes.
-- `node scripts/build-pwa.cjs` and `node tests/pwa.cjs`: the new function is included in the offline asset cache.
+- `node tests/number-matching.cjs`: reading exceptions, every question and accepted variant in both modes, database-backed chapter coverage, repeated and Unicode tiles, ordered validation, wrong/revealed answers, retries, navigation and scope preservation.
+- `node tests/verify.cjs`, `node tests/chapters-3-4.cjs`, `node tests/chapter-import.cjs`: existing scoring, persistence, source rows, memberships and import repeatability.
+- `CHROMIUM_PATH=/usr/bin/chromium node tests/number-content-browser.cjs`: both languages at 320, 390, 768 and 1440px; content filters and pagination, all scopes and both modes, actual tile taps, undo/reset/return, variants, manual results/retry, back navigation, app-bar geometry and footer visibility on every game and results route.
+- `node scripts/build-pwa.cjs` and `node tests/pwa.cjs`: reproducible offline assets.

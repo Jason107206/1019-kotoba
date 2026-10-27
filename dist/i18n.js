@@ -752,3 +752,9 @@ Object.assign(ZH_HANT, {
  'Expression type':'表達類型','General practice':'綜合練習','Generated combinations without chapter references appear in General practice.':'沒有課次資料的組合表達列於綜合練習。',
  'Start matching':'開始配對','Fraction':'分數','Round progress':'回合進度','Completed rounds':'已完成回合'
 });
+
+Object.assign(ZH_HANT, {
+ 'Numbers':'數字','Explore number readings, then practise Matching or Rebuild.':'瀏覽數字讀音，再練習配對或重組。',
+ 'Number selection':'數字選擇','Explore numerical expressions and their readings.':'瀏覽數量表達及其讀音。',
+ 'Previous page':'上一頁','Next page':'下一頁','Arrange your answer':'排列答案'
+});

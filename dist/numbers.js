@@ -1,6 +1,5 @@
 'use strict';
-// Number practice has its own database. Generated combinations carry no chapter
-// unless the complete value occurs in the existing words, tables or lessons.
+// Number content and both games share one bank and database-backed curriculum scopes.
 const NUMBER_TYPES=[['whole','Whole numbers','整數'],['dates','Dates','日期'],['fractions','Fractions','分數'],['ages','Ages','年齡'],['floors','Floors','樓層'],['clock','Clock times','時刻'],['weekdays','Weekdays','星期'],['money','Money','金額'],['relative','Relative time','相對時間'],['decimals','Decimals','小數']];
 const NUMBER_DIGITS=['ぜろ','いち','に','さん','よん','ご','ろく','なな','はち','きゅう'];
 function integerReading(value){
@@ -50,7 +49,7 @@ for(const q of CHAPTER_DIALOGUES){const v=q.visual;if(!v)continue;if(v.type==='c
 for(const w of WORDS){const match=w.c.match(/^([月火水木金土日])曜日$/u);if(match&&w.kana)numberSource('weekdays','月火水木金土日'.indexOf(match[1])+1,w.kana,w);}
 // Existing age examples: 9歳 in p7 and じゅうはっさい in the age conversations.
 addNumberQuestion('ages',9,ageReading(9),['1-18'],[1]);addNumberQuestion('ages',18,ageReading(18),['1-19a','1-19b'],[1]);
-// Rule-derived combinations are deliberately unassigned to chapters.
+// Add varied values; database-backed chapter rules resolve their scopes below.
 const wholeValues=[...Array.from({length:40},(_,i)=>i),42,55,64,70,77,88,99,101,125,215,333,468,600,800,999,1001,1250,3333,8008,10001,98765,8750000,10000000,99999999];
 wholeValues.forEach(n=>addNumberQuestion('whole',n,integerReading(n)));
 for(let month=1;month<=12;month++)for(let day=1;day<=(month===4?30:28);day++)if(month===4||[1,4,7,14,20,24,28].includes(day))addNumberQuestion('dates',[month,day],dateReading(month,day));
@@ -66,33 +65,122 @@ for(const [form,unit,offset] of relativeWords){const w=WORDS.find(w=>w.c===form|
 for(const offset of [-4,-3,-2,2,3,4])addNumberQuestion('relative',['week',offset],integerReading(Math.abs(offset))+'しゅうかん'+(offset<0?'まえ':'ご'));
 for(const whole of [0,1,2,3,10,12])for(const digits of ['05','30','368','007','101']){const value=`${whole}.${digits}`;addNumberQuestion('decimals',value,decimalReading(value));}
 function numberTypeLabel(type){const row=NUMBER_TYPES.find(t=>t[0]===type);return row?.[state.language==='zh-Hant'?2:1]||'All';}
-function numberSelection(){
- if(!['all',...NUMBER_TYPES.map(t=>t[0])].includes(state.numberType))state.numberType='all';
- const typed=NUMBER_QUESTIONS.filter(q=>state.numberType==='all'||q.type===state.numberType);
- const available=[...new Set(typed.flatMap(q=>q.chapters))].sort();
- if(!['all',...(typed.some(q=>!q.chapters.length)?['general']:[]),...available.map(String)].includes(state.numberChapter))state.numberChapter='all';
- const items=typed.filter(q=>state.numberChapter==='all'||(state.numberChapter==='general'?!q.chapters.length:q.chapters.includes(Number(state.numberChapter))));
- return {items,available,general:typed.some(q=>!q.chapters.length)};
+// Chapter rules require actual source records with a common chapter membership.
+// A source example and a curriculum-derived membership retain separate provenance.
+const NUMBER_CHAPTER_SCOPES=[];
+function numberChapterRule(id,type,sourceIds,supports){
+ const words=sourceIds.map(id=>WORDS.find(w=>w.id===id));if(!words.length||words.some(w=>!w))return;
+ const chapters=wordChapters(words[0]).filter(ch=>words.every(w=>wordChapters(w).includes(ch)));
+ if(!chapters.length)return;
+ const rule={id,type,sourceIds,chapters};NUMBER_CHAPTER_SCOPES.push(rule);
+ for(const q of NUMBER_QUESTIONS)if(q.type===type&&supports(q.value)){
+  q.chapters=[...new Set([...q.chapters,...chapters])].sort();q.chapterRules=[...(q.chapterRules||[]),id];
+ }
 }
+numberChapterRule('age-counter','ages',['1-18','1-19a'],n=>n>=1&&n<=99);
+numberChapterRule('cardinal-units','whole',['3-34','3-35','3-36'],n=>n>=1&&n<=99999999);
+numberChapterRule('floor-counter','floors',['3-30a','3-30b'],n=>n>=1&&n<=30);
+numberChapterRule('yen-prices','money',['3-32','3-34','3-35','3-36'],n=>n>=1&&n<=99999999);
+numberChapterRule('clock-counters','clock',['4-13','4-14a','4-14b','4-18','4-19'],v=>v[0]>=1&&v[0]<=12&&v[1]>=0&&v[1]<=59);
+const monthSource=WORDS.find(w=>w.c.replace(/[….～]/gu,'')==='月');
+const dateSources=WORDS.filter(w=>/^(1|4|14|20|24)日$/u.test(w.c)&&w.kana);
+if(monthSource&&dateSources.length===5)numberChapterRule('calendar-readings','dates',[monthSource.id,...dateSources.map(w=>w.id)],()=>true);
+
+function numberReadings(q){
+ const readings=[q.kana,...(q.acceptedReadings||[])];
+ for(const [base,alternatives] of Object.entries(READING_ALTERNATIVES))for(const reading of [...readings])if(reading.includes(base))for(const alt of alternatives)readings.push(reading.replace(base,alt));
+ if(q.type==='floors'&&q.value===3)readings.push(...(CHAPTER_DIALOGUES.find(x=>x.id==='ch3-floor-answer')?.acceptedReadings||[]));
+ return [...new Set(readings.map(rebuildText))];
+}
+function integerSegments(n){
+ if(n===0)return ['ぜろ'];
+ if(n>=10000){const high=Math.floor(n/10000),low=n%10000;return [...integerSegments(high),'まん',...(low?integerSegments(low):[])];}
+ const result=[];let rest=n;
+ for(const unit of [1000,100,10]){const digit=Math.floor(rest/unit);rest%=unit;if(digit)result.push(integerReading(digit*unit));}
+ if(rest)result.push(NUMBER_DIGITS[rest]);return result;
+}
+function counterSegments(n,reading){
+ const last=n%10;
+ if(last){const prefix=n-last?integerReading(n-last):'',piece=reading.slice(prefix.length),units=prefix?integerSegments(n-last):[];
+  if(piece.includes('っ'))return [...units,piece];
+  const suffix=['さい','かい','がい','ふん','ぷん'].find(s=>piece.endsWith(s));
+  return [...units,...(suffix?[piece.slice(0,-suffix.length),suffix]:[piece])].filter(Boolean);
+ }
+ // Contracted tens stay with the counter, including accepted じっ variants.
+ const marker=reading.match(/じゅっ|じっ/u);return marker?[reading.slice(0,marker.index),reading.slice(marker.index)].filter(Boolean):[...integerSegments(n),reading.slice(integerReading(n).length)].filter(Boolean);
+}
+function numberSegments(q,reading=q.kana){
+ const v=q.value;let units;
+ if(q.type==='whole')units=integerSegments(v);
+ else if(q.type==='money')units=[...integerSegments(v),'えん'];
+ else if(q.type==='dates')units=[MONTH_READINGS[v[0]-1],q.kana.slice(MONTH_READINGS[v[0]-1].length)];
+ else if(q.type==='fractions')units=[...integerSegments(v[1]),'ぶんの',...integerSegments(v[0])];
+ else if(q.type==='ages')units=v===20?['はたち']:counterSegments(v,q.kana);
+ else if(q.type==='floors')units=counterSegments(v,q.kana);
+ else if(q.type==='clock')units=[v[2]==='AM'?'ごぜん':'ごご',v[0]===12?'れいじ':HOUR_READINGS[v[0]-1],...(v[1]?counterSegments(v[1],minuteReading(v[1])):[])];
+ else if(q.type==='weekdays')units=[q.kana.slice(0,-3),'ようび'];
+ else if(q.type==='decimals'){const [whole,digits]=v.split('.');units=[...(whole==='0'?['れい']:integerSegments(Number(whole))),'てん',...[...digits].map(d=>NUMBER_DIGITS[Number(d)])];}
+ else if(q.type==='relative'&&q.sourceIds.length)units=[q.kana];
+ else if(q.type==='relative')units=[...integerSegments(Math.abs(v[1])),'しゅうかん',v[1]<0?'まえ':'ご'];
+ else units=[q.kana];
+ units=units.filter(Boolean);
+ if(reading===q.kana)return units;
+ if(q.type==='floors')return counterSegments(q.value,reading);
+ if(q.type==='clock'){const prefix=v[2]==='AM'?'ごぜん':'ごご',hour=v[0]===12?'れいじ':HOUR_READINGS[v[0]-1];return [prefix,hour,...(v[1]?counterSegments(v[1],reading.slice(prefix.length+hour.length)):[])];}
+ for(const [base,alternatives] of Object.entries(READING_ALTERNATIVES))for(const alt of alternatives)if(q.kana.replace(base,alt)===reading)return units.map(unit=>unit.replace(base,alt));
+ if(q.type==='floors'&&q.value===3&&reading==='さんかい')return ['さんかい'];
+ throw Error('Unsegmented accepted number reading');
+}
+// NFC composes voiced kana; remaining combining marks stay attached to their base.
+// Small kana are individual characters in Rebuild, not syllable-sized kanaUnits.
+function numberCharacters(text){const chars=[];for(const c of [...rebuildText(text)]){if(/\p{M}/u.test(c)&&chars.length)chars[chars.length-1]+=c;else chars.push(c);}return chars;}
+function numberTileBank(q,mode){
+ const counts=new Map();for(const reading of numberReadings(q)){const own=new Map();for(const unit of mode==='rebuild'?numberCharacters(reading):numberSegments(q,reading))own.set(unit,(own.get(unit)||0)+1);for(const [unit,count] of own)counts.set(unit,Math.max(count,counts.get(unit)||0));}
+ const bank=shuffle([...counts].flatMap(([unit,count])=>Array(count).fill(unit)));
+ if(bank.length>1&&bank.join('')===q.kana)bank.push(bank.shift());return bank;
+}
+function numberSelection(){
+ if(!['all','category','chapter'].includes(state.numberBrowse))state.numberBrowse='all';
+ if(!NUMBER_TYPES.some(t=>t[0]===state.numberType))state.numberType=NUMBER_TYPES[0][0];
+ const available=[...new Set(NUMBER_QUESTIONS.flatMap(q=>q.chapters))].sort();
+ if(!available.map(String).includes(state.numberChapter))state.numberChapter=String(available[0]);
+ const items=NUMBER_QUESTIONS.filter(q=>state.numberBrowse==='all'||(state.numberBrowse==='category'?q.type===state.numberType:q.chapters.includes(Number(state.numberChapter))));
+ return {items,available,key:state.numberBrowse==='all'?'all':state.numberBrowse==='category'?`category-${state.numberType}`:`chapter-${state.numberChapter}`,label:state.numberBrowse==='all'?'Numbers':state.numberBrowse==='category'?numberTypeLabel(state.numberType):chapterLabel(state.numberChapter)};
+}
+const NUMBER_NOTES={
+ whole:['Read the large units before the smaller ones. Watch hundred and thousand sound changes.','先讀大單位，再讀小單位。留意百與千的音變。'],
+ dates:['Read the month, then the day. Some month and day names have irregular readings.','先讀月份，再讀日期。部分月份與日期有特殊讀音。'],
+ fractions:['Read the denominator, then ぶんの, then the numerator. Keep the displayed fraction.','先讀分母，再讀「ぶんの」，最後讀分子。保留畫面上的分數形式。'],
+ ages:['Use さい for age; contractions and はたち are important exceptions.','年齡使用「さい」；留意促音及「はたち」等特殊讀法。'],
+ floors:['The floor counter changes sound in readings such as いっかい and さんがい.','樓層量詞會音變，例如「いっかい」及「さんがい」。'],
+ clock:['Include a.m. or p.m.; hours and minutes have their own counter readings.','讀出上午或下午；時與分各有不同的量詞讀法。'],
+ weekdays:['Keep the full ようび ending when naming a weekday.','說星期時要保留完整的「ようび」。'],
+ money:['Read the amount in Japanese units, then add えん.','以日語數字單位讀出金額，再加上「えん」。'],
+ relative:['Read the highlighted time relative to today.','讀出標示的時間與今天的相對關係。'],
+ decimals:['Read てん for the point, then read each digit in order, including zeros.','小數點讀「てん」，之後逐位順序讀出數字，包括零。']
+};
+function numberNotes(q){return NUMBER_NOTES[q.type][state.language==='zh-Hant'?1:0];}
 function numberMenu(){
  const set=numberSelection(),chips=(entries,attribute,selected)=>entries.map(([id,label])=>`<button class="dialogue-chip${id===selected?' selected':''}" data-${attribute}="${id}" aria-pressed="${id===selected}">${esc(label)}</button>`).join('');
- const chapters=[['all','All chapters'],...(set.general?[['general','General practice']]:[]),...set.available.map(ch=>[String(ch),chapterLabel(ch)])];
- return `<section class="study-wrap dialogue-selector number-selector"><div class="dialogue-intro"><h1>Number Matching</h1><p>Match the expression with its hiragana reading.</p></div><div class="field-label">Expression type</div><div class="dialogue-chip-row number-type-row" role="group" aria-label="Expression type">${chips([['all','All'],...NUMBER_TYPES.map(t=>[t[0],numberTypeLabel(t[0])])],'number-type',state.numberType)}</div><div class="field-label">Chapter</div><div class="dialogue-chip-row number-chapter-row" data-chip-group="${state.numberType}" role="group" aria-label="Chapter">${chips(chapters,'number-chapter',state.numberChapter)}</div><p class="small muted">Generated combinations without chapter references appear in General practice.</p><p class="small muted">${set.items.length} forms</p><div class="card-actions">${button('Start matching','numberStart','primary',set.items.length?'':'disabled')}</div></section>`;
+ const entries=state.numberBrowse==='category'?NUMBER_TYPES.map(t=>[t[0],numberTypeLabel(t[0])]):set.available.map(ch=>[String(ch),chapterLabel(ch)]);
+ const label=state.numberBrowse==='category'?'Category':'Chapter';
+ const pageSize=12,last=Math.max(0,Math.ceil(set.items.length/pageSize)-1);state.numberPage=Math.max(0,Math.min(last,Number(state.numberPage)||0));
+ const shown=set.items.slice(state.numberPage*pageSize,(state.numberPage+1)*pageSize);
+ return `<section class="study-wrap dialogue-selector number-selector"><div class="dialogue-chip-row number-mode-row" role="group" aria-label="Number selection">${chips([['all','All'],['category','By category'],['chapter','By chapter']],'number-browse',state.numberBrowse)}</div>${state.numberBrowse==='all'?'':`<div class="field-label number-filter-label">${label}</div><div class="dialogue-chip-row number-filter-row" data-chip-group="${state.numberBrowse}" role="group" aria-label="${label}">${chips(entries,state.numberBrowse==='category'?'number-type':'number-chapter',state.numberBrowse==='category'?state.numberType:state.numberChapter)}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>Explore numerical expressions and their readings.</p></div><div class="dialogue-guide-actions"><button class="button primary" data-number-practice="matching">Matching ${icon('arrow')}</button><button class="button soft" data-number-practice="rebuild">Rebuild ${icon('arrow')}</button></div><p class="small muted">${set.items.length} forms</p></section><section class="study-wrap number-content"><div class="number-content-grid">${shown.map(q=>`<article class="paper number-guide" data-number-guide="${esc(q.id)}">${numberPrompt(q)}<p class="jp number-reading" lang="ja">${esc(q.kana)}</p>${numberReadings(q).length>1?`<p class="jp small" lang="ja">${numberReadings(q).slice(1).map(esc).join(' / ')}</p>`:''}<p class="small muted">${esc(numberNotes(q))}</p></article>`).join('')}</div><div class="card-actions number-pagination">${button('Previous page','numberPreviousPage','ghost',state.numberPage?'':'disabled')}<span>${state.numberPage+1} / ${last+1}</span>${button('Next page','numberNextPage','ghost',state.numberPage<last?'':'disabled')}</div></section>`;
 }
-function startNumberMatching(ids=null){const selection=numberSelection(),items=selection.items;const chosen=ids?.filter(id=>items.some(q=>q.id===id));if(!items.length)return;rememberPage();state.numberRound={ids:chosen?.length?chosen:shuffle(items.map(q=>q.id)),index:0,correct:0,missed:[],checked:false,selected:null};state.view='number-game';prepareNumberMatching();render();window.scrollTo({top:0,behavior:'auto'});}
+function startNumberPractice(mode='matching',ids=null,scope=null){
+ if(!['matching','rebuild'].includes(mode))return;
+ if(scope)Object.assign(state,scope);
+ const selection=numberSelection(),items=selection.items,chosen=ids?.filter(id=>items.some(q=>q.id===id));if(!items.length)return;
+ const currentScope={numberBrowse:state.numberBrowse,numberType:state.numberType,numberChapter:state.numberChapter,numberPage:state.numberPage};
+ rememberPage();state.numberRound={mode,scope:currentScope,ids:chosen?.length?chosen:shuffle(items.map(q=>q.id)),index:0,correct:0,missed:[],checked:false,chosen:[]};state.view='number-game';prepareNumberMatching();render();window.scrollTo({top:0,behavior:'auto'});
+}
+function startNumberMatching(ids=null){startNumberPractice('matching',ids);}
 function numberCurrent(){const r=state.numberRound;return r&&NUMBER_QUESTIONS.find(q=>q.id===r.ids[r.index]);}
-function numberDistractorDistance(q,c){
- const a=q.value,b=c.value;
- if(['whole','money','ages','floors'].includes(q.type))return Math.abs(a-b)/Math.max(a,1);
- if(q.type==='dates')return (a[0]===b[0]?0:3)+Math.abs(a[1]-b[1])/31;
- if(q.type==='fractions')return (a[1]===b[1]?0:3)+Math.abs(a[0]-b[0])/Math.max(a[1],1);
- if(q.type==='clock')return Math.abs(a[0]-b[0])*4+Math.abs(a[1]-b[1])/10+(a[2]===b[2]?0:1);
- if(q.type==='relative')return (a[0]===b[0]?0:5)+Math.abs(a[1]-b[1]);
- if(q.type==='decimals')return Math.abs(Number(a)-Number(b))+(a.split('.')[1].length===b.split('.')[1].length?0:3);
- return Math.abs(a-b);
-}
-function prepareNumberMatching(){const r=state.numberRound,q=numberCurrent();if(!q)return;r.checked=false;r.selected=null;r.result=false;const seen=new Set([q.kana]);const candidates=shuffle(NUMBER_QUESTIONS.filter(x=>x.type===q.type&&x.id!==q.id)).sort((a,b)=>numberDistractorDistance(q,a)-numberDistractorDistance(q,b));r.choices=shuffle([q,...candidates.filter(x=>{if(seen.has(x.kana))return false;seen.add(x.kana);return true;}).slice(0,3)]);}
-function checkNumberMatching(id){const r=state.numberRound,q=numberCurrent();if(!q||r.checked||!r.choices.some(c=>c.id===id))return;r.selected=id;r.result=id===q.id;r.checked=true;if(r.result)r.correct++;else if(!r.missed.includes(q.id))r.missed.push(q.id);record('numberMatching',q.id,r.result);render();}
+function prepareNumberMatching(){const r=state.numberRound,q=numberCurrent();if(!q)return;r.checked=false;r.result=false;r.revealed=false;r.chosen=[];r.tileBank=numberTileBank(q,r.mode);}
+function numberAnswer(){const r=state.numberRound;return r.chosen.map(i=>r.tileBank[i]).join('');}
+function numberAnswerReady(){const answer=rebuildText(numberAnswer());return numberReadings(numberCurrent()).some(reading=>reading.length===answer.length);}
+function checkNumberMatching(reveal=false){const r=state.numberRound,q=numberCurrent();if(!q||r.checked||(!reveal&&!numberAnswerReady()))return;r.result=!reveal&&numberReadings(q).some(reading=>rebuildCorrect(numberAnswer(),reading));r.checked=true;r.revealed=reveal;if(r.result)r.correct++;else if(!r.missed.includes(q.id))r.missed.push(q.id);record(r.mode==='rebuild'?'numberRebuild':'numberMatching',q.id,r.result);render();}
 function relativeLabel(value){const [unit,offset]=value,zh=state.language==='zh-Hant';if(unit==='day'&&Math.abs(offset)<=2)return (zh?{'-2':'前天','-1':'昨天','0':'今天','1':'明天','2':'後天'}:{'-2':'The day before yesterday','-1':'Yesterday','0':'Today','1':'Tomorrow','2':'The day after tomorrow'})[offset];if(unit!=='day'&&Math.abs(offset)===1)return zh?({week:offset<0?'上週':'下週',month:offset<0?'上個月':'下個月',year:offset<0?'去年':'明年'})[unit]:`${offset<0?'Last':'Next'} ${unit}`;if(!offset)return zh?({day:'今天',week:'本週',month:'本月',year:'今年'})[unit]:({day:'Today',week:'This week',month:'This month',year:'This year'})[unit];const n=Math.abs(offset);return zh?`${n}${({day:'天',week:'週',month:'個月',year:'年'})[unit]}${offset<0?'前':'後'}`:offset<0?`${n} ${unit}${n===1?'':'s'} ago`:`In ${n} ${unit}${n===1?'':'s'}`;}
 const NUMBER_MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
 function numberPrompt(q){
@@ -110,6 +198,19 @@ function numberPrompt(q){
  return `<figure class="number-prompt number-prompt-${q.type}"><figcaption>${esc(q.type==='fractions'?translateText('Fraction'):label)}</figcaption>${visual}</figure>`;
 }
 function numberGame(){const r=state.numberRound;if(!r)return numberMenu();if(r.index>=r.ids.length)return header('Round complete.','Give yourself another chance with the items you missed.')+`<section class="study-wrap paper result-center"><div class="result-score">${r.correct}<small> / ${r.ids.length}</small></div><div class="card-actions">${r.missed.length?button('Practise missed items','numberRetry','coral'):''}${button('New round','numberStart','primary')}${button('Go back','gameBack','ghost')}</div></section>`;
- const q=numberCurrent();return `<section class="study-wrap number-exercise"><h1 class="sr-only">Number Matching</h1>${numberPrompt(q)}<div class="options activity-options">${r.choices.map((c,i)=>`<button class="option jp ${r.checked&&c.id===q.id?'correct':r.checked&&c.id===r.selected?'wrong':''}" lang="ja" data-number-choice="${esc(c.id)}" ${r.checked?'disabled':''}><span class="number">${i+1}</span><span>${esc(c.kana)}</span>${r.checked&&c.id===q.id?'<span class="option-state">✓ Correct</span>':r.checked&&c.id===r.selected?'<span class="option-state">✕ Your choice</span>':''}</button>`).join('')}</div>${r.checked?`<div class="reply-feedback ${r.result?'correct':'wrong'}" role="status"><span class="feedback-lulu ${r.result?'happy':'encouraging'}" aria-hidden="true"></span><div class="feedback-copy"><strong>${r.result?'Correct!':'The correct answer is:'}</strong><p class="jp" lang="ja">${esc(q.kana)}</p></div></div><div class="card-actions">${button('Next '+icon('arrow'),'numberNext','primary')}</div>`:''}</section>`;
+ const q=numberCurrent();return `<section class="study-wrap number-exercise"><h1 class="sr-only">${r.mode==='rebuild'?'Rebuild':'Matching'}</h1>${numberPrompt(q)}<div class="token-area number-answer ${r.chosen.length?'filled':''}" role="group" aria-label="Your hiragana answer">${r.chosen.length?r.chosen.map((id,position)=>`<button class="tile jp" lang="ja" data-number-return="${position}" ${r.checked?'disabled':''}>${esc(r.tileBank[id])}</button>`).join(''):'<span class="muted">Arrange your answer</span>'}</div><div class="token-bank number-tile-bank" role="group" aria-label="Hiragana bank">${r.tileBank.map((unit,index)=>`<button class="tile jp ${r.chosen.includes(index)?'selected':''}" lang="ja" data-number-tile="${index}" ${r.checked||r.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>${r.checked?`<div class="reply-feedback ${r.result?'correct':'wrong'}" role="status"><span class="feedback-lulu ${r.result?'happy':'encouraging'}" aria-hidden="true"></span><div class="feedback-copy"><strong>${r.result?'Correct!':'The correct answer is:'}</strong><p class="jp" lang="ja">${esc(q.kana)}</p><p class="small">${esc(numberNotes(q))}</p></div></div><div class="card-actions">${button('Next '+icon('arrow'),'numberNext','primary')}</div>`:`<div class="card-actions">${button('Undo','numberUndo','ghost',r.chosen.length?'':'disabled')}${button('Clear','numberClear','ghost',r.chosen.length?'':'disabled')}${button('Check answer','numberCheck','primary',numberAnswerReady()?'':'disabled')}</div><div class="activity-reveal"><button class="scope-link" data-action="numberReveal">Show answer & mark for review</button></div>`}</section>`;
 }
-function numberClick(d){if(d.numberType){state.numberType=d.numberType;state.numberChapter='all';numberSelection();save();render();return true;}if(d.numberChapter){state.numberChapter=d.numberChapter;numberSelection();save();render();return true;}if(d.numberChoice){checkNumberMatching(d.numberChoice);return true;}if(!d.action?.startsWith('number'))return false;if(d.action==='numberStart')startNumberMatching();else if(d.action==='numberNext'&&state.numberRound?.checked){state.numberRound.index++;prepareNumberMatching();render();}else if(d.action==='numberRetry')startNumberMatching(state.numberRound.missed);return true;}
+function numberClick(d){
+ if(d.numberBrowse){state.numberBrowse=d.numberBrowse;state.numberPage=0;numberSelection();save();render();return true;}
+ if(d.numberType||d.numberChapter){if(d.numberType)state.numberType=d.numberType;if(d.numberChapter)state.numberChapter=d.numberChapter;state.numberPage=0;numberSelection();save();render();return true;}
+ if(d.numberPractice){startNumberPractice(d.numberPractice);return true;}
+ const r=state.numberRound;
+ if(d.numberTile!==undefined||d.numberReturn!==undefined){if(state.view!=='number-game'||!r||r.checked||!numberCurrent())return true;if(d.numberTile!==undefined){const index=Number(d.numberTile),limit=Math.max(...numberReadings(numberCurrent()).map(reading=>reading.length));if(Number.isInteger(index)&&index>=0&&index<r.tileBank.length&&!r.chosen.includes(index)&&rebuildText(numberAnswer()+r.tileBank[index]).length<=limit)r.chosen.push(index);}else{const position=Number(d.numberReturn);if(Number.isInteger(position)&&position>=0&&position<r.chosen.length)r.chosen.splice(position,1);}render();return true;}
+ if(!d.action?.startsWith('number'))return false;
+ if(d.action==='numberStart')startNumberPractice(r?.mode||'matching',null,r?.scope);
+ else if(d.action==='numberRetry'&&r)startNumberPractice(r.mode,r.missed,r.scope);
+ else if(d.action==='numberNext'&&r?.checked){r.index++;prepareNumberMatching();render();}
+ else if(['numberClear','numberUndo','numberCheck','numberReveal'].includes(d.action)&&r&&!r.checked&&numberCurrent()){if(d.action==='numberClear')r.chosen=[];else if(d.action==='numberUndo')r.chosen.pop();else {checkNumberMatching(d.action==='numberReveal');return true;}render();}
+ else if(d.action==='numberPreviousPage'||d.action==='numberNextPage'){state.numberPage+=(d.action==='numberPreviousPage'?-1:1);render();document.querySelector('.number-content')?.scrollIntoView({block:'start'});}
+ return true;
+}

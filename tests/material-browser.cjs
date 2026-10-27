@@ -29,6 +29,7 @@ const assert=require('node:assert/strict');
  await page.locator('[data-answer="b"]').focus();
  await page.evaluate(()=>render());
  assert.equal(await page.evaluate(()=>document.activeElement.dataset.answer),'b');
+ await page.locator('.back-button').click();
  await page.locator('.footer-line [data-action="scope"]').click();
  await page.waitForFunction(()=>!!document.activeElement.closest('.modal'));
  await page.keyboard.press('Escape');
@@ -36,6 +37,11 @@ const assert=require('node:assert/strict');
  // Every mode and its principal content, practice, feedback and result surfaces.
  const routes=[
  ['home',()=>navigate('home')],
+ ['number-content',()=>navigate('number-menu')],
+ ['number-matching',()=>{state.numberBrowse='all';startNumberPractice('matching',[NUMBER_QUESTIONS.find(q=>q.type==='whole'&&q.value===125).id])}],
+ ['number-rebuild',()=>{state.numberBrowse='all';startNumberPractice('rebuild',[NUMBER_QUESTIONS.find(q=>q.type==='whole'&&q.value===125).id])}],
+ ['number-feedback',()=>numberClick({action:'numberReveal'})],
+ ['number-result',()=>numberClick({action:'numberNext'})],
  ['vocabulary',()=>navigate('vocabulary-menu')],
  ['recall',()=>startWordPractice('write',['1-09'],'Selected words')],
  ['recall-feedback',()=>{state.round.b='がくせい';state.round.c='学生';run('checkWrite')}],
@@ -74,13 +80,14 @@ const assert=require('node:assert/strict');
     const title=await page.locator('.topbar .app-title').evaluate(el=>{
      const s=getComputedStyle(el);return [el.textContent,s.fontFamily,s.fontSize,s.fontWeight,s.color,el.getBoundingClientRect().top-el.closest('.topbar').getBoundingClientRect().top];
     });
-    const key=`${width}:${language}`;
+    const key=`${width}:${language}:${await page.evaluate(()=>isGamePage())?'game':'content'}`;
     if(!titleStyles.has(key))titleStyles.set(key,title);
     assert.deepEqual(title,titleStyles.get(key),`${name}: shared Kotoba title`);
     assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
     if(await page.evaluate(()=>isGamePage())){
      assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
      assert.equal(await page.locator('.topbar [data-action="gameBack"]').count(),1);
+     assert.equal(await page.locator('.footer-line').count(),0);
     }else{
     assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
     assert.ok(await page.locator('.topbar').evaluate(bar=>bar.nextElementSibling.matches('.breadcrumb-row')));
@@ -93,7 +100,8 @@ const assert=require('node:assert/strict');
     if(['recall','rebuild'].includes(name)){
      assert.equal(await page.locator('.page-head,.vocabulary-selector,.filters').count(),0);
      assert.equal(await page.locator('main h1.sr-only').count(),1);
-     assert.equal(await page.locator('.round-info').count(),1);
+     assert.equal(await page.locator('.round-info').count(),0);
+     assert.equal(await page.locator('.game-progress').count(),1);
     }
     checks++;
    }

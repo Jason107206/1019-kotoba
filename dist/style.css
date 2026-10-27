@@ -272,7 +272,7 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .wh-target { color: #582686; background: #f4e8ff; border-radius: 4px; font-weight: 750; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .conversation-translation { margin-top: var(--space-1); font-size: 14px; line-height: 1.5; }
 .conversation-notes { margin-top: var(--space-4); font-size: 14px; line-height: 1.6; }
-.conversation-exercise { max-width: 720px; }
+.conversation-exercise { max-width: 800px; }
 .exercise-situation { margin-bottom: var(--space-4); font-size: 16px; font-weight: 500; line-height: 1.5; }
 .conversation-exercise .conversation-stage { gap: var(--space-3); }
 .conversation-exercise .reply-bubble { flex: 1; }
@@ -508,14 +508,22 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
 .inline-answer-token:disabled { opacity: 1; cursor: default; }
 .inline-answer-token:focus-visible { outline: 2px solid var(--md-primary); }
 .reply-bubble { min-width: 0; }
-/* One shared progress tracker, anchored to the bottom edge of every game app bar. */
-.topbar { position: relative; }
-.game-round { flex: none; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
-.game-progress { position: absolute; inset: auto 0 0; height: 4px; overflow: hidden; background: var(--md-secondary-container); }
+/* Game layout uses the same column for the app bar and content. */
+.game-main { --content-padding: 24px; max-width: 848px; padding: 0 24px 24px; }
+.game-topbar { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px 16px; align-items: center; min-height: 0; padding: 16px 0 0; margin: 0; position: static; }
+.game-topbar .topbar-leading { gap: 8px; }
+.game-title { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
+.game-title .app-title { line-height: 24px; }
+.game-round { font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+.game-progress { grid-column: 1 / -1; height: 4px; overflow: hidden; background: var(--md-secondary-container); }
 .game-progress > span { display: block; height: 100%; background: var(--md-primary); transition: width .2s; }
+.game-body { padding-top: 24px; }
+.game-body > :first-child { margin-top: 0; }
+.game-main .back-button { width: 48px; height: 48px; padding: 12px; }
+.game-body .number-exercise { padding: 0; }
+.game-body .number-prompt { min-height: 0; padding: 0; }
 .number-selector .dialogue-intro { margin-bottom: var(--space-6); }
 .number-selector .field-label { margin-top: var(--space-4); }
-.number-exercise { padding-top: var(--space-6); }
 .number-prompt { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: var(--space-4); min-height: 220px; margin: 0 0 var(--space-6); text-align: center; color: var(--md-on-surface); }
 .number-prompt figcaption { color: var(--muted); font-size: 14px; }
 .number-value { display: block; font-size: clamp(30px, 7vw, 64px); line-height: 1.35; font-weight: 600; letter-spacing: .015em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
@@ -542,16 +550,21 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
 .timeline-point.target { background: var(--md-primary-container); font-weight: 600; }
 .timeline-point.target::before { border-color: var(--md-primary); background: var(--md-primary); }
 .timeline-track { flex: .5; height: 2px; background: var(--md-outline); }
-@media (max-width: 359px) {
- .topbar .back-button { width: 40px; height: 44px; padding: 10px; }
- .game-round { font-size: 12px; }
- .topbar .app-title { font-size: 18px; }
- .topbar .language-switch { padding-inline: 8px; }
-}
 
+.number-content-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.number-guide { min-width: 0; padding: 16px; }
+.number-guide .number-prompt { min-height: 160px; margin-bottom: 16px; gap: 8px; }
+.number-guide .number-value { font-size: clamp(24px,4vw,40px); }
+.number-guide .number-fraction { font-size: 36px; }
+.number-reading { margin-bottom: 8px; overflow-wrap: anywhere; }
+.number-pagination { margin-top: 24px; align-items: center; }
+.number-answer { min-height: 64px; }
+.number-tile-bank { margin-top: 16px; }
 @media (max-width: 599px) {
- .game-topbar .game-round { position: absolute; left: 52px; top: calc(50% + 18px); font-size: 11px; line-height: 1.2; }
+ .game-main { --content-padding: 16px; padding-inline: 16px; }
+ .game-topbar { gap: 8px; }
+ .game-topbar .language-switch { min-height: 48px; padding: 8px 12px; }
  .game-topbar .update-button > span { display: none; }
- .game-topbar .update-button { padding: 10px; min-height: 44px; min-width: 40px; }
+ .game-topbar .update-button { padding: 12px; min-width: 48px; min-height: 48px; }
+ .number-content-grid { grid-template-columns: minmax(0,1fr); }
 }
-@media (max-width: 359px) { .game-topbar .game-round { left: 44px; } }

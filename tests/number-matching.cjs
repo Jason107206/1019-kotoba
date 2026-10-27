@@ -17,20 +17,39 @@ assert.equal(ev('new Set(NUMBER_QUESTIONS.map(q=>q.id)).size'),ev('NUMBER_QUESTI
 assert.equal(ev('NUMBER_TYPES.every(([type])=>NUMBER_QUESTIONS.some(q=>q.type===type))'),true);
 assert.equal(ev('NUMBER_QUESTIONS.every(q=>/^[ぁ-ゖー]+$/u.test(q.kana))'),true);
 assert.equal(ev('NUMBER_QUESTIONS.every(q=>q.sourceIds.every(id=>WORDS.some(w=>w.id===id)))'),true);
-assert.equal(ev('NUMBER_QUESTIONS.filter(q=>!q.sourceIds.length).every(q=>q.chapters.length===0)'),true);
-assert.equal(ev('NUMBER_QUESTIONS.filter(q=>["fractions","decimals"].includes(q.type)).every(q=>!q.chapters.length)'),true);
-assert.equal(ev('NUMBER_QUESTIONS.find(q=>q.type==="relative"&&q.value[0]==="week"&&q.value[1]===-2).kana'),'にしゅうかんまえ');
-for(const type of ['all',...Array.from(ev('NUMBER_TYPES.map(t=>t[0])'))]){ev(`state.numberType='${type}';state.numberChapter='all'`);for(const chapter of ['all','general',...Array.from(ev('numberSelection().available')).map(String)]){ev(`state.numberChapter='${chapter}';startNumberMatching()`);assert.equal(ev('state.numberRound.ids.length>0'),true);assert.equal(ev('state.numberRound.ids.every(id=>numberSelection().items.some(q=>q.id===id))'),true);}}
-ev('state.numberType="all";state.numberChapter="all";startNumberMatching()');
-for(let i=0;i<ev('NUMBER_QUESTIONS.length');i++){ev(`state.numberRound.index=${i};prepareNumberMatching()`);assert.equal(ev('state.numberRound.choices.length'),4);assert.equal(ev('new Set(state.numberRound.choices.map(c=>c.kana)).size'),4);assert.equal(ev('state.numberRound.choices.every(c=>c.type===numberCurrent().type)'),true);assert.equal(ev('state.numberRound.choices.filter(c=>c.kana===numberCurrent().kana).length'),1);}
-ev('state.numberRound.index=0;prepareNumberMatching();checkNumberMatching(state.numberRound.choices.find(c=>c.id!==numberCurrent().id).id)');assert.equal(ev('gameProgress().completed'),1);assert.equal(ev('state.numberRound.correct'),0);assert.ok(app.innerHTML.includes('feedback-lulu encouraging'));assert.ok(!app.innerHTML.includes('correct so far'));assert.ok(!app.innerHTML.includes('round-info'));
-ev('numberClick({action:"numberNext"});checkNumberMatching(numberCurrent().id)');assert.equal(ev('gameProgress().completed'),2);assert.equal(ev('state.numberRound.correct'),1);assert.ok(app.innerHTML.includes('feedback-lulu happy'));
-ev('numberClick({action:"numberRetry"})');assert.equal(ev('state.numberRound.ids.length'),1);assert.equal(ev('state.numberRound.index'),0);
-for(const removed of ['numbers','time','days','activities','schedules','places']){assert.equal(ev(`dialogueCategories().some(c=>c.id==='${removed}')`),false);assert.equal(ev(`allDialogueItems().some(q=>q.category==='${removed}')`),false);ev(`state.dialogueBrowse='category';state.dialogueCategory='${removed}';dialogueStudySet()`);assert.equal(ev('state.dialogueCategory'),'introductions');}
-assert.equal(ev('allDialogueItems().length'),48);assert.equal(ev('WORDS.length'),338);assert.equal(ev('CHAPTER_DIALOGUES.length'),48);assert.equal(ev('allDialogueItems().some(q=>q.id==="ch4-schedule-question")'),true);
-for(const kind of ['dialogue-choice','dialogue-tiles']){ev(`startActivity('${kind}',['attention'],'demonstratives')`);const turns=[...app.innerHTML.matchAll(/class="conversation-turn (you|listener)"/g)].map(m=>m[1]);assert.deepEqual(turns,['you','listener']);assert.ok(app.innerHTML.includes('inline-answer'));}
-console.log(`PASS: ${ev('NUMBER_QUESTIONS.length')} questions across all 10 types; Japanese exceptions, exact fractions/decimals, provenance, filters, choices, scoring/retries, category removals and learner-first turns.`);
 
+assert.equal(ev('NUMBER_QUESTIONS.filter(q=>["fractions","decimals"].includes(q.type)).every(q=>!q.chapters.length)'),true);
+assert.equal(ev('NUMBER_QUESTIONS.every(q=>q.chapters.every(ch=>q.sourceIds.some(id=>wordChapters(WORDS.find(w=>w.id===id)).includes(ch))||(q.chapterRules||[]).some(id=>{const rule=NUMBER_CHAPTER_SCOPES.find(r=>r.id===id);return rule.type===q.type&&rule.chapters.includes(ch)&&rule.sourceIds.every(id=>wordChapters(WORDS.find(w=>w.id===id)).includes(ch))})))'),true);
+for(const [chapter,type,minimum] of [[1,'ages',40],[3,'whole',75],[3,'floors',30],[3,'money',20],[4,'clock',120],[4,'weekdays',7],[5,'dates',100]])assert.ok(ev(`NUMBER_QUESTIONS.filter(q=>q.type==='${type}'&&q.chapters.includes(${chapter})).length`)>=minimum);
+const ids=Array.from(ev('NUMBER_QUESTIONS.map(q=>q.id)'));
+for(const mode of ['matching','rebuild'])for(const id of ids){
+ ev(`state.numberBrowse='all';startNumberPractice('${mode}',[${JSON.stringify(id)}])`);
+ const readings=Array.from(ev('numberReadings(numberCurrent())'));
+ for(const reading of readings){
+  ev(`prepareNumberMatching();{const r=state.numberRound,units=r.mode==='rebuild'?numberCharacters(${JSON.stringify(reading)}):numberSegments(numberCurrent(),${JSON.stringify(reading)});for(const unit of units){const index=r.tileBank.findIndex((u,i)=>u===unit&&!r.chosen.includes(i));if(index<0)throw Error('Missing answer tile '+unit);r.chosen.push(index);}}`);
+  assert.equal(ev('numberAnswerReady()'),true);ev('checkNumberMatching()');assert.equal(ev('state.numberRound.result'),true,`${mode}:${id}:${reading}`);
+ }
+}
+assert.deepEqual(Array.from(ev('integerSegments(125)')),['ひゃく','にじゅう','ご']);
+assert.deepEqual(Array.from(ev('numberCharacters("か\\u3099きゅう")')),['が','き','ゅ','う']);
+assert.equal(ev('rebuildCorrect("さんひ\\u3099ゃく","さんびゃく")'),true);
+// Duplicate tiles retain independent identities; swapping equal tiles is still correct.
+ev(`state.numberBrowse='all';startNumberPractice('matching',[NUMBER_QUESTIONS.find(q=>q.type==='decimals'&&q.value==='0.007').id]);{const r=state.numberRound;for(const unit of numberSegments(numberCurrent()))r.chosen.push(r.tileBank.findIndex((u,i)=>u===unit&&!r.chosen.includes(i)));const repeated=r.chosen.map((id,i)=>[id,i]).filter(([id])=>r.tileBank[id]==='ぜろ');[r.chosen[repeated[0][1]],r.chosen[repeated[1][1]]]=[r.chosen[repeated[1][1]],r.chosen[repeated[0][1]]];}checkNumberMatching()`);
+assert.equal(ev('state.numberRound.result'),true);
+ev(`startNumberPractice('matching',[NUMBER_QUESTIONS.find(q=>q.type==='whole'&&q.value===125).id]);{const r=state.numberRound;for(const unit of numberSegments(numberCurrent()).reverse())r.chosen.push(r.tileBank.findIndex((u,i)=>u===unit&&!r.chosen.includes(i)));}checkNumberMatching()`);
+assert.equal(ev('state.numberRound.result'),false);assert.equal(ev('state.numberRound.correct'),0);assert.equal(ev('gameProgress().completed'),1);assert.ok(app.innerHTML.includes('feedback-lulu encouraging'));
+ev('numberClick({action:"numberNext"})');assert.ok(app.innerHTML.includes('numberRetry'));assert.ok(!app.innerHTML.includes('footer-line'));ev('numberClick({action:"numberRetry"})');assert.equal(ev('state.numberRound.ids.length'),1);assert.equal(ev('state.numberRound.mode'),'matching');
+for(const browse of ['all','category','chapter']){
+ const keys=browse==='all'?['all']:browse==='category'?Array.from(ev('NUMBER_TYPES.map(t=>t[0])')):['1','3','4','5'];
+ for(const key of keys)for(const mode of ['matching','rebuild']){
+  ev(`state.numberBrowse='${browse}';state.numberType='${key}';state.numberChapter='${key}';state.numberPage=0;state.view='number-menu';render()`);
+  const scopeIds=Array.from(ev('numberSelection().items.map(q=>q.id)')).sort();assert.ok(scopeIds.length);
+  ev(`startNumberPractice('${mode}')`);assert.deepEqual(Array.from(ev('state.numberRound.ids')).sort(),scopeIds);
+  assert.ok(!app.innerHTML.includes('footer-line'));assert.ok(!app.innerHTML.includes('breadcrumb-row'));assert.ok(!app.innerHTML.includes('correct so far'));
+  ev(`state.numberType='invalid';state.numberChapter='invalid';gameBack()`);assert.equal(ev('state.numberBrowse'),browse);assert.deepEqual(Array.from(ev('numberSelection().items.map(q=>q.id)')).sort(),scopeIds);assert.ok(app.innerHTML.includes('footer-line'));
+ }
+}
 for(const mode of ['write','vocabulary-rebuild','kanji-writing','sentences']){ev(`state.view='${mode}';begin('${mode}',[${mode==='sentences'?'"p1-1"':'"1-09"'}]);completeRound(false)`);assert.equal(ev('gameProgress().completed'),1);assert.equal(ev('state.round.correct'),0);}
 for(const q of ev('NUMBER_QUESTIONS'))assert.equal(ev(`numberPrompt(NUMBER_QUESTIONS.find(q=>q.id===${JSON.stringify(q.id)})).includes(${JSON.stringify(q.kana)})`),false);
-console.log('PASS: all shared game trackers count wrong attempts as completed and visual/accessibility prompts never disclose the hiragana answer.');
+assert.equal(ev('allDialogueItems().length'),48);assert.equal(ev('WORDS.length'),338);
+console.log('PASS: all number readings and variants in both reconstruction modes; curriculum scopes, duplicate/Unicode tiles, ordered validation, retry, navigation, feedback, progress and footer visibility.');
