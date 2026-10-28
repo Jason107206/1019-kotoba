@@ -1,0 +1,3461 @@
+{
+  "lexicalRecords": 338,
+  "playableWords": 328,
+  "unresolvedWords": [
+    "csv-3c7d4b08462bc4f1",
+    "csv-7177af3f64881d19",
+    "csv-bd7ed3e561d8f856",
+    "csv-a0827d7777003ef6",
+    "csv-e71873a7c50a3455",
+    "csv-8c8770a8bd199980",
+    "csv-cc1157bdb7daec7d",
+    "csv-7102dff50ca5a822",
+    "csv-7b39f2af6e32e892",
+    "csv-4f20834e51a03b0c"
+  ],
+  "categories": [
+    {
+      "id": "people",
+      "label": "People",
+      "reference": 11,
+      "playable": 11,
+      "subgroups": [
+        {
+          "id": "pronouns",
+          "reference": 9,
+          "playable": 9
+        },
+        {
+          "id": "address",
+          "reference": 2,
+          "playable": 2
+        }
+      ]
+    },
+    {
+      "id": "study",
+      "label": "Jobs & study",
+      "reference": 14,
+      "playable": 14,
+      "subgroups": [
+        {
+          "id": "jobs",
+          "reference": 8,
+          "playable": 8
+        },
+        {
+          "id": "languages",
+          "reference": 3,
+          "playable": 3
+        },
+        {
+          "id": "learning",
+          "reference": 3,
+          "playable": 3
+        }
+      ]
+    },
+    {
+      "id": "places",
+      "label": "Places & geography",
+      "reference": 70,
+      "playable": 68,
+      "subgroups": [
+        {
+          "id": "facilities",
+          "reference": 28,
+          "playable": 28
+        },
+        {
+          "id": "countries",
+          "reference": 17,
+          "playable": 17
+        },
+        {
+          "id": "named",
+          "reference": 25,
+          "playable": 23
+        }
+      ]
+    },
+    {
+      "id": "objects",
+      "label": "Objects & belongings",
+      "reference": 32,
+      "playable": 32,
+      "subgroups": [
+        {
+          "id": "books",
+          "reference": 11,
+          "playable": 11
+        },
+        {
+          "id": "personal",
+          "reference": 11,
+          "playable": 11
+        },
+        {
+          "id": "media",
+          "reference": 8,
+          "playable": 8
+        },
+        {
+          "id": "furniture",
+          "reference": 2,
+          "playable": 2
+        }
+      ]
+    },
+    {
+      "id": "food",
+      "label": "Food & drinks",
+      "reference": 22,
+      "playable": 22,
+      "subgroups": [
+        {
+          "id": "meals",
+          "reference": 11,
+          "playable": 11
+        },
+        {
+          "id": "drinks",
+          "reference": 11,
+          "playable": 11
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "label": "Transport & travel",
+      "reference": 18,
+      "playable": 17,
+      "subgroups": [
+        {
+          "id": "vehicles",
+          "reference": 8,
+          "playable": 8
+        },
+        {
+          "id": "trains",
+          "reference": 5,
+          "playable": 4
+        },
+        {
+          "id": "movement",
+          "reference": 5,
+          "playable": 5
+        }
+      ]
+    },
+    {
+      "id": "actions",
+      "label": "Actions & daily activities",
+      "reference": 27,
+      "playable": 24,
+      "subgroups": [
+        {
+          "id": "verbs",
+          "reference": 17,
+          "playable": 14
+        },
+        {
+          "id": "events",
+          "reference": 7,
+          "playable": 7
+        },
+        {
+          "id": "manner",
+          "reference": 3,
+          "playable": 3
+        }
+      ]
+    },
+    {
+      "id": "time",
+      "label": "Time & dates",
+      "reference": 58,
+      "playable": 55,
+      "subgroups": [
+        {
+          "id": "clock",
+          "reference": 11,
+          "playable": 11
+        },
+        {
+          "id": "weekdays",
+          "reference": 7,
+          "playable": 7
+        },
+        {
+          "id": "calendar",
+          "reference": 17,
+          "playable": 14
+        },
+        {
+          "id": "relative",
+          "reference": 23,
+          "playable": 23
+        }
+      ]
+    },
+    {
+      "id": "numbers",
+      "label": "Numbers, prices & counters",
+      "reference": 8,
+      "playable": 8,
+      "subgroups": [
+        {
+          "id": "units",
+          "reference": 4,
+          "playable": 4
+        },
+        {
+          "id": "prices",
+          "reference": 1,
+          "playable": 1
+        },
+        {
+          "id": "counters",
+          "reference": 3,
+          "playable": 3
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "label": "Question & pointing words",
+      "reference": 32,
+      "playable": 32,
+      "subgroups": [
+        {
+          "id": "question",
+          "reference": 20,
+          "playable": 20
+        },
+        {
+          "id": "standalone",
+          "reference": 3,
+          "playable": 3
+        },
+        {
+          "id": "modifiers",
+          "reference": 3,
+          "playable": 3
+        },
+        {
+          "id": "location",
+          "reference": 6,
+          "playable": 6
+        }
+      ]
+    },
+    {
+      "id": "linking",
+      "label": "Linking words & particles",
+      "reference": 5,
+      "playable": 5,
+      "subgroups": [
+        {
+          "id": "particles",
+          "reference": 3,
+          "playable": 3
+        },
+        {
+          "id": "connectors",
+          "reference": 2,
+          "playable": 2
+        }
+      ]
+    },
+    {
+      "id": "everyday",
+      "label": "Everyday expressions",
+      "reference": 41,
+      "playable": 40,
+      "subgroups": [
+        {
+          "id": "meeting",
+          "reference": 11,
+          "playable": 11
+        },
+        {
+          "id": "greetings",
+          "reference": 1,
+          "playable": 0
+        },
+        {
+          "id": "attention",
+          "reference": 8,
+          "playable": 8
+        },
+        {
+          "id": "offering",
+          "reference": 2,
+          "playable": 2
+        },
+        {
+          "id": "thanks",
+          "reference": 7,
+          "playable": 7
+        },
+        {
+          "id": "reactions",
+          "reference": 12,
+          "playable": 12
+        }
+      ]
+    }
+  ],
+  "sceneHomes": [
+    {
+      "home": "grammar",
+      "scenes": 15,
+      "forms": 18,
+      "ids": [
+        "ch3-where",
+        "ch3-floor-question",
+        "ch3-country",
+        "ch3-company",
+        "ch3-university",
+        "ch3-origin",
+        "ch3-price-question",
+        "ch4-time-question",
+        "ch4-weekday-question",
+        "ch4-phone-question",
+        "wh-words-1-17a",
+        "wh-words-1-19a",
+        "wh-words-2-36",
+        "wh-whose",
+        "wh-what-kind"
+      ]
+    },
+    {
+      "home": "pictures",
+      "scenes": 9,
+      "forms": 12,
+      "ids": [
+        "this-that-2-01",
+        "this-that-2-02",
+        "this-that-2-03",
+        "this-that-2-04",
+        "this-that-2-05",
+        "this-that-2-06",
+        "ch3-location-01",
+        "ch3-location-02",
+        "ch3-location-03"
+      ]
+    },
+    {
+      "home": "situations",
+      "scenes": 17,
+      "forms": 17,
+      "ids": [
+        "meet",
+        "intro",
+        "likewise",
+        "excuse",
+        "name",
+        "attention",
+        "offer",
+        "thanks",
+        "thanks-full",
+        "understand",
+        "incorrect",
+        "surprise",
+        "realise",
+        "neighbour",
+        "ch3-welcome",
+        "ch3-excuse",
+        "ch3-thanks"
+      ]
+    }
+  ],
+  "grammarFamilies": [
+    {
+      "id": "identity",
+      "label": "Identity, affiliation & basic statements",
+      "patterns": [
+        "p1",
+        "p2",
+        "p5",
+        "p6"
+      ]
+    },
+    {
+      "id": "questions",
+      "label": "Questions & answers",
+      "patterns": [
+        "p3",
+        "p4",
+        "p7",
+        "p10",
+        "p11",
+        "p12"
+      ]
+    },
+    {
+      "id": "introductions",
+      "label": "Introductions",
+      "patterns": [
+        "p8"
+      ]
+    },
+    {
+      "id": "ownership",
+      "label": "Objects, descriptions & ownership",
+      "patterns": [
+        "p9",
+        "p13",
+        "p14",
+        "p15",
+        "p16"
+      ]
+    },
+    {
+      "id": "ranges",
+      "label": "Time ranges & schedules",
+      "patterns": [
+        "p17",
+        "p18"
+      ]
+    }
+  ],
+  "questionIds": [
+    "order-p1-1",
+    "particle-p1-1",
+    "completion-p1-1",
+    "order-p1-2",
+    "particle-p1-2",
+    "completion-p1-2",
+    "order-p1-3",
+    "particle-p1-3",
+    "completion-p1-3",
+    "order-p2-1",
+    "particle-p2-1",
+    "completion-p2-1",
+    "order-p2-2",
+    "particle-p2-2",
+    "completion-p2-2",
+    "order-p2-3",
+    "particle-p2-3",
+    "completion-p2-3",
+    "order-p3-1",
+    "particle-p3-1",
+    "completion-p3-1",
+    "order-p3-2",
+    "particle-p3-2",
+    "completion-p3-2",
+    "order-p3-3",
+    "particle-p3-3",
+    "completion-p3-3",
+    "order-p4-1",
+    "particle-p4-1",
+    "completion-p4-1",
+    "order-p4-2",
+    "particle-p4-2",
+    "completion-p4-2",
+    "order-p5-1",
+    "particle-p5-1",
+    "completion-p5-1",
+    "order-p5-2",
+    "particle-p5-2",
+    "completion-p5-2",
+    "order-p5-3",
+    "particle-p5-3",
+    "completion-p5-3",
+    "order-p6-1",
+    "particle-p6-1",
+    "completion-p6-1",
+    "order-p6-2",
+    "particle-p6-2",
+    "completion-p6-2",
+    "order-p6-3",
+    "particle-p6-3",
+    "completion-p6-3",
+    "order-p7-1",
+    "particle-p7-1",
+    "completion-p7-1",
+    "order-p7-2",
+    "particle-p7-2",
+    "completion-p7-2",
+    "order-p7-3",
+    "particle-p7-3",
+    "completion-p7-3",
+    "order-p8-1",
+    "particle-p8-1",
+    "verb-p8-1",
+    "completion-p8-1",
+    "order-p8-2",
+    "particle-p8-2",
+    "completion-p8-2",
+    "order-p8-3",
+    "particle-p8-3",
+    "completion-p8-3",
+    "order-p9-1",
+    "particle-p9-1",
+    "completion-p9-1",
+    "order-p9-2",
+    "particle-p9-2",
+    "completion-p9-2",
+    "order-p9-3",
+    "particle-p9-3",
+    "completion-p9-3",
+    "order-p10-1",
+    "particle-p10-1",
+    "completion-p10-1",
+    "order-p10-2",
+    "completion-p10-2",
+    "order-p10-3",
+    "completion-p10-3",
+    "order-p10-4",
+    "completion-p10-4",
+    "order-p11-1",
+    "particle-p11-1",
+    "completion-p11-1",
+    "order-p11-2",
+    "particle-p11-2",
+    "completion-p11-2",
+    "order-p11-3",
+    "completion-p11-3",
+    "order-p12-1",
+    "particle-p12-1",
+    "completion-p12-1",
+    "order-p12-2",
+    "particle-p12-2",
+    "completion-p12-2",
+    "order-p13-1",
+    "particle-p13-1",
+    "completion-p13-1",
+    "order-p13-2",
+    "particle-p13-2",
+    "completion-p13-2",
+    "order-p13-3",
+    "particle-p13-3",
+    "completion-p13-3",
+    "order-p13-4",
+    "particle-p13-4",
+    "completion-p13-4",
+    "order-p14-1",
+    "particle-p14-1",
+    "completion-p14-1",
+    "order-p14-2",
+    "particle-p14-2",
+    "completion-p14-2",
+    "order-p14-3",
+    "particle-p14-3",
+    "completion-p14-3",
+    "order-p15-1",
+    "particle-p15-1",
+    "completion-p15-1",
+    "order-p15-2",
+    "particle-p15-2",
+    "completion-p15-2",
+    "order-p15-3",
+    "particle-p15-3",
+    "completion-p15-3",
+    "order-p15-4",
+    "particle-p15-4",
+    "completion-p15-4",
+    "order-p16-1",
+    "particle-p16-1",
+    "zero-p16-1",
+    "completion-p16-1",
+    "order-p16-2",
+    "particle-p16-2",
+    "zero-p16-2",
+    "completion-p16-2",
+    "order-p16-3",
+    "particle-p16-3",
+    "zero-p16-3",
+    "completion-p16-3",
+    "order-p16-4",
+    "particle-p16-4",
+    "zero-p16-4",
+    "completion-p16-4",
+    "order-p17-1",
+    "particle-p17-1",
+    "completion-p17-1",
+    "order-p17-2",
+    "particle-p17-2",
+    "completion-p17-2",
+    "order-p18-1",
+    "particle-p18-1",
+    "verb-p18-1",
+    "completion-p18-1",
+    "order-p18-2",
+    "particle-p18-2",
+    "verb-p18-2",
+    "completion-p18-2",
+    "recall-meet-false",
+    "recall-meet-true",
+    "recall-intro-false",
+    "recall-intro-true",
+    "recall-likewise-false",
+    "recall-likewise-true",
+    "recall-excuse-false",
+    "recall-excuse-true",
+    "recall-name-false",
+    "recall-name-true",
+    "recall-attention-false",
+    "recall-attention-true",
+    "recall-offer-false",
+    "recall-offer-true",
+    "recall-thanks-false",
+    "recall-thanks-true",
+    "recall-thanks-full-false",
+    "recall-thanks-full-true",
+    "recall-understand-false",
+    "recall-understand-true",
+    "recall-incorrect-false",
+    "recall-incorrect-true",
+    "recall-surprise-false",
+    "recall-surprise-true",
+    "recall-realise-false",
+    "recall-realise-true",
+    "recall-neighbour-false",
+    "recall-neighbour-true",
+    "recall-ch3-location-01-false",
+    "recall-ch3-location-01-true",
+    "recall-ch3-location-02-false",
+    "recall-ch3-location-02-true",
+    "recall-ch3-location-03-false",
+    "recall-ch3-location-03-true",
+    "recall-ch3-location-05-false",
+    "recall-ch3-location-05-true",
+    "recall-ch3-location-06-false",
+    "recall-ch3-location-06-true",
+    "recall-ch3-location-07-false",
+    "recall-ch3-location-07-true",
+    "recall-ch3-where-false",
+    "recall-ch3-where-true",
+    "recall-ch3-where-polite-false",
+    "recall-ch3-where-polite-true",
+    "recall-ch3-floor-question-false",
+    "recall-ch3-floor-question-true",
+    "recall-ch3-country-false",
+    "recall-ch3-country-true",
+    "recall-ch3-company-false",
+    "recall-ch3-company-true",
+    "recall-ch3-university-false",
+    "recall-ch3-university-true",
+    "recall-ch3-origin-false",
+    "recall-ch3-origin-true",
+    "recall-ch3-price-question-false",
+    "recall-ch3-price-question-true",
+    "recall-ch3-welcome-false",
+    "recall-ch3-welcome-true",
+    "recall-ch3-show-false",
+    "recall-ch3-show-true",
+    "recall-ch3-buy-false",
+    "recall-ch3-buy-true",
+    "recall-ch3-excuse-false",
+    "recall-ch3-excuse-true",
+    "recall-ch3-thanks-false",
+    "recall-ch3-thanks-true",
+    "recall-ch4-time-question-false",
+    "recall-ch4-time-question-true",
+    "recall-ch4-weekday-question-false",
+    "recall-ch4-weekday-question-true",
+    "recall-ch4-schedule-question-false",
+    "recall-ch4-schedule-question-true",
+    "recall-ch4-phone-question-false",
+    "recall-ch4-phone-question-true",
+    "recall-wh-words-1-17a-false",
+    "recall-wh-words-1-17a-true",
+    "recall-wh-words-1-17b-false",
+    "recall-wh-words-1-17b-true",
+    "recall-wh-words-1-19a-false",
+    "recall-wh-words-1-19a-true",
+    "recall-wh-words-1-19b-false",
+    "recall-wh-words-1-19b-true",
+    "recall-wh-words-2-36-false",
+    "recall-wh-words-2-36-true",
+    "recall-wh-whose-false",
+    "recall-wh-whose-true",
+    "recall-wh-what-kind-false",
+    "recall-wh-what-kind-true",
+    "number-number-whole-100",
+    "number-number-whole-200",
+    "number-number-whole-300",
+    "number-number-whole-400",
+    "number-number-whole-500",
+    "number-number-whole-600",
+    "number-number-whole-700",
+    "number-number-whole-800",
+    "number-number-whole-900",
+    "number-number-whole-1000",
+    "number-number-whole-2000",
+    "number-number-whole-3000",
+    "number-number-whole-4000",
+    "number-number-whole-5000",
+    "number-number-whole-6000",
+    "number-number-whole-7000",
+    "number-number-whole-8000",
+    "number-number-whole-9000",
+    "number-number-whole-10000",
+    "number-number-floors-1",
+    "number-number-floors-2",
+    "number-number-floors-3",
+    "number-number-floors-4",
+    "number-number-floors-5",
+    "number-number-floors-6",
+    "number-number-floors-7",
+    "number-number-floors-8",
+    "number-number-floors-9",
+    "number-number-floors-10",
+    "number-number-money-2500",
+    "number-number-money-1500",
+    "number-number-money-600",
+    "number-number-clock-[7,15,\"AM\"]",
+    "number-number-clock-[4,8,\"PM\"]",
+    "number-number-weekdays-1",
+    "number-number-weekdays-2",
+    "number-number-weekdays-3",
+    "number-number-weekdays-4",
+    "number-number-weekdays-5",
+    "number-number-weekdays-6",
+    "number-number-weekdays-7",
+    "number-number-ages-9",
+    "number-number-ages-18",
+    "number-number-whole-0",
+    "number-number-whole-1",
+    "number-number-whole-2",
+    "number-number-whole-3",
+    "number-number-whole-4",
+    "number-number-whole-5",
+    "number-number-whole-6",
+    "number-number-whole-7",
+    "number-number-whole-8",
+    "number-number-whole-9",
+    "number-number-whole-10",
+    "number-number-whole-11",
+    "number-number-whole-12",
+    "number-number-whole-13",
+    "number-number-whole-14",
+    "number-number-whole-15",
+    "number-number-whole-16",
+    "number-number-whole-17",
+    "number-number-whole-18",
+    "number-number-whole-19",
+    "number-number-whole-20",
+    "number-number-whole-21",
+    "number-number-whole-22",
+    "number-number-whole-23",
+    "number-number-whole-24",
+    "number-number-whole-25",
+    "number-number-whole-26",
+    "number-number-whole-27",
+    "number-number-whole-28",
+    "number-number-whole-29",
+    "number-number-whole-30",
+    "number-number-whole-31",
+    "number-number-whole-32",
+    "number-number-whole-33",
+    "number-number-whole-34",
+    "number-number-whole-35",
+    "number-number-whole-36",
+    "number-number-whole-37",
+    "number-number-whole-38",
+    "number-number-whole-39",
+    "number-number-whole-42",
+    "number-number-whole-55",
+    "number-number-whole-64",
+    "number-number-whole-70",
+    "number-number-whole-77",
+    "number-number-whole-88",
+    "number-number-whole-99",
+    "number-number-whole-101",
+    "number-number-whole-125",
+    "number-number-whole-215",
+    "number-number-whole-333",
+    "number-number-whole-468",
+    "number-number-whole-999",
+    "number-number-whole-1001",
+    "number-number-whole-1250",
+    "number-number-whole-3333",
+    "number-number-whole-8008",
+    "number-number-dates-[1,1]",
+    "number-number-dates-[1,4]",
+    "number-number-dates-[1,7]",
+    "number-number-dates-[1,14]",
+    "number-number-dates-[1,20]",
+    "number-number-dates-[1,24]",
+    "number-number-dates-[1,28]",
+    "number-number-dates-[2,1]",
+    "number-number-dates-[2,4]",
+    "number-number-dates-[2,7]",
+    "number-number-dates-[2,14]",
+    "number-number-dates-[2,20]",
+    "number-number-dates-[2,24]",
+    "number-number-dates-[2,28]",
+    "number-number-dates-[3,1]",
+    "number-number-dates-[3,4]",
+    "number-number-dates-[3,7]",
+    "number-number-dates-[3,14]",
+    "number-number-dates-[3,20]",
+    "number-number-dates-[3,24]",
+    "number-number-dates-[3,28]",
+    "number-number-dates-[4,1]",
+    "number-number-dates-[4,2]",
+    "number-number-dates-[4,3]",
+    "number-number-dates-[4,4]",
+    "number-number-dates-[4,5]",
+    "number-number-dates-[4,6]",
+    "number-number-dates-[4,7]",
+    "number-number-dates-[4,8]",
+    "number-number-dates-[4,9]",
+    "number-number-dates-[4,10]",
+    "number-number-dates-[4,11]",
+    "number-number-dates-[4,12]",
+    "number-number-dates-[4,13]",
+    "number-number-dates-[4,14]",
+    "number-number-dates-[4,15]",
+    "number-number-dates-[4,16]",
+    "number-number-dates-[4,17]",
+    "number-number-dates-[4,18]",
+    "number-number-dates-[4,19]",
+    "number-number-dates-[4,20]",
+    "number-number-dates-[4,21]",
+    "number-number-dates-[4,22]",
+    "number-number-dates-[4,23]",
+    "number-number-dates-[4,24]",
+    "number-number-dates-[4,25]",
+    "number-number-dates-[4,26]",
+    "number-number-dates-[4,27]",
+    "number-number-dates-[4,28]",
+    "number-number-dates-[4,29]",
+    "number-number-dates-[4,30]",
+    "number-number-dates-[5,1]",
+    "number-number-dates-[5,4]",
+    "number-number-dates-[5,7]",
+    "number-number-dates-[5,14]",
+    "number-number-dates-[5,20]",
+    "number-number-dates-[5,24]",
+    "number-number-dates-[5,28]",
+    "number-number-dates-[6,1]",
+    "number-number-dates-[6,4]",
+    "number-number-dates-[6,7]",
+    "number-number-dates-[6,14]",
+    "number-number-dates-[6,20]",
+    "number-number-dates-[6,24]",
+    "number-number-dates-[6,28]",
+    "number-number-dates-[7,1]",
+    "number-number-dates-[7,4]",
+    "number-number-dates-[7,7]",
+    "number-number-dates-[7,14]",
+    "number-number-dates-[7,20]",
+    "number-number-dates-[7,24]",
+    "number-number-dates-[7,28]",
+    "number-number-dates-[8,1]",
+    "number-number-dates-[8,4]",
+    "number-number-dates-[8,7]",
+    "number-number-dates-[8,14]",
+    "number-number-dates-[8,20]",
+    "number-number-dates-[8,24]",
+    "number-number-dates-[8,28]",
+    "number-number-dates-[9,1]",
+    "number-number-dates-[9,4]",
+    "number-number-dates-[9,7]",
+    "number-number-dates-[9,14]",
+    "number-number-dates-[9,20]",
+    "number-number-dates-[9,24]",
+    "number-number-dates-[9,28]",
+    "number-number-dates-[10,1]",
+    "number-number-dates-[10,4]",
+    "number-number-dates-[10,7]",
+    "number-number-dates-[10,14]",
+    "number-number-dates-[10,20]",
+    "number-number-dates-[10,24]",
+    "number-number-dates-[10,28]",
+    "number-number-dates-[11,1]",
+    "number-number-dates-[11,4]",
+    "number-number-dates-[11,7]",
+    "number-number-dates-[11,14]",
+    "number-number-dates-[11,20]",
+    "number-number-dates-[11,24]",
+    "number-number-dates-[11,28]",
+    "number-number-dates-[12,1]",
+    "number-number-dates-[12,4]",
+    "number-number-dates-[12,7]",
+    "number-number-dates-[12,14]",
+    "number-number-dates-[12,20]",
+    "number-number-dates-[12,24]",
+    "number-number-dates-[12,28]",
+    "number-number-fractions-[1,2]",
+    "number-number-fractions-[2,2]",
+    "number-number-fractions-[3,2]",
+    "number-number-fractions-[5,2]",
+    "number-number-fractions-[15,2]",
+    "number-number-fractions-[1,3]",
+    "number-number-fractions-[2,3]",
+    "number-number-fractions-[3,3]",
+    "number-number-fractions-[5,3]",
+    "number-number-fractions-[15,3]",
+    "number-number-fractions-[1,4]",
+    "number-number-fractions-[2,4]",
+    "number-number-fractions-[3,4]",
+    "number-number-fractions-[5,4]",
+    "number-number-fractions-[15,4]",
+    "number-number-fractions-[1,8]",
+    "number-number-fractions-[2,8]",
+    "number-number-fractions-[3,8]",
+    "number-number-fractions-[5,8]",
+    "number-number-fractions-[15,8]",
+    "number-number-fractions-[1,10]",
+    "number-number-fractions-[2,10]",
+    "number-number-fractions-[3,10]",
+    "number-number-fractions-[5,10]",
+    "number-number-fractions-[15,10]",
+    "number-number-fractions-[1,100]",
+    "number-number-fractions-[2,100]",
+    "number-number-fractions-[3,100]",
+    "number-number-fractions-[5,100]",
+    "number-number-fractions-[15,100]",
+    "number-number-ages-1",
+    "number-number-ages-2",
+    "number-number-ages-3",
+    "number-number-ages-4",
+    "number-number-ages-5",
+    "number-number-ages-6",
+    "number-number-ages-7",
+    "number-number-ages-8",
+    "number-number-ages-10",
+    "number-number-ages-11",
+    "number-number-ages-12",
+    "number-number-ages-13",
+    "number-number-ages-14",
+    "number-number-ages-15",
+    "number-number-ages-16",
+    "number-number-ages-17",
+    "number-number-ages-19",
+    "number-number-ages-20",
+    "number-number-ages-21",
+    "number-number-ages-22",
+    "number-number-ages-23",
+    "number-number-ages-24",
+    "number-number-ages-25",
+    "number-number-ages-26",
+    "number-number-ages-27",
+    "number-number-ages-28",
+    "number-number-ages-29",
+    "number-number-ages-30",
+    "number-number-ages-31",
+    "number-number-ages-32",
+    "number-number-ages-33",
+    "number-number-ages-34",
+    "number-number-ages-35",
+    "number-number-ages-36",
+    "number-number-ages-37",
+    "number-number-ages-38",
+    "number-number-ages-39",
+    "number-number-ages-40",
+    "number-number-ages-48",
+    "number-number-ages-60",
+    "number-number-ages-80",
+    "number-number-ages-88",
+    "number-number-ages-99",
+    "number-number-ages-100",
+    "number-number-floors-11",
+    "number-number-floors-12",
+    "number-number-floors-13",
+    "number-number-floors-14",
+    "number-number-floors-15",
+    "number-number-floors-16",
+    "number-number-floors-17",
+    "number-number-floors-18",
+    "number-number-floors-19",
+    "number-number-floors-20",
+    "number-number-floors-21",
+    "number-number-floors-22",
+    "number-number-floors-23",
+    "number-number-floors-24",
+    "number-number-floors-25",
+    "number-number-floors-26",
+    "number-number-floors-27",
+    "number-number-floors-28",
+    "number-number-floors-29",
+    "number-number-floors-30",
+    "number-number-clock-[1,0,\"AM\"]",
+    "number-number-clock-[1,0,\"PM\"]",
+    "number-number-clock-[1,8,\"AM\"]",
+    "number-number-clock-[1,8,\"PM\"]",
+    "number-number-clock-[1,15,\"AM\"]",
+    "number-number-clock-[1,15,\"PM\"]",
+    "number-number-clock-[1,30,\"AM\"]",
+    "number-number-clock-[1,30,\"PM\"]",
+    "number-number-clock-[1,45,\"AM\"]",
+    "number-number-clock-[1,45,\"PM\"]",
+    "number-number-clock-[2,0,\"AM\"]",
+    "number-number-clock-[2,0,\"PM\"]",
+    "number-number-clock-[2,8,\"AM\"]",
+    "number-number-clock-[2,8,\"PM\"]",
+    "number-number-clock-[2,15,\"AM\"]",
+    "number-number-clock-[2,15,\"PM\"]",
+    "number-number-clock-[2,30,\"AM\"]",
+    "number-number-clock-[2,30,\"PM\"]",
+    "number-number-clock-[2,45,\"AM\"]",
+    "number-number-clock-[2,45,\"PM\"]",
+    "number-number-clock-[3,0,\"AM\"]",
+    "number-number-clock-[3,0,\"PM\"]",
+    "number-number-clock-[3,8,\"AM\"]",
+    "number-number-clock-[3,8,\"PM\"]",
+    "number-number-clock-[3,15,\"AM\"]",
+    "number-number-clock-[3,15,\"PM\"]",
+    "number-number-clock-[3,30,\"AM\"]",
+    "number-number-clock-[3,30,\"PM\"]",
+    "number-number-clock-[3,45,\"AM\"]",
+    "number-number-clock-[3,45,\"PM\"]",
+    "number-number-clock-[4,0,\"AM\"]",
+    "number-number-clock-[4,0,\"PM\"]",
+    "number-number-clock-[4,8,\"AM\"]",
+    "number-number-clock-[4,15,\"AM\"]",
+    "number-number-clock-[4,15,\"PM\"]",
+    "number-number-clock-[4,30,\"AM\"]",
+    "number-number-clock-[4,30,\"PM\"]",
+    "number-number-clock-[4,45,\"AM\"]",
+    "number-number-clock-[4,45,\"PM\"]",
+    "number-number-clock-[5,0,\"AM\"]",
+    "number-number-clock-[5,0,\"PM\"]",
+    "number-number-clock-[5,8,\"AM\"]",
+    "number-number-clock-[5,8,\"PM\"]",
+    "number-number-clock-[5,15,\"AM\"]",
+    "number-number-clock-[5,15,\"PM\"]",
+    "number-number-clock-[5,30,\"AM\"]",
+    "number-number-clock-[5,30,\"PM\"]",
+    "number-number-clock-[5,45,\"AM\"]",
+    "number-number-clock-[5,45,\"PM\"]",
+    "number-number-clock-[6,0,\"AM\"]",
+    "number-number-clock-[6,0,\"PM\"]",
+    "number-number-clock-[6,8,\"AM\"]",
+    "number-number-clock-[6,8,\"PM\"]",
+    "number-number-clock-[6,15,\"AM\"]",
+    "number-number-clock-[6,15,\"PM\"]",
+    "number-number-clock-[6,30,\"AM\"]",
+    "number-number-clock-[6,30,\"PM\"]",
+    "number-number-clock-[6,45,\"AM\"]",
+    "number-number-clock-[6,45,\"PM\"]",
+    "number-number-clock-[7,0,\"AM\"]",
+    "number-number-clock-[7,0,\"PM\"]",
+    "number-number-clock-[7,8,\"AM\"]",
+    "number-number-clock-[7,8,\"PM\"]",
+    "number-number-clock-[7,15,\"PM\"]",
+    "number-number-clock-[7,30,\"AM\"]",
+    "number-number-clock-[7,30,\"PM\"]",
+    "number-number-clock-[7,45,\"AM\"]",
+    "number-number-clock-[7,45,\"PM\"]",
+    "number-number-clock-[8,0,\"AM\"]",
+    "number-number-clock-[8,0,\"PM\"]",
+    "number-number-clock-[8,8,\"AM\"]",
+    "number-number-clock-[8,8,\"PM\"]",
+    "number-number-clock-[8,15,\"AM\"]",
+    "number-number-clock-[8,15,\"PM\"]",
+    "number-number-clock-[8,30,\"AM\"]",
+    "number-number-clock-[8,30,\"PM\"]",
+    "number-number-clock-[8,45,\"AM\"]",
+    "number-number-clock-[8,45,\"PM\"]",
+    "number-number-clock-[9,0,\"AM\"]",
+    "number-number-clock-[9,0,\"PM\"]",
+    "number-number-clock-[9,8,\"AM\"]",
+    "number-number-clock-[9,8,\"PM\"]",
+    "number-number-clock-[9,15,\"AM\"]",
+    "number-number-clock-[9,15,\"PM\"]",
+    "number-number-clock-[9,30,\"AM\"]",
+    "number-number-clock-[9,30,\"PM\"]",
+    "number-number-clock-[9,45,\"AM\"]",
+    "number-number-clock-[9,45,\"PM\"]",
+    "number-number-clock-[10,0,\"AM\"]",
+    "number-number-clock-[10,0,\"PM\"]",
+    "number-number-clock-[10,8,\"AM\"]",
+    "number-number-clock-[10,8,\"PM\"]",
+    "number-number-clock-[10,15,\"AM\"]",
+    "number-number-clock-[10,15,\"PM\"]",
+    "number-number-clock-[10,30,\"AM\"]",
+    "number-number-clock-[10,30,\"PM\"]",
+    "number-number-clock-[10,45,\"AM\"]",
+    "number-number-clock-[10,45,\"PM\"]",
+    "number-number-clock-[11,0,\"AM\"]",
+    "number-number-clock-[11,0,\"PM\"]",
+    "number-number-clock-[11,8,\"AM\"]",
+    "number-number-clock-[11,8,\"PM\"]",
+    "number-number-clock-[11,15,\"AM\"]",
+    "number-number-clock-[11,15,\"PM\"]",
+    "number-number-clock-[11,30,\"AM\"]",
+    "number-number-clock-[11,30,\"PM\"]",
+    "number-number-clock-[11,45,\"AM\"]",
+    "number-number-clock-[11,45,\"PM\"]",
+    "number-number-clock-[12,0,\"AM\"]",
+    "number-number-clock-[12,0,\"PM\"]",
+    "number-number-clock-[12,8,\"AM\"]",
+    "number-number-clock-[12,8,\"PM\"]",
+    "number-number-clock-[12,15,\"AM\"]",
+    "number-number-clock-[12,15,\"PM\"]",
+    "number-number-clock-[12,30,\"AM\"]",
+    "number-number-clock-[12,30,\"PM\"]",
+    "number-number-clock-[12,45,\"AM\"]",
+    "number-number-clock-[12,45,\"PM\"]",
+    "number-number-clock-[6,1,\"AM\"]",
+    "number-number-clock-[6,4,\"AM\"]",
+    "number-number-clock-[6,6,\"AM\"]",
+    "number-number-clock-[6,10,\"AM\"]",
+    "number-number-clock-[6,59,\"AM\"]",
+    "number-number-money-100",
+    "number-number-money-200",
+    "number-number-money-300",
+    "number-number-money-400",
+    "number-number-money-500",
+    "number-number-money-700",
+    "number-number-money-800",
+    "number-number-money-900",
+    "number-number-money-1000",
+    "number-number-money-2000",
+    "number-number-money-3000",
+    "number-number-money-4000",
+    "number-number-money-5000",
+    "number-number-money-6000",
+    "number-number-money-7000",
+    "number-number-money-8000",
+    "number-number-money-9000",
+    "number-number-money-10000",
+    "number-number-money-9800",
+    "number-number-money-12345",
+    "number-number-money-123456",
+    "number-number-money-8750000",
+    "number-number-money-10000000",
+    "number-number-relative-[\"day\",-2]",
+    "number-number-relative-[\"day\",-1]",
+    "number-number-relative-[\"day\",0]",
+    "number-number-relative-[\"day\",1]",
+    "number-number-relative-[\"day\",2]",
+    "number-number-relative-[\"week\",-1]",
+    "number-number-relative-[\"week\",0]",
+    "number-number-relative-[\"week\",1]",
+    "number-number-relative-[\"month\",-1]",
+    "number-number-relative-[\"month\",0]",
+    "number-number-relative-[\"month\",1]",
+    "number-number-relative-[\"year\",-1]",
+    "number-number-relative-[\"year\",0]",
+    "number-number-relative-[\"year\",1]",
+    "number-number-relative-[\"week\",-4]",
+    "number-number-relative-[\"week\",-3]",
+    "number-number-relative-[\"week\",-2]",
+    "number-number-relative-[\"week\",2]",
+    "number-number-relative-[\"week\",3]",
+    "number-number-relative-[\"week\",4]",
+    "number-number-decimals-\"0.05\"",
+    "number-number-decimals-\"0.30\"",
+    "number-number-decimals-\"0.368\"",
+    "number-number-decimals-\"0.007\"",
+    "number-number-decimals-\"0.101\"",
+    "number-number-decimals-\"1.05\"",
+    "number-number-decimals-\"1.30\"",
+    "number-number-decimals-\"1.368\"",
+    "number-number-decimals-\"1.007\"",
+    "number-number-decimals-\"1.101\"",
+    "number-number-decimals-\"2.05\"",
+    "number-number-decimals-\"2.30\"",
+    "number-number-decimals-\"2.368\"",
+    "number-number-decimals-\"2.007\"",
+    "number-number-decimals-\"2.101\"",
+    "number-number-decimals-\"3.05\"",
+    "number-number-decimals-\"3.30\"",
+    "number-number-decimals-\"3.368\"",
+    "number-number-decimals-\"3.007\"",
+    "number-number-decimals-\"3.101\"",
+    "number-number-decimals-\"10.05\"",
+    "number-number-decimals-\"10.30\"",
+    "number-number-decimals-\"10.368\"",
+    "number-number-decimals-\"10.007\"",
+    "number-number-decimals-\"10.101\"",
+    "number-number-decimals-\"12.05\"",
+    "number-number-decimals-\"12.30\"",
+    "number-number-decimals-\"12.368\"",
+    "number-number-decimals-\"12.007\"",
+    "number-number-decimals-\"12.101\"",
+    "kanji-1-03a",
+    "kanji-1-03b",
+    "kanji-1-06",
+    "kanji-1-07",
+    "kanji-1-08",
+    "kanji-1-09",
+    "kanji-1-10",
+    "kanji-1-11",
+    "kanji-1-12",
+    "kanji-1-13",
+    "kanji-1-14",
+    "kanji-1-15",
+    "kanji-1-16",
+    "kanji-1-18",
+    "kanji-1-19a",
+    "kanji-1-c1",
+    "kanji-1-c2",
+    "kanji-1-c3c",
+    "kanji-1-c3d",
+    "kanji-1-c4",
+    "kanji-1-c5",
+    "kanji-1-r5",
+    "kanji-1-r7",
+    "kanji-1-r9",
+    "kanji-2-07",
+    "kanji-2-08",
+    "kanji-2-09",
+    "kanji-2-10",
+    "kanji-2-12",
+    "kanji-2-13",
+    "kanji-2-15",
+    "kanji-2-19",
+    "kanji-2-20",
+    "kanji-2-27",
+    "kanji-2-28",
+    "kanji-2-32a",
+    "kanji-2-32b",
+    "kanji-2-33",
+    "kanji-2-34",
+    "kanji-2-35",
+    "kanji-2-36",
+    "kanji-2-d1",
+    "kanji-2-d2c",
+    "kanji-2-d2d",
+    "kanji-2-c6",
+    "kanji-3-09",
+    "kanji-3-10",
+    "kanji-3-11",
+    "kanji-3-12",
+    "kanji-3-13",
+    "kanji-3-15",
+    "kanji-3-16b",
+    "kanji-3-17",
+    "kanji-3-20",
+    "kanji-3-21",
+    "kanji-3-22a",
+    "kanji-3-22b",
+    "kanji-3-23",
+    "kanji-3-25",
+    "kanji-3-28",
+    "kanji-3-29",
+    "kanji-3-30a",
+    "kanji-3-30b",
+    "kanji-3-31",
+    "kanji-3-32",
+    "kanji-3-34",
+    "kanji-3-35",
+    "kanji-3-36",
+    "kanji-3-c2",
+    "kanji-3-c2b",
+    "kanji-3-r7",
+    "kanji-4-01",
+    "kanji-4-02",
+    "kanji-4-03",
+    "kanji-4-04",
+    "kanji-4-05",
+    "kanji-4-06",
+    "kanji-4-08",
+    "kanji-4-09",
+    "kanji-4-10",
+    "kanji-4-11",
+    "kanji-4-12",
+    "kanji-4-13",
+    "kanji-4-14a",
+    "kanji-4-14b",
+    "kanji-4-15",
+    "kanji-4-16",
+    "kanji-4-17",
+    "kanji-4-18",
+    "kanji-4-19",
+    "kanji-4-20",
+    "kanji-4-21",
+    "kanji-4-22a",
+    "kanji-4-22b",
+    "kanji-4-29",
+    "kanji-4-30",
+    "kanji-4-31",
+    "kanji-4-32",
+    "kanji-4-33",
+    "kanji-4-34",
+    "kanji-4-35",
+    "kanji-4-36",
+    "kanji-4-37",
+    "kanji-4-38",
+    "kanji-4-39",
+    "kanji-4-40",
+    "kanji-4-41",
+    "kanji-4-42",
+    "kanji-4-43",
+    "kanji-4-44",
+    "kanji-4-45",
+    "kanji-4-c1",
+    "kanji-4-c2",
+    "kanji-4-e1",
+    "kanji-4-r6",
+    "kanji-4-r7",
+    "kanji-4-r8",
+    "kanji-csv-49dbdb19c4ed703b",
+    "kanji-csv-f50227659b484b36",
+    "kanji-csv-e5f8b4417ebfe19c",
+    "kanji-csv-5c0a9a882b9d9a39",
+    "kanji-csv-96faf26ff6e24abe",
+    "kanji-csv-f0a8ad38c4b26077",
+    "kanji-csv-a22105b120419229",
+    "kanji-csv-466ef427aeaa04c0",
+    "kanji-csv-73d6ed4fb078beac",
+    "kanji-csv-36a14c686f5072d1",
+    "kanji-csv-df823f0054e95444",
+    "kanji-csv-a24023d5cf432e72",
+    "kanji-csv-d0b1c1b9cff1afa8",
+    "kanji-csv-85fc29e4499613fa",
+    "kanji-csv-3b693859f9dedc50",
+    "kanji-csv-3ba73c6ea36b4989",
+    "kanji-csv-d4dffb5a5b803637",
+    "kanji-csv-75b0e4c01e1d84c5",
+    "kanji-csv-d210788ec91c38a2",
+    "kanji-csv-97d70ee391716129",
+    "kanji-csv-c5e1b6f79ac06f78",
+    "kanji-csv-a868b59281a163d0",
+    "kanji-csv-c95c5a42a2c4dc0f",
+    "kanji-csv-28e2535376fd8952",
+    "kanji-csv-8f8245c5ed921c82",
+    "kanji-csv-24110f167642a49c",
+    "kanji-csv-c221dba0167ae1e9",
+    "kanji-csv-c803b519e3fc772d",
+    "kanji-csv-17a1e9fa6d674c24",
+    "kanji-csv-5d4309a567cd471b",
+    "kanji-csv-5babde796c69ee99",
+    "kanji-csv-b4278971fe60aaba",
+    "kanji-csv-5a10eafbbd35a055",
+    "kanji-csv-636d771fbcf06c13",
+    "kanji-csv-b18a5ba6256ca74e",
+    "kanji-csv-e8e2f46fabc20cd4",
+    "kanji-csv-75cc337163f92d4a",
+    "kanji-csv-23b4d2461d6440ab",
+    "kanji-csv-3c6769841cb20689",
+    "kanji-csv-47e0d02b093eaa10",
+    "kanji-csv-9d3438acae746a2b",
+    "kanji-csv-9c2a0dad1676a16c",
+    "kanji-csv-8fea79d5439bf91d",
+    "kanji-csv-c2a089d9c108210d",
+    "kanji-csv-184a04e7c5d4fccd",
+    "kanji-csv-c11a3275fec09a2b",
+    "kanji-csv-877ca5f99e8338a8",
+    "kanji-csv-9c701220455cac91",
+    "kanji-csv-6b187d085f20d980",
+    "kanji-csv-ee51b3e0ae0fd355",
+    "kanji-csv-66356e973c57c474",
+    "kanji-csv-61d84228493517e8",
+    "kanji-csv-5702f6977f743b93",
+    "kanji-csv-c8125aa6b2d08005",
+    "kanji-csv-5b2bd2f1b059a707",
+    "kanji-csv-9211080b604c7214",
+    "kanji-csv-37a34299f8aac5ba",
+    "kanji-csv-b7e64825c6bfc605",
+    "kanji-csv-80e2b972cd3e2a7b",
+    "kanji-csv-fe19f59584c74922",
+    "kanji-csv-94a36930bfbb9722",
+    "kanji-csv-baf16aec6f47fddc",
+    "kanji-csv-59357d2a2ba16d1d",
+    "kanji-csv-28b35d9b1a29e3bd",
+    "kanji-csv-affaad7513b5d4c8",
+    "kanji-csv-c98d6b858839265e",
+    "kanji-csv-d174a32922550b37",
+    "kanji-csv-ad4bed84d1d20277",
+    "kanji-csv-1e0b486bbcdc48d6",
+    "kanji-csv-1c673828b19f140f",
+    "kanji-csv-3236ade61764e870",
+    "kanji-csv-7048eafe3ccb9af5",
+    "kanji-csv-337bdbc7d43ef9ad",
+    "kanji-csv-b199fcf6b483fa68",
+    "kanji-csv-3395ecf63186e543",
+    "kanji-csv-4eb49f0d02d973b0",
+    "kanji-csv-c1bbf30546c0876e",
+    "kanji-csv-4da5f65019726165",
+    "kanji-csv-1ff1d8b46cf7910c",
+    "kanji-csv-b65570a0efd59fe4",
+    "kanji-csv-0bad5ff77209d4f0",
+    "kanji-csv-98d3825988ce5f0a",
+    "kanji-csv-db95619e9dabec3f",
+    "kanji-csv-41e7fb780375c38e",
+    "kanji-csv-9263b75441c6fb63",
+    "kanji-csv-3fd555b0c01ae8b3",
+    "kanji-csv-07d7f60a32c5d106",
+    "schedule-954-particles",
+    "schedule-954-verb",
+    "schedule-954-complete",
+    "schedule-954-write",
+    "schedule-958-particles",
+    "schedule-958-verb",
+    "schedule-958-complete",
+    "schedule-958-write",
+    "schedule-962-particles",
+    "schedule-962-verb",
+    "schedule-962-complete",
+    "schedule-962-write",
+    "schedule-966-particles",
+    "schedule-966-verb",
+    "schedule-966-complete",
+    "schedule-966-write",
+    "picture-this-that-2-01",
+    "picture-this-that-2-02",
+    "picture-this-that-2-03",
+    "picture-this-that-2-04",
+    "picture-this-that-2-05",
+    "picture-this-that-2-06",
+    "picture-multiple-2-01",
+    "picture-multiple-2-04"
+  ],
+  "wordAssignments": [
+    {
+      "id": "1-01",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "1-02",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "1-03a",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "1-03b",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "1-04",
+      "group": "people",
+      "subgroup": "address",
+      "tags": []
+    },
+    {
+      "id": "1-05",
+      "group": "people",
+      "subgroup": "address",
+      "tags": []
+    },
+    {
+      "id": "1-06",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": [
+        "suffix"
+      ]
+    },
+    {
+      "id": "1-07",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-08",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-09",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-10",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-11",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-12",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-13",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-14",
+      "group": "study",
+      "subgroup": "jobs",
+      "tags": []
+    },
+    {
+      "id": "1-15",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "1-16",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "1-17a",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "1-17b",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "1-18",
+      "group": "numbers",
+      "subgroup": "counters",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "1-19a",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "1-19b",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "1-20",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "1-21",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "1-c1",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "1-c2",
+      "group": "travel",
+      "subgroup": "movement",
+      "tags": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "1-c3a",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "1-c3b",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "1-c3c",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "1-c3d",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "1-c4",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "1-c5",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "1-c6",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "1-r1",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r2",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r3",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r4",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r5",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r6",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r7",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r8",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r9",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "1-r10",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "2-01",
+      "group": "questions",
+      "subgroup": "standalone",
+      "tags": []
+    },
+    {
+      "id": "2-02",
+      "group": "questions",
+      "subgroup": "standalone",
+      "tags": []
+    },
+    {
+      "id": "2-03",
+      "group": "questions",
+      "subgroup": "standalone",
+      "tags": []
+    },
+    {
+      "id": "2-04",
+      "group": "questions",
+      "subgroup": "modifiers",
+      "tags": []
+    },
+    {
+      "id": "2-05",
+      "group": "questions",
+      "subgroup": "modifiers",
+      "tags": []
+    },
+    {
+      "id": "2-06",
+      "group": "questions",
+      "subgroup": "modifiers",
+      "tags": []
+    },
+    {
+      "id": "2-07",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-08",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-09",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-10",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-11",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-12",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-13",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-14",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-15",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-16",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-17",
+      "group": "objects",
+      "subgroup": "books",
+      "tags": []
+    },
+    {
+      "id": "2-18",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "2-19",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "2-20",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "2-21",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "2-22",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "2-23",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "2-24",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "2-25",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "2-26",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "2-27",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "2-28",
+      "group": "objects",
+      "subgroup": "furniture",
+      "tags": []
+    },
+    {
+      "id": "2-29",
+      "group": "objects",
+      "subgroup": "furniture",
+      "tags": []
+    },
+    {
+      "id": "2-30",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "2-31",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "2-32a",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "2-32b",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "2-33",
+      "group": "study",
+      "subgroup": "languages",
+      "tags": []
+    },
+    {
+      "id": "2-34",
+      "group": "study",
+      "subgroup": "languages",
+      "tags": []
+    },
+    {
+      "id": "2-35",
+      "group": "study",
+      "subgroup": "languages",
+      "tags": [
+        "suffix"
+      ]
+    },
+    {
+      "id": "2-36",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "2-37",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "2-d1",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "2-d2a",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "2-d2b",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "2-d2c",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "2-d2d",
+      "group": "everyday",
+      "subgroup": "meeting",
+      "tags": []
+    },
+    {
+      "id": "2-c1",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "2-c2",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "2-c3",
+      "group": "everyday",
+      "subgroup": "offering",
+      "tags": []
+    },
+    {
+      "id": "2-c4a",
+      "group": "everyday",
+      "subgroup": "thanks",
+      "tags": []
+    },
+    {
+      "id": "2-c4b",
+      "group": "everyday",
+      "subgroup": "thanks",
+      "tags": []
+    },
+    {
+      "id": "2-c4c",
+      "group": "everyday",
+      "subgroup": "thanks",
+      "tags": []
+    },
+    {
+      "id": "2-c4d",
+      "group": "everyday",
+      "subgroup": "thanks",
+      "tags": []
+    },
+    {
+      "id": "2-c5",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "2-c6",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "2-c7",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "3-01",
+      "group": "questions",
+      "subgroup": "location",
+      "tags": []
+    },
+    {
+      "id": "3-02",
+      "group": "questions",
+      "subgroup": "location",
+      "tags": []
+    },
+    {
+      "id": "3-03",
+      "group": "questions",
+      "subgroup": "location",
+      "tags": []
+    },
+    {
+      "id": "3-04",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "3-05",
+      "group": "questions",
+      "subgroup": "location",
+      "tags": []
+    },
+    {
+      "id": "3-06",
+      "group": "questions",
+      "subgroup": "location",
+      "tags": []
+    },
+    {
+      "id": "3-07",
+      "group": "questions",
+      "subgroup": "location",
+      "tags": []
+    },
+    {
+      "id": "3-08",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "3-09",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-10",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-11",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-12",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-13",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-14",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-15",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-16a",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-16b",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-17",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-18",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-19",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-20",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "3-21",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "3-22a",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "3-22b",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "3-23",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-24",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-25",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "3-26",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "3-27",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "3-28",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-29",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "3-30a",
+      "group": "numbers",
+      "subgroup": "counters",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "3-30b",
+      "group": "numbers",
+      "subgroup": "counters",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "3-31",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "3-32",
+      "group": "numbers",
+      "subgroup": "prices",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "3-33",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "3-34",
+      "group": "numbers",
+      "subgroup": "units",
+      "tags": []
+    },
+    {
+      "id": "3-35",
+      "group": "numbers",
+      "subgroup": "units",
+      "tags": []
+    },
+    {
+      "id": "3-36",
+      "group": "numbers",
+      "subgroup": "units",
+      "tags": []
+    },
+    {
+      "id": "3-c1",
+      "group": "everyday",
+      "subgroup": "offering",
+      "tags": []
+    },
+    {
+      "id": "3-c2",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "3-c2b",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "3-c3",
+      "group": "linking",
+      "subgroup": "connectors",
+      "tags": []
+    },
+    {
+      "id": "3-c4",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "3-c4b",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "3-p1",
+      "group": "everyday",
+      "subgroup": "attention",
+      "tags": []
+    },
+    {
+      "id": "3-p2",
+      "group": "everyday",
+      "subgroup": "thanks",
+      "tags": []
+    },
+    {
+      "id": "3-r1",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "3-r2",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "3-r3",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "3-r4",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "3-r5",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "3-r6",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "3-r7",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-01",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "4-02",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "4-03",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "4-04",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "4-05",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "4-06",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "4-07",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "4-08",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "4-09",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "4-10",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "4-11",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "4-12",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-13",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "4-14a",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "4-14b",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "4-15",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-16",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "4-17",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "4-18",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-19",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-20",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-21",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-22a",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-22b",
+      "group": "time",
+      "subgroup": "clock",
+      "tags": []
+    },
+    {
+      "id": "4-23",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-24",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-25",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-26",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-27",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-28",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-29",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-30",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-31",
+      "group": "actions",
+      "subgroup": "events",
+      "tags": []
+    },
+    {
+      "id": "4-32",
+      "group": "study",
+      "subgroup": "learning",
+      "tags": []
+    },
+    {
+      "id": "4-33",
+      "group": "actions",
+      "subgroup": "events",
+      "tags": []
+    },
+    {
+      "id": "4-34",
+      "group": "actions",
+      "subgroup": "events",
+      "tags": []
+    },
+    {
+      "id": "4-35",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-36",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-37",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "4-38",
+      "group": "time",
+      "subgroup": "weekdays",
+      "tags": []
+    },
+    {
+      "id": "4-39",
+      "group": "time",
+      "subgroup": "weekdays",
+      "tags": []
+    },
+    {
+      "id": "4-40",
+      "group": "time",
+      "subgroup": "weekdays",
+      "tags": []
+    },
+    {
+      "id": "4-41",
+      "group": "time",
+      "subgroup": "weekdays",
+      "tags": []
+    },
+    {
+      "id": "4-42",
+      "group": "time",
+      "subgroup": "weekdays",
+      "tags": []
+    },
+    {
+      "id": "4-43",
+      "group": "time",
+      "subgroup": "weekdays",
+      "tags": []
+    },
+    {
+      "id": "4-44",
+      "group": "time",
+      "subgroup": "weekdays",
+      "tags": []
+    },
+    {
+      "id": "4-45",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "4-46",
+      "group": "linking",
+      "subgroup": "particles",
+      "tags": []
+    },
+    {
+      "id": "4-47",
+      "group": "linking",
+      "subgroup": "particles",
+      "tags": []
+    },
+    {
+      "id": "4-48",
+      "group": "linking",
+      "subgroup": "particles",
+      "tags": []
+    },
+    {
+      "id": "4-c1",
+      "group": "numbers",
+      "subgroup": "units",
+      "tags": []
+    },
+    {
+      "id": "4-c2",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "4-e1",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "4-r1",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-r2",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-r3",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-r4",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-r5",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-r6",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-r7",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "4-r8",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-3c7d4b08462bc4f1",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-7177af3f64881d19",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-49dbdb19c4ed703b",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-9eebca0faf03e6d1",
+      "group": "everyday",
+      "subgroup": "thanks",
+      "tags": []
+    },
+    {
+      "id": "csv-f50227659b484b36",
+      "group": "travel",
+      "subgroup": "movement",
+      "tags": []
+    },
+    {
+      "id": "csv-8b77245faf60fc4f",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "csv-e5f8b4417ebfe19c",
+      "group": "travel",
+      "subgroup": "movement",
+      "tags": []
+    },
+    {
+      "id": "csv-5820ce9c10bf95fb",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "csv-da275c2671ca3790",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "csv-5c0a9a882b9d9a39",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-ddb642595b09a8d7",
+      "group": "actions",
+      "subgroup": "manner",
+      "tags": []
+    },
+    {
+      "id": "csv-c3c059abac5ad613",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-9a3a4421ce87643e",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "csv-bd7ed3e561d8f856",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-96faf26ff6e24abe",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "csv-f0a8ad38c4b26077",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-a22105b120419229",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-466ef427aeaa04c0",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-73d6ed4fb078beac",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-36a14c686f5072d1",
+      "group": "actions",
+      "subgroup": "events",
+      "tags": []
+    },
+    {
+      "id": "csv-df823f0054e95444",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-a24023d5cf432e72",
+      "group": "travel",
+      "subgroup": "movement",
+      "tags": []
+    },
+    {
+      "id": "csv-d0b1c1b9cff1afa8",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-85fc29e4499613fa",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "csv-a0827d7777003ef6",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "csv-3b693859f9dedc50",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "csv-3ba73c6ea36b4989",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "csv-d4dffb5a5b803637",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "csv-75b0e4c01e1d84c5",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-d210788ec91c38a2",
+      "group": "travel",
+      "subgroup": "movement",
+      "tags": []
+    },
+    {
+      "id": "csv-97d70ee391716129",
+      "group": "travel",
+      "subgroup": "trains",
+      "tags": []
+    },
+    {
+      "id": "csv-c5e1b6f79ac06f78",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-a868b59281a163d0",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-c95c5a42a2c4dc0f",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-28e2535376fd8952",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-8f8245c5ed921c82",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-24110f167642a49c",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-c221dba0167ae1e9",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-30b189ebcd7003c3",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-6bcbca4ff9d1339c",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-c803b519e3fc772d",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-17a1e9fa6d674c24",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-5d4309a567cd471b",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-5babde796c69ee99",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-b4278971fe60aaba",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-7dc41055c5283da3",
+      "group": "actions",
+      "subgroup": "events",
+      "tags": []
+    },
+    {
+      "id": "csv-5a10eafbbd35a055",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "csv-e1fe9fe823893e71",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-636d771fbcf06c13",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "csv-e71873a7c50a3455",
+      "group": "everyday",
+      "subgroup": "greetings",
+      "tags": []
+    },
+    {
+      "id": "csv-59fc344c5d6c0e5b",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-b18a5ba6256ca74e",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-e8e2f46fabc20cd4",
+      "group": "study",
+      "subgroup": "learning",
+      "tags": []
+    },
+    {
+      "id": "csv-75cc337163f92d4a",
+      "group": "travel",
+      "subgroup": "trains",
+      "tags": []
+    },
+    {
+      "id": "csv-8c8770a8bd199980",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-3e715ed68e25a4b2",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "csv-23b4d2461d6440ab",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-3c6769841cb20689",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-626cfb072a80fcbb",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    },
+    {
+      "id": "csv-1d44190694449872",
+      "group": "linking",
+      "subgroup": "connectors",
+      "tags": []
+    },
+    {
+      "id": "csv-6cec773780557979",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "csv-39827ceb3d02520a",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "csv-47e0d02b093eaa10",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-9d3438acae746a2b",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-9c2a0dad1676a16c",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-8fea79d5439bf91d",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "csv-f66659321ab61768",
+      "group": "actions",
+      "subgroup": "manner",
+      "tags": []
+    },
+    {
+      "id": "csv-c2a089d9c108210d",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-184a04e7c5d4fccd",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-e0ef263ea957a0ed",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-c11a3275fec09a2b",
+      "group": "objects",
+      "subgroup": "personal",
+      "tags": []
+    },
+    {
+      "id": "csv-1981cf9bdbeb6a22",
+      "group": "actions",
+      "subgroup": "events",
+      "tags": []
+    },
+    {
+      "id": "csv-877ca5f99e8338a8",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "csv-1d26a3f31f546046",
+      "group": "everyday",
+      "subgroup": "thanks",
+      "tags": []
+    },
+    {
+      "id": "csv-9c701220455cac91",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-6b187d085f20d980",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-ee51b3e0ae0fd355",
+      "group": "travel",
+      "subgroup": "trains",
+      "tags": []
+    },
+    {
+      "id": "csv-66356e973c57c474",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "csv-cc1157bdb7daec7d",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-61d84228493517e8",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "csv-5702f6977f743b93",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-c8125aa6b2d08005",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "csv-5b2bd2f1b059a707",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "csv-9211080b604c7214",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "csv-37a34299f8aac5ba",
+      "group": "questions",
+      "subgroup": "question",
+      "tags": []
+    },
+    {
+      "id": "csv-b7e64825c6bfc605",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-80e2b972cd3e2a7b",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-7102dff50ca5a822",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "csv-fe19f59584c74922",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "csv-7b39f2af6e32e892",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "csv-94a36930bfbb9722",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-866bfdb4796056e3",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "csv-baf16aec6f47fddc",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-59357d2a2ba16d1d",
+      "group": "actions",
+      "subgroup": "events",
+      "tags": []
+    },
+    {
+      "id": "csv-28b35d9b1a29e3bd",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-de32617ea8103232",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-affaad7513b5d4c8",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-4f20834e51a03b0c",
+      "group": "travel",
+      "subgroup": "trains",
+      "tags": [
+        "counter"
+      ]
+    },
+    {
+      "id": "csv-c90996b5e92d7c1e",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-c98d6b858839265e",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "csv-a21d0ee87a3c3deb",
+      "group": "objects",
+      "subgroup": "media",
+      "tags": []
+    },
+    {
+      "id": "csv-d174a32922550b37",
+      "group": "people",
+      "subgroup": "pronouns",
+      "tags": []
+    },
+    {
+      "id": "csv-ad4bed84d1d20277",
+      "group": "actions",
+      "subgroup": "manner",
+      "tags": []
+    },
+    {
+      "id": "csv-1e0b486bbcdc48d6",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-1c673828b19f140f",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-3236ade61764e870",
+      "group": "travel",
+      "subgroup": "trains",
+      "tags": []
+    },
+    {
+      "id": "csv-7048eafe3ccb9af5",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-337bdbc7d43ef9ad",
+      "group": "travel",
+      "subgroup": "vehicles",
+      "tags": []
+    },
+    {
+      "id": "csv-7397e594beb9d693",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-b199fcf6b483fa68",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-3395ecf63186e543",
+      "group": "places",
+      "subgroup": "named",
+      "tags": []
+    },
+    {
+      "id": "csv-4eb49f0d02d973b0",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-c1bbf30546c0876e",
+      "group": "places",
+      "subgroup": "facilities",
+      "tags": []
+    },
+    {
+      "id": "csv-4da5f65019726165",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-1ff1d8b46cf7910c",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-bc3c569041e86eb6",
+      "group": "food",
+      "subgroup": "drinks",
+      "tags": []
+    },
+    {
+      "id": "csv-b65570a0efd59fe4",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-15a68a335b8ce750",
+      "group": "places",
+      "subgroup": "countries",
+      "tags": []
+    },
+    {
+      "id": "csv-0bad5ff77209d4f0",
+      "group": "food",
+      "subgroup": "meals",
+      "tags": []
+    },
+    {
+      "id": "csv-98d3825988ce5f0a",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-db95619e9dabec3f",
+      "group": "time",
+      "subgroup": "calendar",
+      "tags": []
+    },
+    {
+      "id": "csv-41e7fb780375c38e",
+      "group": "actions",
+      "subgroup": "verbs",
+      "tags": []
+    },
+    {
+      "id": "csv-9263b75441c6fb63",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-3fd555b0c01ae8b3",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-07d7f60a32c5d106",
+      "group": "time",
+      "subgroup": "relative",
+      "tags": []
+    },
+    {
+      "id": "csv-1dcf2c3f1c019d5f",
+      "group": "study",
+      "subgroup": "learning",
+      "tags": []
+    },
+    {
+      "id": "csv-43dcdb53d41a80e5",
+      "group": "everyday",
+      "subgroup": "reactions",
+      "tags": []
+    }
+  ]
+}

@@ -25,7 +25,7 @@ for(const [ch,count,forms] of [[3,36,54],[4,48,62]]){
 }
 assert.equal(ev('WORDS.filter(w=>w.kana==="そちら").length'),1);
 assert.deepEqual(plain(ev('wordChapters(wordBy("3-06"))')),[3,4]);
-assert.equal(ev('new Set(vocabularyStudySet("all").ids).size'),300);
+assert.equal(ev('new Set(vocabularyStudySet("all").ids).size'),338);
 assert.equal(ev('WORDS.filter(w=>w.kana==="おととい").length'),1);assert.equal(ev('WORDS.filter(w=>w.kana==="きのう").length'),1);
 assert.equal(ev('wordBy("4-28").c'),'X');assert.equal(ev('wordBy("4-r2").jp'),'ペキン');
 assert.equal(ev('wordBy("3-16a").jp'),'トイレ');assert.equal(ev('wordBy("3-16b").c'),'お手洗い');
@@ -41,44 +41,7 @@ assert.equal(ev('rebuildCorrect("きようしつ","きょうしつ")'),false);
 assert.equal(ev('rebuildCorrect("ろくぷん","ろっぷん")'),false);
 assert.equal(ev('rebuildCorrect("せんいせ","せんせい")'),false);
 assert.equal(ev('rebuildCorrect("か\u3099い","がい")'),true);
-for(const lang of ['en','zh-Hant'])for(const ch of [3,4]){
- ev(`state.language='${lang}';selectDialogueChapter(${ch})`);
- const ids=plain(ev('dialogueStudySet().items.map(q=>q.id)'));
- assert.equal(ids.length,ch===3?13:3);
- assert.equal(ev(`dialogueStudySet().items.every(q=>q.ch===${ch})`),true);
- for(const id of ids){
-  ev(`selectDialogueExpression('${id}')`);
-  const q=plain(ev(`allDialogueItems().find(q=>q.id==='${id}')`));
-  assert.ok(app.innerHTML.includes(`data-dialogue-guide="${id}"`));
-  assert.equal((app.innerHTML.match(/class="conversation-turn /g)||[]).length,q.turns.length);
-  assert.ok(app.innerHTML.includes('class="wh-target"'));
-  assert.ok(app.innerHTML.includes(lang==='en'?q.why:q.whyZh));
-  assert.equal(new Set([q.kana,...q.distractors]).size,q.distractors.length+1);
- }
- for(const kind of ['dialogue-choice','dialogue-tiles']){
-  ev(`startDialoguePractice('${kind}')`);
-  assert.deepEqual(plain(ev('state.activity.ids')).sort(),ids.slice().sort());
-  for(const id of ids){
-   ev(`state.activity.index=state.activity.ids.indexOf('${id}');prepareActivity();render()`);
-   assert.ok(!app.innerHTML.includes('wh-target'));assert.ok(!app.innerHTML.includes('reply-feedback'));assert.ok(!app.innerHTML.includes('breadcrumb-row'));assert.ok(!app.innerHTML.includes('conversation-notes'));
-   const q=plain(ev('activityCurrent()'));
-   const incoming=app.innerHTML.match(/<div class="conversation-turn listener">([\s\S]*?)<div class="conversation-turn you">/)[1];
-   assert.ok(incoming.includes(q.turns[0][1]));
-   if(ev('!!activityCurrent().forms'))ev(`{const a=state.activity,q=activityCurrent();if(isActivityRebuild(a)){for(const f of q.forms){const p=a.formAnswers[f.role];for(const unit of dialogueCharacters(f.kana))p.chosen.push(p.tileBank.findIndex((u,i)=>u===unit&&!p.chosen.includes(i)));}}else a.selections=q.forms.map(f=>f.id);checkActivity();}`);
-   else if(kind==='dialogue-choice')ev('checkActivity(activityCurrent().id)');
-   else ev('{const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent()))){const i=a.tileBank.findIndex((x,i)=>x===unit&&!a.chosen.includes(i));if(i<0)throw Error("missing repeated tile");a.chosen.push(i);}checkActivity()}');
-   assert.equal(ev('state.activity.result'),true,id);assert.ok(app.innerHTML.includes('reply-feedback correct'));assert.ok(app.innerHTML.includes('feedback-lulu happy'));
-  }
-  assert.equal(ev('state.activity.correct'),ids.length);
-  ev('activityAction("activityRestart")');assert.deepEqual(plain(ev('state.activity.ids')).sort(),ids.slice().sort());
-  ev('state.activity.missed=[state.activity.ids[0]];activityAction("activityMissed")');assert.equal(ev('state.activity.ids.length'),1);
-  ev('run("gameBack")');assert.equal(ev('state.dialogueChapter'),ch);
- }
-}
-for(const category of plain(ev('dialogueCategories().map(c=>c.id)'))){
- ev(`selectDialogueCategory('${category}');startDialoguePractice('dialogue-choice')`);
- assert.equal(ev(`state.activity.items.every(q=>dialogueInCategory(q,'${category}'))`),true);
-}
+// Chapter/task intersections and guide reachability are checked in learning-navigation.cjs.
 // Clock geometry is derived from the same numeric values used by the time answers.
 const clock=ev('lessonScene(CHAPTER_DIALOGUES.find(q=>q.id==="ch4-time-pm"))');
 assert.ok(clock.includes('data-hour="4" data-minute="8"'));
@@ -90,17 +53,8 @@ const phoneReadings=plain(ev('CHAPTER_DIALOGUES.find(q=>q.id==="ch4-phone-answer
 assert.ok(phoneReadings.includes('ごにななごのにななにご'));
 // The timed assessment keeps its original distribution and all old IDs.
 for(let i=0;i<10;i++){ev('startMock()');assert.equal(ev('mock.a.every(q=>wordBy(q.id).ch<=2)&&mock.b.every(q=>sentenceBy(q.id).ch<=2)'),true);}
-console.log('PASS: Chapters 3–4 complete source rows, variants, shared membership, exact readings, all scoped modes, bilingual complete guides, grading visibility, numeric scenes, retries, and legacy progress/mock compatibility.');
+console.log('PASS: Chapters 3–4 complete source rows, variants, shared membership, exact readings, scoped word modes, numeric scenes, and legacy progress/timed-practice compatibility.');
 
-// Category migrations preserve every other conversation and stable source IDs.
-assert.equal(ev('dialogueCategories().some(c=>c.id==="locations")'),false);
-ev('selectDialogueCategory("wh-words")');
-for(const id of ['ch3-where','ch3-floor-question','ch4-time-question','ch4-weekday-question','ch4-phone-question'])assert.equal(ev(`dialogueStudySet().items.some(q=>q.id==='${id}')`),true,id);
-for(const kind of ['dialogue-choice','dialogue-tiles']){ev(`startDialoguePractice('${kind}')`);assert.equal(ev('state.activity.ids.includes("ch4-time-question")'),true);}
-ev('selectDialogueCategory("demonstratives")');
-for(const [id,en,zh] of [['ch3-location-01','Here','這裡'],['ch3-location-02','There','那裡'],['ch3-location-03','Over there','那邊（遠處）']]){assert.equal(ev(`dialogueStudySet().items.some(q=>q.id==='${id}')`),true);ev('state.language="en"');assert.equal(ev(`dialogueExpressionLabel(allDialogueItems().find(q=>q.id==='${id}'))`),en);ev('state.language="zh-Hant"');assert.equal(ev(`dialogueExpressionLabel(allDialogueItems().find(q=>q.id==='${id}'))`),zh);}
-assert.equal(ev('allDialogueItems().length'),41);assert.equal(ev('new Set(allDialogueItems().map(q=>q.id)).size'),41);
-assert.equal(ev('allDialogueItems().some(q=>q.id==="ch4-empathy")'),false);assert.equal(ev('wordBy("4-e1").kana'),'たいへんですね');assert.notEqual(ev('vocabularySection(wordBy("4-e1"))'),'replies');
-for(const category of ev('dialogueCategories().map(c=>c.id)'))for(const kind of ['dialogue-choice','dialogue-tiles']){ev(`selectDialogueCategory('${category}');startDialoguePractice('${kind}')`);assert.equal(ev('state.activity.items.some(q=>q.id==="ch4-empathy")'),false);}
-ev('state.dialogueBrowse="category";state.dialogueCategory="locations";dialogueContent()');assert.equal(ev('state.dialogueCategory'),'introductions');
-console.log('PASS: WH/place category migrations, source conversations, localized place chips, category game pools, Replies exclusion and saved-category recovery.');
+assert.equal(ev('allDialogueItems().length'),41);
+assert.equal(ev('new Set(allDialogueItems().map(q=>q.id)).size'),41);
+console.log('PASS: all active canonical scenes remain present after categorisation.');

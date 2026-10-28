@@ -142,14 +142,15 @@ function numberTileBank(q,mode){
  if(bank.length>1&&bank.join('')===q.kana)bank.push(bank.shift());return bank;
 }
 function numberSelection(){
- if(!['all','category','chapter'].includes(state.numberBrowse))state.numberBrowse='all';
  if(state.numberType==='whole')state.numberType='ones';
- if(!NUMBER_TYPES.some(t=>t[0]===state.numberType))state.numberType=NUMBER_TYPES[0][0];
+ if(!NUMBER_TYPES.some(t=>t[0]===state.numberType))state.numberType='all';
  const available=[...new Set(NUMBER_QUESTIONS.flatMap(q=>q.chapters))].sort();
- if(!available.map(String).includes(state.numberChapter))state.numberChapter=String(available[0]);
- const items=NUMBER_QUESTIONS.filter(q=>state.numberBrowse==='all'||(state.numberBrowse==='category'?numberCategory(q)===state.numberType:q.chapters.includes(Number(state.numberChapter)))).sort((a,b)=>NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(a))-NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(b))||(a.type==='whole'&&b.type==='whole'?a.value-b.value:0));
- return {items,available,key:state.numberBrowse==='all'?'all':state.numberBrowse==='category'?`category-${state.numberType}`:`chapter-${state.numberChapter}`,label:state.numberBrowse==='all'?'Numbers':state.numberBrowse==='category'?numberTypeLabel(state.numberType):chapterLabel(state.numberChapter)};
+ if(!available.map(String).includes(state.numberChapter))state.numberChapter='all';
+ if(state.numberChapter!=='all'&&state.numberType!=='all'&&!NUMBER_QUESTIONS.some(q=>q.chapters.includes(Number(state.numberChapter))&&numberCategory(q)===state.numberType))state.numberType='all';
+ const items=NUMBER_QUESTIONS.filter(q=>(state.numberType==='all'||numberCategory(q)===state.numberType)&&(state.numberChapter==='all'||q.chapters.includes(Number(state.numberChapter)))).sort((a,b)=>NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(a))-NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(b))||(a.type==='whole'&&b.type==='whole'?a.value-b.value:0));
+ return {items,available,key:`${state.numberChapter}:${state.numberType}`,label:'Numbers'};
 }
+
 const NUMBER_NOTES={
  whole:['Read the large units before the smaller ones. Watch hundred and thousand sound changes.','先讀大單位，再讀小單位。留意百與千的音變。'],
  dates:['Read the month, then the day. Some month and day names have irregular readings.','先讀月份，再讀日期。部分月份與日期有特殊讀音。'],
@@ -208,14 +209,8 @@ function numberContentTable(items,shown){
  }).join('');
  return `<table class="number-table${notes?' has-notes':''}"><caption class="sr-only">${esc(translateText('Number expressions and readings'))}</caption><thead><tr><th scope="col">Number / Expression</th><th scope="col">Hiragana</th>${notes?'<th scope="col">Usage / Reading Note</th>':''}</tr></thead>${groups}</table>`;
 }
-function numberMenu(){
- const set=numberSelection(),chips=(entries,attribute,selected)=>entries.map(([id,label])=>`<button class="dialogue-chip${id===selected?' selected':''}" data-${attribute}="${id}" aria-pressed="${id===selected}">${esc(label)}</button>`).join('');
- const entries=state.numberBrowse==='category'?NUMBER_TYPES.map(t=>[t[0],numberTypeLabel(t[0])]):set.available.map(ch=>[String(ch),chapterLabel(ch)]);
- const label=state.numberBrowse==='category'?'Category':'Chapter';
- const pageSize=12,last=Math.max(0,Math.ceil(set.items.length/pageSize)-1);state.numberPage=Math.max(0,Math.min(last,Number(state.numberPage)||0));
- const shown=set.items.slice(state.numberPage*pageSize,(state.numberPage+1)*pageSize);
- return `<section class="study-wrap dialogue-selector number-selector"><div class="dialogue-chip-row number-mode-row" role="group" aria-label="Number selection">${chips([['all','All'],['category','By category'],['chapter','By chapter']],'number-browse',state.numberBrowse)}</div>${state.numberBrowse==='all'?'':`<div class="field-label number-filter-label">${label}</div><div class="dialogue-chip-row number-filter-row" data-chip-group="${state.numberBrowse}" role="group" aria-label="${label}">${chips(entries,state.numberBrowse==='category'?'number-type':'number-chapter',state.numberBrowse==='category'?state.numberType:state.numberChapter)}</div>`}<div class="dialogue-intro"><h1>${esc(set.label)}</h1><p>Explore numerical expressions and their readings.</p></div><div class="dialogue-guide-actions"><button class="button primary" data-number-practice="matching">Matching ${icon('arrow')}</button><button class="button soft" data-number-practice="rebuild">Rebuild ${icon('arrow')}</button></div><p class="small muted">${set.items.length} forms</p></section><section class="study-wrap number-content">${numberContentTable(set.items,shown)}<div class="card-actions number-pagination">${button('Previous page','numberPreviousPage','ghost',state.numberPage?'':'disabled')}<span>${state.numberPage+1} / ${last+1}</span>${button('Next page','numberNextPage','ghost',state.numberPage<last?'':'disabled')}</div></section>`;
-}
+function numberMenu(){const set=numberSelection(),pageSize=12,last=Math.max(0,Math.ceil(set.items.length/pageSize)-1);state.numberPage=Math.max(0,Math.min(last,state.numberPage||0));const shown=set.items.slice(state.numberPage*pageSize,(state.numberPage+1)*pageSize);return `<section class="study-wrap"><h1>${nL('Numbers','數字')}</h1><p>${nL('Learn number expressions and their readings.','學習數字表達與讀音。')}</p><div class="learning-filters"><label class="field-label">${nL('Chapter','課次')}<select class="input" data-number-filter="chapter"><option value="all">${nL('All chapters','全部課次')}</option>${set.available.map(ch=>`<option value="${ch}" ${String(ch)===state.numberChapter?'selected':''}>${esc(translateText(chapterLabel(ch)))}</option>`).join('')}</select></label><label class="field-label">${nL('Content group','內容組別')}<select class="input" data-number-filter="type"><option value="all">${nL('All groups','全部組別')}</option>${NUMBER_TYPES.filter(([id])=>NUMBER_QUESTIONS.some(q=>numberCategory(q)===id&&(state.numberChapter==='all'||q.chapters.includes(Number(state.numberChapter))))).map(([id])=>`<option value="${id}" ${id===state.numberType?'selected':''}>${esc(numberTypeLabel(id))}</option>`).join('')}</select></label></div><p class="selection-summary" role="status">${set.items.length} ${nL('playable questions','可練習題目')}</p><div class="card-actions"><button class="button primary" data-number-practice="matching" ${set.items.length?'':'disabled'}>${nL('Matching','配對')}</button><button class="button primary" data-number-practice="rebuild" ${set.items.length?'':'disabled'}>${nL('Rebuild','重組')}</button><button class="button primary" data-number-recall ${set.items.length?'':'disabled'}>${nL('Independent practice','獨立練習')}</button></div>${numberContentTable(set.items,shown)}<div class="card-actions number-pagination">${button('Previous page','numberPreviousPage','ghost',state.numberPage?'':'disabled')}<span>${state.numberPage+1}/${last+1}</span>${button('Next page','numberNextPage','ghost',state.numberPage<last?'':'disabled')}</div></section>`;}
+
 function startNumberPractice(mode='matching',ids=null,scope=null){
  if(!['matching','rebuild'].includes(mode))return;
  if(scope)Object.assign(state,scope);

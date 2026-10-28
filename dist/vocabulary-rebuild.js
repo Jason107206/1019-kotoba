@@ -61,12 +61,12 @@ function vocabularyTileClick(dataset){
 // Keep every word taught by a Dialogue scene in Dialogue, including its WH-words.
 // Other introduction/reply forms were already outside Vocabulary.
 const DIALOGUE_WORD_IDS=new Set([...DIALOGUES.filter(q=>!q.lesson),...demonstrativeWords].map(item=>item.word));
-const VOCABULARY_CATEGORIES=VOCAB_CATEGORIES.filter(category=>!['introductions','demonstratives'].includes(category.id));
-const VOCABULARY_WORDS=WORDS.filter(word=>(wordChapters(word).some(ch=>ch>=3)||!DIALOGUE_WORD_IDS.has(word.id)&&!['courtesy','replies'].includes(vocabularySection(word)))&&VOCABULARY_CATEGORIES.some(category=>category.id===vocabularySection(word)));
+const VOCABULARY_CATEGORIES=VOCAB_CATEGORIES;
+const VOCABULARY_WORDS=WORDS;
 const VOCABULARY_WORD_IDS=new Set(VOCABULARY_WORDS.filter(wordGameReady).map(word=>word.id));
 
 // Shared vocabulary library and launch point for Recall and Rebuild.
-function vocabularyStudySet(key){
+function vocabularyStudySet(key){if(key.startsWith('category-')){const migrated=migrateCategory(key.slice(9));key=migrated==='all'?'all':'category-'+migrated;}
   let words=VOCABULARY_WORDS,label,description,section='main';
   if(key==='all'){
     label='All words';description='Study vocabulary from Chapters 1–6.';
@@ -81,11 +81,8 @@ function vocabularyStudySet(key){
   return {key,section,label,description,ids:words.map(w=>w.id)};
 }
 function vocabularyMenu(){return vocabularyContent();}
-function openVocabularyContent(key){
-  const set=vocabularyStudySet(key)||vocabularyStudySet('all');key=set.key;
-  rememberPage();state.vocabularyContentKey=key;state.vocabularyMenu=set.section;
-  state.view='vocabulary-content';state.round=null;state.modal=false;render();window.scrollTo({top:0,behavior:'smooth'});
-}
+function openVocabularyContent(key){const s=learningScope('vocabulary');if(/^chapter-[1-6]$/.test(key))s.chapter=key.slice(-1);else if(key.startsWith('category-')){s.group=migrateCategory(key.slice(9));s.notice=['source-vocabulary','source-expressions'].includes(key.slice(9));s.topic='all';}else {s.chapter='all';s.group='all';s.topic='all';}s.page=0;state.vocabularyContentKey=key;navigate('vocabulary-content');}
+
 function startVocabularyPractice(mode){
   if(!['write','vocabulary-rebuild'].includes(mode))return;
   const set=vocabularyStudySet(state.vocabularyContentKey)||vocabularyStudySet('all');state.vocabularyContentKey=set.key;
@@ -105,7 +102,7 @@ const VOCAB_VISUALS={
   '2-d1':'🏠','2-d2a':'🤝↔️','2-d2b':'🤝↔️','2-d2c':'🤝↔️','2-d2d':'🤝↔️',
   '2-c1':'💬','2-c2':'❗','2-c3':'🎁','2-c4a':'♡','2-c4b':'♡','2-c4c':'♡','2-c4d':'♡','2-c5':'💡💬','2-c6':'✖','2-c7':'💡'
 };
-const PIGGY_VISUAL_CATEGORIES=new Set(['people','occupations','questions','introductions','courtesy','replies']);
+const PIGGY_VISUAL_CATEGORIES=new Set(['people','study','questions','everyday']);
 const PIGGY_VISUAL_WORD_IDS=new Set(['1-06','2-07','2-08','2-32a','2-32b','2-33','2-34','2-35']);
 const PIGGY_VISUAL_POSES={
   '1-01':'wave','1-02':'point','1-03a':'point','1-03b':'point','1-04':'bow','1-05':'wave','1-06':'point',
@@ -138,7 +135,8 @@ function vocabularyBrowse(mode){
   const key=mode==='all'?'all':mode==='chapter'?'chapter-1':`category-${VOCABULARY_CATEGORIES[0].id}`;
   openVocabularyContent(key);
 }
-function vocabularyContent(){
+function vocabularyContent(){return learningVocabulary();}
+function legacyVocabularyContent(){
   const set=vocabularyStudySet(state.vocabularyContentKey)||vocabularyStudySet('all');
   state.vocabularyContentKey=set.key;
   const mode=set.section==='main'?'all':set.section;

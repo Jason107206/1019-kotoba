@@ -1,0 +1,19 @@
+{
+  "baselineCommit": "f730b8f",
+  "expressions": {
+    "words": "WORDS.map(w=>[w.id,w.jp,w.kana,w.c,w.ch,w.chapters])",
+    "sentences": "SENTENCES.map(s=>[s.id,s.pattern,s.ch,s.tokens])",
+    "patterns": "PATTERNS.map(p=>[p.id,p.ch,p.formula])",
+    "dialogues": "dialogueSources.map(q=>[q.id,q.word,q.kana,q.target,q.answerSlot,q.turns.map(t=>t[1]),q.ch,q.chapters])",
+    "numbers": "NUMBER_QUESTIONS",
+    "exercises": "EXAM_BANK.map(q=>[q.id,q.parts,q.answers,q.marks,q.alternatives,q.sourceRefs])"
+  },
+  "hashes": {
+    "words": "6ee783f15f0b294bfc246d2b84b687c0581b3cfc80f236d0cc65c49cab27a4a6",
+    "sentences": "be0111cb74452e4ce5c5215c8e23c299aa350ce95a81751debb48972de465656",
+    "patterns": "3ac0ef994777bea09a5fefd2abacca7191a94d93e1f2705ab64579a91c4a1512",
+    "dialogues": "4d4bb90e307206866c944b6b9f1a8b007a4c05ce51d90396ca339fd7076f1d52",
+    "numbers": "608fd0f92553bda6e056b31443fbd98b808d2c97def1dce81530dde109c548bd",
+    "exercises": "e8c92c4eaf7245171d7e311d919a5c470aca44d391146b8d6c2be17cc2038a8e"
+  }
+}

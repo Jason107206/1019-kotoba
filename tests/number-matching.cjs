@@ -40,12 +40,12 @@ assert.equal(ev('numberCategory(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.val
 assert.equal(ev('NUMBER_QUESTIONS.filter(q=>q.type==="whole").every(q=>q.value<=10000)'),true);
 assert.equal(ev('NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===10000).chapters.includes(3)'),true);
 ev(`state.numberType='whole';numberSelection()`);assert.equal(ev('state.numberType'),'ones');
-ev(`state.numberBrowse='all';state.numberPage=0;render()`);assert.ok(app.innerHTML.includes('scope="rowgroup"'));assert.ok(app.innerHTML.includes('data-number-group="ones"'));
+ev(`state.numberBrowse='all';state.numberType='all';state.numberChapter='all';state.numberPage=0;render()`);assert.ok(app.innerHTML.includes('scope="rowgroup"'));assert.ok(app.innerHTML.includes('data-number-group="ones"'));
 assert.equal(ev('numberContentDetail(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===300)).irregular'),true);
 assert.equal(ev('numberContentDetail(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===125)).note'),'');
 const ids=Array.from(ev('NUMBER_QUESTIONS.map(q=>q.id)'));
 for(const mode of ['matching','rebuild'])for(const id of ids){
- ev(`state.numberBrowse='all';startNumberPractice('${mode}',[${JSON.stringify(id)}])`);
+ ev(`state.numberBrowse='all';state.numberType='all';state.numberChapter='all';startNumberPractice('${mode}',[${JSON.stringify(id)}])`);
  const readings=Array.from(ev('numberReadings(numberCurrent())'));
  for(const reading of readings){
   ev(`prepareNumberMatching();{const r=state.numberRound,units=r.mode==='rebuild'?numberCharacters(${JSON.stringify(reading)}):numberSegments(numberCurrent(),${JSON.stringify(reading)});for(const unit of units){const index=r.tileBank.findIndex((u,i)=>u===unit&&!r.chosen.includes(i));if(index<0)throw Error('Missing answer tile '+unit);r.chosen.push(index);}}`);
@@ -56,7 +56,7 @@ assert.deepEqual(Array.from(ev('integerSegments(125)')),['ひゃく','にじゅ�
 assert.deepEqual(Array.from(ev('numberCharacters("か\\u3099きゅう")')),['が','き','ゅ','う']);
 assert.equal(ev('rebuildCorrect("さんひ\\u3099ゃく","さんびゃく")'),true);
 // Duplicate tiles retain independent identities; swapping equal tiles is still correct.
-ev(`state.numberBrowse='all';startNumberPractice('matching',[NUMBER_QUESTIONS.find(q=>q.type==='decimals'&&q.value==='0.007').id]);{const r=state.numberRound;for(const unit of numberSegments(numberCurrent()))r.chosen.push(r.tileBank.findIndex((u,i)=>u===unit&&!r.chosen.includes(i)));const repeated=r.chosen.map((id,i)=>[id,i]).filter(([id])=>r.tileBank[id]==='ぜろ');[r.chosen[repeated[0][1]],r.chosen[repeated[1][1]]]=[r.chosen[repeated[1][1]],r.chosen[repeated[0][1]]];}checkNumberMatching()`);
+ev(`state.numberBrowse='all';state.numberType='all';state.numberChapter='all';startNumberPractice('matching',[NUMBER_QUESTIONS.find(q=>q.type==='decimals'&&q.value==='0.007').id]);{const r=state.numberRound;for(const unit of numberSegments(numberCurrent()))r.chosen.push(r.tileBank.findIndex((u,i)=>u===unit&&!r.chosen.includes(i)));const repeated=r.chosen.map((id,i)=>[id,i]).filter(([id])=>r.tileBank[id]==='ぜろ');[r.chosen[repeated[0][1]],r.chosen[repeated[1][1]]]=[r.chosen[repeated[1][1]],r.chosen[repeated[0][1]]];}checkNumberMatching()`);
 assert.equal(ev('state.numberRound.result'),true);
 ev(`startNumberPractice('matching',[NUMBER_QUESTIONS.find(q=>q.type==='whole'&&q.value===125).id]);{const r=state.numberRound;for(const unit of numberSegments(numberCurrent()).reverse())r.chosen.push(r.tileBank.findIndex((u,i)=>u===unit&&!r.chosen.includes(i)));}checkNumberMatching()`);
 assert.equal(ev('state.numberRound.result'),false);assert.equal(ev('state.numberRound.correct'),0);assert.equal(ev('gameProgress().completed'),1);assert.ok(app.innerHTML.includes('feedback-lulu encouraging'));
