@@ -32,6 +32,8 @@ jobs:
         run: node scripts/build-pwa.cjs
       - name: Verify PWA
         run: node tests/pwa.cjs
+      - name: Verify source-audited exam practice
+        run: node tests/exam-practice.cjs
       - name: Verify chapter import
         run: node tests/chapter-import.cjs
       - name: Verify game content and scoring

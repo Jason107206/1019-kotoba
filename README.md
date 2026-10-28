@@ -137,3 +137,8 @@ The revision browser suite adds 218 layout checks at 360, 390 and 1440 pixels in
 The Dialogue modes browser suite checks All, every category and all four chapters at 320, 390 and 1440px in both languages, including filtered question pools, retries, highlights, retained scrolling, and content destinations from all game back buttons.
 
 This and That shows a shared book scene above each complete conversation. Object placement is relative to the learner, while the listener’s question uses the opposite perspective. Short localized chips keep standalone and noun-modifying forms distinct. あのう joins This and That with a separate waving Lulu scene and a usage note distinguishing it from あの + noun. It is included in both This and That games, All and Chapter 2, and excluded from Polite Expressions.
+
+
+## Source-audited exam preparation
+
+Grammar & exam practice adds examples, assisted practice and written recall alongside the existing modes. See [implementation, paper allocations, limits and checks](docs/exam-practice.md) and [runtime content audit](reports/exam-content-audit.json). All new questions cite existing content records; the six papers guide format only. This is newly composed practice, not an official marking scheme or full exam coverage.

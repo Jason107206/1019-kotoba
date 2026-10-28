@@ -2,7 +2,7 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const elements={app:{innerHTML:''},toast:{style:{},textContent:''}};
 const handlers={};let storage={'kotoba-ch12-v1':JSON.stringify({language:'en'})};
 const timers=new Map();let timerId=0;
-const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>handlers[e]=f},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:(fn,delay)=>{const id=++timerId;timers.set(id,{fn,delay});return id;},clearTimeout:id=>timers.delete(id)});
+const ctx=vm.createContext({console,Date,Math,JSON,Number,String,Array,Object,Set,RegExp,module:{exports:{}},document:{querySelector:s=>s==='#app'?elements.app:s==='#toast'?elements.toast:null,querySelectorAll:()=>[],addEventListener:(e,f)=>{const previous=handlers[e];handlers[e]=previous?event=>{previous(event);f(event);}:f;}},window:{scrollTo:()=>{}},localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=v},setInterval:()=>{},setTimeout:(fn,delay)=>{const id=++timerId;timers.set(id,{fn,delay});return id;},clearTimeout:id=>timers.delete(id)});
 const scriptNames=[...fs.readFileSync('dist/index.html','utf8').matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1]).filter(s=>s!=='pwa.js');
 vm.runInContext(scriptNames.map(s=>fs.readFileSync('dist/'+s,'utf8')).join('\n'),ctx);
 const ev=s=>vm.runInContext(s,ctx);
@@ -13,7 +13,7 @@ assert.equal(ev('SENTENCES.length'),54);
 assert.equal(ev('PATTERNS.length'),18);
 assert.equal(ev('new Set(WORDS.map(x=>x.id)).size'),338);
 assert.equal(ev('new Set(SENTENCES.map(x=>x.id)).size'),54);
-assert.equal(ev('WORDS.filter(w=>w.group==="core"&&wordGameReady(w)).length'),151);
+assert.equal(ev('WORDS.filter(w=>w.group==="core"&&wordGameReady(w)).length'),261);
 // All syllabus forms belong to one meaningful category, independently of their printed source group.
 const expectedCategoryCounts=Object.fromEntries(ev('VOCAB_CATEGORIES.map(c=>[c.id,WORDS.filter(w=>vocabularySection(w)===c.id).length])'));
 const expectedVocabularyCategoryCounts=Object.fromEntries(ev('VOCABULARY_CATEGORIES.map(c=>[c.id,VOCABULARY_WORDS.filter(w=>wordGameReady(w)&&vocabularySection(w)===c.id).length])'));
@@ -52,7 +52,7 @@ ev('state.language="zh-Hant";render()');
 for(const label of ['人物與稱呼','國家與國籍','疑問詞與年齡','食物與飲品','語言','回答與反應'])assert.ok(elements.app.innerHTML.includes(label));
 assert.ok(!elements.app.innerHTML.includes('其他主要詞彙'));
 ev('state.language="en";render()');
-assert.equal(ev('WORDS.filter(w=>w.ch===1&&wordGameReady(w)).length'),43);
+assert.equal(ev('WORDS.filter(w=>w.ch===1&&wordGameReady(w)).length'),49);
 assert.equal(ev('WORDS.filter(w=>w.ch===2&&wordGameReady(w)).length'),53);
 assert.equal(ev('WORDS.filter(wordGameReady).every(w=>/^[ぁ-ゖー～]+$/.test(w.kana))'),true);
 assert.equal(ev('WORDS.filter(wordGameReady).every(w=>gradeWord(w,w.kana,w.c).score===1)'),true);
@@ -100,12 +100,12 @@ assert.equal(ev('WORDS.filter(wordGameReady).every(w=>HIRAGANA_KEYS.some(([k])=>
 assert.equal(ev('hiraganaInitial({jp:"コーヒー"})'),'こ');
 assert.equal(ev('hiraganaInitial({kana:"～からきました"})'),'か');
 ev('resetFilters();state.filter.kana="が"');
-assert.equal(ev('pool("write").length'),2);
+assert.equal(ev('pool("write").length'),3);
 assert.equal(ev('pool("sentences").length'),54);
 ev('resetFilters()');
 
 assert.equal(ev('WORDS.some(w=>/^1-r1[1-7]$/.test(w.id))'),false);
-assert.equal(ev('/ミラー|サントス|ワン|カリナ|グプタ|テレーザ|IMC|AKC|神戸|富士|さくら大学/.test(JSON.stringify({WORDS:WORDS.filter(w=>w.ch<=2&&wordGameReady(w)),SENTENCES}))'),false);
+assert.equal(ev('/ミラー|サントス|ワン|カリナ|グプタ|テレーザ|IMC|AKC|神戸|富士|さくら大学/.test(JSON.stringify({WORDS:WORDS.filter(w=>w.ch<=2&&!w.id.startsWith("csv-")&&wordGameReady(w)),SENTENCES}))'),false);
 
 ev('navigate("bank")');
 assert.ok(!elements.app.innerHTML.includes('data-view="cards"'));
@@ -295,15 +295,15 @@ for(const language of ['en','zh-Hant']){
   assert.ok(html.indexOf('class="nav overview-nav"')>html.indexOf('class="overview-intro"'));
   assert.ok(html.indexOf('class="nav overview-nav"')<html.indexOf('class="overview-progress"'));
   const nav=html.match(/<nav class="nav overview-nav"[^]*?<\/nav>/)[0];
-  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['number-menu','dialogue','vocabulary-menu','sentences','handwriting-menu','mock','bank']);
-  for(const mode of ['number-menu','dialogue','vocabulary-menu','sentences','handwriting-menu','mock','bank'])assert.equal((nav.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
+  assert.deepEqual([...nav.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['number-menu','dialogue','vocabulary-menu','sentences','handwriting-menu','exam-practice','mock','bank']);
+  for(const mode of ['number-menu','dialogue','vocabulary-menu','sentences','handwriting-menu','exam-practice','mock','bank'])assert.equal((nav.match(new RegExp(`data-view="${mode}"`,'g'))||[]).length,1);
   const drawer=html.match(/<nav class="nav drawer-nav"[^]*?<\/nav>/)[0];
-  assert.deepEqual([...drawer.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['home','number-menu','dialogue','vocabulary-menu','sentences','handwriting-menu','mock','bank']);
+  assert.deepEqual([...drawer.matchAll(/data-view="([^"]+)"/g)].map(match=>match[1]),['home','number-menu','dialogue','vocabulary-menu','sentences','handwriting-menu','exam-practice','mock','bank']);
   assert.equal((html.match(/class="stat"/g)||[]).length,3);
   assert.ok(!/mock-banner|kana-home-banner|hero-art|class="nav "/.test(html));
   assert.equal(ev('STUDY_MODES.every(mode=>ZH_HANT[mode.label]&&ZH_HANT[mode.copy])'),true);
   assert.ok(!html.includes(language==='en'?'Open practice':'進入練習'));
-  assert.equal((nav.match(/class="card-arrow"/g)||[]).length,7);
+  assert.equal((nav.match(/class="card-arrow"/g)||[]).length,8);
   assert.ok(html.includes(language==='en'?'Your progress':'溫習進度'));
   assert.ok(!html.includes('data-action="goCards"')&&!html.includes('data-action="review"'));
   assert.equal((html.match(/class="nav overview-nav"/g)||[]).length,1);
@@ -373,13 +373,13 @@ for(const language of ['en','zh-Hant']){
   assert.equal((elements.app.innerHTML.match(/data-vocabulary-guide=/g)||[]).length,ev('vocabularyStudySet("chapter-1").ids.length'));
   handlers.click({target:{closest:()=>({disabled:false,dataset:{vocabularyPractice:'write'}})}});
   assert.equal(ev('state.view'),'write');
-  assert.equal(ev('state.round.ids.length'),28);
+  assert.equal(ev('state.round.ids.length'),34);
   assert.equal(ev('state.round.ids.every(id=>wordBy(id).ch===1)'),true);
   ev('navigateBreadcrumb({crumbView:"vocabulary-menu"})');
   handlers.click({target:{closest:()=>({disabled:false,dataset:{vocabularyPractice:'vocabulary-rebuild'}})}});
   assert.equal(ev('state.view'),'vocabulary-rebuild');
-  assert.equal(ev('state.round.ids.length'),28);
-  ev('run("restart")');assert.equal(ev('state.round.ids.length'),28);
+  assert.equal(ev('state.round.ids.length'),34);
+  ev('run("restart")');assert.equal(ev('state.round.ids.length'),34);
   ev('navigateBreadcrumb({crumbView:"vocabulary-menu"})');
   assert.ok(elements.app.innerHTML.includes('data-vocabulary-set="chapter-1" aria-pressed="true"'));
   ev('run("toggleLanguage")');
@@ -397,7 +397,7 @@ for(const key of ['chapter-2',...Object.keys(expectedVocabularyCategoryCounts).f
   }
 }
 ev('navigate("write-menu")');assert.equal(ev('state.view'),'vocabulary-menu');
-for(const [key,count] of [['chapter-1',28],['chapter-2',30],...Object.entries(expectedVocabularyCategoryCounts).filter(([,count])=>count).map(([category,count])=>[`category-${category}`,count])]){
+for(const [key,count] of [['chapter-1',34],['chapter-2',30],...Object.entries(expectedVocabularyCategoryCounts).filter(([,count])=>count).map(([category,count])=>[`category-${category}`,count])]){
   ev(`startWriteSet('${key}')`);
   assert.equal(ev('state.round.ids.length'),count);
   assert.ok(elements.app.innerHTML.includes('data-action="gameBack"'));
@@ -407,7 +407,7 @@ for(const [key,count] of [['chapter-1',28],['chapter-2',30],...Object.entries(ex
 }
 ev('startWriteSet("category-places");state.round.missed=[state.round.ids[0]];run("repeatMissed")');
 assert.equal(ev('state.round.ids.length'),1);
-ev('run("restart")');assert.equal(ev('state.round.ids.length'),27);
+ev('run("restart")');assert.equal(ev('state.round.ids.length'),30);
 ev('state.round.index=state.round.ids.length;render()');
 assert.equal(elements.app.innerHTML.includes('class="breadcrumbs"'),!ev('isGamePage()'));
 ev('navigate("mock")');

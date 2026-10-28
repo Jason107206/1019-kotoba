@@ -606,3 +606,9 @@ body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
  .paired-exercise .activity-tile-bank { gap: 4px; }
  .paired-exercise .activity-tile-bank .tile { min-width: 44px; min-height: 44px; }
 }
+
+
+/* Source-audited written practice uses existing Material surfaces and Lulu. */
+.ex-practice{max-width:850px}.ex-frame{white-space:pre-wrap;line-height:2.4;overflow-wrap:anywhere}.ex-field{display:inline-flex;max-width:100%;vertical-align:middle}.ex-field input{font:inherit;min-width:4em;width:12em;max-width:100%;border:1px solid var(--md-sys-color-outline,#79747e);border-radius:12px;padding:8px;background:var(--md-sys-color-surface,#fff);color:inherit}.ex-pad{width:100%;max-width:600px;touch-action:none}.ex-practice .conversation-pig{width:56px;height:56px;vertical-align:middle}.ex-practice details{margin-block:16px}.ex-practice .card-actions{flex-wrap:wrap}.ex-practice input:focus-visible{outline:3px solid var(--md-sys-color-primary,#6750a4);outline-offset:2px}
+@media(max-width:480px){.ex-field{width:100%}.ex-field input{width:100%;box-sizing:border-box}.ex-practice .paper{padding:12px}}
+.ex-schedule{width:100%;border-collapse:collapse;margin-block:16px}.ex-schedule caption{text-align:left}.ex-schedule td,.ex-schedule th{padding:12px;text-align:left;border-bottom:1px solid #ccc}.ex-schedule tr[aria-current]{background:#eee3fa;color:#27143b}
