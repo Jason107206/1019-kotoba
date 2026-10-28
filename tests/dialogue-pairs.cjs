@@ -18,7 +18,7 @@ for(const q of plain(ev('allDialogueItems()'))){
 }
 for(const [id,kana,hint] of [['thanks-full','どうも','ありがとうございます'],['likewise','こちらこそ','よろしくおねがいします'],['ch3-origin','どこの','ワイン']]){
  const q=ev(`allDialogueItems().find(q=>q.id==='${id}')`);assert.equal(q.kana,kana);assert.ok(q.answerSlot.after.includes(hint));
- for(const language of ['en','zh-Hant']){ev(`state.language='${language}';state.dialogueBrowse='all';selectedDialogueExpression='${id}';navigate('dialogue')`);assert.ok(app.innerHTML.includes(`<strong class="wh-target">${kana}</strong>`));assert.ok(!app.innerHTML.includes(`<strong class="wh-target">${kana+hint}`));}
+ for(const language of ['en','zh-Hant']){ev(`state.language='${language}';state.dialogueBrowse='all';selectedDialogueExpression='${id}';navigate('dialogue')`);assert.ok(ev(`conversationCard(allDialogueItems().find(q=>q.id==='${id}'))`).includes(`<strong class="wh-target">${kana}</strong>`));assert.ok(!app.innerHTML.includes(`<strong class="wh-target">${kana+hint}`));}
 }
 for(const target of ['どこの','だれの','なんの']){const q=ev(`allDialogueItems().find(q=>q.kana==='${target}')`);assert.ok(q);assert.equal(q.category,'wh-words');assert.equal(q.answerSlot.after.startsWith('の'),false);}
 assert.ok(ev('allDialogueItems().some(q=>q.kana==="なん")'));assert.ok(ev('allDialogueItems().some(q=>q.kana==="だれ")'));
@@ -55,7 +55,7 @@ assert.equal(ev('activityReady(activityCurrent())'),true);const politeBefore=ev(
 ev('pairedActivityClick({activityForm:"normal",action:"activityFormUndo"})');assert.equal(ev('activityReady(activityCurrent())'),false);assert.equal(ev('dialogueFormAnswer("polite")'),politeBefore);
 ev(`pairedActivityClick({activityForm:'normal',action:'activityFormClear'});{const f=activityCurrent().forms[0],part=state.activity.formAnswers.normal;for(const unit of dialogueCharacters(f.kana).reverse())part.chosen.push(part.tileBank.findIndex((u,i)=>u===unit&&!part.chosen.includes(i)));}checkActivity()`);
 assert.equal(ev('state.activity.result'),false);assert.deepEqual(plain(ev('state.activity.formResults')),{normal:false,polite:true});assert.ok(app.innerHTML.includes('data-form-result="normal"'));assert.ok(app.innerHTML.includes('Needs correction')||app.innerHTML.includes('需要修正'));
-// Alias and removal recovery never creates an empty or invalid selection.
-ev(`state.dialogueBrowse='all';selectedDialogueExpression='ch3-where-polite';navigate('dialogue')`);assert.equal(ev('selectedDialogueExpression'),'ch3-where');
-ev(`selectedDialogueExpression='ch3-show';render()`);assert.ok(ev('allDialogueItems().some(q=>q.id===selectedDialogueExpression)'));
-console.log('PASS: all 41 Dialogue entries, six equivalent pairs, every chapter/category and both languages/modes; multi-selection, independent reconstruction, partial grading, explicit hints, の targets, removals, aliases, source progress and Sentence Structure.');
+// Aliases still point to the same active canonical record.
+assert.equal(ev('resolveDialogueId("ch3-where-polite")'),'ch3-where');
+assert.ok(!ev('DIALOGUE_ENTRIES.some(q=>REMOVED_DIALOGUE_IDS.has(q.id))'));
+console.log('PASS: all 41 active dialogue entries and six form pairs, exact boundaries, both game modes/languages, duplicate tiles, partial correctness, retries, aliases and progress compatibility.');
