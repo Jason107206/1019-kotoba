@@ -1,0 +1,233 @@
+{
+  "total": 338,
+  "usable": 328,
+  "unresolved": [
+    {
+      "id": "csv-3c7d4b08462bc4f1",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-7177af3f64881d19",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-bd7ed3e561d8f856",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-a0827d7777003ef6",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-e71873a7c50a3455",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-8c8770a8bd199980",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-cc1157bdb7daec7d",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-7102dff50ca5a822",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-7b39f2af6e32e892",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    },
+    {
+      "id": "csv-4f20834e51a03b0c",
+      "issues": [
+        "Reading requires review (annotated or mixed form)"
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "ch": 1,
+      "total": 51,
+      "usable": 49,
+      "unresolved": 2
+    },
+    {
+      "ch": 2,
+      "total": 53,
+      "usable": 53,
+      "unresolved": 0
+    },
+    {
+      "ch": 3,
+      "total": 54,
+      "usable": 54,
+      "unresolved": 0
+    },
+    {
+      "ch": 4,
+      "total": 62,
+      "usable": 62,
+      "unresolved": 0
+    },
+    {
+      "ch": 5,
+      "total": 61,
+      "usable": 57,
+      "unresolved": 4
+    },
+    {
+      "ch": 6,
+      "total": 58,
+      "usable": 54,
+      "unresolved": 4
+    }
+  ],
+  "repairs": [
+    "csv-49dbdb19c4ed703b",
+    "csv-9eebca0faf03e6d1",
+    "csv-f50227659b484b36",
+    "csv-8b77245faf60fc4f",
+    "csv-e5f8b4417ebfe19c",
+    "csv-5820ce9c10bf95fb",
+    "csv-da275c2671ca3790",
+    "csv-5c0a9a882b9d9a39",
+    "csv-ddb642595b09a8d7",
+    "csv-c3c059abac5ad613",
+    "csv-9a3a4421ce87643e",
+    "csv-96faf26ff6e24abe",
+    "csv-f0a8ad38c4b26077",
+    "csv-a22105b120419229",
+    "csv-466ef427aeaa04c0",
+    "csv-73d6ed4fb078beac",
+    "csv-36a14c686f5072d1",
+    "csv-df823f0054e95444",
+    "csv-a24023d5cf432e72",
+    "csv-d0b1c1b9cff1afa8",
+    "csv-85fc29e4499613fa",
+    "csv-3b693859f9dedc50",
+    "csv-3ba73c6ea36b4989",
+    "csv-d4dffb5a5b803637",
+    "csv-75b0e4c01e1d84c5",
+    "csv-d210788ec91c38a2",
+    "csv-97d70ee391716129",
+    "csv-c5e1b6f79ac06f78",
+    "csv-a868b59281a163d0",
+    "csv-c95c5a42a2c4dc0f",
+    "csv-28e2535376fd8952",
+    "csv-8f8245c5ed921c82",
+    "csv-24110f167642a49c",
+    "csv-c221dba0167ae1e9",
+    "csv-30b189ebcd7003c3",
+    "csv-6bcbca4ff9d1339c",
+    "csv-c803b519e3fc772d",
+    "csv-17a1e9fa6d674c24",
+    "csv-5d4309a567cd471b",
+    "csv-5babde796c69ee99",
+    "csv-b4278971fe60aaba",
+    "csv-7dc41055c5283da3",
+    "csv-5a10eafbbd35a055",
+    "csv-e1fe9fe823893e71",
+    "csv-636d771fbcf06c13",
+    "csv-59fc344c5d6c0e5b",
+    "csv-b18a5ba6256ca74e",
+    "csv-e8e2f46fabc20cd4",
+    "csv-75cc337163f92d4a",
+    "csv-3e715ed68e25a4b2",
+    "csv-23b4d2461d6440ab",
+    "csv-3c6769841cb20689",
+    "csv-626cfb072a80fcbb",
+    "csv-1d44190694449872",
+    "csv-6cec773780557979",
+    "csv-39827ceb3d02520a",
+    "csv-47e0d02b093eaa10",
+    "csv-9d3438acae746a2b",
+    "csv-9c2a0dad1676a16c",
+    "csv-8fea79d5439bf91d",
+    "csv-f66659321ab61768",
+    "csv-c2a089d9c108210d",
+    "csv-184a04e7c5d4fccd",
+    "csv-c11a3275fec09a2b",
+    "csv-1981cf9bdbeb6a22",
+    "csv-877ca5f99e8338a8",
+    "csv-1d26a3f31f546046",
+    "csv-9c701220455cac91",
+    "csv-6b187d085f20d980",
+    "csv-ee51b3e0ae0fd355",
+    "csv-66356e973c57c474",
+    "csv-61d84228493517e8",
+    "csv-5702f6977f743b93",
+    "csv-c8125aa6b2d08005",
+    "csv-5b2bd2f1b059a707",
+    "csv-9211080b604c7214",
+    "csv-37a34299f8aac5ba",
+    "csv-b7e64825c6bfc605",
+    "csv-80e2b972cd3e2a7b",
+    "csv-fe19f59584c74922",
+    "csv-94a36930bfbb9722",
+    "csv-866bfdb4796056e3",
+    "csv-baf16aec6f47fddc",
+    "csv-59357d2a2ba16d1d",
+    "csv-28b35d9b1a29e3bd",
+    "csv-de32617ea8103232",
+    "csv-affaad7513b5d4c8",
+    "csv-c90996b5e92d7c1e",
+    "csv-c98d6b858839265e",
+    "csv-a21d0ee87a3c3deb",
+    "csv-d174a32922550b37",
+    "csv-ad4bed84d1d20277",
+    "csv-1e0b486bbcdc48d6",
+    "csv-1c673828b19f140f",
+    "csv-3236ade61764e870",
+    "csv-7048eafe3ccb9af5",
+    "csv-337bdbc7d43ef9ad",
+    "csv-7397e594beb9d693",
+    "csv-b199fcf6b483fa68",
+    "csv-3395ecf63186e543",
+    "csv-4eb49f0d02d973b0",
+    "csv-c1bbf30546c0876e",
+    "csv-4da5f65019726165",
+    "csv-1ff1d8b46cf7910c",
+    "csv-bc3c569041e86eb6",
+    "csv-b65570a0efd59fe4",
+    "csv-15a68a335b8ce750",
+    "csv-0bad5ff77209d4f0",
+    "csv-98d3825988ce5f0a",
+    "csv-db95619e9dabec3f",
+    "csv-41e7fb780375c38e",
+    "csv-9263b75441c6fb63",
+    "csv-3fd555b0c01ae8b3",
+    "csv-07d7f60a32c5d106",
+    "csv-1dcf2c3f1c019d5f",
+    "csv-43dcdb53d41a80e5",
+    "csv-3c7d4b08462bc4f1",
+    "csv-7177af3f64881d19",
+    "csv-bd7ed3e561d8f856",
+    "csv-a0827d7777003ef6",
+    "csv-e71873a7c50a3455",
+    "csv-8c8770a8bd199980",
+    "csv-e0ef263ea957a0ed",
+    "csv-cc1157bdb7daec7d",
+    "csv-7102dff50ca5a822",
+    "csv-7b39f2af6e32e892",
+    "csv-4f20834e51a03b0c"
+  ]
+}
