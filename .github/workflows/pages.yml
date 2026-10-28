@@ -36,6 +36,8 @@ jobs:
         run: node tests/exam-practice.cjs
       - name: Verify learning hierarchy and migration
         run: node tests/learning-navigation.cjs
+      - name: Verify Lulu visuals and stable feedback
+        run: node tests/lulu.cjs
       - name: Verify canonical dialogue games
         run: node tests/dialogue-pairs.cjs
       - name: Verify chapter import

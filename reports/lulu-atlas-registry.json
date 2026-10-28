@@ -1,0 +1,429 @@
+{
+  "assets": {
+    "idle": {
+      "src": "icons/lulu-piggy.png",
+      "width": 1145,
+      "height": 1374,
+      "rects": [
+        [
+          0,
+          0,
+          1145,
+          1374
+        ]
+      ]
+    },
+    "original": {
+      "src": "icons/lulu-poses.png",
+      "width": 1254,
+      "height": 1254,
+      "rects": [
+        [
+          0,
+          0,
+          418,
+          418
+        ],
+        [
+          418,
+          0,
+          418,
+          418
+        ],
+        [
+          836,
+          0,
+          418,
+          418
+        ],
+        [
+          0,
+          418,
+          418,
+          418
+        ],
+        [
+          418,
+          418,
+          432,
+          418
+        ],
+        [
+          850,
+          418,
+          404,
+          418
+        ],
+        [
+          0,
+          836,
+          418,
+          418
+        ],
+        [
+          418,
+          836,
+          418,
+          418
+        ],
+        [
+          836,
+          820,
+          418,
+          434
+        ]
+      ]
+    },
+    "feedback": {
+      "src": "icons/lulu-feedback.png",
+      "width": 1774,
+      "height": 887,
+      "cell": 887,
+      "columns": 2
+    },
+    "occupations": {
+      "src": "icons/lulu-occupations.png",
+      "width": 2172,
+      "height": 724,
+      "cell": 724,
+      "columns": 3
+    },
+    "actions": {
+      "src": "icons/lulu-actions.png",
+      "width": 1536,
+      "height": 1024,
+      "rects": [
+        [
+          0,
+          0,
+          512,
+          512
+        ],
+        [
+          512,
+          0,
+          512,
+          512
+        ],
+        [
+          1024,
+          0,
+          512,
+          512
+        ],
+        [
+          0,
+          512,
+          512,
+          512
+        ],
+        [
+          512,
+          512,
+          552,
+          512
+        ],
+        [
+          1064,
+          512,
+          472,
+          512
+        ]
+      ]
+    },
+    "feedbackNew": {
+      "src": "icons/lulu-feedback-new.png",
+      "width": 1536,
+      "height": 1024,
+      "rects": [
+        [
+          0,
+          60,
+          512,
+          464
+        ],
+        [
+          512,
+          30,
+          512,
+          529
+        ],
+        [
+          1024,
+          0,
+          512,
+          545
+        ],
+        [
+          0,
+          524,
+          512,
+          500
+        ],
+        [
+          512,
+          559,
+          512,
+          465
+        ],
+        [
+          1024,
+          545,
+          512,
+          479
+        ]
+      ]
+    },
+    "teaching": {
+      "src": "icons/lulu-teaching.png",
+      "width": 1448,
+      "height": 1086,
+      "rects": [
+        [
+          0,
+          0,
+          285,
+          395
+        ],
+        [
+          285,
+          0,
+          430,
+          395
+        ],
+        [
+          715,
+          0,
+          435,
+          395
+        ],
+        [
+          1150,
+          0,
+          298,
+          395
+        ],
+        [
+          0,
+          395,
+          396,
+          325
+        ],
+        [
+          396,
+          395,
+          344,
+          325
+        ],
+        [
+          740,
+          395,
+          410,
+          325
+        ],
+        [
+          1150,
+          395,
+          298,
+          325
+        ],
+        [
+          0,
+          720,
+          317,
+          366
+        ],
+        [
+          317,
+          720,
+          409,
+          366
+        ],
+        [
+          726,
+          720,
+          409,
+          366
+        ],
+        [
+          1135,
+          720,
+          313,
+          366
+        ]
+      ]
+    }
+  },
+  "poses": {
+    "idle": [
+      "idle",
+      0
+    ],
+    "employeeOriginal": [
+      "occupations",
+      0
+    ],
+    "bankerOriginal": [
+      "occupations",
+      1
+    ],
+    "researcherOriginal": [
+      "occupations",
+      2
+    ],
+    "listening": [
+      "actions",
+      0
+    ],
+    "watching": [
+      "actions",
+      1
+    ],
+    "photographing": [
+      "actions",
+      2
+    ],
+    "smoking": [
+      "actions",
+      3
+    ],
+    "finishing": [
+      "actions",
+      4
+    ],
+    "resting": [
+      "actions",
+      5
+    ],
+    "wave": [
+      "original",
+      0
+    ],
+    "point": [
+      "original",
+      1
+    ],
+    "bow": [
+      "original",
+      2
+    ],
+    "reading": [
+      "original",
+      3
+    ],
+    "teacher": [
+      "original",
+      4
+    ],
+    "doctor": [
+      "original",
+      5
+    ],
+    "thinking": [
+      "original",
+      6
+    ],
+    "gift": [
+      "original",
+      7
+    ],
+    "speaking": [
+      "original",
+      8
+    ],
+    "happy": [
+      "feedback",
+      0
+    ],
+    "encouraging": [
+      "feedback",
+      1
+    ],
+    "clap": [
+      "feedbackNew",
+      0
+    ],
+    "proud": [
+      "feedbackNew",
+      1
+    ],
+    "hop": [
+      "feedbackNew",
+      2
+    ],
+    "puzzled": [
+      "feedbackNew",
+      3
+    ],
+    "disappointed": [
+      "feedbackNew",
+      4
+    ],
+    "review": [
+      "feedbackNew",
+      5
+    ],
+    "self": [
+      "teaching",
+      0
+    ],
+    "you": [
+      "teaching",
+      1
+    ],
+    "teaching": [
+      "teaching",
+      2
+    ],
+    "student": [
+      "teaching",
+      3
+    ],
+    "examining": [
+      "teaching",
+      4
+    ],
+    "working": [
+      "teaching",
+      5
+    ],
+    "researching": [
+      "teaching",
+      6
+    ],
+    "eating": [
+      "teaching",
+      7
+    ],
+    "drinking": [
+      "teaching",
+      8
+    ],
+    "waking": [
+      "teaching",
+      9
+    ],
+    "sleeping": [
+      "teaching",
+      10
+    ],
+    "walking": [
+      "teaching",
+      11
+    ]
+  },
+  "feedback": {
+    "correct": [
+      "happy",
+      "clap",
+      "proud",
+      "hop"
+    ],
+    "wrong": [
+      "encouraging",
+      "puzzled",
+      "disappointed",
+      "review"
+    ]
+  }
+}

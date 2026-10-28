@@ -1,0 +1,6001 @@
+{
+  "baseCommit": "cfc5a2602955e9a744594f328d341fec33a4fa2a",
+  "inventory": {
+    "lexical": 338,
+    "playable": 328,
+    "unresolved": 10,
+    "canonicalScenes": 41,
+    "patterns": 18,
+    "feedbackPoses": 8,
+    "newFeedbackPoses": 6
+  },
+  "screens": [
+    {
+      "screen": "Overview / sidebar / installed app",
+      "current": "K logo; generic line icons",
+      "intended": "Recognisable study companion and eight different tasks",
+      "issue": "Missing Lulu; Vocabulary/Reference and Grammar/Mixed shared symbols",
+      "replacement": "Local Lulu brand SVG/PNG; welcoming pig; eight different icons and mode-card compositions"
+    },
+    {
+      "screen": "Vocabulary / Word reference / recall / rebuild",
+      "current": "Broad category emoji and reused idle/reading/waving poses",
+      "intended": "Exact existing object, action, relationship or contextual meaning",
+      "issue": "I/me not self-pointing; dictionary and book indistinguishable; broad emoji fallback",
+      "replacement": "Explicit ID-based plans for every effective lexical record; generated relevant actions and exact vector props; no Japanese answer text"
+    },
+    {
+      "screen": "Pictures / demonstratives / locations",
+      "current": "150 0 200 200 compact crop; x=95/250/415 scene content",
+      "intended": "Both participants, their roles, proximity and target object",
+      "issue": "Speaker or target clipped; similar characters lacked persistent role cue",
+      "replacement": "Full 500×285 scenes or purpose-built 400×226 compositions; purple speaker/cyan listener scarves, bilingual role labels and local pointing direction"
+    },
+    {
+      "screen": "Grammar examples / tasks / sentence practice",
+      "current": "Mostly text and flat task cards",
+      "intended": "Construct or complete sentence patterns",
+      "issue": "Little visual distinction between methods and mixed skill work",
+      "replacement": "Lulu tile arrangement, task-specific props, model-panel artwork, shared graded feedback"
+    },
+    {
+      "screen": "Numbers / numerical prompts",
+      "current": "Text and reused broad icons",
+      "intended": "Number, time, date, price or floor actually asked",
+      "issue": "A decorative number/clock could contradict the prompt",
+      "replacement": "Lulu presents actual q.value; clock hands use actual hour/minute; no kana reading in art"
+    },
+    {
+      "screen": "Handwriting / model / self-check",
+      "current": "Writing pad and text-only self-check",
+      "intended": "Draw first, compare with model, self-assess",
+      "issue": "No companion; artwork must not obstruct drawing or imply recognition",
+      "replacement": "Lulu beside clear grid; model review pose and explicitly self-assessed feedback"
+    },
+    {
+      "screen": "Timed introduction / resume / active / result",
+      "current": "Text-led quiz surface",
+      "intended": "Focused 15-minute activity, actual 20-point score",
+      "issue": "No Lulu timing identity or consistent result reaction",
+      "replacement": "Working Lulu + stopwatch on intro/resume; compact calm round art; accurate partial/whole score feedback"
+    },
+    {
+      "screen": "Mixed / independent / paired-form responses",
+      "current": "Inconsistent text-only or single happy/wrong sprite",
+      "intended": "Independent vs guided vs revealed vs partial credit",
+      "issue": "Generic celebration could overstate assistance/partial success",
+      "replacement": "Shared outcome metadata and renderer with explicit bilingual result and marks; four correct/four supportive variants"
+    },
+    {
+      "screen": "Progress / empty / completion / retry / about",
+      "current": "Text-only or inconsistent decorative art",
+      "intended": "Real milestones, useful next step, clear results",
+      "issue": "No first-use reassurance; missed items need supportive response",
+      "replacement": "Purposeful cards/search/review/real secured-word milestone/bowing about artwork; no fabricated progress"
+    }
+  ],
+  "sections": [
+    {
+      "id": "vocabulary-menu",
+      "label": "Vocabulary",
+      "icon": "vocabulary"
+    },
+    {
+      "id": "grammar",
+      "label": "Grammar & Sentences",
+      "icon": "grammar"
+    },
+    {
+      "id": "pictures",
+      "label": "Pictures & Dialogue",
+      "icon": "dialogue"
+    },
+    {
+      "id": "number-menu",
+      "label": "Numbers",
+      "icon": "numbers"
+    },
+    {
+      "id": "handwriting-menu",
+      "label": "Kanji Writing",
+      "icon": "write"
+    },
+    {
+      "id": "mock",
+      "label": "Timed practice",
+      "icon": "timer"
+    },
+    {
+      "id": "mixed",
+      "label": "Mixed practice",
+      "icon": "mixed"
+    },
+    {
+      "id": "bank",
+      "label": "Word reference",
+      "icon": "reference"
+    }
+  ],
+  "icons": [
+    {
+      "key": "menu",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "hiragana",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "home",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "write",
+      "literalUse": false,
+      "sectionUse": [
+        "handwriting-menu"
+      ],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "match",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "sentences",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "mock",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "bank",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "arrow",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "check",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "dialogue",
+      "literalUse": false,
+      "sectionUse": [
+        "pictures"
+      ],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "close",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "numbers",
+      "literalUse": false,
+      "sectionUse": [
+        "number-menu"
+      ],
+      "dynamicUse": [
+        "numbers"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "back",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "people",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [
+        "people"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "occupations",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "places",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "places"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "nationality",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "questions",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "questions"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "demonstratives",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "objects",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "objects"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "food",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "food"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "languages",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "introductions",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "courtesy",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "replies",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "chapters",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "categories",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "study",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "study"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "travel",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "travel"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "actions",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "actions"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "time",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "time"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "linking",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "linking"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "everyday",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [
+        "everyday"
+      ],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "vocabulary",
+      "literalUse": false,
+      "sectionUse": [
+        "vocabulary-menu"
+      ],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "grammar",
+      "literalUse": false,
+      "sectionUse": [
+        "grammar"
+      ],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "reference",
+      "literalUse": false,
+      "sectionUse": [
+        "bank"
+      ],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "mixed",
+      "literalUse": false,
+      "sectionUse": [
+        "mixed"
+      ],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "timer",
+      "literalUse": false,
+      "sectionUse": [
+        "mock"
+      ],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "undo",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "clear",
+      "literalUse": true,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "intentional vector symbol"
+    },
+    {
+      "key": "missing",
+      "literalUse": false,
+      "sectionUse": [],
+      "dynamicUse": [],
+      "symbol": "explicit unknown-key question symbol"
+    }
+  ],
+  "assets": {
+    "idle": {
+      "src": "icons/lulu-piggy.png",
+      "width": 1145,
+      "height": 1374,
+      "rects": [
+        [
+          0,
+          0,
+          1145,
+          1374
+        ]
+      ]
+    },
+    "original": {
+      "src": "icons/lulu-poses.png",
+      "width": 1254,
+      "height": 1254,
+      "rects": [
+        [
+          0,
+          0,
+          418,
+          418
+        ],
+        [
+          418,
+          0,
+          418,
+          418
+        ],
+        [
+          836,
+          0,
+          418,
+          418
+        ],
+        [
+          0,
+          418,
+          418,
+          418
+        ],
+        [
+          418,
+          418,
+          432,
+          418
+        ],
+        [
+          850,
+          418,
+          404,
+          418
+        ],
+        [
+          0,
+          836,
+          418,
+          418
+        ],
+        [
+          418,
+          836,
+          418,
+          418
+        ],
+        [
+          836,
+          820,
+          418,
+          434
+        ]
+      ]
+    },
+    "feedback": {
+      "src": "icons/lulu-feedback.png",
+      "width": 1774,
+      "height": 887,
+      "cell": 887,
+      "columns": 2
+    },
+    "occupations": {
+      "src": "icons/lulu-occupations.png",
+      "width": 2172,
+      "height": 724,
+      "cell": 724,
+      "columns": 3
+    },
+    "actions": {
+      "src": "icons/lulu-actions.png",
+      "width": 1536,
+      "height": 1024,
+      "rects": [
+        [
+          0,
+          0,
+          512,
+          512
+        ],
+        [
+          512,
+          0,
+          512,
+          512
+        ],
+        [
+          1024,
+          0,
+          512,
+          512
+        ],
+        [
+          0,
+          512,
+          512,
+          512
+        ],
+        [
+          512,
+          512,
+          552,
+          512
+        ],
+        [
+          1064,
+          512,
+          472,
+          512
+        ]
+      ]
+    },
+    "feedbackNew": {
+      "src": "icons/lulu-feedback-new.png",
+      "width": 1536,
+      "height": 1024,
+      "rects": [
+        [
+          0,
+          60,
+          512,
+          464
+        ],
+        [
+          512,
+          30,
+          512,
+          529
+        ],
+        [
+          1024,
+          0,
+          512,
+          545
+        ],
+        [
+          0,
+          524,
+          512,
+          500
+        ],
+        [
+          512,
+          559,
+          512,
+          465
+        ],
+        [
+          1024,
+          545,
+          512,
+          479
+        ]
+      ]
+    },
+    "teaching": {
+      "src": "icons/lulu-teaching.png",
+      "width": 1448,
+      "height": 1086,
+      "rects": [
+        [
+          0,
+          0,
+          285,
+          395
+        ],
+        [
+          285,
+          0,
+          430,
+          395
+        ],
+        [
+          715,
+          0,
+          435,
+          395
+        ],
+        [
+          1150,
+          0,
+          298,
+          395
+        ],
+        [
+          0,
+          395,
+          396,
+          325
+        ],
+        [
+          396,
+          395,
+          344,
+          325
+        ],
+        [
+          740,
+          395,
+          410,
+          325
+        ],
+        [
+          1150,
+          395,
+          298,
+          325
+        ],
+        [
+          0,
+          720,
+          317,
+          366
+        ],
+        [
+          317,
+          720,
+          409,
+          366
+        ],
+        [
+          726,
+          720,
+          409,
+          366
+        ],
+        [
+          1135,
+          720,
+          313,
+          366
+        ]
+      ]
+    }
+  },
+  "words": [
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-01",
+      "intended": "I / me",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "self",
+        "meaning": "I / me"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-02",
+      "intended": "you",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "you",
+        "meaning": "you"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-03a",
+      "intended": "that person",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "person",
+        "meaning": "that person"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-03b",
+      "intended": "that person (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "person",
+        "meaning": "that person (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-04",
+      "intended": "Mr / Ms (name suffix)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "address",
+        "meaning": "Mr / Ms (name suffix)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-05",
+      "intended": "affectionate name suffix for children",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "address",
+        "meaning": "affectionate name suffix for children"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-06",
+      "intended": "nationality suffix",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "nationality suffix"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-07",
+      "intended": "teacher (when referring to someone else)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "teaching",
+        "meaning": "teacher (when referring to someone else)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-08",
+      "intended": "teacher (occupation)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "teaching",
+        "meaning": "teacher (occupation)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-09",
+      "intended": "student",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "student",
+        "meaning": "student"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-10",
+      "intended": "company employee",
+      "current": "occupation atlas",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "working",
+        "meaning": "company employee"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-11",
+      "intended": "employee of a named company",
+      "current": "occupation atlas",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "occupation",
+        "occupation": 0,
+        "object": "company",
+        "meaning": "employee of a named company"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-12",
+      "intended": "bank employee",
+      "current": "occupation atlas",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "occupation",
+        "occupation": 1,
+        "object": "bank",
+        "meaning": "bank employee"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-13",
+      "intended": "doctor",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "examining",
+        "meaning": "doctor"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-14",
+      "intended": "researcher",
+      "current": "occupation atlas",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "action",
+        "pose": "researching",
+        "meaning": "researcher"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-15",
+      "intended": "university",
+      "current": "🏫",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "university",
+        "meaning": "university"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-16",
+      "intended": "hospital",
+      "current": "🏥",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "hospital",
+        "meaning": "hospital"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-17a",
+      "intended": "who",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "person",
+        "meaning": "who"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-17b",
+      "intended": "who (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "person",
+        "meaning": "who (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-18",
+      "intended": "years old (suffix)",
+      "current": "🎂",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 18,
+        "unit": "age",
+        "meaning": "years old (suffix)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-19a",
+      "intended": "how old",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "age",
+        "meaning": "how old"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-19b",
+      "intended": "how old (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "age",
+        "meaning": "how old (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-20",
+      "intended": "yes",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "yes",
+        "reaction": "✓"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-21",
+      "intended": "no",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "no",
+        "reaction": "✕"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c1",
+      "intended": "nice to meet you",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "nice to meet you"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c2",
+      "intended": "came from …",
+      "current": "🌏✈️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "origin",
+        "meaning": "came from …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c3a",
+      "intended": "pleased to meet you (short form)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "pleased to meet you (short form)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c3b",
+      "intended": "pleased to meet you (with どうぞ)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "pleased to meet you (with どうぞ)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c3c",
+      "intended": "pleased to meet you (with おねがいします)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "pleased to meet you (with おねがいします)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c3d",
+      "intended": "pleased to meet you (full form)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "pleased to meet you (full form)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c4",
+      "intended": "excuse me, but …",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "excuse me, but …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c5",
+      "intended": "your name, please?",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "your name, please?"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-c6",
+      "intended": "this is Mr / Ms …",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "this is Mr / Ms …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r1",
+      "intended": "USA",
+      "current": "🇺🇸",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "USA"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r2",
+      "intended": "UK",
+      "current": "🇬🇧",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "UK"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r3",
+      "intended": "India",
+      "current": "🇮🇳",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "India"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r4",
+      "intended": "Indonesia",
+      "current": "🇮🇩",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Indonesia"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r5",
+      "intended": "South Korea",
+      "current": "🇰🇷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "South Korea"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r6",
+      "intended": "Thailand",
+      "current": "🇹🇭",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Thailand"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r7",
+      "intended": "China",
+      "current": "🇨🇳",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "China"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r8",
+      "intended": "Germany",
+      "current": "🇩🇪",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Germany"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r9",
+      "intended": "Japan",
+      "current": "🇯🇵",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Japan"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "1-r10",
+      "intended": "Brazil",
+      "current": "🇧🇷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Brazil"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-01",
+      "intended": "this (near speaker)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "speaker",
+        "object": "book",
+        "modifier": false,
+        "meaning": "this (near speaker)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-02",
+      "intended": "that (near listener)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "listener",
+        "object": "book",
+        "modifier": false,
+        "meaning": "that (near listener)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-03",
+      "intended": "that over there (far from both)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "far",
+        "object": "book",
+        "modifier": false,
+        "meaning": "that over there (far from both)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-04",
+      "intended": "this … (before a noun)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "speaker",
+        "object": "book",
+        "modifier": true,
+        "meaning": "this … (before a noun)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-05",
+      "intended": "that … (before a noun, near listener)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "listener",
+        "object": "book",
+        "modifier": true,
+        "meaning": "that … (before a noun, near listener)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-06",
+      "intended": "that … over there (before a noun)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "far",
+        "object": "book",
+        "modifier": true,
+        "meaning": "that … over there (before a noun)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-07",
+      "intended": "book",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "object",
+        "object": "book",
+        "meaning": "book"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-08",
+      "intended": "dictionary",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "object",
+        "object": "dictionary",
+        "meaning": "dictionary"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-09",
+      "intended": "magazine",
+      "current": "📖",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "magazine",
+        "meaning": "magazine"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-10",
+      "intended": "newspaper",
+      "current": "📰",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "newspaper",
+        "meaning": "newspaper"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-11",
+      "intended": "notebook",
+      "current": "📓",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "notebook",
+        "meaning": "notebook"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-12",
+      "intended": "personal organiser",
+      "current": "📔",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "organiser",
+        "meaning": "personal organiser"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-13",
+      "intended": "business card",
+      "current": "🪪",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "namecard",
+        "meaning": "business card"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-14",
+      "intended": "card",
+      "current": "💳",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "card",
+        "meaning": "card"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-15",
+      "intended": "pencil",
+      "current": "✏️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "pencil",
+        "meaning": "pencil"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-16",
+      "intended": "ballpoint pen",
+      "current": "🖊️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "ballpoint",
+        "meaning": "ballpoint pen"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-17",
+      "intended": "mechanical pencil",
+      "current": "✏️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "mechanical",
+        "meaning": "mechanical pencil"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-18",
+      "intended": "key",
+      "current": "🔑",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "key",
+        "meaning": "key"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-19",
+      "intended": "clock / watch",
+      "current": "⌚",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "watch",
+        "meaning": "clock / watch"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-20",
+      "intended": "umbrella",
+      "current": "☂️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "umbrella",
+        "meaning": "umbrella"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-21",
+      "intended": "bag",
+      "current": "👜",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "bag",
+        "meaning": "bag"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-22",
+      "intended": "CD",
+      "current": "💿",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "cd",
+        "meaning": "CD"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-23",
+      "intended": "television",
+      "current": "📺",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "tv",
+        "meaning": "television"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-24",
+      "intended": "radio",
+      "current": "📻",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "radio",
+        "meaning": "radio"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-25",
+      "intended": "camera",
+      "current": "📷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "camera",
+        "meaning": "camera"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-26",
+      "intended": "computer",
+      "current": "💻",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "computer",
+        "meaning": "computer"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-27",
+      "intended": "car",
+      "current": "🚗",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "car",
+        "meaning": "car"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-28",
+      "intended": "desk",
+      "current": "🪑💻",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "desk",
+        "meaning": "desk"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-29",
+      "intended": "chair",
+      "current": "🪑",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "chair",
+        "meaning": "chair"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-30",
+      "intended": "chocolate",
+      "current": "🍫",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "chocolate",
+        "meaning": "chocolate"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-31",
+      "intended": "coffee",
+      "current": "☕",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "coffee",
+        "meaning": "coffee"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-32a",
+      "intended": "souvenir (without お)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "souvenir",
+        "meaning": "souvenir (without お)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-32b",
+      "intended": "souvenir (with お)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "souvenir",
+        "meaning": "souvenir (with お)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-33",
+      "intended": "English language",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "languages",
+        "meaning": "English language"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-34",
+      "intended": "Japanese language",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "languages",
+        "meaning": "Japanese language"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-35",
+      "intended": "language suffix",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "languages",
+        "meaning": "language suffix"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-36",
+      "intended": "what",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "book",
+        "meaning": "what"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-37",
+      "intended": "so / that is right",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "so / that is right",
+        "reaction": "✓"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-d1",
+      "intended": "I look forward to your kindness",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "I look forward to your kindness"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-d2a",
+      "intended": "the pleasure is mine (short)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "the pleasure is mine (short)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-d2b",
+      "intended": "the pleasure is mine (with どうぞ)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "the pleasure is mine (with どうぞ)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-d2c",
+      "intended": "the pleasure is mine (with おねがいします)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "the pleasure is mine (with おねがいします)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-d2d",
+      "intended": "the pleasure is mine (full form)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "meeting",
+        "pose": "bow",
+        "meaning": "the pleasure is mine (full form)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c1",
+      "intended": "um / excuse me …",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "um / excuse me …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c2",
+      "intended": "oh! / what? (surprise)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "oh! / what? (surprise)",
+        "reaction": "!"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c3",
+      "intended": "please / here you are",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "offering",
+        "pose": "gift",
+        "meaning": "please / here you are"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c4a",
+      "intended": "thank you (short)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "thanks",
+        "pose": "bow",
+        "meaning": "thank you (short)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c4b",
+      "intended": "thank you (with どうも)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "thanks",
+        "pose": "bow",
+        "meaning": "thank you (with どうも)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c4c",
+      "intended": "thank you (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "thanks",
+        "pose": "bow",
+        "meaning": "thank you (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c4d",
+      "intended": "thank you very much (full form)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "thanks",
+        "pose": "bow",
+        "meaning": "thank you very much (full form)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c5",
+      "intended": "I see",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "I see",
+        "reaction": "…"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c6",
+      "intended": "that is not correct",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "that is not correct",
+        "reaction": "✕"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "2-c7",
+      "intended": "ah (realisation)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "ah (realisation)",
+        "reaction": "!"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-01",
+      "intended": "here (near the speaker)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "speaker",
+        "object": "room",
+        "modifier": false,
+        "meaning": "here (near the speaker)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-02",
+      "intended": "there (near the listener)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "listener",
+        "object": "room",
+        "modifier": false,
+        "meaning": "there (near the listener)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-03",
+      "intended": "over there (far from both)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "far",
+        "object": "room",
+        "modifier": false,
+        "meaning": "over there (far from both)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-04",
+      "intended": "where",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "room",
+        "meaning": "where"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-05",
+      "intended": "here / this way (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "speaker",
+        "object": "room",
+        "modifier": false,
+        "meaning": "here / this way (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-06",
+      "intended": "there / that way / your place (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "listener",
+        "object": "room",
+        "modifier": false,
+        "meaning": "there / that way / your place (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-07",
+      "intended": "over there / that way (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "spatial",
+        "location": "far",
+        "object": "room",
+        "modifier": false,
+        "meaning": "over there / that way (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-08",
+      "intended": "where / which way (polite)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "room",
+        "meaning": "where / which way (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-09",
+      "intended": "classroom",
+      "current": "🏫",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "classroom",
+        "meaning": "classroom"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-10",
+      "intended": "dining hall / cafeteria",
+      "current": "🍽️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "cafeteria",
+        "meaning": "dining hall / cafeteria"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-11",
+      "intended": "office",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "company",
+        "meaning": "office"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-12",
+      "intended": "meeting room",
+      "current": "🪑",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "meeting",
+        "meaning": "meeting room"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-13",
+      "intended": "reception",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "reception",
+        "meaning": "reception"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-14",
+      "intended": "lobby",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "lobby",
+        "meaning": "lobby"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-15",
+      "intended": "room",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "room",
+        "meaning": "room"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-16a",
+      "intended": "toilet",
+      "current": "🚻",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "toilet",
+        "meaning": "toilet"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-16b",
+      "intended": "restroom (polite)",
+      "current": "🚻",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "toilet",
+        "meaning": "restroom (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-17",
+      "intended": "stairs",
+      "current": "🪜",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "stairs",
+        "meaning": "stairs"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-18",
+      "intended": "lift / elevator",
+      "current": "🛗",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "elevator",
+        "meaning": "lift / elevator"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-19",
+      "intended": "escalator",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "escalator",
+        "meaning": "escalator"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-20",
+      "intended": "vending machine",
+      "current": "🥤",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "vending",
+        "meaning": "vending machine"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-21",
+      "intended": "telephone",
+      "current": "☎️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "phone",
+        "meaning": "telephone"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-22a",
+      "intended": "country / home country (plain)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "country / home country (plain)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-22b",
+      "intended": "country / home country (polite)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "country / home country (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-23",
+      "intended": "company",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "company",
+        "meaning": "company"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-24",
+      "intended": "home",
+      "current": "🏠",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "home",
+        "meaning": "home"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-25",
+      "intended": "shoes",
+      "current": "👞",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "shoes",
+        "meaning": "shoes"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-26",
+      "intended": "necktie",
+      "current": "👔",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "tie",
+        "meaning": "necktie"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-27",
+      "intended": "wine",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "wine",
+        "meaning": "wine"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-28",
+      "intended": "sales department / counter",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "sales",
+        "meaning": "sales department / counter"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-29",
+      "intended": "basement",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "basement",
+        "meaning": "basement"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-30a",
+      "intended": "floor suffix (after 2, 4, 5, 7 or 9)",
+      "current": "🔢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 2,
+        "unit": "floor",
+        "meaning": "floor suffix (after 2, 4, 5, 7 or 9)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-30b",
+      "intended": "floor suffix (after 3 or the question word)",
+      "current": "🔢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 3,
+        "unit": "floor",
+        "meaning": "floor suffix (after 3 or the question word)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-31",
+      "intended": "which floor",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "floor",
+        "meaning": "which floor"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-32",
+      "intended": "yen suffix",
+      "current": "🔢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 2,
+        "unit": "price",
+        "meaning": "yen suffix"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-33",
+      "intended": "how much",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "price",
+        "meaning": "how much"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-34",
+      "intended": "hundred",
+      "current": "🔢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 100,
+        "unit": "number",
+        "meaning": "hundred"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-35",
+      "intended": "thousand",
+      "current": "🔢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 1000,
+        "unit": "number",
+        "meaning": "thousand"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-36",
+      "intended": "ten thousand",
+      "current": "🔢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 10000,
+        "unit": "number",
+        "meaning": "ten thousand"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-c1",
+      "intended": "welcome (to a shop)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "offering",
+        "pose": "gift",
+        "meaning": "welcome (to a shop)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-c2",
+      "intended": "please show me …",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "please show me …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-c2b",
+      "intended": "please show me (item understood)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "please show me (item understood)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-c3",
+      "intended": "well then",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "next",
+        "meaning": "well then"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-c4",
+      "intended": "please give me …",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "please give me …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-c4b",
+      "intended": "please give me (item understood)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "please give me (item understood)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-p1",
+      "intended": "excuse me / sorry",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "attention",
+        "pose": "wave",
+        "meaning": "excuse me / sorry"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-p2",
+      "intended": "thanks (brief)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "thanks",
+        "pose": "bow",
+        "meaning": "thanks (brief)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-r1",
+      "intended": "Italy",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Italy"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-r2",
+      "intended": "Switzerland",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Switzerland"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-r3",
+      "intended": "France",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "France"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-r4",
+      "intended": "Jakarta",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Jakarta"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-r5",
+      "intended": "Bangkok",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Bangkok"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-r6",
+      "intended": "Berlin",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Berlin"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "3-r7",
+      "intended": "Shin-Osaka (station)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Shin-Osaka (station)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-01",
+      "intended": "get up; wake up",
+      "current": "🌅",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "action",
+        "pose": "waking",
+        "meaning": "get up; wake up"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-02",
+      "intended": "sleep; go to bed",
+      "current": "🛏️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "action",
+        "pose": "sleeping",
+        "meaning": "sleep; go to bed"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-03",
+      "intended": "work",
+      "current": "💼",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "action",
+        "pose": "working",
+        "meaning": "work"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-04",
+      "intended": "rest; take a day off",
+      "current": "🌿",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "resting",
+        "meaning": "rest; take a day off"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-05",
+      "intended": "study",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action",
+        "pose": "student",
+        "meaning": "study"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-06",
+      "intended": "finish; end",
+      "current": "🏁",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "finishing",
+        "meaning": "finish; end"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-07",
+      "intended": "department store",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "department",
+        "meaning": "department store"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-08",
+      "intended": "bank",
+      "current": "🏦",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "bank",
+        "meaning": "bank"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-09",
+      "intended": "post office",
+      "current": "📮",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "postoffice",
+        "meaning": "post office"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-10",
+      "intended": "library",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "library",
+        "meaning": "library"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-11",
+      "intended": "art museum",
+      "current": "🖼️",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "museum",
+        "meaning": "art museum"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-12",
+      "intended": "now",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "clock",
+        "meaning": "now"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-13",
+      "intended": "o’clock; hour suffix",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "clock",
+        "meaning": "o’clock; hour suffix"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-14a",
+      "intended": "minute suffix (after 2, 5, 7 or 9)",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "clock",
+        "meaning": "minute suffix (after 2, 5, 7 or 9)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-14b",
+      "intended": "minute suffix (after 1, 3, 4 or 6)",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "clock",
+        "meaning": "minute suffix (after 1, 3, 4 or 6)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-15",
+      "intended": "half past",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "clock",
+        "meaning": "half past"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-16",
+      "intended": "what time; what hour",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "clock",
+        "meaning": "what time; what hour"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-17",
+      "intended": "how many minutes; what minute",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "clock",
+        "meaning": "how many minutes; what minute"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-18",
+      "intended": "a.m.; before noon",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "morning",
+        "meaning": "a.m.; before noon"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-19",
+      "intended": "p.m.; after noon",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "night",
+        "meaning": "p.m.; after noon"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-20",
+      "intended": "morning",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "morning",
+        "meaning": "morning"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-21",
+      "intended": "daytime; noon",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "clock",
+        "meaning": "daytime; noon"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-22a",
+      "intended": "evening",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "night",
+        "meaning": "evening"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-22b",
+      "intended": "night",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "night",
+        "meaning": "night"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-23",
+      "intended": "the day before yesterday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": -2,
+        "meaning": "the day before yesterday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-24",
+      "intended": "yesterday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": -1,
+        "meaning": "yesterday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-25",
+      "intended": "today",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 0,
+        "meaning": "today"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-26",
+      "intended": "tomorrow",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 1,
+        "meaning": "tomorrow"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-27",
+      "intended": "the day after tomorrow",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 2,
+        "meaning": "the day after tomorrow"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-28",
+      "intended": "this morning",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "morning",
+        "meaning": "this morning"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-29",
+      "intended": "tonight; this evening",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "night",
+        "meaning": "tonight; this evening"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-30",
+      "intended": "rest; day off; holiday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "resting",
+        "meaning": "rest; day off; holiday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-31",
+      "intended": "lunch break",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "break",
+        "meaning": "lunch break"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-32",
+      "intended": "exam; test",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "object",
+        "object": "test",
+        "meaning": "exam; test"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-33",
+      "intended": "meeting; conference",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "meeting",
+        "meaning": "meeting; conference"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-34",
+      "intended": "film; movie",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "film",
+        "meaning": "film; movie"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-35",
+      "intended": "every morning",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "frequency",
+        "all": true,
+        "period": "morning",
+        "meaning": "every morning"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-36",
+      "intended": "every evening; every night",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "frequency",
+        "all": true,
+        "period": "night",
+        "meaning": "every evening; every night"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-37",
+      "intended": "every day",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "frequency",
+        "all": true,
+        "period": null,
+        "meaning": "every day"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-38",
+      "intended": "Monday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "weekday",
+        "day": 0,
+        "meaning": "Monday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-39",
+      "intended": "Tuesday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "weekday",
+        "day": 1,
+        "meaning": "Tuesday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-40",
+      "intended": "Wednesday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "weekday",
+        "day": 2,
+        "meaning": "Wednesday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-41",
+      "intended": "Thursday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "weekday",
+        "day": 3,
+        "meaning": "Thursday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-42",
+      "intended": "Friday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "weekday",
+        "day": 4,
+        "meaning": "Friday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-43",
+      "intended": "Saturday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "weekday",
+        "day": 5,
+        "meaning": "Saturday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-44",
+      "intended": "Sunday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "weekday",
+        "day": 6,
+        "meaning": "Sunday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-45",
+      "intended": "what day of the week",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "calendar",
+        "meaning": "what day of the week"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-46",
+      "intended": "from …",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "start",
+        "meaning": "from …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-47",
+      "intended": "until …; to …",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "end",
+        "meaning": "until …; to …"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-48",
+      "intended": "… and … (joining nouns)",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "and",
+        "meaning": "… and … (joining nouns)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-c1",
+      "intended": "number",
+      "current": "🔢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "counter",
+        "number": 2,
+        "unit": "number",
+        "meaning": "number"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-c2",
+      "intended": "what number",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "number-board",
+        "meaning": "what number"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-e1",
+      "intended": "That sounds tough.",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "That sounds tough."
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r1",
+      "intended": "New York",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "New York"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r2",
+      "intended": "Beijing",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Beijing"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r3",
+      "intended": "Los Angeles",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Los Angeles"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r4",
+      "intended": "London",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "London"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r5",
+      "intended": "Asuka (fictional restaurant)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "cafeteria",
+        "meaning": "Asuka (fictional restaurant)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r6",
+      "intended": "Apple Bank (fictional)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "bank",
+        "meaning": "Apple Bank (fictional)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r7",
+      "intended": "Midori Library (fictional)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "library",
+        "meaning": "Midori Library (fictional)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "4-r8",
+      "intended": "Yamato Art Museum (fictional)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "museum",
+        "meaning": "Yamato Art Museum (fictional)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3c7d4b08462bc4f1",
+      "intended": "IMC (name)",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "IMC (name)"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-7177af3f64881d19",
+      "intended": "meet (a friend)",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "meeting",
+        "meaning": "meet (a friend)"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-49dbdb19c4ed703b",
+      "intended": "breakfast",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "meal",
+        "object": "rice",
+        "period": "morning",
+        "meaning": "breakfast"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-9eebca0faf03e6d1",
+      "intended": "thank you (past occasion)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "thanks",
+        "pose": "bow",
+        "meaning": "thank you (past occasion)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-f50227659b484b36",
+      "intended": "on foot",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action",
+        "pose": "walking",
+        "meaning": "on foot"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-8b77245faf60fc4f",
+      "intended": "that sounds good",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "that sounds good"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-e5f8b4417ebfe19c",
+      "intended": "go",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "going",
+        "meaning": "go"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-5820ce9c10bf95fb",
+      "intended": "how many",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "many",
+        "meaning": "how many"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-da275c2671ca3790",
+      "intended": "when",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "calendar",
+        "meaning": "when"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-5c0a9a882b9d9a39",
+      "intended": "day 5 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 5,
+        "meaning": "day 5 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-ddb642595b09a8d7",
+      "intended": "together",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "together",
+        "meaning": "together"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c3c059abac5ad613",
+      "intended": "always",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "frequency",
+        "all": true,
+        "period": null,
+        "meaning": "always"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-9a3a4421ce87643e",
+      "intended": "yes (conversational)",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "yes (conversational)",
+        "reaction": "✓"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-bd7ed3e561d8f856",
+      "intended": "AKC (name)",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "AKC (name)"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-96faf26ff6e24abe",
+      "intended": "station",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "station",
+        "meaning": "station"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-f0a8ad38c4b26077",
+      "intended": "Osaka Castle",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "museum",
+        "meaning": "Osaka Castle"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-a22105b120419229",
+      "intended": "Osaka department store",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "department",
+        "meaning": "Osaka department store"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-466ef427aeaa04c0",
+      "intended": "alcohol / sake",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "sake",
+        "meaning": "alcohol / sake"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-73d6ed4fb078beac",
+      "intended": "tea",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "tea",
+        "meaning": "tea"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-36a14c686f5072d1",
+      "intended": "cherry blossom viewing (polite)",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "flower",
+        "meaning": "cherry blossom viewing (polite)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-df823f0054e95444",
+      "intended": "buy",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "buying",
+        "meaning": "buy"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-a24023d5cf432e72",
+      "intended": "return home",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "returning",
+        "meaning": "return home"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-d0b1c1b9cff1afa8",
+      "intended": "write",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "writing",
+        "meaning": "write"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-85fc29e4499613fa",
+      "intended": "family",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "family",
+        "meaning": "family"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-a0827d7777003ef6",
+      "intended": "month suffix",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "calendar",
+        "meaning": "month suffix"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3b693859f9dedc50",
+      "intended": "school",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "school",
+        "meaning": "school"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3ba73c6ea36b4989",
+      "intended": "she / girlfriend",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "person",
+        "meaning": "she / girlfriend"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-d4dffb5a5b803637",
+      "intended": "he / boyfriend",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "person",
+        "meaning": "he / boyfriend"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-75b0e4c01e1d84c5",
+      "intended": "listen / hear",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "listening",
+        "meaning": "listen / hear"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-d210788ec91c38a2",
+      "intended": "come",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "coming",
+        "meaning": "come"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-97d70ee391716129",
+      "intended": "express train",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "express",
+        "meaning": "express train"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c5e1b6f79ac06f78",
+      "intended": "milk",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "milk",
+        "meaning": "milk"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-a868b59281a163d0",
+      "intended": "last year",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": -1,
+        "meaning": "last year"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c95c5a42a2c4dc0f",
+      "intended": "fruit",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "fruit",
+        "meaning": "fruit"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-28e2535376fd8952",
+      "intended": "Koshien",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Koshien"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-8f8245c5ed921c82",
+      "intended": "black tea",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "blacktea",
+        "meaning": "black tea"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-24110f167642a49c",
+      "intended": "Kobe Hospital",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "hospital",
+        "meaning": "Kobe Hospital"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c221dba0167ae1e9",
+      "intended": "day 9 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 9,
+        "meaning": "day 9 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-30b189ebcd7003c3",
+      "intended": "this year",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 0,
+        "meaning": "this year"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-6bcbca4ff9d1339c",
+      "intended": "rice / meal",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "rice",
+        "meaning": "rice / meal"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c803b519e3fc772d",
+      "intended": "this month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 0,
+        "meaning": "this month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-17a1e9fa6d674c24",
+      "intended": "this week",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 0,
+        "meaning": "this week"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-5d4309a567cd471b",
+      "intended": "fish",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "fish",
+        "meaning": "fish"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-5babde796c69ee99",
+      "intended": "Sakura University",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "university",
+        "meaning": "Sakura University"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-b4278971fe60aaba",
+      "intended": "alcohol / sake",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "sake",
+        "meaning": "alcohol / sake"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-7dc41055c5283da3",
+      "intended": "soccer",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "football",
+        "meaning": "soccer"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-5a10eafbbd35a055",
+      "intended": "bicycle",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "bicycle",
+        "meaning": "bicycle"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-e1fe9fe823893e71",
+      "intended": "do",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "doing",
+        "meaning": "do"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-636d771fbcf06c13",
+      "intended": "photograph",
+      "current": "📦",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "photo",
+        "meaning": "photograph"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-e71873a7c50a3455",
+      "intended": "see you [tomorrow]",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "greetings",
+        "pose": "wave",
+        "meaning": "see you [tomorrow]"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-59fc344c5d6c0e5b",
+      "intended": "juice",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "juice",
+        "meaning": "juice"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-b18a5ba6256ca74e",
+      "intended": "day 14 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 14,
+        "meaning": "day 14 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-e8e2f46fabc20cd4",
+      "intended": "homework",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "object",
+        "object": "homework",
+        "meaning": "homework"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-75cc337163f92d4a",
+      "intended": "Shinkansen",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "shinkansen",
+        "meaning": "Shinkansen"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-8c8770a8bd199980",
+      "intended": "smoke (a cigarette)",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "smoking",
+        "meaning": "smoke (a cigarette)"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3e715ed68e25a4b2",
+      "intended": "supermarket",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "supermarket",
+        "meaning": "supermarket"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-23b4d2461d6440ab",
+      "intended": "last month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": -1,
+        "meaning": "last month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3c6769841cb20689",
+      "intended": "last week",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": -1,
+        "meaning": "last week"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-626cfb072a80fcbb",
+      "intended": "let me see / that is so",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "let me see / that is so",
+        "reaction": "…"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-1d44190694449872",
+      "intended": "and then",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "next",
+        "meaning": "and then"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-6cec773780557979",
+      "intended": "taxi",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "taxi",
+        "meaning": "taxi"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-39827ceb3d02520a",
+      "intended": "tobacco / cigarette",
+      "current": "📦",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "cigarette",
+        "meaning": "tobacco / cigarette"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-47e0d02b093eaa10",
+      "intended": "eat",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action",
+        "pose": "eating",
+        "meaning": "eat"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-9d3438acae746a2b",
+      "intended": "egg",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "egg",
+        "meaning": "egg"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-9c2a0dad1676a16c",
+      "intended": "birthday",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "calendar",
+        "meaning": "birthday"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-8fea79d5439bf91d",
+      "intended": "subway",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "subway",
+        "meaning": "subway"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-f66659321ab61768",
+      "intended": "a little / a moment",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "small",
+        "meaning": "a little / a moment"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c2a089d9c108210d",
+      "intended": "day 1 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 1,
+        "meaning": "day 1 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-184a04e7c5d4fccd",
+      "intended": "next (before a noun)",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 1,
+        "meaning": "next (before a noun)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-e0ef263ea957a0ed",
+      "intended": "Tsuruya (name)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Tsuruya (name)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c11a3275fec09a2b",
+      "intended": "letter",
+      "current": "📦",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "letter",
+        "meaning": "letter"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-1981cf9bdbeb6a22",
+      "intended": "tennis",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "tennis",
+        "meaning": "tennis"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-877ca5f99e8338a8",
+      "intended": "train",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "train",
+        "meaning": "train"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-1d26a3f31f546046",
+      "intended": "you are welcome",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "thanks",
+        "pose": "bow",
+        "meaning": "you are welcome"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-9c701220455cac91",
+      "intended": "day 10 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 10,
+        "meaning": "day 10 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-6b187d085f20d980",
+      "intended": "sometimes",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "frequency",
+        "all": false,
+        "period": null,
+        "meaning": "sometimes"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-ee51b3e0ae0fd355",
+      "intended": "limited express train",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "limited",
+        "meaning": "limited express train"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-66356e973c57c474",
+      "intended": "friend",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "person",
+        "meaning": "friend"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-cc1157bdb7daec7d",
+      "intended": "take (a photograph)",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "photographing",
+        "meaning": "take (a photograph)"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-61d84228493517e8",
+      "intended": "what",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "book",
+        "meaning": "what"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-5702f6977f743b93",
+      "intended": "day 7 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 7,
+        "meaning": "day 7 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c8125aa6b2d08005",
+      "intended": "which month",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "calendar",
+        "meaning": "which month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-5b2bd2f1b059a707",
+      "intended": "what is it?",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "book",
+        "meaning": "what is it?"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-9211080b604c7214",
+      "intended": "which day of the month",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "calendar",
+        "meaning": "which day of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-37a34299f8aac5ba",
+      "intended": "which year",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "question",
+        "object": "calendar",
+        "meaning": "which year"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-b7e64825c6bfc605",
+      "intended": "meat",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "meat",
+        "meaning": "meat"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-80e2b972cd3e2a7b",
+      "intended": "day 24 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 24,
+        "meaning": "day 24 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-7102dff50ca5a822",
+      "intended": "day-of-month suffix",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "calendar",
+        "meaning": "day-of-month suffix"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-fe19f59584c74922",
+      "intended": "garden",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "garden",
+        "meaning": "garden"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-7b39f2af6e32e892",
+      "intended": "year suffix",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "calendar",
+        "meaning": "year suffix"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-94a36930bfbb9722",
+      "intended": "drink",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action",
+        "pose": "drinking",
+        "meaning": "drink"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-866bfdb4796056e3",
+      "intended": "bus",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "bus",
+        "meaning": "bus"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-baf16aec6f47fddc",
+      "intended": "day 20 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 20,
+        "meaning": "day 20 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-59357d2a2ba16d1d",
+      "intended": "cherry blossom viewing",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "flower",
+        "meaning": "cherry blossom viewing"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-28b35d9b1a29e3bd",
+      "intended": "Power Electric",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Power Electric"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-de32617ea8103232",
+      "intended": "bread",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "bread",
+        "meaning": "bread"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-affaad7513b5d4c8",
+      "intended": "dinner",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "meal",
+        "object": "rice",
+        "period": "night",
+        "meaning": "dinner"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-4f20834e51a03b0c",
+      "intended": "platform / track number suffix",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "platform",
+        "meaning": "platform / track number suffix"
+      },
+      "ready": false
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c90996b5e92d7c1e",
+      "intended": "beer",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "beer",
+        "meaning": "beer"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c98d6b858839265e",
+      "intended": "airplane",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "airplane",
+        "meaning": "airplane"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-a21d0ee87a3c3deb",
+      "intended": "video",
+      "current": "📦",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "video",
+        "meaning": "video"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-d174a32922550b37",
+      "intended": "person",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "context",
+        "context": "person",
+        "meaning": "person"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-ad4bed84d1d20277",
+      "intended": "alone / by oneself",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "alone",
+        "meaning": "alone / by oneself"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-1e0b486bbcdc48d6",
+      "intended": "lunch",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "meal",
+        "object": "rice",
+        "period": "noon",
+        "meaning": "lunch"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-1c673828b19f140f",
+      "intended": "Fuji University",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "university",
+        "meaning": "Fuji University"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3236ade61764e870",
+      "intended": "local train / ordinary",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "train",
+        "meaning": "local train / ordinary"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-7048eafe3ccb9af5",
+      "intended": "day 2 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 2,
+        "meaning": "day 2 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-337bdbc7d43ef9ad",
+      "intended": "ship / boat",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "object",
+        "object": "ship",
+        "meaning": "ship / boat"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-7397e594beb9d693",
+      "intended": "Brazil Air",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "globe",
+        "meaning": "Brazil Air"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-b199fcf6b483fa68",
+      "intended": "France-ya (shop name)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "shop",
+        "meaning": "France-ya (shop name)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3395ecf63186e543",
+      "intended": "Mainichi-ya (shop name)",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "named-place",
+        "object": "shop",
+        "meaning": "Mainichi-ya (shop name)"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-4eb49f0d02d973b0",
+      "intended": "water",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "water",
+        "meaning": "water"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-c1bbf30546c0876e",
+      "intended": "shop",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "shop",
+        "meaning": "shop"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-4da5f65019726165",
+      "intended": "day 3 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 3,
+        "meaning": "day 3 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-1ff1d8b46cf7910c",
+      "intended": "see / watch",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "watching",
+        "meaning": "see / watch"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-bc3c569041e86eb6",
+      "intended": "milk",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "milk",
+        "meaning": "milk"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-b65570a0efd59fe4",
+      "intended": "day 6 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 6,
+        "meaning": "day 6 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-15a68a335b8ce750",
+      "intended": "Mexico",
+      "current": "🏢",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "country",
+        "object": "globe",
+        "meaning": "Mexico"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-0bad5ff77209d4f0",
+      "intended": "vegetables",
+      "current": "🍷",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "object",
+        "object": "vegetables",
+        "meaning": "vegetables"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-98d3825988ce5f0a",
+      "intended": "day 8 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 8,
+        "meaning": "day 8 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-db95619e9dabec3f",
+      "intended": "day 4 of the month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "date",
+        "number": 4,
+        "meaning": "day 4 of the month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-41e7fb780375c38e",
+      "intended": "read",
+      "current": "📚",
+      "issue": "generic books fallback",
+      "replacement": {
+        "strategy": "action-context",
+        "action": "reading",
+        "meaning": "read"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-9263b75441c6fb63",
+      "intended": "next month",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 1,
+        "meaning": "next month"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-3fd555b0c01ae8b3",
+      "intended": "next week",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 1,
+        "meaning": "next week"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-07d7f60a32c5d106",
+      "intended": "next year",
+      "current": "🕒",
+      "issue": "verify exact object and compact bounds",
+      "replacement": {
+        "strategy": "context",
+        "context": "relative",
+        "offset": 1,
+        "meaning": "next year"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-1dcf2c3f1c019d5f",
+      "intended": "report",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "object",
+        "object": "report",
+        "meaning": "report"
+      },
+      "ready": true
+    },
+    {
+      "screen": "Vocabulary / Word reference / Recall / Rebuild",
+      "id": "csv-43dcdb53d41a80e5",
+      "intended": "understood",
+      "current": "reused Lulu pose",
+      "issue": "verify action/object specificity",
+      "replacement": {
+        "strategy": "conversation",
+        "purpose": "reactions",
+        "pose": "thinking",
+        "meaning": "understood",
+        "reaction": "✓"
+      },
+      "ready": true
+    }
+  ],
+  "activeScenes": [
+    "meet",
+    "intro",
+    "likewise",
+    "excuse",
+    "name",
+    "attention",
+    "offer",
+    "thanks",
+    "thanks-full",
+    "understand",
+    "incorrect",
+    "surprise",
+    "realise",
+    "neighbour",
+    "this-that-2-01",
+    "this-that-2-02",
+    "this-that-2-03",
+    "this-that-2-04",
+    "this-that-2-05",
+    "this-that-2-06",
+    "ch3-location-01",
+    "ch3-location-02",
+    "ch3-location-03",
+    "ch3-where",
+    "ch3-floor-question",
+    "ch3-country",
+    "ch3-company",
+    "ch3-university",
+    "ch3-origin",
+    "ch3-price-question",
+    "ch3-welcome",
+    "ch3-excuse",
+    "ch3-thanks",
+    "ch4-time-question",
+    "ch4-weekday-question",
+    "ch4-phone-question",
+    "wh-words-1-17a",
+    "wh-words-1-19a",
+    "wh-words-2-36",
+    "wh-whose",
+    "wh-what-kind"
+  ],
+  "scenes": [
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "meet",
+      "forms": 1,
+      "intended": "You meet someone for the first time.",
+      "sourceWords": [
+        "1-c1"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "intro",
+      "forms": 1,
+      "intended": "You have just said your name. End with a polite greeting. Use the full phrase.",
+      "sourceWords": [
+        "1-c3d"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "likewise",
+      "forms": 1,
+      "intended": "Returning a greeting.",
+      "sourceWords": [
+        "2-d2c"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "excuse",
+      "forms": 1,
+      "intended": "You want to ask a stranger their name. What do you say before asking?",
+      "sourceWords": [
+        "1-c4"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "name",
+      "forms": 1,
+      "intended": "You want to know someone’s name. Ask politely.",
+      "sourceWords": [
+        "1-c5"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "attention",
+      "forms": 1,
+      "intended": "You want to speak to someone but are unsure how to start.",
+      "sourceWords": [
+        "2-c1"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "offer",
+      "forms": 1,
+      "intended": "Offer something to someone.",
+      "sourceWords": [
+        "2-c3"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "thanks",
+      "forms": 1,
+      "intended": "Someone gives you a gift. Say thank you politely.",
+      "sourceWords": [
+        "2-c4c"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "thanks-full",
+      "forms": 1,
+      "intended": "Someone helps you a lot. Thank them using the full phrase.",
+      "sourceWords": [
+        "2-c4d"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "understand",
+      "forms": 1,
+      "intended": "Someone tells you something you did not know. Show that you understand.",
+      "sourceWords": [
+        "2-c5"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "incorrect",
+      "forms": 1,
+      "intended": "Someone misidentifies something. Correct them.",
+      "sourceWords": [
+        "2-c6"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "surprise",
+      "forms": 1,
+      "intended": "You hear some news and are surprised.",
+      "sourceWords": [
+        "2-c2"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "realise",
+      "forms": 1,
+      "intended": "Suddenly notice something",
+      "sourceWords": [
+        "2-c7"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "neighbour",
+      "forms": 1,
+      "intended": "Greeting your colleagues for the first time.",
+      "sourceWords": [
+        "2-d1"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "this-that-2-01",
+      "forms": 1,
+      "intended": "Name an object near you",
+      "sourceWords": [
+        "2-01"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "this-that-2-02",
+      "forms": 1,
+      "intended": "Name an object near the listener",
+      "sourceWords": [
+        "2-02"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "this-that-2-03",
+      "forms": 1,
+      "intended": "Name an object far from both people",
+      "sourceWords": [
+        "2-03"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "this-that-2-04",
+      "forms": 1,
+      "intended": "Identify the owner of an object near you",
+      "sourceWords": [
+        "2-04"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "this-that-2-05",
+      "forms": 1,
+      "intended": "Identify the owner of an object near the listener",
+      "sourceWords": [
+        "2-05"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "this-that-2-06",
+      "forms": 1,
+      "intended": "Identify the owner of an object far from both people",
+      "sourceWords": [
+        "2-06"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "ch3-location-01",
+      "forms": 2,
+      "intended": "Say that a place is near you.",
+      "sourceWords": [
+        "3-01",
+        "3-05"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "ch3-location-02",
+      "forms": 2,
+      "intended": "Say that a place is near the listener.",
+      "sourceWords": [
+        "3-02",
+        "3-06"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "ch3-location-03",
+      "forms": 2,
+      "intended": "Say that a place is far from both people.",
+      "sourceWords": [
+        "3-03",
+        "3-07"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep both people, object and distance; compact views previously cropped the middle",
+      "replacement": "Full spatial composition, consistent role scarves, bilingual role labels and shared stable feedback"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch3-where",
+      "forms": 2,
+      "intended": "Ask where a place is.",
+      "sourceWords": [
+        "3-04",
+        "3-08"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch3-floor-question",
+      "forms": 1,
+      "intended": "Ask which floor the shoe department is on.",
+      "sourceWords": [
+        "3-31"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch3-country",
+      "forms": 1,
+      "intended": "Ask which country the listener belongs to, politely.",
+      "sourceWords": [
+        "3-22b"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch3-company",
+      "forms": 1,
+      "intended": "Ask which company the listener belongs to, politely.",
+      "sourceWords": [
+        "3-23"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch3-university",
+      "forms": 1,
+      "intended": "Ask which university the listener belongs to, politely.",
+      "sourceWords": [
+        "1-15"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch3-origin",
+      "forms": 1,
+      "intended": "Ask which country the wine comes from.",
+      "sourceWords": [
+        "3-r1"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch3-price-question",
+      "forms": 1,
+      "intended": "Ask the price of the tie.",
+      "sourceWords": [
+        "3-33"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "ch3-welcome",
+      "forms": 1,
+      "intended": "You are the shop assistant. Welcome a customer.",
+      "sourceWords": [
+        "3-c1"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "ch3-excuse",
+      "forms": 1,
+      "intended": "Politely get someone’s attention before asking where the toilets are.",
+      "sourceWords": [
+        "3-p1"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Pictures & Dialogue",
+      "id": "ch3-thanks",
+      "forms": 1,
+      "intended": "Thank someone briefly after they give you directions.",
+      "sourceWords": [
+        "3-p2"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch4-time-question",
+      "forms": 1,
+      "intended": "Ask what time it is now.",
+      "sourceWords": [
+        "4-16"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch4-weekday-question",
+      "forms": 1,
+      "intended": "Ask what day of the week it is today.",
+      "sourceWords": [
+        "4-45"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "ch4-phone-question",
+      "forms": 1,
+      "intended": "Ask for a telephone number.",
+      "sourceWords": [
+        "4-c2"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "wh-words-1-17a",
+      "forms": 2,
+      "intended": "Ask who a person is.",
+      "sourceWords": [
+        "1-17a",
+        "1-17b"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "wh-words-1-19a",
+      "forms": 2,
+      "intended": "Ask someone’s age.",
+      "sourceWords": [
+        "1-19a",
+        "1-19b"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "wh-words-2-36",
+      "forms": 1,
+      "intended": "Ask what this object is.",
+      "sourceWords": [
+        "2-36"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "wh-whose",
+      "forms": 1,
+      "intended": "Whose",
+      "sourceWords": [
+        "1-17a"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    },
+    {
+      "screen": "Grammar / Question words",
+      "id": "wh-what-kind",
+      "forms": 1,
+      "intended": "What kind / topic",
+      "sourceWords": [
+        "2-36"
+      ],
+      "current": "Existing Lulu scene and conversation avatars; generic feedback atlas",
+      "issue": "Keep exact response boundary and readable participant roles; feedback previously had one pose per outcome",
+      "replacement": "Purposeful retained scene props, role-cued avatars and shared stable feedback; no answer text in scene art"
+    }
+  ],
+  "sentencePatterns": [
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p1",
+      "intended": "Name, job & nationality",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p2",
+      "intended": "Negative statements",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p3",
+      "intended": "Yes / no questions & replies",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p4",
+      "intended": "Who is that?",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p5",
+      "intended": "Company / university affiliation",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p6",
+      "intended": "Also / too",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p7",
+      "intended": "Age & asking age",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p8",
+      "intended": "Self-introduction expressions",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p9",
+      "intended": "This / that is an object",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p10",
+      "intended": "Object questions & short replies",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p11",
+      "intended": "What is it?",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p12",
+      "intended": "A or B?",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p13",
+      "intended": "Type / topic / language",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p14",
+      "intended": "Whose object?",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p15",
+      "intended": "Possession with the noun omitted",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p16",
+      "intended": "This / that + noun",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p17",
+      "intended": "From a starting point · から",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    },
+    {
+      "screen": "Grammar / sentence patterns",
+      "id": "p18",
+      "intended": "Until an ending point · まで",
+      "current": "Text formula and sentence tiles",
+      "issue": "Little companion presence; text-only grading",
+      "replacement": "Lulu arranging tiles in pattern/example panels; reserved, stable outcome feedback and model-review art"
+    }
+  ]
+}

@@ -42,16 +42,22 @@ node tests/number-matching.cjs
 node tests/dialogue-pairs.cjs
 node tests/exam-practice.cjs
 node tests/learning-navigation.cjs
+node tests/lulu.cjs
 node scripts/audit-learning-navigation.cjs
+node scripts/audit-lulu-visuals.cjs
 ```
 
 With Playwright and Chromium available, run the current mobile/desktop bilingual workflow suite against the local server:
 
 ```sh
 CHROMIUM_PATH=/usr/bin/chromium node tests/navigation-browser.cjs
+CHROMIUM_PATH=/usr/bin/chromium node tests/lulu-browser.cjs
+CHROMIUM_PATH=/usr/bin/chromium node tests/lulu-offline.cjs
 ```
 
 The historical browser suites encode the previous flat-menu presentation. The current navigation suite replaces those presentation expectations; the core suites retain game-content and scoring invariants.
+
+The [Lulu visual review](docs/visual-review/README.md) includes the before/after audit, all eight feedback poses, atlas coordinates, reference usage and mobile/desktop screenshots. Regenerate the review captures with `node scripts/capture-lulu-review.cjs`. Optional image-bound inspection uses Pillow: `python scripts/audit-lulu-assets.py` after the visual audit.
 
 ## Offline and deployment
 
