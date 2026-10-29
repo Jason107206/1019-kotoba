@@ -33,7 +33,7 @@ function rebuildTileControls(round,target,prefix='vocabulary'){
 function vocabularyRebuildCard(){
   const w=wordBy(current()),r=state.round,target=vocabularyReading(w),limit=kanaUnits(target).length;
   const prompt=hasKanji(w)?w.c:w.zh;
-  return `<div class="paper vocabulary-rebuild-card">${vocabularyVisual(w)}<div class="eyebrow muted">${sourceTag(w)}</div><h2 class="vocabulary-rebuild-prompt ${hasKanji(w)?'jp':''}" ${hasKanji(w)?'lang="ja"':''}>${esc(prompt)}</h2><p class="muted">${hasKanji(w)?`${esc(w.zh)} · `:''}${esc(w.en)}</p>${rebuildTileInputs(r,target)}${r.checked?`<div class="feedback ${r.result?'':'bad'}" role="status"><strong>${r.result?'Correct!':'The correct answer is:'}</strong><div class="jp" lang="ja">${esc(target)}</div><p class="small jp">${kanaUnits(target).map(esc).join(' · ')}</p></div><div class="card-actions">${button('Next word '+icon('arrow'),'next','primary')}</div>`:rebuildTileControls(r,target)}</div>`;
+  return `<div class="paper vocabulary-rebuild-card">${vocabularyVisual(w)}<div class="eyebrow muted">${sourceTag(w)}</div><h2 class="vocabulary-rebuild-prompt ${hasKanji(w)?'jp':''}" ${hasKanji(w)?'lang="ja"':''}>${esc(prompt)}</h2><p class="muted">${hasKanji(w)?`${esc(w.zh)} · `:''}${esc(w.en)}</p>${rebuildTileInputs(r,target)}${r.checked?`<div class="feedback ${r.result?'':'bad'}" role="status">${luluFeedbackHeading(r)}<strong>${r.result?'Correct!':'The correct answer is:'}</strong><div class="jp" lang="ja">${esc(target)}</div><p class="small jp">${kanaUnits(target).map(esc).join(' · ')}</p></div><div class="card-actions">${button('Next word '+icon('arrow'),'next','primary')}</div>`:luluFeedbackPlaceholder()+rebuildTileControls(r,target)}</div>`;
 }
 function vocabularyAction(action){
   const r=state.round;if(state.view!=='vocabulary-rebuild'||!r||r.checked||r.index>=r.ids.length)return;
@@ -115,21 +115,11 @@ function piggyPose(word){return PIGGY_VISUAL_POSES[word.id]||({introductions:'bo
 const LULU_OCCUPATIONS={'1-10':0,'1-11':0,'1-12':1,'1-14':2};
 function occupationPiggy(word){
   const cell=LULU_OCCUPATIONS[word.id];
+  if(typeof luluSvgPose==='function')return luluSvgPose(['employeeOriginal','bankerOriginal','researcherOriginal'][cell],157,7,186,186);
   return `<svg class="lulu-piggy occupation-pig" data-occupation="${word.id}" x="157" y="7" width="186" height="186" viewBox="${cell*724} 0 724 724" aria-hidden="true"><image href="icons/lulu-occupations.png" width="2172" height="724"/></svg>`;
 }
-function vocabularyVisual(word,compact=false){
-  const id=`vocab-visual-${word.id}`,category=vocabularySection(word);
-  let scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/><text x="250" y="128" text-anchor="middle" font-size="76" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${VOCAB_VISUALS[word.id]||'📚'}</text>`;
-  if(PIGGY_VISUAL_CATEGORIES.has(category)||PIGGY_VISUAL_WORD_IDS.has(word.id)){
-    scene=`<circle cx="250" cy="100" r="76" fill="#fffaf0"/>${luluPiggy(250,100,1.55,piggyPose(word))}`;
-  }
-  if(Object.hasOwn(LULU_OCCUPATIONS,word.id))scene=`<circle cx="250" cy="100" r="94" fill="#fffaf0"/>${occupationPiggy(word)}`;
-  if(category==='demonstratives'&&['2-01','2-02','2-03','2-04','2-05','2-06'].includes(word.id)){
-    const position={'2-01':95,'2-04':95,'2-02':250,'2-05':250,'2-03':415,'2-06':415}[word.id];
-    scene=`${luluPiggy(95,110,.9,'point')}${luluPiggy(250,110,.9)}<text x="${position}" y="57" text-anchor="middle" font-size="43">📕</text><text x="95" y="183" text-anchor="middle" fill="#8e4936" font-size="14">You</text><text x="250" y="183" text-anchor="middle" fill="#3f6676" font-size="14">Listener</text>`;
-  }
-  return `<figure class="vocabulary-visual"><svg viewBox="${compact?'150 0 200 200':'0 0 500 200'}" role="img" aria-labelledby="${id}"><title id="${id}">${esc(word.en)}</title>${lessonBackdrop(200,156)}${scene}</svg></figure>`;
-}
+function vocabularyVisual(word,compact=false){return luluWordVisual(word,compact);}
+
 function vocabularyBrowse(mode){
   if(!['all','category','chapter'].includes(mode))return;
   const key=mode==='all'?'all':mode==='chapter'?'chapter-1':`category-${VOCABULARY_CATEGORIES[0].id}`;

@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <title>Kotoba</title>
-  <rect width="512" height="512" fill="#f3edf7"/>
-  <rect x="64" y="64" width="384" height="384" rx="128" fill="#6750a4"/>
-  <path d="M173 144h34v104l105-104h45L242 257l121 111h-48L207 267v101h-34Z" fill="#ffffff"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="114" fill="#eee2f5"/><g stroke="#925b38" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M118 193Q68 86 154 130Q256 89 357 130Q441 86 393 193Q430 353 322 381Q254 407 183 381Q79 353 118 193Z" fill="#f9d7c9"/><path d="M126 164q-23-53 26-13m209 13q24-53-24-13" fill="#f3b6b3" stroke-width="8"/><ellipse cx="174" cy="280" rx="35" ry="32" fill="#efb2ad" stroke="none"/><ellipse cx="340" cy="280" rx="35" ry="32" fill="#efb2ad" stroke="none"/><ellipse cx="256" cy="280" rx="56" ry="40" fill="#efa3a8"/><circle cx="200" cy="223" r="9" fill="#925b38" stroke="none"/><circle cx="314" cy="223" r="9" fill="#925b38" stroke="none"/><path d="M238 276v8m37-8v8" stroke-width="10"/></g></svg>

@@ -1,0 +1,884 @@
+{
+  "idle": {
+    "file": "dist/icons/lulu-piggy.png",
+    "size": [
+      1145,
+      1374
+    ],
+    "cells": [
+      {
+        "rect": [
+          0,
+          0,
+          1145,
+          1374
+        ],
+        "opaqueBounds": [
+          106,
+          40,
+          1034,
+          1325
+        ],
+        "padding": [
+          106,
+          40,
+          111,
+          49
+        ],
+        "transparentCornerAlpha": 0
+      }
+    ]
+  },
+  "original": {
+    "file": "dist/icons/lulu-poses.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "cells": [
+      {
+        "rect": [
+          0,
+          0,
+          418,
+          418
+        ],
+        "opaqueBounds": [
+          63,
+          49,
+          391,
+          397
+        ],
+        "padding": [
+          63,
+          49,
+          27,
+          21
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          418,
+          0,
+          418,
+          418
+        ],
+        "opaqueBounds": [
+          56,
+          49,
+          376,
+          398
+        ],
+        "padding": [
+          56,
+          49,
+          42,
+          20
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          836,
+          0,
+          418,
+          418
+        ],
+        "opaqueBounds": [
+          41,
+          77,
+          344,
+          394
+        ],
+        "padding": [
+          41,
+          77,
+          74,
+          24
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          0,
+          418,
+          418,
+          418
+        ],
+        "opaqueBounds": [
+          83,
+          49,
+          358,
+          383
+        ],
+        "padding": [
+          83,
+          49,
+          60,
+          35
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          418,
+          418,
+          432,
+          418
+        ],
+        "opaqueBounds": [
+          43,
+          23,
+          420,
+          384
+        ],
+        "padding": [
+          43,
+          23,
+          12,
+          34
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          850,
+          418,
+          404,
+          418
+        ],
+        "opaqueBounds": [
+          51,
+          40,
+          324,
+          383
+        ],
+        "padding": [
+          51,
+          40,
+          80,
+          35
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          0,
+          836,
+          418,
+          418
+        ],
+        "opaqueBounds": [
+          78,
+          23,
+          387,
+          366
+        ],
+        "padding": [
+          78,
+          23,
+          31,
+          52
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          418,
+          836,
+          418,
+          418
+        ],
+        "opaqueBounds": [
+          25,
+          22,
+          373,
+          363
+        ],
+        "padding": [
+          25,
+          22,
+          45,
+          55
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          836,
+          820,
+          418,
+          434
+        ],
+        "opaqueBounds": [
+          14,
+          18,
+          392,
+          383
+        ],
+        "padding": [
+          14,
+          18,
+          26,
+          51
+        ],
+        "transparentCornerAlpha": 0
+      }
+    ]
+  },
+  "feedback": {
+    "file": "dist/icons/lulu-feedback.png",
+    "size": [
+      1774,
+      887
+    ],
+    "cells": [
+      {
+        "rect": [
+          0,
+          0,
+          887,
+          887
+        ],
+        "opaqueBounds": [
+          142,
+          104,
+          824,
+          813
+        ],
+        "padding": [
+          142,
+          104,
+          63,
+          74
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          887,
+          0,
+          887,
+          887
+        ],
+        "opaqueBounds": [
+          120,
+          101,
+          724,
+          811
+        ],
+        "padding": [
+          120,
+          101,
+          163,
+          76
+        ],
+        "transparentCornerAlpha": 0
+      }
+    ]
+  },
+  "occupations": {
+    "file": "dist/icons/lulu-occupations.png",
+    "size": [
+      2172,
+      724
+    ],
+    "cells": [
+      {
+        "rect": [
+          0,
+          0,
+          724,
+          724
+        ],
+        "opaqueBounds": [
+          126,
+          61,
+          682,
+          681
+        ],
+        "padding": [
+          126,
+          61,
+          42,
+          43
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          724,
+          0,
+          724,
+          724
+        ],
+        "opaqueBounds": [
+          44,
+          52,
+          677,
+          671
+        ],
+        "padding": [
+          44,
+          52,
+          47,
+          53
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1448,
+          0,
+          724,
+          724
+        ],
+        "opaqueBounds": [
+          26,
+          61,
+          639,
+          690
+        ],
+        "padding": [
+          26,
+          61,
+          85,
+          34
+        ],
+        "transparentCornerAlpha": 0
+      }
+    ]
+  },
+  "actions": {
+    "file": "dist/icons/lulu-actions.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "cells": [
+      {
+        "rect": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "opaqueBounds": [
+          50,
+          81,
+          495,
+          466
+        ],
+        "padding": [
+          50,
+          81,
+          17,
+          46
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          512,
+          0,
+          512,
+          512
+        ],
+        "opaqueBounds": [
+          14,
+          128,
+          508,
+          465
+        ],
+        "padding": [
+          14,
+          128,
+          4,
+          47
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1024,
+          0,
+          512,
+          512
+        ],
+        "opaqueBounds": [
+          44,
+          94,
+          480,
+          466
+        ],
+        "padding": [
+          44,
+          94,
+          32,
+          46
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          0,
+          512,
+          512,
+          512
+        ],
+        "opaqueBounds": [
+          73,
+          34,
+          458,
+          425
+        ],
+        "padding": [
+          73,
+          34,
+          54,
+          87
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          512,
+          512,
+          552,
+          512
+        ],
+        "opaqueBounds": [
+          25,
+          24,
+          540,
+          451
+        ],
+        "padding": [
+          25,
+          24,
+          12,
+          61
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1064,
+          512,
+          472,
+          512
+        ],
+        "opaqueBounds": [
+          22,
+          26,
+          406,
+          455
+        ],
+        "padding": [
+          22,
+          26,
+          66,
+          57
+        ],
+        "transparentCornerAlpha": 0
+      }
+    ]
+  },
+  "feedbackNew": {
+    "file": "dist/icons/lulu-feedback-new.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "cells": [
+      {
+        "rect": [
+          0,
+          60,
+          512,
+          464
+        ],
+        "opaqueBounds": [
+          68,
+          53,
+          488,
+          448
+        ],
+        "padding": [
+          68,
+          53,
+          24,
+          16
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          512,
+          30,
+          512,
+          529
+        ],
+        "opaqueBounds": [
+          67,
+          44,
+          427,
+          479
+        ],
+        "padding": [
+          67,
+          44,
+          85,
+          50
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1024,
+          0,
+          512,
+          545
+        ],
+        "opaqueBounds": [
+          46,
+          24,
+          460,
+          512
+        ],
+        "padding": [
+          46,
+          24,
+          52,
+          33
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          0,
+          524,
+          512,
+          500
+        ],
+        "opaqueBounds": [
+          73,
+          17,
+          458,
+          461
+        ],
+        "padding": [
+          73,
+          17,
+          54,
+          39
+        ],
+        "transparentCornerAlpha": 1
+      },
+      {
+        "rect": [
+          512,
+          559,
+          512,
+          465
+        ],
+        "opaqueBounds": [
+          72,
+          51,
+          458,
+          420
+        ],
+        "padding": [
+          72,
+          51,
+          54,
+          45
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1024,
+          545,
+          512,
+          479
+        ],
+        "opaqueBounds": [
+          77,
+          34,
+          457,
+          436
+        ],
+        "padding": [
+          77,
+          34,
+          55,
+          43
+        ],
+        "transparentCornerAlpha": 0
+      }
+    ]
+  },
+  "teaching": {
+    "file": "dist/icons/lulu-teaching.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "cells": [
+      {
+        "rect": [
+          0,
+          0,
+          285,
+          395
+        ],
+        "opaqueBounds": [
+          35,
+          76,
+          267,
+          361
+        ],
+        "padding": [
+          35,
+          76,
+          18,
+          34
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          285,
+          0,
+          430,
+          395
+        ],
+        "opaqueBounds": [
+          14,
+          102,
+          422,
+          362
+        ],
+        "padding": [
+          14,
+          102,
+          8,
+          33
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          715,
+          0,
+          435,
+          395
+        ],
+        "opaqueBounds": [
+          7,
+          68,
+          426,
+          368
+        ],
+        "padding": [
+          7,
+          68,
+          9,
+          27
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1150,
+          0,
+          298,
+          395
+        ],
+        "opaqueBounds": [
+          9,
+          90,
+          271,
+          381
+        ],
+        "padding": [
+          9,
+          90,
+          27,
+          14
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          0,
+          395,
+          396,
+          325
+        ],
+        "opaqueBounds": [
+          18,
+          36,
+          389,
+          306
+        ],
+        "padding": [
+          18,
+          36,
+          7,
+          19
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          396,
+          395,
+          344,
+          325
+        ],
+        "opaqueBounds": [
+          9,
+          35,
+          330,
+          297
+        ],
+        "padding": [
+          9,
+          35,
+          14,
+          28
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          740,
+          395,
+          410,
+          325
+        ],
+        "opaqueBounds": [
+          22,
+          22,
+          401,
+          307
+        ],
+        "padding": [
+          22,
+          22,
+          9,
+          18
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1150,
+          395,
+          298,
+          325
+        ],
+        "opaqueBounds": [
+          13,
+          23,
+          273,
+          303
+        ],
+        "padding": [
+          13,
+          23,
+          25,
+          22
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          0,
+          720,
+          317,
+          366
+        ],
+        "opaqueBounds": [
+          31,
+          41,
+          286,
+          309
+        ],
+        "padding": [
+          31,
+          41,
+          31,
+          57
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          317,
+          720,
+          409,
+          366
+        ],
+        "opaqueBounds": [
+          32,
+          10,
+          398,
+          303
+        ],
+        "padding": [
+          32,
+          10,
+          11,
+          63
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          726,
+          720,
+          409,
+          366
+        ],
+        "opaqueBounds": [
+          9,
+          52,
+          394,
+          311
+        ],
+        "padding": [
+          9,
+          52,
+          15,
+          55
+        ],
+        "transparentCornerAlpha": 0
+      },
+      {
+        "rect": [
+          1135,
+          720,
+          313,
+          366
+        ],
+        "opaqueBounds": [
+          15,
+          20,
+          289,
+          321
+        ],
+        "padding": [
+          15,
+          20,
+          24,
+          45
+        ],
+        "transparentCornerAlpha": 0
+      }
+    ]
+  }
+}
