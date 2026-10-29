@@ -1,0 +1,51 @@
+/* Material 3 layout refinement. Shared state, spacing and shapes across every study surface. */
+:root{--shape-card:20px;--shape-control:12px;--content-padding:32px}
+h1{font-size:clamp(28px,2.7vw,36px);line-height:1.25;letter-spacing:-.4px}
+h2{font-size:22px;line-height:1.35}h3{font-size:18px}
+.topbar{min-height:76px}.breadcrumb-row{margin-bottom:16px}.breadcrumbs ol{min-height:40px}
+.main{max-width:1360px}.paper{border-radius:var(--shape-card)}
+.study-wrap{max-width:1040px}.lulu-intro,.lulu-welcome{gap:20px;margin-bottom:20px}
+.lulu-intro>div>p{margin-top:8px;max-width:64ch;color:var(--md-on-surface-variant);line-height:1.55}
+.lulu-intro>.lulu-section-art{width:116px;height:96px}.lulu-intro>.lulu-section-art>.lulu-art{width:88px;height:88px}.lulu-intro .lulu-section-prop{width:56px;height:56px}
+.overview-intro .page-head{margin-bottom:0}.lulu-welcome{padding:16px 0}
+.overview-card{min-height:260px;gap:12px;border:1px solid var(--md-outline-variant);border-radius:var(--shape-card);background:var(--md-surface-container-lowest)}
+.overview-card:first-child{background:var(--md-surface-container-lowest)}
+.overview-card .lulu-mode-art{width:126px;height:96px;margin-bottom:0}.overview-card .lulu-mode-art>.lulu-art{width:96px;height:96px}.overview-card .lulu-section-prop{width:60px;height:60px}
+.overview-card .card-copy{padding-right:0}.overview-card .card-copy h2{font-size:22px;line-height:1.35;margin:6px 0 8px}.overview-card .card-arrow{top:20px;right:20px;width:32px;height:32px}
+.overview-card:hover,.overview-card:first-child:hover{background:var(--md-surface-container-low);border-color:var(--md-primary)}
+.drawer-nav button{border-radius:16px;min-height:52px}.drawer-nav button.active{background:var(--md-primary-container);color:var(--md-on-primary-container);font-weight:600}
+.brand-header{margin-bottom:24px}.sidebar{padding-top:24px}.stat{border-radius:var(--shape-card);padding:20px}.overview-progress{margin-top:32px}
+.learning-filters{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;background:var(--md-surface-container-lowest);border:1px solid var(--md-outline-variant);border-radius:var(--shape-card);padding:20px;margin:20px 0 16px;align-items:start}
+.filter-chip-group{margin:0;padding:0;border:0;min-width:0;max-width:100%}
+.filter-chip-group legend{padding:0;margin-bottom:10px;color:var(--md-on-surface);font-size:14px;font-weight:600;line-height:1.5;max-width:100%}
+.chip-instruction{display:inline-block;margin-left:12px;font-size:12px;font-weight:400;color:var(--md-on-surface-variant)}
+.chapter-chip-group{grid-column:1/-1}.filter-chip-group:only-child,.number-scope .filter-chip-group{grid-column:1/-1}
+.filter-chip-options{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.filter-chip{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid var(--md-outline-variant);border-radius:var(--shape-control);background:var(--md-surface-container-low);color:var(--md-on-surface-variant);font-size:14px;font-weight:500;line-height:20px;text-align:left;overflow-wrap:anywhere;scroll-margin:16px}
+.filter-chip[aria-pressed=true]{background:var(--md-secondary-container);color:var(--md-on-secondary-container);border-color:#9b83b6;box-shadow:inset 0 0 0 1px #9b83b6}
+.filter-chip:hover{background:var(--md-surface-container-highest)}.filter-chip[aria-pressed=true]:hover{background:#dfd0f0}
+.filter-chip:focus-visible{outline:3px solid var(--md-primary);outline-offset:3px}.filter-chip::before,.filter-chip::after{content:none}
+.search-field{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:500;margin-bottom:16px}.search-field .input{margin:0;min-height:48px;border-radius:var(--shape-control);background:var(--md-surface-container-lowest)}
+.selection-summary{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:14px 16px;border-radius:var(--shape-control);background:var(--md-secondary-container);color:var(--md-on-secondary-container);font-size:14px;margin:16px 0 12px;line-height:1.5}
+.selection-summary>strong{white-space:normal}.scope-description{margin:12px 0;color:var(--md-on-surface-variant);font-size:14px}.study-wrap>.practice-method-title{font-size:16px;font-weight:600;margin:16px 0 8px}
+.practice-actions{margin-top:12px;gap:10px}.practice-actions .button.primary:not(:first-child){background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+.selection-panel{position:sticky;bottom:12px;z-index:8;padding:12px 16px;margin:16px 0;border:1px solid var(--md-outline-variant);border-radius:16px;background:var(--md-surface-container-lowest);box-shadow:var(--md-elevation-1)}
+.selection-panel .selection-summary{margin:0 0 10px;padding:0;background:transparent;gap:4px 12px;font-size:13px;color:var(--md-on-surface-variant)}
+.selection-panel .selection-summary strong{font-size:14px;color:var(--md-on-surface)}.selection-panel .practice-actions{margin-top:8px}.selection-panel .small{margin:4px 0}
+.selection-panel .practice-actions .button{padding-inline:12px;min-width:0}
+.filter-chip{scroll-margin-bottom:180px}
+.related-practice{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;margin-top:8px}.related-practice .scope-link{min-height:44px;padding:8px 0}
+.learning-list{gap:16px;margin-top:16px;align-items:start}.learning-list>.paper{height:100%}.learning-list .paper{padding:20px;border-radius:var(--shape-card)}
+.learning-list .lexical-card{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;align-items:start;overflow-wrap:anywhere}
+.lexical-card-visual{min-width:0;align-self:center}.lexical-card-copy{min-width:0}.lexical-card-copy h2{font-size:24px;margin:0 0 2px;line-height:1.5}.lexical-card-copy>p{margin:4px 0;line-height:1.5}.lexical-card-copy .lexical-reading{font-size:17px;color:var(--md-on-surface-variant)}.lexical-meaning{font-weight:500}.lexical-card-copy .status-badge{margin-top:6px}.lexical-card-copy>.scope-link{font-size:13px;line-height:1.5;padding:8px 0;min-height:44px}
+.lexical-card-visual .vocabulary-visual{min-height:0!important;height:auto;width:100%;max-width:none;margin:0!important}.lexical-card-visual .vocabulary-visual>svg{height:auto;max-height:126px;width:100%}.lexical-card-visual .lulu-action-visual{height:126px}.lexical-card-visual .lulu-action-visual>.lulu-art{height:126px;width:100%}.lexical-card-visual .lulu-context-caption{display:none}
+.learning-list .lexical-card-wide{grid-template-columns:1fr;gap:8px}.lexical-card-wide .lexical-card-visual{max-width:360px;width:100%;margin:auto}.lexical-card-wide .vocabulary-visual>svg{max-height:175px}.availability-note{border-left:3px solid var(--md-secondary);padding:8px 12px;background:var(--md-surface-container-low);border-radius:4px;font-size:13px}
+.lulu-word-visual{min-height:0;max-width:360px;margin-bottom:12px!important}.lulu-action-visual{height:150px}.lulu-action-visual>.lulu-art{height:150px;max-width:240px}
+.lulu-feedback-placeholder{min-height:100px;padding:12px 16px;border-radius:16px}.lulu-feedback-placeholder>.lulu-art{width:68px;height:68px}.feedback-lulu{width:76px;height:76px}.lulu-feedback-heading{min-height:92px;gap:12px}.reply-feedback{min-height:112px}
+.number-table{border:1px solid var(--md-outline-variant);border-radius:16px;overflow:hidden;background:var(--md-surface-container-lowest);font-size:15px;margin-top:20px}.number-table thead{background:var(--md-surface-container-high)}.number-table th,.number-table td{padding:12px 16px}.number-table tbody tr:last-child>*{border-bottom:0}.number-pagination{justify-content:space-between}
+.token-area,.token-bank{border-radius:16px}.feedback,.reply-feedback{border-radius:16px}.result-center{max-width:840px;margin-inline:auto}.result-score{font-variant-numeric:tabular-nums}.lulu-summary{margin-bottom:12px}.hint{border-radius:16px}.details{border-radius:16px}
+@media(min-width:1200px){.learning-filters:not(:has(.filter-chip-group:nth-child(3)))>.filter-chip-group{grid-column:1/-1}}
+@media(max-width:839px){:root{--content-padding:24px}.topbar{min-height:68px}.lulu-welcome{padding:4px 0}.overview-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.learning-filters{grid-template-columns:1fr;gap:16px;padding:16px;margin-top:16px}.filter-chip-group{grid-column:1/-1}.learning-list{grid-template-columns:1fr}.lulu-intro{gap:12px}.lulu-intro>.lulu-section-art{width:88px;height:80px}.lulu-intro>.lulu-section-art>.lulu-art{width:72px;height:72px}.lulu-intro .lulu-section-prop{width:44px;height:44px}.lulu-intro h1{font-size:28px}.lulu-intro>div>p{font-size:14px}.filter-chip{padding:10px 12px}.selection-summary{gap:6px}.learning-list .lexical-card{grid-template-columns:112px minmax(0,1fr);padding:16px}.learning-list .lexical-card-wide{grid-template-columns:1fr}.number-table th,.number-table td{padding:10px 8px}.number-table{font-size:14px}.lulu-feedback-placeholder{gap:12px}.lulu-feedback-placeholder>.lulu-art{width:64px;height:64px}}
+@media(max-width:599px){:root{--content-padding:16px}.overview-nav{grid-template-columns:1fr}.overview-card{display:grid;grid-template-columns:84px minmax(0,1fr) 20px;align-items:center;min-height:0;padding:16px;gap:12px}.overview-card .lulu-mode-art{width:84px;height:84px}.overview-card .lulu-mode-art>.lulu-art{width:72px;height:72px}.overview-card .lulu-section-prop{width:44px;height:44px}.overview-card .card-copy h2{font-size:20px}.overview-card .card-arrow{position:static;width:20px;height:24px;border:0}.overview-card .card-copy p{font-size:13px;line-height:1.5}.overview-card .eyebrow{font-size:11px}.lulu-welcome{gap:12px}.lulu-welcome>.lulu-section-art{width:92px;height:88px}.lulu-welcome>.lulu-section-art>.lulu-art{width:76px;height:76px}.lulu-welcome .lulu-section-prop{width:44px;height:44px}.paper{padding:20px 16px}.game-body .paper{padding:20px}.card-actions{margin-top:16px}.practice-actions .button{flex:1 1 auto;min-height:44px}.lulu-word-visual>svg{max-height:190px}.ex-practice .paper{padding:16px}.ex-field input{min-height:48px}.footer-line{margin-top:24px}.overview-progress{margin-top:24px}}
+@media(forced-colors:active){.filter-chip{border:1px solid ButtonText}.filter-chip[aria-pressed=true]{border:3px solid Highlight;color:Highlight;box-shadow:none}}
