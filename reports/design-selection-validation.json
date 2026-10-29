@@ -1,0 +1,52 @@
+[
+  {
+    "command": "node tests/pwa.cjs",
+    "exit": 0,
+    "output": "PASS: PWA icons/manifest, reproducible cache revision, complete offline assets, both Pages paths, cache isolation, safe updates, no install button and bilingual controls.\n"
+  },
+  {
+    "command": "node tests/chapter-import.cjs",
+    "exit": 0,
+    "output": "PASS: all CSV rows accounted for, repeatability, IDs, chapter union, category coverage, missing-data gating and distinct senses.\n"
+  },
+  {
+    "command": "node tests/verify.cjs",
+    "exit": 0,
+    "output": "PASS: immutable inventories, strict spelling and half-point grading, every sentence, duplicate-token counts, manual Next, handwriting self-check, 15-minute timing, balanced original pool, 20-point scoring and saved progress.\n"
+  },
+  {
+    "command": "node tests/chapters-3-4.cjs",
+    "exit": 0,
+    "output": "PASS: Chapters 3\u20134 complete source rows, variants, shared membership, exact readings, scoped word modes, numeric scenes, and legacy progress/timed-practice compatibility.\nPASS: all active canonical scenes remain present after categorisation.\n"
+  },
+  {
+    "command": "node tests/number-matching.cjs",
+    "exit": 0,
+    "output": "PASS: all number readings and variants in both reconstruction modes; curriculum scopes, duplicate/Unicode tiles, ordered validation, retry, navigation, feedback, progress, footer visibility, numeric categories/sorting and compact table.\n"
+  },
+  {
+    "command": "node tests/dialogue-pairs.cjs",
+    "exit": 0,
+    "output": "PASS: all 41 active dialogue entries and six form pairs, exact boundaries, both game modes/languages, duplicate tiles, partial correctness, retries, aliases and progress compatibility.\n"
+  },
+  {
+    "command": "node tests/exam-practice.cjs",
+    "exit": 0,
+    "output": "PASS: 978 sourced questions, immutable Japanese/IDs/chapters, readiness, exact boundaries, strict alternatives, individual scoring, duplicate tokens and kana slots.\n"
+  },
+  {
+    "command": "node tests/learning-navigation.cjs",
+    "exit": 0,
+    "output": "PASS: 645 chapter/group/topic scopes; all categories, scenes and patterns reachable; exact launch pools, migrations, language/back persistence and paper-free learning surfaces.\n"
+  },
+  {
+    "command": "node tests/chapter-chips.cjs",
+    "exit": 0,
+    "output": "PASS: 7348 multi-chapter/group/topic intersections; independent toggle/All rules, canonical deduplication, exact launch pools, search, child fallback, migration/reload/progress, bilingual chip semantics and favicon sizes.\n"
+  },
+  {
+    "command": "node tests/lulu.cjs",
+    "exit": 0,
+    "output": "PASS: all 338 semantic plans, object distinctions, no target script in recall art, eight distinct feedback poses, rotation/stability/assistance semantics, complete sprite crops, icon coverage and numerical/spatial safety.\n"
+  }
+]

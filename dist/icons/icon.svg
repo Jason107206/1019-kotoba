@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="114" fill="#eee2f5"/><g stroke="#925b38" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M118 193Q68 86 154 130Q256 89 357 130Q441 86 393 193Q430 353 322 381Q254 407 183 381Q79 353 118 193Z" fill="#f9d7c9"/><path d="M126 164q-23-53 26-13m209 13q24-53-24-13" fill="#f3b6b3" stroke-width="8"/><ellipse cx="174" cy="280" rx="35" ry="32" fill="#efb2ad" stroke="none"/><ellipse cx="340" cy="280" rx="35" ry="32" fill="#efb2ad" stroke="none"/><ellipse cx="256" cy="280" rx="56" ry="40" fill="#efa3a8"/><circle cx="200" cy="223" r="9" fill="#925b38" stroke="none"/><circle cx="314" cy="223" r="9" fill="#925b38" stroke="none"/><path d="M238 276v8m37-8v8" stroke-width="10"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#eee2f5"/>
+  <g stroke="#925b38" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Rounded, outward-tilted ears; every feature fits the maskable safe circle. -->
+    <path d="M160 193C138 195 112 181 106 159C102 145 105 124 120 124C139 124 153 134 176 137C183 156 178 183 160 193Z" fill="#f9d7c9"/>
+    <path d="M352 193C374 195 400 181 406 159C410 145 407 124 392 124C373 124 359 134 336 137C329 156 334 183 352 193Z" fill="#f9d7c9"/>
+    <path d="M150 176C134 176 120 166 119 153C118 145 120 139 126 140C137 141 147 147 161 150C162 160 156 172 150 176Z" fill="#f0ada9" stroke="none"/>
+    <path d="M362 176C378 176 392 166 393 153C394 145 392 139 386 140C375 141 365 147 351 150C350 160 356 172 362 176Z" fill="#f0ada9" stroke="none"/>
+    <path d="M153 161C180 129 218 126 256 128C301 125 341 139 365 166C385 191 397 234 397 280C401 325 387 367 357 387C330 405 294 410 256 410C218 410 181 405 155 387C125 367 111 325 115 280C115 232 128 188 153 161Z" fill="#f9d7c9"/>
+    <ellipse cx="170" cy="291" rx="40" ry="38" fill="#efb2ad" stroke="none"/>
+    <ellipse cx="342" cy="291" rx="40" ry="38" fill="#efb2ad" stroke="none"/>
+    <ellipse cx="202" cy="242" rx="8" ry="10" transform="rotate(20 202 242)" fill="#925b38" stroke="none"/>
+    <ellipse cx="310" cy="242" rx="8" ry="10" transform="rotate(-20 310 242)" fill="#925b38" stroke="none"/>
+    <!-- Broad snout: rounded shoulders and Lulu's gently notched lower contour. -->
+    <path d="M192 297C192 264 219 253 253 253C286 253 314 268 318 297C322 319 310 331 291 329C275 329 270 323 256 323C242 323 236 329 220 329C201 331 188 319 192 297Z" fill="#eea1a6"/>
+    <ellipse cx="233" cy="291" rx="5" ry="7" transform="rotate(12 233 291)" fill="#925b38" stroke="none"/>
+    <ellipse cx="278" cy="291" rx="5" ry="7" transform="rotate(-12 278 291)" fill="#925b38" stroke="none"/>
+  </g>
+</svg>

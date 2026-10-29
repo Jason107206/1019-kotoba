@@ -144,11 +144,12 @@ function numberTileBank(q,mode){
 function numberSelection(){
  if(state.numberType==='whole')state.numberType='ones';
  if(!NUMBER_TYPES.some(t=>t[0]===state.numberType))state.numberType='all';
- const available=[...new Set(NUMBER_QUESTIONS.flatMap(q=>q.chapters))].sort();
- if(!available.map(String).includes(state.numberChapter))state.numberChapter='all';
- if(state.numberChapter!=='all'&&state.numberType!=='all'&&!NUMBER_QUESTIONS.some(q=>q.chapters.includes(Number(state.numberChapter))&&numberCategory(q)===state.numberType))state.numberType='all';
- const items=NUMBER_QUESTIONS.filter(q=>(state.numberType==='all'||numberCategory(q)===state.numberType)&&(state.numberChapter==='all'||q.chapters.includes(Number(state.numberChapter)))).sort((a,b)=>NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(a))-NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(b))||(a.type==='whole'&&b.type==='whole'?a.value-b.value:0));
- return {items,available,key:`${state.numberChapter}:${state.numberType}`,label:'Numbers'};
+ const available=[...new Set(NUMBER_QUESTIONS.flatMap(q=>q.chapters))].sort((a,b)=>a-b);
+ state.numberChapter=normalizeChapters(state.numberChapter,available);
+ const scoped=NUMBER_QUESTIONS.filter(q=>matchesChapters(q,state.numberChapter));
+ if(state.numberType!=='all'&&!scoped.some(q=>numberCategory(q)===state.numberType))state.numberType='all';
+ const items=scoped.filter(q=>state.numberType==='all'||numberCategory(q)===state.numberType).sort((a,b)=>NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(a))-NUMBER_TYPES.findIndex(t=>t[0]===numberCategory(b))||(a.type==='whole'&&b.type==='whole'?a.value-b.value:0));
+ return {items,available,key:`${state.numberChapter.join(',')}:${state.numberType}`,label:'Numbers'};
 }
 
 const NUMBER_NOTES={
@@ -199,7 +200,7 @@ function numberTableExpression(q){
  return esc(relativeLabel(v));
 }
 function numberContentTable(items,shown){
- const notes=items.some(q=>numberContentDetail(q).note),columns=notes?3:2;
+ const notes=shown.some(q=>numberContentDetail(q).note),columns=notes?3:2;
  const groups=NUMBER_TYPES.map(([id])=>{
   const entries=shown.filter(q=>numberCategory(q)===id);if(!entries.length)return '';
   return `<tbody data-number-group="${id}">${state.numberBrowse==='category'?'':`<tr class="number-group-row"><th scope="rowgroup" colspan="${columns}">${esc(numberTypeLabel(id))}</th></tr>`}${entries.map(q=>{
@@ -209,7 +210,11 @@ function numberContentTable(items,shown){
  }).join('');
  return `<table class="number-table${notes?' has-notes':''}"><caption class="sr-only">${esc(translateText('Number expressions and readings'))}</caption><thead><tr><th scope="col">Number / Expression</th><th scope="col">Hiragana</th>${notes?'<th scope="col">Usage / Reading Note</th>':''}</tr></thead>${groups}</table>`;
 }
-function numberMenu(){const set=numberSelection(),pageSize=12,last=Math.max(0,Math.ceil(set.items.length/pageSize)-1);state.numberPage=Math.max(0,Math.min(last,state.numberPage||0));const shown=set.items.slice(state.numberPage*pageSize,(state.numberPage+1)*pageSize);return `<section class="study-wrap"><div class="lulu-intro">${luluSectionArt('number-menu')}<h1>${nL('Numbers','數字')}</h1></div><p>${nL('Learn number expressions and their readings.','學習數字表達與讀音。')}</p><div class="learning-filters"><label class="field-label">${nL('Chapter','課次')}<select class="input" data-number-filter="chapter"><option value="all">${nL('All chapters','全部課次')}</option>${set.available.map(ch=>`<option value="${ch}" ${String(ch)===state.numberChapter?'selected':''}>${esc(translateText(chapterLabel(ch)))}</option>`).join('')}</select></label><label class="field-label">${nL('Content group','內容組別')}<select class="input" data-number-filter="type"><option value="all">${nL('All groups','全部組別')}</option>${NUMBER_TYPES.filter(([id])=>NUMBER_QUESTIONS.some(q=>numberCategory(q)===id&&(state.numberChapter==='all'||q.chapters.includes(Number(state.numberChapter))))).map(([id])=>`<option value="${id}" ${id===state.numberType?'selected':''}>${esc(numberTypeLabel(id))}</option>`).join('')}</select></label></div><p class="selection-summary" role="status">${set.items.length} ${nL('playable questions','可練習題目')}</p><div class="card-actions"><button class="button primary" data-number-practice="matching" ${set.items.length?'':'disabled'}>${nL('Matching','配對')}</button><button class="button primary" data-number-practice="rebuild" ${set.items.length?'':'disabled'}>${nL('Rebuild','重組')}</button><button class="button primary" data-number-recall ${set.items.length?'':'disabled'}>${nL('Independent practice','獨立練習')}</button></div>${numberContentTable(set.items,shown)}<div class="card-actions number-pagination">${button('Previous page','numberPreviousPage','ghost',state.numberPage?'':'disabled')}<span>${state.numberPage+1}/${last+1}</span>${button('Next page','numberNextPage','ghost',state.numberPage<last?'':'disabled')}</div></section>`;}
+function numberMenu(){
+ const set=numberSelection(),pageSize=12,last=Math.max(0,Math.ceil(set.items.length/pageSize)-1);state.numberPage=Math.max(0,Math.min(last,state.numberPage||0));
+ const shown=set.items.slice(state.numberPage*pageSize,(state.numberPage+1)*pageSize),types=[['all',nL('All groups','全部組別')],...NUMBER_TYPES.filter(([id])=>NUMBER_QUESTIONS.some(q=>numberCategory(q)===id&&matchesChapters(q,state.numberChapter))).map(([id])=>[id,numberTypeLabel(id)])];
+ return `<section class="study-wrap">${learningTitle('Numbers','數字','Learn number expressions and their readings.','學習數字表達與讀音。')}<div class="learning-filters number-scope">${filterChips('numbers','numbers','chapter',nL('Chapters','課次'),chapterChipOptions(set.available),state.numberChapter,true)}${filterChips('numbers','numbers','type',nL('Number category','數字類別'),types,state.numberType)}</div><div class="selection-panel" role="group" aria-label="${nL('Selected practice','所選練習')}"><p class="selection-summary" role="status"><span>${esc(chaptersLabel(state.numberChapter))} · ${esc(types.find(([id])=>id===state.numberType)?.[1])}</span><strong>${set.items.length} ${nL('playable questions','可練習題目')}</strong></p><div class="card-actions practice-actions" role="group" aria-label="${nL('Practice method','練習方式')}"><button class="button primary" data-number-practice="matching" ${set.items.length?'':'disabled'}>${nL('Matching','配對')}</button><button class="button soft" data-number-practice="rebuild" ${set.items.length?'':'disabled'}>${nL('Rebuild','重組')}</button><button class="button soft" data-number-recall ${set.items.length?'':'disabled'}>${nL('Independent practice','獨立練習')}</button></div></div>${numberContentTable(set.items,shown)}<div class="card-actions number-pagination">${button('Previous page','numberPreviousPage','ghost',state.numberPage?'':'disabled')}<span>${state.numberPage+1}/${last+1}</span>${button('Next page','numberNextPage','ghost',state.numberPage<last?'':'disabled')}</div></section>`;
+}
 
 function startNumberPractice(mode='matching',ids=null,scope=null){
  if(!['matching','rebuild'].includes(mode))return;

@@ -10,7 +10,7 @@ A bilingual English/Traditional Chinese Japanese study app with local progress, 
 
 Numbers, Kanji Writing, Timed practice, Mixed practice and Word reference are also available directly. Timed practice retains the 15-minute Chapters 1–2 activity and its 20-point scoring. Mixed practice combines existing skills for 20 points. Word reference contains the complete lexical inventory, while All vocabulary practice excludes unresolved readings.
 
-Select **Chapter → content group/task → subgroup/topic → practice method**. Chapter and content filters intersect. The selection summary reports the actual playable scope before a round; reference pagination does not restrict that scope. Language switching and returning from practice retain selections.
+Select **Chapters → content group/task → subgroup/topic → practice method** using wrapping Material filter chips. Select one or more chapters; their content is combined without duplicates, then intersected with the other filters. All chapters is exclusive. The visible selection/action panel reports the actual scope and keeps practice accessible while choosing filters; it scrolls away for reading. Reference pagination does not restrict the practice pool. Language switching, returning from practice and reloading retain selections. Saved single-chapter choices migrate automatically.
 
 There are 338 lexical records, of which 328 are ready for practice, 41 canonical dialogue scenes with 47 forms, and 18 sentence patterns. See the generated [classification audit](reports/learning-navigation.json) for current per-group counts. Counts are validated from effective runtime data, including imports, repairs, aliases and exclusions.
 
@@ -42,6 +42,7 @@ node tests/number-matching.cjs
 node tests/dialogue-pairs.cjs
 node tests/exam-practice.cjs
 node tests/learning-navigation.cjs
+node tests/chapter-chips.cjs
 node tests/lulu.cjs
 node scripts/audit-learning-navigation.cjs
 node scripts/audit-lulu-visuals.cjs
@@ -51,6 +52,7 @@ With Playwright and Chromium available, run the current mobile/desktop bilingual
 
 ```sh
 CHROMIUM_PATH=/usr/bin/chromium node tests/navigation-browser.cjs
+CHROMIUM_PATH=/usr/bin/chromium node tests/chapter-chips-browser.cjs
 CHROMIUM_PATH=/usr/bin/chromium node tests/lulu-browser.cjs
 CHROMIUM_PATH=/usr/bin/chromium node tests/lulu-offline.cjs
 ```
@@ -58,6 +60,8 @@ CHROMIUM_PATH=/usr/bin/chromium node tests/lulu-offline.cjs
 The historical browser suites encode the previous flat-menu presentation. The current navigation suite replaces those presentation expectations; the core suites retain game-content and scoring invariants.
 
 The [Lulu visual review](docs/visual-review/README.md) includes the before/after audit, all eight feedback poses, atlas coordinates, reference usage and mobile/desktop screenshots. Regenerate the review captures with `node scripts/capture-lulu-review.cjs`. Optional image-bound inspection uses Pillow: `python scripts/audit-lulu-assets.py` after the visual audit.
+
+See the [design and chapter-selection review](docs/design-selection/README.md) for the revised Lulu icon, multi-chapter behavior, Material refinements and current screenshots. Rebuild icon sizes with `node scripts/build-lulu-icons.cjs` and capture the current review with `node scripts/capture-design-selection.cjs`.
 
 ## Offline and deployment
 
