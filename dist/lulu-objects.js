@@ -148,6 +148,35 @@ function luluWordVisual(word,compact=false){
  else content=luluContextScene(p,word);
  return `<figure class="vocabulary-visual lulu-word-visual" data-word-visual="${word.id}" data-visual-strategy="${p.strategy}" ${compact?`role="img" aria-label="${esc(word.en)}"`:'aria-hidden="true"'}><svg viewBox="0 0 400 ${p.strategy==='spatial'?226:220}" focusable="false">${content}</svg>${p.strategy==='context'&&['country','named-place','languages'].includes(p.context)?`<figcaption class="lulu-context-caption">${esc(p.meaning)}</figcaption>`:''}</figure>`;
 }
+function luluPreviewFocus(plan,word){
+ const c=plan.context,label=(text,y=150)=>text?luluDiagramText(text,80,y,15):'';
+ const icon=(key,x=8,y=8,size=144)=>luluObject(key,x,y,size);
+ if(plan.strategy==='object')return icon(plan.object);
+ if(plan.strategy!=='context')return '';
+ if(c==='meeting')return icon('meeting');
+ if(c==='film')return icon('video');
+ if(c==='souvenir')return icon('gift');
+ if(c==='country'||c==='named-place'||c==='origin')return icon(plan.object||'globe');
+ if(c==='platform')return icon('train');
+ if(c==='small')return icon('water');
+ if(c==='meal')return icon('rice',28,8,104)+label(plan.period==='morning'?'AM':plan.period==='night'?'PM':'12:00');
+ if(c==='counter'){const key=plan.unit==='age'?'cake':plan.unit==='price'?'badge':plan.unit==='floor'?'company':'number-board',text=plan.unit==='price'?'¥ '+plan.number:plan.unit==='floor'?plan.number+'F':String(plan.number??'');return icon(key,28,6,104)+label(text);}
+ if(c==='clock'){const text=word.id==='4-15'?'3:30':word.id==='4-14a'?'0:02':word.id==='4-14b'?'0:01':word.id==='4-12'?'NOW':word.id==='4-21'?'12:00':'2:00';return icon('clock',28,6,104)+label(text);}
+ if(c==='date'||c==='calendar'||c==='weekday'){const text=c==='weekday'?['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][plan.day]:c==='date'?String(plan.number):'';return icon('calendar',28,6,104)+label(text);}
+ if(c==='question'){const key=plan.object==='floor'?'company':plan.object==='price'?'badge':plan.object==='age'?'cake':plan.object==='person'?null:(plan.object||'book');if(!key)return '';const mark=plan.object==='floor'?'?F':plan.object==='price'?'¥ ?':'?';return icon(key,24,4,108)+luluDiagramText(mark,80,150,mark==='?'?30:18);}
+ if(c==='relative'){const boxes=[-1,0,1].map((n,i)=>`<rect x="${16+i*44}" y="36" width="36" height="56" rx="6" fill="${n===Math.sign(plan.offset||0)?'#cab9df':'#fff4df'}" stroke="#925b38" stroke-width="3"/>`).join('');return boxes+label(plan.offset<0?'BEFORE':plan.offset>0?'AFTER':'NOW',128);}
+ if(c==='frequency'){const bars=Array.from({length:7},(_,i)=>`<rect x="${14+i*19}" y="58" width="14" height="40" rx="3" fill="${plan.all||i===1||i===5?'#c8b5dc':'#fff4df'}" stroke="#925b38" stroke-width="2"/>`).join('');const mark=plan.period?icon(plan.period==='night'?'moon':'sun',112,6,36):'';return bars+mark+label(plan.all?'Every day':'Sometimes',128);}
+ if(['start','end','and','next'].includes(c))return `<g stroke="#925b38" stroke-width="3"><rect x="16" y="36" width="50" height="58" rx="8" fill="${c==='start'?'#c7b4dd':'#fff4df'}"/><rect x="94" y="36" width="50" height="58" rx="8" fill="${c==='end'?'#c7b4dd':'#fff4df'}"/><path d="M68 65h22m-8-6 8 6-8 6" fill="none"/></g>`+label(c==='and'?'+':c==='start'?'START':c==='end'?'END':'NEXT',128);
+ return '';
+}
+function luluPreviewVisual(word){
+ const plan=LULU_WORD_PLANS[word.id];if(!plan)return luluWordVisual(word,true);
+ const keepsCharacter=plan.strategy==='action'||plan.strategy==='action-context'||plan.strategy==='occupation'||plan.strategy==='conversation'||plan.strategy==='spatial'||plan.strategy==='context'&&['family','together','person','address','alone','languages','break','morning','night'].includes(plan.context);
+ if(keepsCharacter)return luluWordVisual(word,true);
+ const focused=luluPreviewFocus(plan,word);
+ if(!focused)return luluWordVisual(word,true);
+ return `<figure class="vocabulary-visual lulu-word-visual quiz2-object-visual" data-word-visual="${word.id}" data-visual-strategy="object-only" role="img" aria-label="${esc(word.en)}"><svg viewBox="0 0 160 160" focusable="false">${focused}</svg></figure>`;
+}
 LULU_OBJECTS['number-board']='<rect x="9" y="12" width="102" height="82" rx="7" fill="#d5e6df"/><path d="m28 112 12-18m52 18-12-18" stroke="#925b38" stroke-width="4"/><text x="60" y="66" text-anchor="middle" font-family="sans-serif" font-size="36" fill="#704832" stroke="none">123</text>';
 LULU_OBJECTS.homework=LULU_OBJECTS.test+'<path d="m77 103 22-40 10 6-22 40Z" fill="#e9c071" stroke="#925b38" stroke-width="3"/>';
 LULU_OBJECTS.report='<g stroke="#925b38" stroke-width="4"><path d="M32 9h71v92H32Z" fill="#d8c4de"/><path d="M18 19h71v92H18Z" fill="#fff7e6"/><path d="M30 36h47M30 48h36"/><path d="M32 94V76h9v18Zm18 0V61h9v33Zm18 0V70h9v24Z" fill="#adc9c5"/></g>';

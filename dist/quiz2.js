@@ -110,17 +110,35 @@ function quiz2GroupMeta(id){return QUIZ2_GROUPS.find(group=>group[0]===id)||QUIZ
 function quiz2GroupsLive(){return QUIZ2_GROUPS.filter(([id])=>quiz2Rows(id).length);}
 function quiz2ActiveGroup(){const live=quiz2GroupsLive();return live.some(([id])=>id===state.quiz2Group)?state.quiz2Group:live[0]?.[0]||'facilities';}
 function quiz2NextGroup(after){const ids=QUIZ2_GROUPS.map(group=>group[0]),start=ids.indexOf(after);for(let i=start+1;i<ids.length;i++)if(quiz2Rows(ids[i]).length)return ids[i];return null;}
-function quiz2Entry(w){
- const reading=w.kana||'',spelling=hasKanji(w)?w.c:reading,ruby=hasKanji(w)&&reading?`<span class="quiz2-reading jp" lang="ja">${esc(reading)}</span>`:'';
- return `<div class="quiz2-entry"><div class="quiz2-spell"><span class="jp" lang="ja">${esc(spelling)}</span>${ruby}</div><div class="quiz2-zh">${esc(w.zh||'')}</div><div class="quiz2-en">${esc(w.en||'')}</div></div>`;
+function quiz2FormCopy(w){
+ const heading=hasKanji(w)?w.c:(w.jp||w.kana||''),reading=w.kana&&heading!==w.kana?`<p class="jp lexical-reading" lang="ja">${esc(w.kana)}</p>`:'';
+ const note=learningWordNote(w),ready=wordGameReady(w),tags=WORD_CLASSIFICATION.get(w.id);
+ return `<div class="quiz2-form"><h2 class="jp" lang="ja">${esc(heading)}</h2>${reading}<p class="lexical-meaning">${esc(w.zh||'')}</p><p class="quiz2-en">${esc(w.en||'')}</p><p class="small muted">${esc(sourceTag(w))}${tags?.tags?.includes('counter')?' · '+nL('Counter','量詞'):''}</p>${ready?`<span class="status-badge">${esc(translateText(status(w.id)))}</span>`:''}${note?`<p class="small quiz2-note">${esc(note)}</p>`:''}</div>`;
+}
+function quiz2WideScene(word){
+ const plan=LULU_WORD_PLANS[word.id];if(!plan)return false;
+ if(plan.strategy==='spatial'||plan.strategy==='action-context'||plan.strategy==='conversation'||plan.strategy==='occupation')return true;
+ return plan.strategy==='context'&&['family','together','person','address','alone','languages','break','morning','night'].includes(plan.context);
+}
+function quiz2Card(row){
+ const ids=row.map(w=>w.id).join(' ');
+ return `<article class="paper lexical-card quiz2-card${quiz2WideScene(row[0])?' quiz2-card-scene':''}" data-lexical-id="${ids}"><div class="lexical-card-visual">${luluPreviewVisual(row[0])}</div><div class="lexical-card-copy">${row.map(quiz2FormCopy).join('')}</div></article>`;
 }
 function quiz2Preview(group,tag='h2'){
  const [,en,zh]=quiz2GroupMeta(group),rows=quiz2Rows(group);if(!rows.length)return '';
- const name=nL(en,zh),body=rows.map(row=>row.length>1?`<div class="quiz2-pair">${row.map(quiz2Entry).join('')}</div>`:quiz2Entry(row[0])).join('');
- return `<${tag} class="quiz2-preview-title">${esc(name)} <span class="quiz2-count">${rows.flat().length}</span></${tag}><div class="quiz2-preview">${body}</div>`;
+ const name=nL(en,zh);
+ return `<${tag} class="quiz2-preview-title">${esc(name)} <span class="quiz2-count">${rows.flat().length}</span></${tag}><div class="quiz2-preview">${rows.map(quiz2Card).join('')}</div>`;
 }
 function quiz2GroupChips(selected,doneId){
  return `<div class="filter-chip-group quiz2-groups"><div class="filter-chip-options" role="group" aria-label="${esc(nL('Word groups','詞彙組別'))}">${quiz2GroupsLive().map(([id,en,zh])=>{const done=id===doneId,label=nL(en,zh);return `<button type="button" class="filter-chip${done?' quiz2-done':''}" data-quiz2="group" data-quiz2-group="${id}" aria-pressed="${selected===id}">${esc(label)}${done?`<span class="quiz2-done-mark">${esc(nL('Done','完成'))}</span>`:''}</button>`;}).join('')}</div></div>`;
+}
+function quiz2ParticleLine(item){
+ return item.parts.map((part,i)=>{const answer=item.answers[i],mark=answer&&answer!=='×'?`<span class="quiz2-particle jp" lang="ja">${esc(answer)}</span>`:'';return `<span class="jp" lang="ja">${esc(part)}</span>${mark}`;}).join('');
+}
+function quiz2ParticlePreview(){
+ const items=particlePool();if(!items.length)return '';
+ const cards=items.map(item=>`<article class="paper quiz2-particle-card"><p class="quiz2-particle-situation">${esc(nL(...item.context))}</p><p class="quiz2-particle-line" lang="ja">${quiz2ParticleLine(item)}</p><p class="quiz2-particle-keys">${item.answers.map(answer=>`<span class="jp" lang="ja">${esc(answer)}</span>`).join('')}</p></article>`).join('');
+ return `<h2 class="quiz2-preview-title">${esc(nL('Sentences','句子'))} <span class="quiz2-count">${items.length}</span></h2><p class="quiz2-particle-note">${esc(nL('Highlighted particles are the answers. × means no particle.','標示的助詞是答案。× 表示不加助詞。'))}</p><div class="quiz2-preview quiz2-particle-preview">${cards}</div>`;
 }
 function quiz2Menu(){
  const method=['rebuild','questions','particles'].includes(state.quiz2Method)?state.quiz2Method:'rebuild';
@@ -128,17 +146,23 @@ function quiz2Menu(){
  const chips=methods.map(([id,en,zh])=>`<button type="button" class="filter-chip" data-quiz2="method" data-quiz2-method="${id}" aria-pressed="${method===id}">${nL(en,zh)}</button>`).join('');
  const group=quiz2ActiveGroup();
  const count=method==='questions'?quiz2QuestionScenes().length:method==='particles'?particlePool().length:quiz2Rows(group).length;
- const below=method==='rebuild'?quiz2GroupChips(group,null)+quiz2Preview(group):method==='particles'?`<div class="quiz2-chapters">${filterChips('quiz2','quiz2','chapter',nL('Chapters','課次'),[['all',nL('All','全部')],['3',nL('Chapter 3','第3課')],['4',nL('Chapter 4','第4課')]],state.quiz2Chapter,true)}</div>`:'';
+ const below=method==='rebuild'?quiz2GroupChips(group,null)+quiz2Preview(group):method==='questions'?quiz2Preview('questions'):method==='particles'?`<div class="quiz2-chapters">${filterChips('quiz2','quiz2','chapter',nL('Chapters','課次'),[['all',nL('All','全部')],['3',nL('Chapter 3','第3課')],['4',nL('Chapter 4','第4課')]],state.quiz2Chapter,true)}</div>${quiz2ParticlePreview()}`:'';
  return `<section class="study-wrap quiz2-home"><h1 class="sr-only">${esc(nL('Quiz 2 Revision','小測二複習'))}</h1><div class="filter-chip-group"><div class="filter-chip-options" role="group" aria-label="${esc(nL('Practice method','練習方式'))}">${chips}</div></div><div class="card-actions quiz2-start"><button type="button" class="button primary" data-quiz2="start" ${count?'':'disabled'}>${nL('Start','開始')}</button></div>${below}</section>`;
 }
+function quiz2Item(row){const ids=row.map(word=>word.id);return {key:ids.join('+'),ids,solved:[],missed:false};}
+function quiz2CurrentItem(round){return round?.items?.[round.index]||null;}
+function quiz2FormId(round){const item=quiz2CurrentItem(round);return item?.ids.find(id=>!item.solved.includes(id))||null;}
+function quiz2Progress(round){return `${round.done||0} / ${round.total}`;}
 function prepareQuiz2Rebuild(){
- const r=state.round;if(!r||r.index>=r.ids.length)return;const w=wordBy(r.ids[r.index]);
- r.checked=false;r.result=false;r.attempted=false;r.hadMiss=false;r.luluFeedback=null;r.chosen=[];r.tries=0;r.tileBank=vocabularyTileBank(w);
+ const round=state.round,id=quiz2FormId(round);if(!id)return;
+ const word=wordBy(id);
+ round.formId=id;round.hold=false;round.checked=false;round.result=false;round.attempted=false;round.luluFeedback=null;round.chosen=[];round.tries=0;round.tileBank=vocabularyTileBank(word);
 }
 function startQuiz2Rebuild(group){
  const id=quiz2GroupsLive().some(([item])=>item===group)?group:quiz2ActiveGroup(),rows=quiz2Rows(id);if(!rows.length)return;
+ const items=shuffle(rows).map(quiz2Item);
  state.quiz2Method='rebuild';state.quiz2Group=id;state.learningReturn='quiz2';
- state.round={mode:'quiz2-rebuild',group:id,ids:shuffle(rows).flat().map(w=>w.id),index:0,correct:0,missed:[],checked:false,result:false,chosen:[],tileBank:[],tries:0};
+ state.round={mode:'quiz2-rebuild',group:id,items,total:items.length,done:0,index:0,correct:0,missed:[],hold:false,skipNote:false,checked:false,result:false,chosen:[],tileBank:[],tries:0};
  prepareQuiz2Rebuild();state.view='quiz2-rebuild';save();render();window.scrollTo({top:0,behavior:'auto'});
 }
 function startQuiz2(method){
@@ -155,32 +179,51 @@ function quiz2Slots(r,limit){return Array.from({length:limit},(_,position)=>{
  return `<button type="button" class="tile jp vocabulary-slot filled" lang="ja" data-quiz2="return" data-quiz2-index="${position}" ${r.result?'disabled':''} aria-label="${esc(nL('Return to the tile bank','放回假名'))} ${esc(unit)}">${esc(unit)}</button>`;
 }).join('');}
 function quiz2RebuildGame(){
- const r=state.round;if(!r||r.mode!=='quiz2-rebuild')return quiz2Menu();if(r.index>=r.ids.length)return quiz2Complete(r);
- const w=wordBy(r.ids[r.index]),target=vocabularyReading(w),kanji=hasKanji(w),limit=kanaUnits(target).length,ready=rebuildReady(vocabularyAnswer(),target);
- const [,en,zh]=quiz2GroupMeta(r.group),title=kanji?w.c:w.zh,gloss=kanji?`${w.zh} · ${w.en}`:w.en;
- const feedback=r.attempted?`<div class="reply-feedback ${r.result?'correct':'wrong'}" role="status">${luluFeedbackArt(r)}<div class="feedback-copy"><p class="lulu-outcome-label">${esc(r.result?nL('Correct','正確'):nL('Not quite — edit the tiles and check again.','還不對——修改假名後再核對。'))}</p>${r.result?`<p class="jp" lang="ja">${esc(target)}</p>`:''}</div></div>`:'';
+ const r=state.round;if(!r||r.mode!=='quiz2-rebuild'||!r.items)return quiz2Menu();if(!r.items.length)return quiz2Complete(r);
+ const [,en,zh]=quiz2GroupMeta(r.group),progress=`${esc(nL(en,zh))} · ${quiz2Progress(r)}`;
+ if(r.hold)return `<section class="study-wrap quiz2-rebuild quiz2-hold"><h1 class="sr-only">${esc(nL('Rebuild','重組'))}</h1><p class="eyebrow">${progress}</p><div class="reply-feedback skipped" role="status"><p class="lulu-outcome-label">${esc(nL("Skipped — we'll ask again later.",'已略過——稍後再問。'))}</p></div><div class="card-actions"><button type="button" class="button primary" data-quiz2="resume">${nL('Try again','再試一次')}</button></div></section>`;
+ const w=wordBy(r.formId),target=vocabularyReading(w),kanji=hasKanji(w),limit=kanaUnits(target).length,ready=rebuildReady(vocabularyAnswer(),target);
+ const title=kanji?w.c:w.zh,gloss=kanji?`${w.zh} · ${w.en}`:w.en;
+ const feedback=r.attempted?`<div class="reply-feedback ${r.result?'correct':'wrong'}" role="status">${luluFeedbackArt(r)}<div class="feedback-copy"><p class="lulu-outcome-label">${esc(r.result?nL('Correct','正確'):nL('Not quite — edit the tiles and check again.','還不對——修改假名後再核對。'))}</p>${r.result?`<p class="jp" lang="ja">${esc(target)}</p>`:''}</div></div>`:r.skipNote?`<div class="reply-feedback skipped" role="status"><p class="lulu-outcome-label">${esc(nL("Skipped — we'll ask again later.",'已略過——稍後再問。'))}</p></div>`:'';
  const bank=r.result?'':`<div class="token-bank vocabulary-tile-bank" role="group" aria-label="${esc(nL('Hiragana bank','平假名'))}">${r.tileBank.map((unit,index)=>`<button type="button" class="tile jp ${r.chosen.includes(index)?'selected':''}" lang="ja" data-quiz2="tile" data-quiz2-index="${index}" ${r.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`;
- const actions=r.result?`<button type="button" class="button primary" data-quiz2="next">${nL('Next Word','下一個詞')}</button>`:`<button type="button" class="button ghost" data-quiz2="clear">${nL('Clear','清除')}</button><button type="button" class="button ghost" data-quiz2="undo" ${r.chosen.length?'':'disabled'}>${nL('Undo','復原')}</button><button type="button" class="button primary" data-quiz2="check" ${ready?'':'disabled'}>${nL('Check answer','核對答案')}</button>`;
- return `<section class="study-wrap quiz2-rebuild"><h1 class="sr-only">${esc(nL('Rebuild','重組'))}</h1><p class="eyebrow">${esc(nL(en,zh))} · ${r.index+1} / ${r.ids.length}</p><h2 class="quiz2-prompt ${kanji?'jp':''}" ${kanji?'lang="ja"':''}>${esc(title)}</h2><p class="quiz2-gloss">${esc(gloss)}</p><div class="token-area vocabulary-answer-slots ${r.chosen.length?'filled':''}" role="group" aria-label="${esc(nL('Your hiragana answer','你的平假名答案'))}">${quiz2Slots(r,limit)}</div>${feedback}${bank}<div class="card-actions">${actions}</div></section>`;
+ const actions=r.result?`<button type="button" class="button primary" data-quiz2="next">${nL('Next Word','下一個詞')}</button>`:`<button type="button" class="button ghost" data-quiz2="clear">${nL('Clear','清除')}</button><button type="button" class="button ghost" data-quiz2="skip">${nL('Skip','略過')}</button><button type="button" class="button primary" data-quiz2="check" ${ready?'':'disabled'}>${nL('Check answer','核對答案')}</button>`;
+ return `<section class="study-wrap quiz2-rebuild"><h1 class="sr-only">${esc(nL('Rebuild','重組'))}</h1><p class="eyebrow">${progress}</p><h2 class="quiz2-prompt ${kanji?'jp':''}" ${kanji?'lang="ja"':''}>${esc(title)}</h2><p class="quiz2-gloss">${esc(gloss)}</p><div class="token-area vocabulary-answer-slots ${r.chosen.length?'filled':''}" role="group" aria-label="${esc(nL('Your hiragana answer','你的平假名答案'))}">${quiz2Slots(r,limit)}</div>${feedback}${bank}<div class="card-actions">${actions}</div></section>`;
 }
 function quiz2Complete(r){
  const [,en,zh]=quiz2GroupMeta(r.group),name=nL(en,zh),next=quiz2NextGroup(r.group),selected=quiz2ActiveGroup();
- return `<section class="study-wrap quiz2-done"><h1 class="sr-only">${esc(nL('Group complete','組別完成'))}</h1>${luluSummaryArt(r)}<h2 class="quiz2-done-label">${esc(name)} ${esc(nL('complete','完成'))}</h2><p class="result-score">${r.correct}<small> / ${r.ids.length}</small></p>${r.missed.length?`<p class="muted">${r.missed.length} ${esc(nL('needed another try','需要再試一次'))}</p>`:''}<p class="muted">${esc(nL('Choose a group, then start it here.','在這裡選擇組別並開始。'))}</p>${quiz2GroupChips(selected,r.group)}<div class="card-actions quiz2-start">${next?`<button type="button" class="button soft" data-quiz2="next-group">${nL('Select next group','選擇下一組')}</button>`:''}<button type="button" class="button primary" data-quiz2="start">${nL('Start','開始')}</button></div>${quiz2Preview(selected,'h3')}</section>`;
+ return `<section class="study-wrap quiz2-done"><h1 class="sr-only">${esc(nL('Group complete','組別完成'))}</h1>${luluSummaryArt(r)}<h2 class="quiz2-done-label">${esc(name)} ${esc(nL('complete','完成'))}</h2><p class="result-score">${r.correct}<small> / ${r.total}</small></p>${r.missed.length?`<p class="muted">${r.missed.length} ${esc(nL('needed another try','需要再試一次'))}</p>`:''}<p class="muted">${esc(nL('Choose a group, then start it here.','在這裡選擇組別並開始。'))}</p>${quiz2GroupChips(selected,r.group)}<div class="card-actions quiz2-start">${next?`<button type="button" class="button soft" data-quiz2="next-group">${nL('Select next group','選擇下一組')}</button>`:''}<button type="button" class="button primary" data-quiz2="start">${nL('Start','開始')}</button></div>${quiz2Preview(selected,'h3')}</section>`;
 }
-function quiz2ForgetFeedback(r){if(!r?.result){r.attempted=false;r.luluFeedback=null;}}
+function quiz2ForgetFeedback(r){if(!r?.result){r.attempted=false;r.luluFeedback=null;r.skipNote=false;}}
 function quiz2RebuildCheck(){
- const r=state.round;if(!r||r.mode!=='quiz2-rebuild'||r.result||r.index>=r.ids.length)return;
- const w=wordBy(r.ids[r.index]),target=vocabularyReading(w);if(!rebuildReady(vocabularyAnswer(),target))return;
- const ok=rebuildCorrect(vocabularyAnswer(),target);r.tries=(r.tries||0)+1;r.attempted=true;r.result=ok;
- if(ok){r.checked=true;if(!r.hadMiss)r.correct++;record('vocabularyRebuild',w.id,true);luluCommitFeedback(r,{key:r.index+':'+r.tries,correct:1});if(r.index===r.ids.length-1)luluPrepareSummary(r,r.correct,r.ids.length);}
- else{r.hadMiss=true;r.checked=false;if(!r.missed.includes(w.id))r.missed.push(w.id);record('vocabularyRebuild',w.id,false);luluCommitFeedback(r,{key:r.index+':'+r.tries,correct:0});}
+ const r=state.round;if(!r||r.mode!=='quiz2-rebuild'||r.result||r.hold||!quiz2CurrentItem(r))return;
+ const w=wordBy(r.formId),target=vocabularyReading(w);if(!rebuildReady(vocabularyAnswer(),target))return;
+ const ok=rebuildCorrect(vocabularyAnswer(),target),item=quiz2CurrentItem(r);
+ r.tries=(r.tries||0)+1;r.attempted=true;r.result=ok;r.skipNote=false;
+ if(ok){r.checked=true;record('vocabularyRebuild',w.id,true);luluCommitFeedback(r,{key:item.key+':'+w.id+':'+r.tries,correct:1});}
+ else{item.missed=true;r.checked=false;if(!r.missed.includes(item.key))r.missed.push(item.key);record('vocabularyRebuild',w.id,false);luluCommitFeedback(r,{key:item.key+':'+w.id+':'+r.tries,correct:0});}
  render();
 }
+function quiz2RebuildAdvance(){
+ const r=state.round,item=quiz2CurrentItem(r);if(!r?.result||!item)return;
+ if(!item.solved.includes(r.formId))item.solved.push(r.formId);
+ if(item.ids.some(id=>!item.solved.includes(id))){r.skipNote=false;prepareQuiz2Rebuild();render();window.scrollTo({top:0,behavior:'auto'});return;}
+ r.done=(r.done||0)+1;if(!item.missed)r.correct++;
+ r.items.splice(r.index,1);if(r.index>=r.items.length)r.index=0;r.skipNote=false;
+ if(!r.items.length){luluPrepareSummary(r,r.correct,r.total);render();window.scrollTo({top:0,behavior:'auto'});return;}
+ prepareQuiz2Rebuild();render();window.scrollTo({top:0,behavior:'auto'});
+}
+function quiz2RebuildSkip(){
+ const r=state.round;if(!r||r.mode!=='quiz2-rebuild'||r.result||r.hold||!quiz2CurrentItem(r))return;
+ if(r.items.length<=1){r.hold=true;r.skipNote=true;r.chosen=[];r.attempted=false;r.result=false;r.checked=false;r.luluFeedback=null;render();window.scrollTo({top:0,behavior:'auto'});return;}
+ const item=r.items[r.index];
+ r.items.splice(r.index,1);if(!r.items.some(other=>other.key===item.key))r.items.push(item);
+ if(r.index>=r.items.length)r.index=0;
+ r.skipNote=true;prepareQuiz2Rebuild();render();window.scrollTo({top:0,behavior:'auto'});
+}
 function quiz2RebuildEdit(kind,index){
- const r=state.round;if(!r||r.mode!=='quiz2-rebuild'||r.result||r.index>=r.ids.length)return;
- const limit=kanaUnits(vocabularyReading(wordBy(r.ids[r.index]))).length;
+ const r=state.round;if(!r||r.mode!=='quiz2-rebuild'||r.result||r.hold||!quiz2FormId(r))return;
+ const limit=kanaUnits(vocabularyReading(wordBy(r.formId))).length;
  if(kind==='clear')r.chosen=[];
- else if(kind==='undo')r.chosen.pop();
  else if(kind==='tile'&&Number.isInteger(index)&&index>=0&&index<r.tileBank.length&&!r.chosen.includes(index)&&r.chosen.length<limit)r.chosen.push(index);
  else if(kind==='return'&&Number.isInteger(index)&&index>=0&&index<r.chosen.length)r.chosen.splice(index,1);
  else return;
@@ -215,11 +258,13 @@ document.addEventListener('click',event=>{
  if(kind==='next-group'&&r?.mode==='quiz2-rebuild'){const next=quiz2NextGroup(r.group);if(next){state.quiz2Group=next;save();render();}return;}
  if(kind==='start'){startQuiz2(state.quiz2Method||'rebuild');return;}
  if(kind==='retry'&&r?.mode==='particle'){startParticle(r.missed);return;}
- if(['tile','return','clear','undo'].includes(kind)&&r?.mode==='quiz2-rebuild'){quiz2RebuildEdit(kind,Number(t.dataset.quiz2Index));return;}
+ if(['tile','return','clear'].includes(kind)&&r?.mode==='quiz2-rebuild'){quiz2RebuildEdit(kind,Number(t.dataset.quiz2Index));return;}
  if(kind==='blank'&&r&&!r.checked){r.active=Number(t.dataset.quiz2Index);render();return;}
  if(kind==='option'&&r&&!r.checked){r.blanks[r.active]=t.dataset.quiz2Particle;const next=r.blanks.findIndex(v=>!v);if(next>=0)r.active=next;render();return;}
+ if(kind==='skip'&&r?.mode==='quiz2-rebuild'){quiz2RebuildSkip();return;}
+ if(kind==='resume'&&r?.mode==='quiz2-rebuild'&&r.hold){r.skipNote=false;prepareQuiz2Rebuild();render();window.scrollTo({top:0,behavior:'auto'});return;}
  if(kind==='check'){if(r?.mode==='quiz2-rebuild')quiz2RebuildCheck();else quiz2Check();return;}
- if(kind==='next'&&r?.checked){if(r.mode==='quiz2-rebuild'){r.index++;prepareQuiz2Rebuild();render();window.scrollTo({top:0,behavior:'auto'});return;}r.index++;prepareParticle();render();}
+ if(kind==='next'&&r?.checked){if(r.mode==='quiz2-rebuild'){quiz2RebuildAdvance();return;}r.index++;prepareParticle();render();}
 },true);
 Object.assign(ZH_HANT,{
  'Quiz 2 Revision':'小測二複習',
@@ -236,5 +281,8 @@ Object.assign(ZH_HANT,{
  'Not quite — edit the tiles and check again.':'還不對——修改假名後再核對。',
  'Choose a group, then start it here.':'在這裡選擇組別並開始。',
  'Group complete':'組別完成',
- 'Done':'完成'
+ 'Done':'完成',
+ 'Skip':'略過',
+ "Skipped — we'll ask again later.":'已略過——稍後再問。',
+ 'Try again':'再試一次'
 });
