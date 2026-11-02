@@ -774,3 +774,32 @@ Object.assign(ZH_HANT, {
 for(const pattern of RANGE_PATTERNS){ZH_HANT[pattern.title]=pattern.zhTitle;ZH_HANT[pattern.tip]=pattern.zhTip;}
 
 Object.assign(ZH_HANT, {'Sentence Structure includes 54 practice sentences in 18 groups, including Chapter 4 time ranges with から and まで. The timed mock retains its Chapters 1–2 scope.':'句子結構包含 18 組、共 54 個練習句子，包括第 4 課以 から 及 まで 表達時間範圍的句型。計時模擬測驗維持第 1 至 2 課範圍。','What are your opening hours?':'請問你們從幾點開到幾點？'});
+
+Object.assign(ZH_HANT, {
+  'Quiz 2 Revision': '測驗二溫習',
+  'Revise Chapters 3 and 4 vocabulary, question words and particles.': '溫習第 3 及第 4 課的詞彙、疑問詞及助詞。',
+  'Rebuild, Question Words, Particles': '重組、疑問詞、助詞',
+  'Learn words, meanings, readings and written forms.': '學習詞彙、意思、讀音及書寫形式。',
+  'Grammar & Sentences': '文法與句子',
+  'Learn sentence patterns and complete or construct sentences.': '學習句型，並完成或重組句子。',
+  'Question Words': '疑問詞',
+  'Learn question words, readings, kanji and examples.': '學習疑問詞的讀音、漢字與例句。',
+  'Pictures & Dialogue': '圖片與對話',
+  'Interpret pictures and respond in everyday situations.': '理解圖片內容，並在日常情境中回應。',
+  'Explore number readings and practise recalling them.': '瀏覽數字讀音，並練習回想。',
+  'Timed practice': '計時練習',
+  'Practise vocabulary and sentence order with a time limit.': '在限時內練習詞彙及句子順序。',
+  'Mixed practice': '綜合練習',
+  'Combine grammar, question words, readings and kanji recall.': '結合文法、疑問詞、讀音及漢字回想。',
+  'Word reference': '詞語參考',
+  'Browse every lexical record using the same word groups.': '以相同詞彙組別瀏覽所有詞條。',
+  'playable words': '可練習詞條',
+  'patterns': '句型',
+  'question words': '疑問詞',
+  'entries': '詞條',
+  'Chapters 1–2 · 15 minutes · 20 points': '第 1–2 課 · 15 分鐘 · 20 分',
+  '20 points': '20 分',
+  'Resume timed practice': '繼續計時練習',
+  'Back to Quiz 2 Revision': '返回測驗二溫習',
+  'Quiz 2 Recall': '測驗二回想'
+});

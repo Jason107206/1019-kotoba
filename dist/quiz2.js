@@ -218,7 +218,7 @@ function quiz2Menu(){
  const methods=[['rebuild','Rebuild','重組'],['recall','Recall','回想'],['questions','Question Words','疑問詞'],['particles','Particle Matching','助詞配對']];
  const chips=methods.map(([id,en,zh])=>`<button type="button" class="filter-chip" data-quiz2="method" data-quiz2-method="${id}" aria-pressed="${method===id}" tabindex="${method===id?0:-1}">${nL(en,zh)}</button>`).join('');
  const count=quiz2PracticeCount(method);
- return `<section class="study-wrap quiz2-home"><h1 class="sr-only">${esc(nL('Quiz 2 Revision','小測二複習'))}</h1><div class="filter-chip-group"><div class="filter-chip-options" role="group" aria-label="${esc(nL('Practice method','練習方式'))}">${chips}</div></div><div class="card-actions quiz2-start"><button type="button" class="button primary" data-quiz2="start" ${count?'':'disabled'}>${nL('Start','開始')}</button></div>${quiz2CategoryField()}${quiz2ModePreview()}</section>`;
+ return `<section class="study-wrap quiz2-home"><h1 class="sr-only">${esc(nL('Quiz 2 Revision','測驗二溫習'))}</h1><div class="filter-chip-group"><div class="filter-chip-options" role="group" aria-label="${esc(nL('Practice method','練習方式'))}">${chips}</div></div><div class="card-actions quiz2-start"><button type="button" class="button primary" data-quiz2="start" ${count?'':'disabled'}>${nL('Start','開始')}</button></div>${quiz2CategoryField()}${quiz2ModePreview()}</section>`;
 }
 function quiz2Item(row){const ids=row.map(word=>word.id);return {key:ids.join('+'),ids,solved:[],missed:false};}
 function quiz2CurrentItem(round){return round?.items?.[round.index]||null;}
@@ -239,7 +239,7 @@ function startQuiz2Rebuild(){
 function startQuiz2Recall(){
  const ids=[...new Set(quiz2CombinedRows(quiz2Selected('recall')).flat().map(w=>w.id))];if(!ids.length)return;
  state.quiz2Method='recall';state.learningReturn='quiz2';
- startWordPractice('write',ids,nL('Quiz 2 Recall','小測二回想'));
+ startWordPractice('write',ids,nL('Quiz 2 Recall','測驗二回想'));
 }
 function startQuiz2(method){
  method=['rebuild','recall','questions','particles'].includes(method)?method:state.quiz2Method||'rebuild';
@@ -358,8 +358,8 @@ document.addEventListener('click',event=>{
  if(kind==='next'&&r?.checked){if(r.mode==='quiz2-rebuild'){quiz2RebuildAdvance();return;}r.index++;prepareParticle();render();}
 },true);
 Object.assign(ZH_HANT,{
- 'Quiz 2 Revision':'小測二複習',
- 'Revise Chapters 3 and 4 vocabulary, question words and particles.':'複習第3及第4課的詞彙、疑問詞與助詞。',
+ 'Quiz 2 Revision':'測驗二溫習',
+ 'Revise Chapters 3 and 4 vocabulary, question words and particles.':'溫習第 3 及第 4 課的詞彙、疑問詞及助詞。',
  'Rebuild, Question Words, Particles':'重組、疑問詞、助詞',
  'Question Words':'疑問詞',
  'Learn question words, readings, kanji and examples.':'學習疑問詞的讀音、漢字與例句。',
@@ -377,3 +377,5 @@ Object.assign(ZH_HANT,{
  "Skipped — we'll ask again later.":'已略過——稍後再問。',
  'Try again':'再試一次'
 });
+
+if(document.getElementById('app')?.childElementCount)render();
