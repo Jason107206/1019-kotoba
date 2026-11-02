@@ -30,9 +30,9 @@ for(const [category,min,max] of ranges){
  const values=Array.from(ev('numberSelection().items.map(q=>q.value)'));
  assert.ok(values.length);assert.ok(values.every(n=>n>=min&&n<=max));assert.deepEqual(values,values.slice().sort((a,b)=>a-b));
  assert.equal(ev('numberSelection().items.every(q=>q.type==="whole")'),true);
- assert.ok(app.innerHTML.includes('class="number-table'));assert.ok(!app.innerHTML.includes('number-content-grid'));assert.ok(!app.innerHTML.includes('<article'));
- if(category==='ones'||category==='tens')assert.ok(!app.innerHTML.includes('Usage / Reading Note'));
- else assert.ok(app.innerHTML.includes('Usage / Reading Note'));
+ assert.ok(app.innerHTML.includes('class="number-face"'));assert.ok(app.innerHTML.includes('number-reading'));assert.ok(!app.innerHTML.includes('class="number-table"'));assert.ok(!app.innerHTML.includes('number-content-grid'));
+ if(category==='ones'||category==='tens')assert.ok(!app.innerHTML.includes('number-note'));
+ else assert.ok(app.innerHTML.includes('number-note'));
 }
 assert.equal(ev('NUMBER_QUESTIONS.filter(q=>q.type==="whole"&&q.value===10000).length'),1);
 assert.equal(ev('NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===10000).kana'),'いちまん');
@@ -40,7 +40,7 @@ assert.equal(ev('numberCategory(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.val
 assert.equal(ev('NUMBER_QUESTIONS.filter(q=>q.type==="whole").every(q=>q.value<=10000)'),true);
 assert.equal(ev('NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===10000).chapters.includes(3)'),true);
 ev(`state.numberType='whole';numberSelection()`);assert.equal(ev('state.numberType'),'ones');
-ev(`state.numberBrowse='all';state.numberType='all';state.numberChapter='all';state.numberPage=0;render()`);assert.ok(app.innerHTML.includes('scope="rowgroup"'));assert.ok(app.innerHTML.includes('data-number-group="ones"'));
+ev(`state.numberBrowse='all';state.numberType='all';state.numberChapter='all';state.numberPage=0;render()`);assert.ok(app.innerHTML.includes('data-number-group="ones"'));assert.ok(app.innerHTML.includes('class="number-reading'));
 assert.equal(ev('numberContentDetail(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===300)).irregular'),true);
 assert.equal(ev('numberContentDetail(NUMBER_QUESTIONS.find(q=>q.type==="whole"&&q.value===125)).note'),'');
 const ids=Array.from(ev('NUMBER_QUESTIONS.map(q=>q.id)'));

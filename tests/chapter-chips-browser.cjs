@@ -22,8 +22,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    for(const button of await p.locator('[data-filter-chip]').all()){const box=await button.boundingBox();assert.ok(box.width>=44&&box.height>=44,'touch target');assert.ok(!/[✓✔]/u.test(await button.innerText()));assert.equal(await button.locator('svg').count(),0);}
    await chip(kind,scope,'chapter','all').click();for(const value of chosen)await chip(kind,scope,'chapter',value).click();
    // Launch from the selected scope, return, change language and reload without losing chapters.
-   const method=kind==='numbers'?'[data-number-practice="rebuild"]':scope==='grammar'?'#chip-learning-grammar-group-questions':scope==='pictures'?'[data-learning-start="picture-matching"]':scope==='handwriting'?'[data-learning-start="handwriting"]':'[data-learning-start="recall"]';
-   if(scope==='grammar'){await p.locator(method).click();await p.locator('[data-learning-start="grammar-matching"]').click();}else await p.locator(method).click();
+   const method=kind==='numbers'?'[data-number-practice="rebuild"]':scope==='grammar'?'[data-learning-start="question-matching"]':scope==='pictures'?'[data-learning-start="picture-matching"]':scope==='handwriting'?'[data-learning-start="handwriting"]':'[data-learning-start="recall"]';
+   if(scope==='grammar'){await p.evaluate(()=>navigate('questions'));await p.locator(method).click();}else await p.locator(method).click();
    const result=await p.evaluate(()=>state.view==='activity'?state.activity.ids:state.view==='number-game'?state.numberRound.ids:state.round.ids);assert.ok(result.length);assert.equal(new Set(result).size,result.length);
    await p.locator('.back-button').click();assert.deepEqual(await selected(),chosen);await p.locator('[data-action="toggleLanguage"]').click();assert.deepEqual(await selected(),chosen);await p.reload();await p.evaluate(view=>navigate(view),view);assert.deepEqual(await selected(),chosen);await p.evaluate(lang=>{state.language=lang;render();},language);await layout();
   }

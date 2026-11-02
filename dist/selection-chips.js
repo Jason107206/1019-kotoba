@@ -30,6 +30,8 @@ function applyFilterChip(button){
  button.focus({preventScroll:true});focusFilterChip(button);
  if(d.filterChip==='learning')learningChange(scope,field,field==='chapter'?toggleChapter(learningScope(scope).chapter,value,learningChapters(scope)):value);
  else if(d.filterChip==='numbers')numberScopeChange(field,field==='chapter'?toggleChapter(state.numberChapter,value,numberSelection().available):value);
+ else if(d.filterChip==='questions'){const available=questionChapters();const s=learningScope('questions');s.chapter=field==='chapter'?toggleChapter(s.chapter,value,available):value;s.page=0;save();render();}
+ else if(d.filterChip==='quiz2'){state.quiz2Chapter=toggleChapter(state.quiz2Chapter,value,['3','4']);save();render();}
  else {
   if(field!=='ch'&&(field==='pattern'?state.pattern:state.filter[field])===value)return;
   if(field==='pattern')state.pattern=value;else state.filter[field]=field==='ch'?toggleChapter(state.filter.ch,value):value;
