@@ -40,10 +40,18 @@ function applyFilterChip(button){
  const target=document.getElementById?.(button.id);if(target){focusFilterChip(target);target.focus({preventScroll:true});}
  window.scrollTo(x,y);
 }
-function focusFilterChip(button){const group=button.closest('.filter-chip-options');if(group)for(const item of group.querySelectorAll('[data-filter-chip]'))item.tabIndex=item===button?0:-1;}
+function chipScroller(button){return button.closest('.filter-chip-options,.particle-options');}
+function revealFilterChip(button){
+ const row=chipScroller(button);if(!row)return;
+ const pad=12,edge=row.getBoundingClientRect(),item=button.getBoundingClientRect();
+ if(item.left<edge.left+pad)row.scrollLeft+=item.left-(edge.left+pad);
+ else if(item.right>edge.right-pad)row.scrollLeft+=item.right-(edge.right-pad);
+}
+function focusFilterChip(button){const group=chipScroller(button);if(group)for(const item of group.querySelectorAll('.filter-chip'))item.tabIndex=item===button?0:-1;}
 document.addEventListener('click',e=>{const button=e.target.closest('[data-filter-chip]');if(button&&!button.disabled)applyFilterChip(button);});
+document.addEventListener('focusin',e=>{const button=e.target.closest?.('.filter-chip-options .filter-chip, .particle-options .filter-chip');if(button)revealFilterChip(button);});
 document.addEventListener('keydown',e=>{
- const button=e.target.closest?.('[data-filter-chip]');if(!button||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;
- const items=[...button.parentElement.querySelectorAll('[data-filter-chip]:not(:disabled)')],at=items.indexOf(button),next=e.key==='Home'?items[0]:e.key==='End'?items.at(-1):items[(at+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+items.length)%items.length];
- e.preventDefault();focusFilterChip(next);next.focus({preventScroll:true});next.scrollIntoView({block:'nearest',inline:'nearest',behavior:'auto'});
+ const button=e.target.closest?.('.filter-chip-options .filter-chip, .particle-options .filter-chip');if(!button||button.disabled||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;
+ const items=[...button.parentElement.querySelectorAll('.filter-chip:not(:disabled)')],at=items.indexOf(button),next=e.key==='Home'?items[0]:e.key==='End'?items.at(-1):items[(at+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+items.length)%items.length];
+ e.preventDefault();focusFilterChip(next);next.focus({preventScroll:true});revealFilterChip(next);
 });

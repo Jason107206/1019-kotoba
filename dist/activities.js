@@ -365,21 +365,21 @@ function dialoguePrompt(q){
   return situation+incoming;
 }
 function questionWordPractice(q){const home=state.activity?.scope?.learningHome;return !!q&&(home==='questions'||home==='quiz2'&&state.quiz2Method==='questions');}
-function questionWordStack(q,bank,feedback){const notice=feedback||luluFeedbackPlaceholder();return questionWordPractice(q)?`<div class="question-word-result">${notice}</div>${bank}`:bank+notice;}
+function questionWordStack(q,bank,feedback){if(!questionWordPractice(q))return bank+(feedback||luluFeedbackPlaceholder());return feedback?`<div class="question-word-result">${feedback}</div>${bank}`:bank;}
 function dialogueExercise(q,tileMode){
   if(q.forms)return pairedDialogueExercise(q,tileMode);
   const a=state.activity,zh=state.language==='zh-Hant',word=wordBy(q.word);
   const turns=q.turns;
   const template=q.answerSlot?`${q.answerSlot.before}{word}${q.answerSlot.after}`:q.sentence;
   const situation=zh?(CONVERSATIONS[q.id]?.[1]||q.sceneZh||translateText(q.scene||q.clue)):(CONVERSATIONS[q.id]?.[0]||q.scene||q.clue);
-  const hideAnswer=questionWordPractice(q)&&a.checked&&a.result;
-  const answer=tileMode?activityAnswer():a.checked&&!hideAnswer?(a.choices.find(item=>item.id===a.selected)?.kana||''):'';
-  const inline=hideAnswer?'':tileMode?a.chosen.map((id,index)=>`<button class="inline-answer-token jp" lang="ja" data-activity-return="${index}" aria-label="Return ${esc(a.tileBank[id])} to word bank" ${a.checked?'disabled':''}>${esc(a.tileBank[id])}</button>`).join(''):esc(answer);
+  const answer=tileMode?activityAnswer():a.checked?(a.choices.find(item=>item.id===a.selected)?.kana||''):'';
+  const inline=tileMode?a.chosen.map((id,index)=>`<button class="inline-answer-token jp" lang="ja" data-activity-return="${index}" aria-label="Return ${esc(a.tileBank[id])} to word bank" ${a.checked?'disabled':''}>${esc(a.tileBank[id])}</button>`).join(''):esc(answer);
   const blank=`<span class="inline-answer${answer?' filled':''}" aria-label="Your hiragana answer">${inline||'<span aria-hidden="true">＿＿＿</span>'}</span>`;
   const parts=template.split('{word}');
   const response=`<p class="jp inline-reply" lang="ja">${esc(parts[0])}${blank}${esc(parts.slice(1).join('{word}'))}</p>`;
   const feedback=a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status">${luluFeedbackArt(a)}<div class="feedback-copy"><p class="lulu-outcome-label">${luluFeedbackLabel(a)}</p><div><span aria-hidden="true">${a.result?'✓':'✕'}</span> <strong>${a.result?'Correct!':'The correct answer is:'}</strong></div>${a.result?'':`<p class="jp" lang="ja">${esc(q.kana)}</p>`}<p>${esc(q.lesson?(zh?q.replyZh:q.replyEn):(zh?word.zh:word.en))}</p></div><p class="activity-explanation">${esc(dialogueUsage(q))}</p></div>`:'';
-  const bank=tileMode?`<div class="activity-tile-bank" role="group" aria-label="Hiragana bank">${a.tileBank.map((unit,index)=>`<button class="tile jp ${a.chosen.includes(index)?'selected':''}" lang="ja" data-activity-tile="${index}" ${a.checked||a.chosen.includes(index)?'disabled':''}>${hideAnswer?'':esc(unit)}</button>`).join('')}</div>`:`<div class="options activity-options">${a.choices.map((item,index)=>{const hide=hideAnswer&&item.id===q.id;return `<button class="option jp ${a.checked&&item.id===q.id?'correct':a.checked&&item.id===a.selected?'wrong':''}" data-activity-choice="${item.id}" ${a.checked?'disabled':''}><span class="number">${index+1}</span><span>${hide?'':esc(item.kana)}</span>${a.checked&&item.id===q.id?'<span class="option-state"><span aria-hidden="true">✓</span> Correct</span>':a.checked&&item.id===a.selected?'<span class="option-state"><span aria-hidden="true">✕</span> Your choice</span>':''}</button>`;}).join('')}</div>`;
+  const hideSelector=questionWordPractice(q)&&a.checked&&a.result;
+  const bank=hideSelector?'':tileMode?`<div class="activity-tile-bank" role="group" aria-label="Hiragana bank">${a.tileBank.map((unit,index)=>`<button class="tile jp ${a.chosen.includes(index)?'selected':''}" lang="ja" data-activity-tile="${index}" ${a.checked||a.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`:`<div class="options activity-options">${a.choices.map((item,index)=>`<button class="option jp ${a.checked&&item.id===q.id?'correct':a.checked&&item.id===a.selected?'wrong':''}" data-activity-choice="${item.id}" ${a.checked?'disabled':''}><span class="number">${index+1}</span><span>${esc(item.kana)}</span>${a.checked&&item.id===q.id?'<span class="option-state"><span aria-hidden="true">✓</span> Correct</span>':a.checked&&item.id===a.selected?'<span class="option-state"><span aria-hidden="true">✕</span> Your choice</span>':''}</button>`).join('')}</div>`;
   const controls=a.checked?button('Next '+icon('arrow'),'activityNext','primary'):tileMode?button('Undo','activityUndo','ghost',a.chosen.length?'':'disabled')+button('Clear','activityClear','ghost',a.chosen.length?'':'disabled')+button('Check answer','activityCheck','primary',activityReady(q)?'':'disabled'):'';
   let learnerShown=false;
   const conversation=turns.map(([speaker,ja,en,cn],turnIndex)=>{
