@@ -10,6 +10,11 @@
   mountUpdate();new MutationObserver(mountUpdate).observe(document.getElementById('app'),{childList:true});
   labels();new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   window.addEventListener('beforeinstallprompt',event=>event.preventDefault());
+  const embedded=window.parent&&window.parent!==window;
+  if(embedded){
+    if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(list=>Promise.all(list.map(reg=>reg.unregister()))).catch(()=>{});
+    return;
+  }
   if(!('serviceWorker' in navigator)||!window.isSecureContext)return;
   const offerUpdate=worker=>{waitingWorker=worker;update.hidden=false;};
   update.addEventListener('click',()=>{
