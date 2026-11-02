@@ -141,11 +141,16 @@ const LULU_SOLO_ACTIONS=new Set(['listening','watching','photographing','smoking
 function luluActionFigure(word,pose,compact){
  return `<figure class="vocabulary-visual lulu-word-visual lulu-action-visual" data-word-visual="${word.id}" data-visual-strategy="action" ${compact?`role="img" aria-label="${esc(word.en)}"`:'aria-hidden="true"'}>${luluSprite(pose,'',true)}</figure>`;
 }
+function luluTimeFigure(word,pose,icon,compact){
+ return `<figure class="vocabulary-visual lulu-word-visual lulu-action-visual lulu-time-figure" data-word-visual="${word.id}" data-visual-strategy="action" ${compact?`role="img" aria-label="${esc(word.en)}"`:'aria-hidden="true"'}>${luluSprite(pose,'',true)}<svg class="lulu-time-badge" viewBox="0 0 120 120" focusable="false" aria-hidden="true">${luluObject(icon,0,0,120)}</svg></figure>`;
+}
 function luluWordVisual(word,compact=false){
  const p=LULU_WORD_PLANS[word.id];if(!p)throw Error('Missing word visual plan '+word.id);let content;
  if(p.strategy==='spatial')content=luluSpatialScene(p.location,p.object,p.modifier);
  else if(p.strategy==='action')return luluActionFigure(word,p.pose,compact);
  else if(p.strategy==='action-context'&&LULU_SOLO_ACTIONS.has(p.action))return luluActionFigure(word,p.action,compact);
+ else if(p.strategy==='context'&&p.context==='break')return luluActionFigure(word,'resting',compact);
+ else if(p.strategy==='context'&&(p.context==='morning'||p.context==='night'))return luluTimeFigure(word,p.context==='morning'?'waking':'sleeping',p.context==='morning'?'sun':'moon',compact);
  else if(p.strategy==='object')content=`<foreignObject x="5" y="40" width="120" height="125">${luluSprite('point')}</foreignObject>${luluObject(p.object,162,12,180)}`;
  else if(p.strategy==='occupation')content=`${occupationPiggy(word)}${luluObject(p.object,5,35,115)}`;
  else if(p.strategy==='action-context')content=luluActionScene(p.action);

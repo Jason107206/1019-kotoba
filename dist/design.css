@@ -37,10 +37,10 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .selection-panel .practice-actions .button{padding-inline:12px;min-width:0}
 .filter-chip{scroll-margin-bottom:180px}
 .related-practice{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;margin-top:8px}.related-practice .scope-link{min-height:44px;padding:8px 0}
-.learning-list{gap:16px;margin-top:16px;align-items:start}.learning-list>.paper{height:100%}.learning-list .paper{padding:20px;border-radius:var(--shape-card)}
+.learning-list{gap:16px;margin-top:16px;align-items:start}.learning-list>.paper{height:auto;align-self:start}.learning-list .paper{padding:20px;border-radius:var(--shape-card)}
 .learning-list .lexical-card{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;align-items:start;overflow-wrap:anywhere}
 .lexical-card-visual{width:112px;height:112px;aspect-ratio:1;flex:0 0 112px;min-width:0;align-self:center;display:flex;align-items:center;justify-content:center;overflow:hidden}.lexical-card-copy{min-width:0}.lexical-card-copy h2{font-size:24px;margin:0 0 2px;line-height:1.5}.lexical-card-copy>p{margin:4px 0;line-height:1.5}.lexical-card-copy .lexical-reading{font-size:17px;color:var(--md-on-surface-variant)}.lexical-meaning{font-weight:500}.lexical-card-copy .status-badge{margin-top:6px}.lexical-card-copy>.scope-link{font-size:13px;line-height:1.5;padding:8px 0;min-height:44px}
-.lexical-card-visual .vocabulary-visual{min-height:0!important;width:100%;height:100%;max-width:112px;margin:0!important;display:flex;align-items:center;justify-content:center}.lexical-card-visual .vocabulary-visual>svg{display:block;width:100%;height:100%;max-width:112px;max-height:112px;object-fit:contain}.lexical-card-visual .lulu-action-visual{width:100%;height:100%;display:flex;align-items:center;justify-content:center}.lexical-card-visual .lulu-action-visual>.lulu-art{width:100%;height:100%;max-width:100%;max-height:100%;display:flex;align-items:center;justify-content:center}.lexical-card-visual .lulu-art>svg{width:100%;height:100%;max-width:112px;max-height:112px;object-fit:contain}.lexical-card-visual .lulu-context-caption{display:none}
+.lexical-card-visual .vocabulary-visual{min-height:0!important;width:100%;height:100%;max-width:112px;margin:0!important;display:flex;align-items:center;justify-content:center}.lexical-card-visual .vocabulary-visual>svg{display:block;width:100%;height:100%;max-width:112px;max-height:112px;object-fit:contain}.lexical-card-visual .lulu-action-visual{width:100%;height:100%;display:flex;align-items:center;justify-content:center}.lexical-card-visual .lulu-action-visual>.lulu-art{width:100%;height:100%;max-width:100%;max-height:100%;display:flex;align-items:center;justify-content:center}.lexical-card-visual .lulu-art>svg{width:100%;height:100%;max-width:112px;max-height:112px;object-fit:contain}.lexical-card-visual .lulu-context-caption{display:none}.lulu-time-figure{position:relative}.lexical-card-visual .lulu-time-figure>.lulu-time-badge,.quiz2-card .lexical-card-visual .lulu-time-figure>.lulu-time-badge{position:absolute;top:0;right:0;width:34%;height:34%;max-width:none;max-height:none;margin:0;z-index:1;pointer-events:none}
 .learning-list .lexical-card-wide{grid-template-columns:112px minmax(0,1fr);gap:16px}.lexical-card-wide .lexical-card-visual{width:112px;max-width:112px;height:112px;margin:0}.lexical-card-wide .vocabulary-visual>svg{max-width:112px;max-height:112px;object-fit:contain}.availability-note{border-left:3px solid var(--md-secondary);padding:8px 12px;background:var(--md-surface-container-low);border-radius:4px;font-size:13px}
 .lulu-word-visual{min-height:0;max-width:360px;margin-bottom:12px!important}.lulu-action-visual{height:150px}.lulu-action-visual>.lulu-art{height:150px;max-width:240px}
 .lulu-feedback-placeholder{min-height:100px;padding:12px 16px;border-radius:16px}.lulu-feedback-placeholder>.lulu-art{width:68px;height:68px}.feedback-lulu{width:76px;height:76px}.lulu-feedback-heading{min-height:92px;gap:12px}.reply-feedback{min-height:112px}
@@ -58,9 +58,10 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .number-face .number-value,.number-face strong{font-size:28px;font-weight:560;line-height:1.15}
 .number-study>.number-reading{margin:10px 0 0;font-size:18px;line-height:1.4;text-align:center}
 .number-study>.number-variants,.number-study>.number-note{margin:4px 0 0;max-width:220px;color:var(--md-on-surface-variant);font-size:13px;line-height:1.4;text-align:center}
-.question-faces{display:flex;flex-wrap:wrap;gap:20px}.question-kana{margin:0;font-size:32px;line-height:1.2;font-weight:560}.question-kanji{margin:4px 0 0;font-size:18px;line-height:1.3;color:var(--md-on-surface-variant)}.question-card{display:grid;gap:12px}
+.question-faces{display:flex;flex-direction:column;flex-wrap:nowrap;gap:0}.question-form+.question-form{margin-top:12px;padding-top:12px;border-top:1px solid var(--md-outline-variant)}.question-kana{margin:0;font-size:32px;line-height:1.2;font-weight:560}.question-kanji{margin:4px 0 0;font-size:18px;line-height:1.3;color:var(--md-on-surface-variant)}.question-card{display:grid;gap:12px;align-self:start;height:auto}
 .particle-sentence{margin:16px 0;font-size:22px;line-height:2.5;text-align:center;overflow-wrap:anywhere}.particle-blank{display:inline-flex;align-items:center;justify-content:center;min-width:52px;min-height:44px;margin:0 4px;padding:2px 8px;border-radius:12px;border:1.5px dashed var(--md-outline);background:var(--md-surface-container-low);vertical-align:middle}.particle-blank.active{border-style:solid;border-color:var(--md-primary);box-shadow:0 0 0 3px var(--md-primary-container)}.particle-blank.correct{border-style:solid;border-color:var(--md-success);background:var(--md-success-container)}.particle-blank.wrong{border-style:solid;border-color:var(--md-error);background:var(--md-error-container)}.particle-options{margin:8px 0 16px}.particle-exercise .reply-feedback{margin:0 0 12px}
-.quiz2-home,.quiz2-rebuild,.quiz2-done,.quiz2-preview,.quiz2-card{min-width:0;max-width:100%}
+.quiz2-home,.quiz2-done,.quiz2-preview,.quiz2-card{min-width:0;max-width:100%}
+.quiz2-rebuild{min-width:0;max-width:1040px;margin-inline:auto}
 .quiz2-home .quiz2-start,.quiz2-done .quiz2-start{justify-content:flex-start;margin-top:12px}
 .quiz2-categories{margin-top:16px}
 .quiz2-categories legend{margin-bottom:8px}
@@ -68,7 +69,7 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .filter-chip.quiz2-category{gap:6px}
 .quiz2-check{width:18px;height:18px;flex:0 0 auto}
 .quiz2-chapters{margin-top:20px}
-.quiz2-preview{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:12px}
+.quiz2-preview{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:12px;align-items:start}
 .quiz2-preview-title{margin:16px 0 0;font-size:16px;font-weight:600;line-height:1.4}
 .quiz2-count{margin-left:8px;color:var(--md-on-surface-variant);font-size:13px;font-weight:500}
 .quiz2-card{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;align-items:start;padding:16px;border-radius:var(--shape-card);overflow:hidden}
@@ -80,7 +81,7 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-card .quiz2-en{margin:2px 0 0;color:var(--md-on-surface-variant);font-size:14px;line-height:1.45}
 .quiz2-card .small{margin:6px 0 0;line-height:1.45}
 .quiz2-card .status-badge{margin-top:8px}
-.quiz2-card .quiz2-form+.quiz2-form{margin-top:12px;padding-top:12px;border-top:1px solid var(--md-outline-variant)}
+.quiz2-card .quiz2-form+.quiz2-form{margin-top:12px;padding-top:12px;border-top:1px solid var(--md-outline-variant)}.quiz2-card-pair .lexical-card-visual{align-self:start}
 .quiz2-card .lexical-card-visual .vocabulary-visual{min-height:0!important;width:100%;height:100%;max-width:112px;margin:0!important;display:flex;align-items:center;justify-content:center}
 .quiz2-card .lexical-card-visual .vocabulary-visual>svg{display:block;width:100%;height:100%;max-width:112px;max-height:112px;object-fit:contain;margin-inline:auto}
 .quiz2-card .quiz2-object-visual{display:flex;align-items:center;justify-content:center}
@@ -93,6 +94,11 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-done-mark{margin-left:6px;font-size:12px;font-weight:700}
 .filter-chip.quiz2-done{border-color:var(--md-primary)}
 .quiz2-done-label{margin:4px 0 0}
+.question-word-exercise .activity-controls{justify-content:center}
+.question-word-exercise .activity-controls .button,.quiz2-recall .card-actions .button{flex:0 1 auto}
+.quiz2-recall{background:none;border:0;box-shadow:none;padding:0}
+.quiz2-recall .answer-grid:has(> :only-child){grid-template-columns:minmax(0,1fr)}
+.quiz2-recall-result .feedback{margin-top:16px}
 .quiz2-rebuild .quiz2-prompt{margin:8px 0 4px;font-size:32px;line-height:1.35;overflow-wrap:anywhere}
 .quiz2-rebuild .quiz2-gloss{margin:0;color:var(--md-on-surface-variant)}
 .quiz2-rebuild .token-area{margin-top:16px}
@@ -108,7 +114,7 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-card-scene,.quiz2-card.quiz2-card-banner{grid-template-columns:112px minmax(0,1fr)}
 .quiz2-card-scene .lexical-card-visual,.quiz2-card.quiz2-card-banner .lexical-card-visual{width:112px;max-width:112px;height:112px;margin:0}
 .quiz2-card-scene .lexical-card-visual .vocabulary-visual>svg,.quiz2-card.quiz2-card-banner .lexical-card-visual .vocabulary-visual>svg{width:100%;height:100%;max-width:112px;max-height:112px;object-fit:contain}
-@media(min-width:840px){.quiz2-preview{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:840px){.quiz2-preview{grid-template-columns:repeat(2,minmax(0,1fr))}.quiz2-card-pair,.question-card-pair{grid-column:span 2}.quiz2-card-pair .lexical-card-copy,.question-card-pair .question-faces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;align-items:start}.quiz2-card-pair .quiz2-form+.quiz2-form,.question-card-pair .question-form+.question-form{margin-top:0;padding-top:0;border-top:0;border-inline-start:1px solid var(--md-outline-variant);padding-inline-start:16px}}
 @media(min-width:1200px){.quiz2-preview{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:599px){.quiz2-card,.quiz2-card-scene,.quiz2-card.quiz2-card-banner{grid-template-columns:96px minmax(0,1fr);padding:14px;gap:12px}.quiz2-card h2{font-size:22px}.quiz2-card .lexical-card-visual,.quiz2-card-scene .lexical-card-visual,.quiz2-card.quiz2-card-banner .lexical-card-visual{width:96px;height:96px;flex-basis:96px;max-width:96px;margin:0}.quiz2-rebuild .quiz2-prompt{font-size:28px}}
 @media(max-width:380px){.quiz2-card,.quiz2-card-scene,.quiz2-card.quiz2-card-banner{grid-template-columns:80px minmax(0,1fr);gap:10px}.quiz2-card .lexical-card-visual,.quiz2-card-scene .lexical-card-visual{width:80px;height:80px;flex-basis:80px;max-width:80px;margin:0}}

@@ -103,7 +103,7 @@ function particleChoices(items){const used=new Set(items.flatMap(item=>item.answ
 function particlePlain(item,values){return item.parts.map((part,i)=>{const a=values[i];return part+(a&&a!=='×'?a:'');}).join('');}
 function quiz2PairRows(words){
  const byId=new Map(words.map(w=>[w.id,w])),seen=new Set(),rows=[];
- for(const w of words){if(seen.has(w.id))continue;seen.add(w.id);const mate=byId.get(QUIZ2_PAIR.get(w.id)||'');if(mate&&!seen.has(mate.id)){seen.add(mate.id);rows.push([w,mate]);}else rows.push([w]);}
+ for(const w of words){if(seen.has(w.id))continue;seen.add(w.id);const mate=byId.get(QUIZ2_PAIR.get(w.id)||'');if(mate&&!seen.has(mate.id)){seen.add(mate.id);rows.push([w,mate].sort((a,b)=>a.id.localeCompare(b.id,'en',{numeric:true})));}else rows.push([w]);}
  return rows;
 }
 function quiz2Rows(group){return quiz2PairRows(quiz2Words().filter(w=>quiz2Bucket(w)===group));}
@@ -163,7 +163,7 @@ function quiz2PracticeCount(method=quiz2Mode()){
 function quiz2CheckIcon(){return `<svg class="quiz2-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8.65-8.65 1.4 1.4z"/></svg>`;}
 function quiz2ToggleCategory(id){
  const method=quiz2Mode(),available=quiz2CategoryOptions(method).map(item=>item[0]);
- if(id==='all')state.quiz2Categories[method]=[...available];
+ if(id==='all'){const allOn=available.every(item=>quiz2Selected(method).includes(item));state.quiz2Categories[method]=allOn?[]:[...available];}
  else if(available.includes(id)){const selected=new Set(quiz2Selected(method));if(selected.has(id))selected.delete(id);else selected.add(id);state.quiz2Categories[method]=available.filter(item=>selected.has(item));}
  if(method==='rebuild'&&state.quiz2Categories.rebuild.length)state.quiz2Group=state.quiz2Categories.rebuild[0];
  if(method==='particles')state.quiz2Chapter=state.quiz2Categories.particles.length?[...state.quiz2Categories.particles]:['3','4'];
@@ -191,7 +191,7 @@ function quiz2WideScene(word){
 }
 function quiz2Card(row){
  const ids=row.map(w=>w.id).join(' '),banner=row.some(w=>['3-01','3-02','3-03'].includes(w.id));
- return `<article class="paper lexical-card quiz2-card${quiz2WideScene(row[0])?' quiz2-card-scene':''}${banner?' quiz2-card-banner':''}" data-lexical-id="${ids}"><div class="lexical-card-visual">${luluPreviewVisual(row[0])}</div><div class="lexical-card-copy">${row.map(quiz2FormCopy).join('')}</div></article>`;
+ return `<article class="paper lexical-card quiz2-card${row.length>1?' quiz2-card-pair':''}${quiz2WideScene(row[0])?' quiz2-card-scene':''}${banner?' quiz2-card-banner':''}" data-lexical-id="${ids}"><div class="lexical-card-visual">${luluPreviewVisual(row[0])}</div><div class="lexical-card-copy">${row.map(quiz2FormCopy).join('')}</div></article>`;
 }
 function quiz2Preview(group,tag='h2'){
  const [,en,zh]=quiz2GroupMeta(group),rows=quiz2Rows(group);if(!rows.length)return '';
