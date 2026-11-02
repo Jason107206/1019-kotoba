@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'..'),dist=path.join(root,'dist');
 function files(dir,prefix=''){
-  return fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?files(path.join(dir,entry.name),prefix+entry.name+'/'):prefix+entry.name).filter(file=>file!=='sw.js').sort();
+  return fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?files(path.join(dir,entry.name),prefix+entry.name+'/'):prefix+entry.name).filter(file=>file!=='sw.js'&&file!=='.nojekyll').sort();
 }
 function generate(){
   const assets=files(dist),template=fs.readFileSync(path.join(__dirname,'service-worker.js'),'utf8'),hash=crypto.createHash('sha256').update(template);
