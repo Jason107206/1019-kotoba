@@ -20,10 +20,12 @@ const LULU_ART={
 const LULU_FEEDBACK_POOLS={correct:['happy','clap','proud','hop'],wrong:['encouraging','puzzled','disappointed','review']};
 const luluPoolCursor={correct:0,wrong:0};
 function luluFallback(){return '<g class="lulu-fallback" fill="#f9d5c8" stroke="#925b38" stroke-width="5"><path d="M20 38Q5 3 35 20Q65 9 83 20Q112 2 96 40Q112 100 57 105Q3 101 20 38Z"/><ellipse cx="58" cy="65" rx="20" ry="14" fill="#efa6a5"/><circle cx="38" cy="46" r="3" fill="#925b38"/><circle cx="77" cy="46" r="3" fill="#925b38"/><path d="M51 63v3m14-3v3"/></g>';}
-function luluSprite(pose,cls=''){
+const LULU_INK={listening:[23,54,489,439],watching:[0,98,512,397],photographing:[18,68,488,424],smoking:[50,11,431,437],finishing:[0,0,552,482],resting:[0,0,432,481],wave:[42,28,370,390],point:[35,28,362,390],bow:[22,58,341,355],reading:[63,29,315,374],teacher:[20,0,412,407],doctor:[30,19,315,385],thinking:[57,2,351,385],gift:[4,1,390,383],speaking:[0,0,415,406],self:[18,59,266,319],you:[0,78,430,308],teaching:[0,43,435,350],student:[0,73,288,322],examining:[0,14,396,311],working:[0,16,344,300],eating:[0,6,290,314],drinking:[15,25,287,300],waking:[10,0,399,325],sleeping:[0,29,409,305],walking:[0,2,307,337],employeeOriginal:[89,24,630,694],bankerOriginal:[6,14,709,695],researcherOriginal:[0,23,677,701]};
+function luluSprite(pose,cls='',tight=false){
  const entry=LULU_ART[pose];if(!entry)throw Error('Unknown Lulu pose: '+pose);
  const a=LULU_ASSETS[entry[0]],[x,y,w,h]=a.rects?.[entry[1]]||[entry[1]%a.columns*a.cell,Math.floor(entry[1]/a.columns)*a.cell,a.cell,a.cell];
- return `<span class="lulu-art ${cls}" data-lulu-pose="${pose}" aria-hidden="true"><svg viewBox="0 0 ${w} ${h}" focusable="false"><svg class="lulu-crop" width="${w}" height="${h}" viewBox="${x} ${y} ${w} ${h}" overflow="hidden"><image href="${a.src}" width="${a.width}" height="${a.height}"/></svg><svg class="lulu-fallback" x="0" y="0" width="${w}" height="${h}" viewBox="0 0 120 120">${luluFallback()}</svg></svg></span>`;
+ const ink=tight&&LULU_INK[pose],ix=ink?ink[0]:0,iy=ink?ink[1]:0,iw=ink?ink[2]:w,ih=ink?ink[3]:h;
+ return `<span class="lulu-art ${cls}" data-lulu-pose="${pose}" aria-hidden="true"><svg viewBox="0 0 ${iw} ${ih}" focusable="false"><svg class="lulu-crop" width="${iw}" height="${ih}" viewBox="${x+ix} ${y+iy} ${iw} ${ih}" overflow="hidden"><image href="${a.src}" width="${a.width}" height="${a.height}"/></svg><svg class="lulu-fallback" x="0" y="0" width="${iw}" height="${ih}" viewBox="0 0 120 120">${luluFallback()}</svg></svg></span>`;
 }
 // SVG scene participants use the same source/crop registry and fallback as HTML cards.
 function luluSvgPose(pose,x,y,width,height){return `<foreignObject class="lulu-piggy" x="${x}" y="${y}" width="${width}" height="${height}">${luluSprite(pose)}</foreignObject>`;}

@@ -137,10 +137,15 @@ function luluContextScene(plan,word){
  }
  throw Error('Unknown context '+c);
 }
+const LULU_SOLO_ACTIONS=new Set(['listening','watching','photographing','smoking','finishing','resting']);
+function luluActionFigure(word,pose,compact){
+ return `<figure class="vocabulary-visual lulu-word-visual lulu-action-visual" data-word-visual="${word.id}" data-visual-strategy="action" ${compact?`role="img" aria-label="${esc(word.en)}"`:'aria-hidden="true"'}>${luluSprite(pose,'',true)}</figure>`;
+}
 function luluWordVisual(word,compact=false){
  const p=LULU_WORD_PLANS[word.id];if(!p)throw Error('Missing word visual plan '+word.id);let content;
  if(p.strategy==='spatial')content=luluSpatialScene(p.location,p.object,p.modifier);
- else if(p.strategy==='action')return `<figure class="vocabulary-visual lulu-word-visual lulu-action-visual" data-word-visual="${word.id}" data-visual-strategy="action" aria-hidden="true">${luluSprite(p.pose)}</figure>`;
+ else if(p.strategy==='action')return luluActionFigure(word,p.pose,compact);
+ else if(p.strategy==='action-context'&&LULU_SOLO_ACTIONS.has(p.action))return luluActionFigure(word,p.action,compact);
  else if(p.strategy==='object')content=`<foreignObject x="5" y="40" width="120" height="125">${luluSprite('point')}</foreignObject>${luluObject(p.object,162,12,180)}`;
  else if(p.strategy==='occupation')content=`${occupationPiggy(word)}${luluObject(p.object,5,35,115)}`;
  else if(p.strategy==='action-context')content=luluActionScene(p.action);
