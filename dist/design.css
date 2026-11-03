@@ -139,3 +139,7 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .unlock-dialog .field-label{margin-top:16px}
 .unlock-dialog .unlock-error{margin:8px 0 0;color:var(--md-error);font-size:14px}
 .unlock-dialog .unlock-actions{justify-content:flex-end;margin-top:16px}
+
+.quiz2-rebuild .card-actions,.particle-exercise .card-actions,.quiz2-recall .card-actions,.question-word-exercise .activity-controls{justify-content:center}
+.quiz2-rebuild .card-actions .button.primary,.particle-exercise .card-actions .button.primary,.quiz2-recall .card-actions .button.primary,.question-word-exercise .activity-controls .button.primary{width:min(100%,320px)}
+@media(max-width:599px){.quiz2-rebuild .card-actions .button.primary,.particle-exercise .card-actions .button.primary,.quiz2-recall .card-actions .button.primary,.question-word-exercise .activity-controls .button.primary{width:100%}}
