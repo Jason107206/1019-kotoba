@@ -264,6 +264,8 @@ function quiz2Slots(r,limit){return Array.from({length:limit},(_,position)=>{
 }).join('');}
 function quiz2Notice(kind,holder,extra=''){const label=kind==='correct'?nL('Correct','正確'):kind==='retry'?nL('Not quite. Check again.','未完全正確，請再檢查。'):nL('Wrong','答錯了');return `<div class="reply-feedback ${kind==='correct'?'correct':'wrong'}" role="status">${luluFeedbackArt(holder)}<div class="feedback-copy"><p class="lulu-outcome-label">${esc(label)}</p>${extra}</div></div>`;}
 function quiz2SubmitButton(){return `<button type="button" class="button primary" data-quiz2="check">${nL('Submit','提交')}</button>`;}
+function quiz2QuestionVisual(word){if(!word||!LULU_WORD_PLANS[word.id])return '';return `<div class="quiz2-q-visual">${luluPreviewVisual(word)}</div>`;}
+function quiz2QuestionHeader(word,title,gloss,{jp=false}={}){const visual=quiz2QuestionVisual(word);return `<div class="quiz2-q-header">${visual}<div class="quiz2-q-copy"><h2 class="quiz2-prompt ${jp?'jp':''}" ${jp?'lang="ja"':''}>${esc(title)}</h2><p class="quiz2-gloss">${esc(gloss)}</p></div></div>`;}
 function quiz2RebuildGame(){
  const r=state.round;if(!r||r.mode!=='quiz2-rebuild'||!r.items)return quiz2Menu();if(!r.items.length)return quiz2Complete(r);
  const w=wordBy(r.formId),target=vocabularyReading(w),kanji=hasKanji(w),limit=kanaUnits(target).length;
@@ -271,7 +273,7 @@ function quiz2RebuildGame(){
  const feedback=r.feedbackKind?`<div class="quiz2-result">${quiz2Notice(r.feedbackKind,r,r.feedbackKind==='wrong'||r.feedbackKind==='correct'?`<p class="jp" lang="ja">${esc(target)}</p>`:'')}</div>`:'';
  const bank=r.final?'':`<div class="token-bank vocabulary-tile-bank" role="group" aria-label="${esc(nL('Hiragana bank','平假名'))}">${r.tileBank.map((unit,index)=>`<button type="button" class="tile jp ${r.chosen.includes(index)?'selected':''}" lang="ja" data-quiz2="tile" data-quiz2-index="${index}" ${r.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`;
  const actions=r.final?`<button type="button" class="button primary" data-quiz2="next">${nL('Next Word','下一個詞')}</button>`:quiz2SubmitButton();
- return `<section class="study-wrap quiz2-rebuild"><h1 class="sr-only">${esc(nL('Rebuild','重組'))}</h1><h2 class="quiz2-prompt ${kanji?'jp':''}" ${kanji?'lang="ja"':''}>${esc(title)}</h2><p class="quiz2-gloss">${esc(gloss)}</p><div class="token-area vocabulary-answer-slots ${r.chosen.length?'filled':''}" role="group" aria-label="${esc(nL('Your hiragana answer','你的平假名答案'))}">${quiz2Slots(r,limit)}</div>${feedback}${bank}<div class="card-actions">${actions}</div></section>`;
+ return `<section class="study-wrap quiz2-rebuild"><h1 class="sr-only">${esc(nL('Rebuild','重組'))}</h1>${quiz2QuestionHeader(w,title,gloss,{jp:kanji})}<div class="token-area vocabulary-answer-slots ${r.chosen.length?'filled':''}" role="group" aria-label="${esc(nL('Your hiragana answer','你的平假名答案'))}">${quiz2Slots(r,limit)}</div>${feedback}${bank}<div class="card-actions">${actions}</div></section>`;
 }
 function quiz2Complete(r){
  const names=(r.groups||[r.group]).map(id=>nL(...quiz2GroupMeta(id).slice(1))),name=names.length>1?nL('Selected categories','已選組別'):names[0]||'';

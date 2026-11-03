@@ -143,3 +143,16 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-rebuild .card-actions,.particle-exercise .card-actions,.quiz2-recall .card-actions,.question-word-exercise .activity-controls{justify-content:center}
 .quiz2-rebuild .card-actions .button.primary,.particle-exercise .card-actions .button.primary,.quiz2-recall .card-actions .button.primary,.question-word-exercise .activity-controls .button.primary{width:min(100%,320px)}
 @media(max-width:599px){.quiz2-rebuild .card-actions .button.primary,.particle-exercise .card-actions .button.primary,.quiz2-recall .card-actions .button.primary,.question-word-exercise .activity-controls .button.primary{width:100%}}
+
+.quiz2-recall .vocabulary-visual,.paper .vocabulary-visual{width:160px;height:160px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.quiz2-recall .vocabulary-visual>svg,.paper .vocabulary-visual>svg,.quiz2-recall .lulu-art>svg,.paper .lulu-art>svg{width:100%;height:100%;max-width:160px;max-height:160px;object-fit:contain}
+.quiz2-recall .lulu-action-visual,.paper .lulu-action-visual{height:160px}
+.quiz2-recall .lulu-action-visual>.lulu-art,.paper .lulu-action-visual>.lulu-art{height:160px;max-width:160px}
+
+.quiz2-q-header{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.quiz2-q-visual{flex:0 0 72px;width:72px;height:72px;display:flex;align-items:center;justify-content:center}
+.quiz2-q-visual .vocabulary-visual,.quiz2-q-visual .lulu-word-visual,.quiz2-q-visual .lulu-action-visual{width:72px;height:72px;max-width:72px;margin:0!important;display:flex;align-items:center;justify-content:center}
+.quiz2-q-visual svg,.quiz2-q-visual .lulu-art,.quiz2-q-visual .lulu-art>svg{width:100%;height:100%;max-width:72px;max-height:72px;object-fit:contain}
+.quiz2-q-copy{min-width:0;flex:1 1 auto}
+.quiz2-q-copy .quiz2-prompt{margin:0;overflow-wrap:anywhere}
+.quiz2-q-copy .quiz2-gloss{margin:2px 0 0;color:var(--md-on-surface-variant);overflow-wrap:anywhere}
