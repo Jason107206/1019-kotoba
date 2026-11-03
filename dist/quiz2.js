@@ -412,4 +412,4 @@ Object.assign(ZH_HANT,{
  'Wrong':'答錯了'
 });
 
-if(document.getElementById('app')?.childElementCount)render();
+if(typeof document!=='undefined'&&typeof document.getElementById==='function'&&document.getElementById('app')?.childElementCount)render();

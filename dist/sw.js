@@ -1,7 +1,7 @@
 'use strict';
 // Generated into dist/sw.js with a revision derived from every deployable asset.
 const CACHE_PREFIX='kotoba-shell-'+encodeURIComponent(new URL(self.registration.scope).pathname)+'-';
-const CACHE_NAME=CACHE_PREFIX+'28b93a7333caf5476167';
+const CACHE_NAME=CACHE_PREFIX+'70bd4c42637300bddfff';
 const PRECACHE=["activities.js","app.js","chapter-content.js","chapter-dialogues.js","chapter-ui.js","content-repairs.js","content.js","csv-content.js","design.css","dialogue-content.js","exam-practice.js","hiragana.js","i18n.js","icons/apple-touch-icon.png","icons/favicon-16.png","icons/favicon-32.png","icons/icon-192.png","icons/icon-512.png","icons/icon.svg","icons/lulu-actions.png","icons/lulu-feedback-new.png","icons/lulu-feedback.png","icons/lulu-occupations.png","icons/lulu-piggy.png","icons/lulu-poses.png","icons/lulu-teaching.png","icons/maskable-512.png","index.html","kanji-writing.js","learning-navigation.js","learning-taxonomy.js","lulu-objects.js","lulu-word-plans.js","lulu.js","manifest.webmanifest","numbers.js","pwa.js","quiz2.js","selection-chips.js","style.css","vocabulary-rebuild.js"];
 const appUrl=path=>new URL(path,self.registration.scope).href;
 self.addEventListener('install',event=>{
