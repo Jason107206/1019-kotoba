@@ -803,3 +803,11 @@ Object.assign(ZH_HANT, {
   'Back to Quiz 2 Revision': '返回測驗二溫習',
   'Quiz 2 Recall': '測驗二回想'
 });
+
+Object.assign(ZH_HANT, {
+  'Enter passcode': '輸入密碼',
+  'Enter the passcode to unlock the other functions.': '輸入密碼以解鎖其他功能。',
+  'Passcode': '密碼',
+  'Unlock': '解鎖',
+  'Incorrect passcode.': '密碼不正確。'
+});

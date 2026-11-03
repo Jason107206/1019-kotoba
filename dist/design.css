@@ -133,3 +133,9 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 @media(min-width:1200px){.quiz2-particle-preview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.choice-grid .option{min-height:56px;padding:12px;font-size:20px}.option.selected{outline:2px solid var(--md-primary);background:var(--md-primary-container)}
 
+
+.mode-card.locked,.nav button.locked{opacity:.55}
+.mode-card.locked .card-arrow{color:var(--md-on-surface-variant)}
+.unlock-dialog .field-label{margin-top:16px}
+.unlock-dialog .unlock-error{margin:8px 0 0;color:var(--md-error);font-size:14px}
+.unlock-dialog .unlock-actions{justify-content:flex-end;margin-top:16px}
