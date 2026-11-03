@@ -33,7 +33,7 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
      await page.locator(`[data-open-dialogue="${kind}"]`).click();
      assert.deepEqual(await ev(()=>state.activity.ids.slice().sort()),ids);
      assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
-     assert.equal(await page.locator('.topbar .app-title').textContent(),'Kotoba');
+     assert.equal(await page.locator('.topbar .app-title,.topbar .game-round').count(),0);assert.equal(await page.locator('.game-progress').count(),1);
      assert.ok(await ev(()=>state.activity.choices.length>=2));
      await ev(()=>{const q=activityCurrent(),a=state.activity;if(q.forms){if(isActivityRebuild(a)){for(const f of q.forms){const part=a.formAnswers[f.role];for(const unit of dialogueCharacters(f.kana))part.chosen.push(part.tileBank.findIndex((u,i)=>u===unit&&!part.chosen.includes(i)));}}else a.selections=q.forms.map(f=>f.id);checkActivity();}else if(isActivityRebuild(state.activity)){const a=state.activity;for(const unit of kanaUnits(vocabularyReading(activityCurrent())))a.chosen.push(a.tileBank.findIndex((t,i)=>t===unit&&!a.chosen.includes(i)));checkActivity()}else checkActivity(activityCurrent().id)});
      assert.equal(await ev(()=>state.activity.correct),1);
@@ -50,7 +50,7 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
      assert.deepEqual(await ev(()=>dialogueStudySet().items.map(q=>q.id).sort()),ids);
      assert.equal(await ev(()=>selectedDialogueExpression),selected);
      assert.equal(await page.locator('.expression-chip-row').evaluate(row=>row.scrollLeft),scroll);
-     assert.equal(await page.locator('.breadcrumb-row').count(),1);
+     assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
      assert.equal(await ev(()=>document.documentElement.scrollWidth<=innerWidth),true);checks++;
     }
    }
@@ -61,7 +61,7 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
     const deadline=await ev(()=>mock?.deadline);
     await page.locator('.topbar [data-action="gameBack"]').click();
     assert.equal(await ev(()=>state.view),({write:'vocabulary-content','vocabulary-rebuild':'vocabulary-content','kanji-writing':'handwriting-menu',sentences:'sentence-menu',mock:'mock-menu'})[mode]);
-    assert.equal(await page.locator('.breadcrumb-row').count(),1);
+    assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
     if(mode==='mock'){await page.locator('[data-action="resumeMock"]').click();assert.equal(await ev(()=>mock.deadline),deadline);}
    }
   }

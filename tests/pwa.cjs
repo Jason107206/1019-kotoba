@@ -31,8 +31,10 @@ function client({supported=true,secure=true,waiting=true,controller=true,install
   const extra={};
   extra['pwa-update-slot']={append(node){node.parentNode=this;this.child=node;}};extra.app={};
   install.click=()=>install.events.click();
-  const document={getElementById:id=>id==='pwa-install'?install:id==='pwa-update'?update:extra[id],documentElement:{lang:'en'}};
-  const window={isSecureContext:secure,location:{reload:()=>state.reloads++},addEventListener:(name,fn)=>winEvents[name]=fn};
+  const nodes={'#update-title':{textContent:''},'#update-description':{textContent:''},'[data-update="dismiss"].button':{textContent:''},'.update-close':{setAttribute(){}},'.update-lulu':{childElementCount:0,innerHTML:''},'.update-dialog':{focus(){}}};
+  const dialog={hidden:true,querySelector:sel=>nodes[sel]||null,querySelectorAll:()=>[update],addEventListener(){}};
+  const docEvents={};const document={getElementById:id=>id==='pwa-install'?install:id==='pwa-update'?update:id==='update-dialog'?dialog:extra[id],documentElement:{lang:'en'},activeElement:null,addEventListener:(name,fn)=>docEvents[name]=fn};
+  const window={isSecureContext:secure,location:{reload:()=>state.reloads++},addEventListener:(name,fn)=>winEvents[name]=fn,parent:null};
   let observer;const observers=[];
   vm.runInNewContext(fs.readFileSync(path.join(dist,'pwa.js'),'utf8'),{document,window,navigator:supported?{serviceWorker}:{},MutationObserver:class{constructor(fn){observer=fn;observers.push(fn);}observe(){}}});
   return {winEvents,swEvents,regEvents,workerEvents,worker,install,update,messages,state,document,observer,extra,observers};
@@ -65,7 +67,7 @@ function client({supported=true,secure=true,waiting=true,controller=true,install
   let prevented=false;c.winEvents.beforeinstallprompt({preventDefault:()=>prevented=true,prompt:async()=>c.state.prompted++});assert.equal(prevented,true);assert.equal(c.install.hidden,true);assert.equal(c.state.prompted,0);assert.ok(!html.includes('pwa-install')&&!html.includes('pwa-actions'));
   c.document.documentElement.lang='zh-Hant';c.observer();assert.ok(c.update.innerHTML.includes('更新'));assert.ok(c.update.innerHTML.includes('<svg'));
   assert.equal(client({supported:false}).winEvents.load,undefined);assert.equal(client({secure:false}).winEvents.load,undefined);
-  assert.equal(c.update.parentNode,c.extra['pwa-update-slot']);c.update.parentNode=null;c.observers[0]();assert.equal(c.update.parentNode,c.extra['pwa-update-slot']);
+  assert.equal(c.document.getElementById('update-dialog').hidden,true);c.observer();assert.ok(c.document.getElementById('update-dialog').querySelector('#update-title').textContent.includes('有新版本'));
   assert.ok(!html.includes('pwa-welcome'));
   console.log('PASS: PWA icons/manifest, reproducible cache revision, complete offline assets, both Pages paths, cache isolation, safe updates, no install button and bilingual controls.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

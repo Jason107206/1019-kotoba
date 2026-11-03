@@ -156,3 +156,19 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-q-copy{min-width:0;flex:1 1 auto}
 .quiz2-q-copy .quiz2-prompt{margin:0;overflow-wrap:anywhere}
 .quiz2-q-copy .quiz2-gloss{margin:2px 0 0;color:var(--md-on-surface-variant);overflow-wrap:anywhere}
+
+.update-backdrop{z-index:60;padding:24px}
+.update-dialog{position:relative;width:min(100%,400px);max-width:400px;padding:24px;text-align:center;background:var(--md-surface-container-high);border-radius:28px}
+.update-dialog .update-close{position:absolute;top:8px;right:8px}
+.update-dialog .update-lulu{display:flex;align-items:center;justify-content:center;height:72px;margin:8px 0 12px}
+.update-dialog .update-lulu .lulu-art{height:72px;width:auto}
+.update-dialog .update-lulu svg{height:72px;width:auto}
+.update-dialog h2{margin:0;text-align:center}
+.update-dialog p{margin:8px 0 0;text-align:center}
+.update-dialog .update-actions{justify-content:flex-end;margin-top:24px}
+
+.question-scene{margin:0 0 16px;padding:12px;gap:12px}
+.question-scene .lesson-product{grid-template-columns:72px minmax(0,1fr)}
+.question-scene .lesson-product-symbol{width:72px;height:72px;grid-row:span 2}
+.question-scene .lesson-product-symbol svg{width:72px;height:72px}
+.question-word-exercise .conversation-stage{margin-top:0}

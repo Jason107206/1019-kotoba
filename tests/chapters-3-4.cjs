@@ -20,7 +20,7 @@ for(const [ch,count,forms] of [[3,36,54],[4,48,62]]){
   assert.equal(ev(`state.round.ids.every(id=>inChapter(wordBy(id),${ch}))`),true);
   assert.ok(ev('state.round.ids.length')>0);assert.ok(!app.innerHTML.includes('breadcrumb-row'));
   ev('run("restart")');assert.equal(ev(`state.round.ids.every(id=>inChapter(wordBy(id),${ch}))`),true);
-  ev('run("gameBack")');assert.ok(app.innerHTML.includes('breadcrumb-row'));
+  ev('run("gameBack")');assert.ok(!app.innerHTML.includes('breadcrumb-row'));
  }
 }
 assert.equal(ev('WORDS.filter(w=>w.kana==="そちら").length'),1);

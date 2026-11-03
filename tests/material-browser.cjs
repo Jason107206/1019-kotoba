@@ -77,25 +77,22 @@ const assert=require('node:assert/strict');
     assert.ok(layout.body<=layout.width,`${width} ${language} ${name}: overflow ${layout.body}`);
     assert.equal(layout.h1,1,`${language} ${name}: heading`);
     assert.equal(layout.active,1,`${language} ${name}: active destination`);
-    const title=await page.locator('.topbar .app-title').evaluate(el=>{
-     const s=getComputedStyle(el);return [el.textContent,s.fontFamily,s.fontSize,s.fontWeight,s.color,el.getBoundingClientRect().top-el.closest('.topbar').getBoundingClientRect().top];
-    });
-    const key=`${width}:${language}:${await page.evaluate(()=>isGamePage())?'game':'content'}`;
-    if(!titleStyles.has(key))titleStyles.set(key,title);
-    assert.deepEqual(title,titleStyles.get(key),`${name}: shared Kotoba title`);
+    if(!(await page.evaluate(()=>isGamePage()))){
+     const title=await page.locator('.topbar .app-title').evaluate(el=>{
+      const s=getComputedStyle(el);return [el.textContent,s.fontFamily,s.fontSize,s.fontWeight,s.color,el.getBoundingClientRect().top-el.closest('.topbar').getBoundingClientRect().top];
+     });
+     const key=`${width}:${language}:content`;
+     if(!titleStyles.has(key))titleStyles.set(key,title);
+     assert.deepEqual(title,titleStyles.get(key),`${name}: shared Kotoba title`);
+    }else assert.equal(await page.locator('.topbar .app-title,.topbar .game-round').count(),0);
     assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
     if(await page.evaluate(()=>isGamePage())){
      assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
      assert.equal(await page.locator('.topbar [data-action="gameBack"]').count(),1);
      assert.equal(await page.locator('.footer-line').count(),0);
     }else{
-    assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
-    assert.ok(await page.locator('.topbar').evaluate(bar=>bar.nextElementSibling.matches('.breadcrumb-row')));
-    const crumb=await page.locator('.breadcrumbs').evaluate(nav=>{
-     const main=nav.closest('main'),padding=parseFloat(getComputedStyle(main).paddingLeft);
-     return {px:parseFloat(getComputedStyle(nav).paddingLeft),padding,aligned:Math.abs(nav.querySelector('li').getBoundingClientRect().left-main.getBoundingClientRect().left-padding)<1};
-    });
-    assert.equal(crumb.px,crumb.padding);assert.ok(crumb.px>0&&crumb.aligned,'Breadcrumbs share responsive content padding');
+    assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
+    assert.equal(await page.locator('.topbar .lulu-brand-mini').count(),0);
     }
     if(['recall','rebuild'].includes(name)){
      assert.equal(await page.locator('.page-head,.vocabulary-selector,.filters').count(),0);

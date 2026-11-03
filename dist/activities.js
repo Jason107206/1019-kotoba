@@ -344,7 +344,7 @@ function relatedActivityItems(a,q){
   if(a.scope&&candidates.length<3)candidates.push(...a.items.filter(item=>item.id!==q.id&&!candidates.includes(item)&&item.family!==q.family));
   const seen=new Set([q.kana]);return shuffle(candidates).filter(item=>{const key=item.kana;if(seen.has(key))return false;seen.add(key);return true;});
 }
-function prepareActivity(){const a=state.activity,q=activityCurrent();if(!q)return;a.checked=false;a.luluFeedback=null;a.selected=null;a.chosen=[];a.selections=[];a.formAnswers=null;a.formResults=null;a.activeForm=null;a.result=false;a.choices=shuffle([q,...(q.lesson?q.distractors.map((kana,i)=>({id:`${q.id}-d${i}`,kana,word:q.word,category:q.category,family:`${q.id}-d${i}`})):relatedActivityItems(a,q).slice(0,3))]);a.revealed=false;if(q.forms)preparePairedActivity(q);else if(isActivityRebuild(a))a.tileBank=vocabularyTileBank(q);}
+function prepareActivity(){const a=state.activity,q=activityCurrent();if(!q)return;a.checked=false;a.luluFeedback=null;a.selected=null;a.chosen=[];a.selections=[];a.formAnswers=null;a.formResults=null;a.activeForm=null;a.result=false;a.revealed=false;a.final=false;a.feedbackKind=null;a.attempts=0;a.questionId=q.id;a.questionToken=(a.questionToken||0)+1;a.choices=shuffle([q,...(q.lesson?q.distractors.map((kana,i)=>({id:`${q.id}-d${i}`,kana,word:q.word,category:q.category,family:`${q.id}-d${i}`})):relatedActivityItems(a,q).slice(0,3))]);if(q.forms)preparePairedActivity(q);else if(isActivityRebuild(a))a.tileBank=vocabularyTileBank(q);}
 function activityAnswer(){const a=state.activity;return activityCurrent()?.forms?dialogueFormAnswer(a.activeForm||'normal'):a.chosen.map(id=>a.tileBank[id]).join('');}
 function activityReadings(q){return [vocabularyReading(q),...(q.acceptedReadings||[]).map(rebuildText)];}
 function activityReady(q){return q.forms?q.forms.every(form=>activityReadings(form).some(target=>rebuildReady(dialogueFormAnswer(form.role),target))):activityReadings(q).some(target=>rebuildReady(activityAnswer(),target));}
@@ -364,12 +364,50 @@ function dialoguePrompt(q){
   const incoming=q.incoming?`<blockquote class="dialogue-incoming"><div class="dialogue-speaker"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 3v-3a2 2 0 0 1-2-2V6a2 2 0 0 1 3-2Z"/><path d="M7 9h10M7 13h6"/></svg><span class="dialogue-role">They say</span></div><p class="dialogue-scene jp" lang="ja">${esc(q.incoming)}</p></blockquote>`:'';
   return situation+incoming;
 }
+
+function questionWordGameTurns(q){
+  const turns=q.turns||[],you=turns.findIndex(turn=>turn[0]==='you');
+  if(you<=0)return turns.map((turn,index)=>[turn,index]);
+  const opening=turns[0][1]||'';
+  const greeting=/いらっしゃい|こんにちは|^はい[。.]?$/.test(opening);
+  const start=greeting?you:0;
+  return turns.slice(start).map((turn,index)=>[turn,start+index]);
+}
+function questionWordRows(q,visual){
+  const text=`${q.sentence||''} ${q.scene||''} ${q.sceneZh||''}`;
+  const aliases=[['くつ','靴'],['ネクタイ','ネクタイ'],['ワイン','ワイン'],['うけつけ','受付'],['コーヒー','コーヒー'],['勉強','勉強'],['寝ます','寝ます'],['仕事','仕事'],['休み','休み']];
+  const hit=aliases.find(([key])=>text.includes(key));
+  if(!hit)return visual.rows||[];
+  const rows=(visual.rows||[]).filter(row=>row.some(cell=>String(cell).includes(hit[1])));
+  return rows.length?rows:visual.rows||[];
+}
+function questionWordScene(q){
+  const v=q.visual;if(!v)return '';
+  if(v.type==='location')return lessonScene(q);
+  if(v.type==='product'){
+    const askOrigin=/どこ/.test(`${q.kana||''}${q.sentence||''}`),askPrice=/いくら/.test(`${q.kana||''}${q.sentence||''}`);
+    const origin=askOrigin&&v.origin?`<span lang="ja">${esc(v.origin)}</span>`:'';
+    const price=askPrice&&v.price!=null?`<span class="lesson-price" data-price="${v.price}">¥${Number(v.price).toLocaleString('en-US')}</span>`:'';
+    if(!v.name&&!origin&&!price)return '';
+    const icon=luluObject(v.name==='ワイン'?'wine':v.name==='コーヒー'?'coffee':'tie',0,0,96);
+    return `<figure class="lesson-scene lesson-scene-product question-scene"><div class="lesson-product"><span class="lesson-product-symbol" aria-hidden="true">${icon}</span><strong lang="ja">${esc(v.name||'')}</strong>${origin}${price}</div></figure>`;
+  }
+  if(v.type==='floors'||v.type==='schedule'){
+    const rows=questionWordRows(q,v);if(!rows.length)return '';
+    const title=v.title||'';
+    return `<figure class="lesson-scene lesson-scene-${v.type} question-scene"><div class="lesson-timetable">${title?`<strong>${esc(title)}</strong>`:''}<table aria-label="${esc(title||v.type)}"><tbody>${rows.map(([a,b])=>`<tr><th scope="row">${esc(a)}</th><td>${esc(b)}</td></tr>`).join('')}</tbody></table></div></figure>`;
+  }
+  if(v.type==='phone')return `<figure class="lesson-scene lesson-scene-phone question-scene"><div class="lesson-phone"><span aria-hidden="true">${luluObject('phone',0,0,64)}</span><strong>${esc(v.number)}</strong></div></figure>`;
+  if(v.type==='card')return `<figure class="lesson-scene lesson-scene-card question-scene"><div class="lesson-fact"><span>${esc(v.heading)}</span><strong lang="ja">${esc(v.value)}</strong></div></figure>`;
+  if(v.type==='clock')return lessonScene(q).replace(/<svg class="lesson-lulu"[\s\S]*?<\/svg>/,'');
+  return '';
+}
 function questionWordPractice(q){const home=state.activity?.scope?.learningHome;return !!q&&(home==='questions'||home==='quiz2'&&state.quiz2Method==='questions');}
 function questionWordStack(q,bank,feedback){if(!questionWordPractice(q))return bank+(feedback||luluFeedbackPlaceholder());return feedback?`<div class="question-word-result">${feedback}</div>${bank}`:bank;}
 function dialogueExercise(q,tileMode){
   if(q.forms)return pairedDialogueExercise(q,tileMode);
   const a=state.activity,zh=state.language==='zh-Hant',word=wordBy(q.word);
-  const turns=q.turns;
+  const turns=questionWordPractice(q)?questionWordGameTurns(q):q.turns.map((turn,index)=>[turn,index]);
   const template=q.answerSlot?`${q.answerSlot.before}{word}${q.answerSlot.after}`:q.sentence;
   const situation=zh?(CONVERSATIONS[q.id]?.[1]||q.sceneZh||translateText(q.scene||q.clue)):(CONVERSATIONS[q.id]?.[0]||q.scene||q.clue);
   const answer=tileMode?activityAnswer():a.checked?(a.choices.find(item=>item.id===a.selected)?.kana||''):'';
@@ -378,18 +416,19 @@ function dialogueExercise(q,tileMode){
   const parts=template.split('{word}');
   const response=`<p class="jp inline-reply" lang="ja">${esc(parts[0])}${blank}${esc(parts.slice(1).join('{word}'))}</p>`;
   const quiz2q=state.learningReturn==='quiz2'&&state.quiz2Method==='questions';
-  const feedback=quiz2q&&a.feedbackKind?quiz2Notice(a.feedbackKind,a,a.feedbackKind==='wrong'?`<p class="jp" lang="ja">${esc(q.kana)}</p>`:''):a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status">${luluFeedbackArt(a)}<div class="feedback-copy">${questionWordPractice(q)?'':`<p class="lulu-outcome-label">${luluFeedbackLabel(a)}</p>`}<div><span aria-hidden="true">${a.result?'✓':'✕'}</span> <strong>${a.result?'Correct!':'The correct answer is:'}</strong></div>${a.result?'':`<p class="jp" lang="ja">${esc(q.kana)}</p>`}<p>${esc(q.lesson?(zh?q.replyZh:q.replyEn):(zh?word.zh:word.en))}</p></div><p class="activity-explanation">${esc(dialogueUsage(q))}</p></div>`:'';
+  const feedback=quiz2q&&a.feedbackKind&&(a.checked||a.final)?quiz2Notice(a.feedbackKind,a,a.feedbackKind==='wrong'?`<p class="jp" lang="ja">${esc(q.kana)}</p>`:''):a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status">${luluFeedbackArt(a)}<div class="feedback-copy">${questionWordPractice(q)?'':`<p class="lulu-outcome-label">${luluFeedbackLabel(a)}</p>`}<div><span aria-hidden="true">${a.result?'✓':'✕'}</span> <strong>${a.result?'Correct!':'The correct answer is:'}</strong></div>${a.result?'':`<p class="jp" lang="ja">${esc(q.kana)}</p>`}<p>${esc(q.lesson?(zh?q.replyZh:q.replyEn):(zh?word.zh:word.en))}</p></div><p class="activity-explanation">${esc(dialogueUsage(q))}</p></div>`:'';
   const hideSelector=questionWordPractice(q)&&a.checked&&a.result;
   const bank=hideSelector?'':tileMode?`<div class="activity-tile-bank" role="group" aria-label="Hiragana bank">${a.tileBank.map((unit,index)=>`<button class="tile jp ${a.chosen.includes(index)?'selected':''}" lang="ja" data-activity-tile="${index}" ${a.checked||a.chosen.includes(index)?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`:`<div class="options activity-options">${a.choices.map((item,index)=>`<button class="option jp ${!a.checked&&item.id===a.selected?'selected ':''}${a.checked&&item.id===q.id?'correct':a.checked&&item.id===a.selected?'wrong':''}" data-activity-choice="${item.id}" ${a.checked?'disabled':''}><span class="number">${index+1}</span><span>${esc(item.kana)}</span>${a.checked&&item.id===q.id?'<span class="option-state"><span aria-hidden="true">✓</span> Correct</span>':a.checked&&item.id===a.selected?'<span class="option-state"><span aria-hidden="true">✕</span> Your choice</span>':''}</button>`).join('')}</div>`;
   const controls=a.checked?button('Next '+icon('arrow'),'activityNext','primary'):quiz2q?button('Submit','activityCheck','primary'):tileMode?button('Undo','activityUndo','ghost',a.chosen.length?'':'disabled')+button('Clear','activityClear','ghost',a.chosen.length?'':'disabled')+button('Check answer','activityCheck','primary',activityReady(q)?'':'disabled'):'';
   let learnerShown=false;
-  const conversation=turns.map(([speaker,ja,en,cn],turnIndex)=>{
+  const conversation=turns.map((entry,visibleIndex)=>{
+    const [speaker,ja,en,cn]=entry[0]||entry,turnIndex=Array.isArray(entry[0])?entry[1]:visibleIndex;
     if(speaker==='you'&&!learnerShown){learnerShown=true;return `<div class="conversation-turn you">${conversationPig('you',CONVERSATION_POSES[q.id])}<div class="conversation-bubble reply-bubble ${a.checked?(a.result?'correct':'wrong'):''}"><span class="dialogue-role">You</span>${response}</div></div>`;}
     // A later response can repeat the learner's phrase. Reveal it after grading.
     const safe=dialogueTurnText(q,turnIndex,a.checked);
     return `<div class="conversation-turn ${speaker}">${conversationPig(speaker)}<div class="conversation-bubble"><span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${esc(safe)}</p><p class="conversation-translation">${esc(zh?cn:en)}</p></div></div>`;
   }).join('');
-  const scene=THIS_THAT_VISUALS[q.word]?.location!=='attention'&&THIS_THAT_VISUALS[q.word]?demonstrativeScene(q):q.lesson?lessonScene(q):'';
+  const scene=questionWordPractice(q)?questionWordScene(q):THIS_THAT_VISUALS[q.word]?.location!=='attention'&&THIS_THAT_VISUALS[q.word]?demonstrativeScene(q):q.lesson?lessonScene(q):'';
   return `<h1 class="sr-only">${tileMode?'Rebuild':'Matching'}</h1><section class="study-wrap conversation-exercise${questionWordPractice(q)?' question-word-exercise':''}"><div class="exercise-body"><p class="exercise-situation">${esc(situation)}</p>${scene}<div class="conversation-stage">${conversation}</div>${questionWordStack(q,bank,feedback)}${controls?`<div class="card-actions activity-controls">${controls}</div>`:''}${tileMode&&!a.checked?'<div class="activity-reveal"><button class="scope-link" data-action="activityReveal">Show answer & mark for review</button></div>':''}</div></section>`;
 }
 function activityPage(){const a=state.activity;if(!a)return dialogueMenu();const dialogue=a.kind.startsWith('dialogue');if(a.index>=a.ids.length)return header('Round complete.','Give yourself another chance with the items you missed.')+`<div class="study-wrap paper result-center">${luluSummaryArt(a)}<div class="result-score">${a.correct}<small> / ${a.ids.length}</small></div><p class="muted" style="margin-top:var(--space-4)">${a.missed.length?`${a.missed.length} items are ready for another look.`:'Every answer correct in this round.'}</p><div class="card-actions">${a.missed.length?button('Practise missed items','activityMissed','coral'):''}${button('New round','activityRestart','primary')}</div><div class="result-back">${button('Go back','activityBack','ghost')}</div></div>`;
@@ -400,7 +439,7 @@ function activityTiles(q){
   const a=state.activity,target=vocabularyReading(q);
   return rebuildTileInputs(a,target,'activity')+(a.checked?'':rebuildTileControls(a,target,'activity'));
 }
-function activityAction(action){const a=state.activity;if(!a)return;if(activityCurrent()?.forms&&!a.checked&&['activityUndo','activityClear'].includes(action)){const part=a.formAnswers[a.activeForm];if(action==='activityUndo')part.chosen.pop();else part.chosen.splice(0);render();return;}switch(action){case'activityBack':if(a.scope?.learningHome){navigate(a.scope.learningHome,false);break;}if(a.scope){state.dialogueBrowse=a.scope.browse;state.dialogueChapter=a.scope.chapter;state.dialogueCategory=a.scope.category;selectedDialogueExpression=a.scope.selected;}else{state.dialogueBrowse='category';state.dialogueCategory=a.kind.startsWith('dialogue')?a.category||'introductions':'wh-words';}navigate('dialogue',false);break;case'activityNext':if(state.learningReturn==='quiz2'&&a.requeue&&typeof quiz2ActivityAdvance==='function'){quiz2ActivityAdvance();break;}a.index++;prepareActivity();render();break;case'activityRestart':startActivity(a.kind,undefined,a.category,a.scope);break;case'activityMissed':startActivity(a.kind,shuffle(a.missed),a.category,a.scope);break;case'activityClear':if(!a.checked)a.chosen=[];render();break;case'activityUndo':if(!a.checked)a.chosen.pop();render();break;case'activityCheck':if(state.learningReturn==='quiz2'&&state.quiz2Method==='questions'&&typeof quiz2ActivitySubmit==='function'){quiz2ActivitySubmit();break;}checkActivity();break;case'activityReveal':checkActivity(null,true);break;}}
+function activityAction(action){const a=state.activity;if(!a)return;if(activityCurrent()?.forms&&!a.checked&&['activityUndo','activityClear'].includes(action)){const part=a.formAnswers[a.activeForm];if(action==='activityUndo')part.chosen.pop();else part.chosen.splice(0);render();return;}switch(action){case'activityBack':if(a.scope?.learningHome){navigate(a.scope.learningHome,false);break;}if(a.scope){state.dialogueBrowse=a.scope.browse;state.dialogueChapter=a.scope.chapter;state.dialogueCategory=a.scope.category;selectedDialogueExpression=a.scope.selected;}else{state.dialogueBrowse='category';state.dialogueCategory=a.kind.startsWith('dialogue')?a.category||'introductions':'wh-words';}navigate('dialogue',false);break;case'activityNext':if(state.learningReturn==='quiz2'&&state.quiz2Method==='questions'&&typeof quiz2ActivityAdvance==='function'){quiz2ActivityAdvance();break;}a.index++;prepareActivity();render();break;case'activityRestart':startActivity(a.kind,undefined,a.category,a.scope);break;case'activityMissed':startActivity(a.kind,shuffle(a.missed),a.category,a.scope);break;case'activityClear':if(!a.checked)a.chosen=[];render();break;case'activityUndo':if(!a.checked)a.chosen.pop();render();break;case'activityCheck':if(state.learningReturn==='quiz2'&&state.quiz2Method==='questions'&&typeof quiz2ActivitySubmit==='function'){quiz2ActivitySubmit();break;}checkActivity();break;case'activityReveal':checkActivity(null,true);break;}}
 function activityClick(target){const d=target.dataset;if(pairedActivityClick(d))return true;if(d.dialogueBrowse){dialogueBrowse(d.dialogueBrowse);return true;}if(d.dialogueChapter){selectDialogueChapter(d.dialogueChapter);return true;}if(d.openDemonstratives){if(d.openDemonstratives==='guide'){selectDialogueCategory('wh-words');}else if(d.openDemonstratives==='practice')startActivity('demonstratives');else if(d.openDemonstratives==='rebuild')startActivity('wh-tiles');return true;}if(d.dialogueCategory){selectDialogueCategory(d.dialogueCategory);return true;}if(d.whExpression){selectWhExpression(d.whExpression);return true;}if(d.dialogueExpression){selectDialogueExpression(d.dialogueExpression);return true;}if(d.openDialogue){startDialoguePractice(d.openDialogue);return true;}if(d.activityChoice){selectActivityChoice(d.activityChoice);return true;}if(d.activityTile!==undefined){const a=state.activity;if(!a||a.checked||!isActivityRebuild(a)||!activityCurrent())return true;const i=Number(d.activityTile),limit=Math.max(...activityReadings(activityCurrent()).map(r=>kanaUnits(r).length));if(Number.isInteger(i)&&i>=0&&i<a.tileBank.length&&!a.chosen.includes(i)&&a.chosen.length<limit)a.chosen.push(i);render();return true;}if(d.activityReturn!==undefined){const a=state.activity;const i=Number(d.activityReturn);if(a&&!a.checked&&isActivityRebuild(a)&&Number.isInteger(i)&&i>=0&&i<a.chosen.length)a.chosen.splice(i,1);render();return true;}if(d.action?.startsWith('activity')){activityAction(d.action);return true;}return false;}
 
 function demonstrativeGraphic(q,compact=false){

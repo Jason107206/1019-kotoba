@@ -362,7 +362,7 @@ function quiz2RecallSubmit(){const r=state.round,w=wordBy(current());if(!r||r.fi
  render();
 }
 function quiz2RecallAdvance(){const r=state.round;if(!r?.final)return;if(r.requeue){const id=r.ids[r.index];r.ids.splice(r.index,1);r.ids.push(id);if(r.index>=r.ids.length)r.index=0;r.requeue=false;}else r.index++;prepareQuestion();r.attempts=0;r.final=false;r.feedbackKind=null;render();}
-function quiz2ActivitySubmit(){const a=state.activity,q=activityCurrent();if(!a||a.final||!q)return;
+function quiz2ActivitySubmit(){const a=state.activity,q=activityCurrent();if(!a||a.final||!q||a.questionId&&a.questionId!==q.id)return;
  const paired=!!q.forms;
  const complete=paired?a.selections?.length===q.forms.length:!!a.selected;
  const results=paired?pairedActivityResults(q,false):null;
@@ -373,7 +373,7 @@ function quiz2ActivitySubmit(){const a=state.activity,q=activityCurrent();if(!a|
  else{a.final=false;a.checked=false;a.result=false;a.formResults=null;a.feedbackKind='retry';luluCommitFeedback(a,{key:q.id+':retry',correct:0});}
  render();
 }
-function quiz2ActivityAdvance(){const a=state.activity;if(!a?.final)return;if(a.requeue){const id=a.ids[a.index];a.ids.splice(a.index,1);a.ids.push(id);if(a.index>=a.ids.length)a.index=0;a.requeue=false;}else a.index++;prepareActivity();a.attempts=0;a.final=false;a.feedbackKind=null;render();}
+function quiz2ActivityAdvance(){const a=state.activity;if(!a?.final)return;if(a.requeue){const id=a.ids[a.index];a.ids.splice(a.index,1);a.ids.push(id);if(a.index>=a.ids.length)a.index=0;a.requeue=false;}else a.index++;a.selected=null;a.checked=false;a.result=false;a.revealed=false;a.final=false;a.feedbackKind=null;a.attempts=0;a.luluFeedback=null;a.formResults=null;a.selections=[];prepareActivity();render();}
 document.addEventListener('click',event=>{
  const t=event.target.closest('[data-quiz2]');if(!t||t.disabled)return;
  event.stopPropagation();event.preventDefault();

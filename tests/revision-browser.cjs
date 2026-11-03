@@ -78,8 +78,8 @@ const assert=require('node:assert/strict');
    await ev(()=>{state.vocabularyContentKey='category-unknown';render()});
    assert.equal(await ev(()=>state.vocabularyContentKey),'all');
    await ev(()=>{state.dialogueBrowse='category';state.dialogueCategory='replies';navigate('dialogue')});
-   assert.equal(await page.locator('.topbar .breadcrumbs').count(),0);
-   assert.equal(await page.locator('.breadcrumb-row .breadcrumbs').count(),1);
+   assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
+   assert.equal(await page.locator('.topbar .lulu-brand-mini').count(),0);
    assert.equal(await page.locator('.topbar .app-title').textContent(),'Kotoba');await layout();
    await page.locator('[data-dialogue-category="wh-words"]').click();
    assert.equal(await page.locator('[data-dialogue-expression]').count(),17);
@@ -131,8 +131,7 @@ const assert=require('node:assert/strict');
    await page.locator('#pwa-update').evaluate(b=>b.disabled=true);
    assert.equal(await page.locator('#pwa-update').evaluate(b=>getComputedStyle(b).opacity),'1');
    await page.locator('#pwa-update').evaluate(b=>{b.disabled=false;b.hidden=true});
-   const padding=await page.locator('.breadcrumbs').evaluate(nav=>[getComputedStyle(nav).paddingLeft,getComputedStyle(nav).paddingRight,getComputedStyle(nav.closest('main')).paddingLeft]);
-   assert.equal(padding[0],padding[2]);assert.equal(padding[1],padding[2]);
+   assert.equal(await page.locator('.breadcrumb-row,.breadcrumbs').count(),0);
   }
   // Every Dialogue chip immediately displays its full target and localized exchange.
   for(const width of [360,1440])for(const language of ['en','zh-Hant']){
