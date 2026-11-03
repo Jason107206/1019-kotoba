@@ -62,7 +62,7 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .particle-sentence{margin:16px 0;font-size:22px;line-height:2.5;text-align:center;overflow-wrap:anywhere}.particle-blank{display:inline-flex;align-items:center;justify-content:center;min-width:52px;min-height:44px;margin:0 4px;padding:2px 8px;border-radius:12px;border:1.5px dashed var(--md-outline);background:var(--md-surface-container-low);vertical-align:middle}.particle-blank.active{border-style:solid;border-color:var(--md-primary);box-shadow:0 0 0 3px var(--md-primary-container)}.particle-blank.correct{border-style:solid;border-color:var(--md-success);background:var(--md-success-container)}.particle-blank.wrong{border-style:solid;border-color:var(--md-error);background:var(--md-error-container)}.particle-options{margin:8px 0 16px}.particle-exercise .reply-feedback{margin:0 0 12px}
 .quiz2-home,.quiz2-done,.quiz2-preview,.quiz2-card{min-width:0;max-width:100%}
 .quiz2-rebuild{min-width:0;max-width:1040px;margin-inline:auto}
-.quiz2-home .quiz2-start,.quiz2-done .quiz2-start{justify-content:flex-start;margin-top:12px}
+.quiz2-home .quiz2-start,.quiz2-done .quiz2-start{justify-content:flex-start;margin-top:16px}
 .quiz2-categories{margin-top:16px}
 .quiz2-categories legend{margin-bottom:8px}
 .quiz2-category-empty{margin:12px 0 0;color:var(--md-on-surface-variant);line-height:1.5}

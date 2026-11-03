@@ -134,6 +134,10 @@ function roundBar(){return '';}
 function gameProgress(){
  if(state.view==='mock'&&mock){const total=mock.a.length+mock.b.length,completed=mock.done?total:mock.a.filter(q=>q.b.trim()&&q.c.trim()).length+mock.b.filter(q=>q.chosen.length===sentenceBy(q.id).tokens.length).length;return {total,completed,current:completed};}
  const r=state.view==='number-game'?state.numberRound:state.view==='activity'?state.activity:state.round;
+ if(state.learningReturn==='quiz2'&&r){
+  if(r.mode==='quiz2-rebuild'||Array.isArray(r.items)){const total=r.total||r.items?.length||0,completed=Math.min(total,r.done||0);return {total,completed,current:completed};}
+  if(r.ids?.length){const total=r.ids.length,completed=r.index>=total?total:Math.min(total,r.index+(r.checked?1:0));return {total,completed,current:completed};}
+ }
  if(!r?.ids?.length)return {total:0,completed:0,current:0};
  return {total:r.ids.length,completed:Math.min(r.ids.length,r.index+(r.checked?1:0)),current:Math.min(r.ids.length,r.index+1)};
 }
