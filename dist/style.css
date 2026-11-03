@@ -57,6 +57,7 @@
 }
 * { box-sizing: border-box; }
 html { scroll-padding-top: 88px; }
+html, body { min-height: 100%; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Roboto, "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 16px; line-height: 1.5; }
 html[lang="zh-Hant"] body { font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; }
 button, input, select { font: inherit; color: inherit; }
@@ -107,9 +108,7 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .brand-tools { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; flex: none; }
 .language-switch { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; min-width: 48px; min-height: 48px; padding: 0; border: 0; border-radius: 50%; color: var(--md-primary); background: transparent; }
 .language-switch:hover { background: var(--md-primary-container); }
-.lang-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; color: var(--md-primary); }
-.lang-zh { font-size: 15px; font-weight: 650; }
-.lang-en { margin-top: 1px; font-size: 11px; font-weight: 700; letter-spacing: -.2px; }
+.lang-mark { display: flex; align-items: center; justify-content: center; line-height: 1; color: var(--md-primary); font-size: 16px; font-weight: 700; letter-spacing: -.2px; }
 .update-slot { display: contents; }
 .app-title { font-size: 22px; font-weight: 500; color: var(--ink); }
 .breadcrumb-row { margin: 0 calc(-1 * var(--content-padding)) var(--space-6); }
@@ -378,12 +377,13 @@ h3 { font-size: 20px; line-height: 1.4; font-weight: 500; }
 .feedback .kanji-model { font-size: 40px; margin: var(--space-3) 0; }
 #toast { display: none; position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50; max-width: calc(100% - 32px); padding: var(--space-4) var(--space-6); border-radius: 4px; background: #322f35; color: #f5eff7; font-size: 14px; box-shadow: var(--md-elevation-2); }
 .modal-backdrop { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: #00000066; padding: var(--space-6); }
+.modal-backdrop[hidden] { display: none; }
 .modal { width: 100%; max-width: 600px; max-height: 85dvh; overflow: auto; background: var(--md-surface-container-high); border-radius: 28px; padding: var(--space-6); box-shadow: var(--md-elevation-2); }
 .modal p { font-size: 14px; color: var(--muted); margin-top: var(--space-4); }
 .modal h3 { margin-top: var(--space-6); }
 .modal > .button { display: flex; margin: var(--space-6) 0 0 auto; }
 .modal .row > button { width: 48px; height: 48px; border-radius: 50%; }
-body:has(.modal-backdrop), body:has(.navigation-open) { overflow: hidden; }
+body:has(.modal-backdrop:not([hidden])), body:has(.navigation-open) { overflow: hidden; }
 
 
 @media (min-width: 1600px) { :root { --content-padding: 64px; } }
