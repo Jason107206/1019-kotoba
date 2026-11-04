@@ -202,8 +202,7 @@ function vocabRebuildCard(round){
   const word=wordBy(round.q.id),target=vocabularyReading(word),limit=kanaUnits(target).length;
   const slots=Array.from({length:limit},(_,i)=>{const index=round.chosen[i];return index==null?`<span class="vocabulary-slot empty">${i+1}</span>`:`<button type="button" class="tile jp vocabulary-slot filled" data-vocab="slot" data-vocab-index="${i}" ${round.checked?'disabled':''}>${esc(round.tileBank[index])}</button>`;}).join('');
   const bank=round.checked?'':`<div class="token-bank">${round.tileBank.map((unit,index)=>`<button type="button" class="tile jp ${round.chosen.includes(index)?'selected':''}" data-vocab="tile" data-vocab-index="${index}" ${round.chosen.includes(index)||round.checked?'disabled':''}>${esc(unit)}</button>`).join('')}</div>`;
-  const answer=round.feedback==='wrong'?`<p class="jp" lang="ja">${esc(target)}</p>`:'';
-  return `<p class="vocab-instruction">${esc(nL('Rebuild the reading.','重組讀音。'))}</p>${vocabRebuildPrompt(word)}<p class="lexical-meaning">${esc(vocabMeaning(word))}</p><div class="token-area vocabulary-answer-slots">${slots}</div>${bank}${answer}`;
+  return `<p class="vocab-instruction">${esc(nL('Rebuild the reading.','重組讀音。'))}</p>${vocabRebuildPrompt(word)}<p class="lexical-meaning">${esc(vocabMeaning(word))}</p><div class="token-area vocabulary-answer-slots">${slots}</div>${bank}`;
 }
 function vocabRecallCard(round){
   const word=wordBy(round.q.id);
@@ -220,7 +219,8 @@ function vocabRevisionPage(){
   const round=state.round;if(!round||round.mode!=='vocab-revision')return '';
   if(round.phase==='done'||round.activity==='adaptive'&&round.phase==='adaptive'&&round.queueIndex>=round.queue.length&&round.batch+2>=round.parts.length)return `<section class="study-wrap vocab-revision"><h1>${esc(nL('Revision complete','溫習完成'))}</h1><p>${round.completed.length} / ${round.total}</p><div class="card-actions"><button type="button" class="button primary" data-action="gameBack">${nL('Back to Vocabulary','返回詞彙')}</button></div></section>`;
   const body=round.activity==='adaptive'&&round.phase==='preview'?vocabPreviewCard(round):round.q?.stage==='match'?vocabMatchCard(round):round.q?.stage==='translate'?vocabTranslateCard(round):round.q?.stage==='kanji'?vocabKanjiCard(round):round.q?.stage==='rebuild'?vocabRebuildCard(round):round.q?.stage==='recall'?vocabRecallCard(round):vocabPreviewCard(round);
-  const notice=round.feedback?`<div class="quiz2-result">${quiz2Notice(round.feedback,round)}</div>`:'';
+  const extra=round.feedback==='wrong'&&round.q?.stage==='rebuild'?`<p class="jp" lang="ja">${esc(vocabularyReading(wordBy(round.q.id)))}</p>`:'';
+  const notice=round.feedback?`<div class="quiz2-result">${quiz2Notice(round.feedback,round,extra)}</div>`:'';
   const ready=round.phase==='preview'||round.q?.stage==='match'&&round.selected||round.q?.stage==='translate'&&round.selected||round.q?.stage==='kanji'&&round.selected!=null||round.q?.stage==='rebuild'&&rebuildReady(round.chosen.map(i=>round.tileBank[i]).join(''),vocabularyReading(wordBy(round.q.id)))||round.q?.stage==='recall';
   const action=round.phase==='preview'?`<button type="button" class="button primary" data-vocab="continue">${nL('Continue','繼續')}</button>`:round.final?`<button type="button" class="button primary" data-vocab="next">${nL('Next','下一個')}</button>`:round.q?.stage==='match'||round.q?.stage==='translate'?'':`<button type="button" class="button primary" data-vocab="submit" ${ready?'':'disabled'}>${nL('Submit','提交')}</button>`;
   return `<section class="study-wrap vocab-revision"><h1 class="sr-only">${esc(vocabStageLabel(round))}</h1>${body}${notice}<div class="card-actions">${action}</div></section>`;

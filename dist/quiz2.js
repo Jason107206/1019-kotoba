@@ -278,7 +278,7 @@ function quiz2Slots(r,limit){return Array.from({length:limit},(_,position)=>{
  const unit=r.tileBank[index];
  return `<button type="button" class="tile jp vocabulary-slot filled" lang="ja" data-quiz2="return" data-quiz2-index="${position}" ${r.final?'disabled':''} aria-label="${esc(nL('Return to the tile bank','放回假名'))} ${esc(unit)}">${esc(unit)}</button>`;
 }).join('');}
-function quiz2Notice(kind,holder,extra=''){const label=kind==='correct'?nL('Correct','正確'):kind==='retry'?nL('Not quite. Check again.','未完全正確，請再檢查。'):nL('Wrong','答錯了');return `<div class="reply-feedback ${kind==='correct'?'correct':'wrong'}" role="status">${luluFeedbackArt(holder)}<div class="feedback-copy"><p class="lulu-outcome-label">${esc(label)}</p>${extra}</div></div>`;}
+function quiz2Notice(kind,holder,extra=''){const label=kind==='correct'?nL('Correct','正確'):kind==='retry'?nL('Not quite. Check again.','未完全正確，請再檢查。'):nL('Wrong','答錯了');const tone=kind==='correct'?'correct':'wrong';return `<div class="lulu-bubble-row ${tone}" role="status">${luluFeedbackArt(holder)}<div class="lulu-speech ${tone}"><p class="lulu-outcome-label">${esc(label)}</p>${extra}</div></div>`;}
 function quiz2SubmitButton(){return `<button type="button" class="button primary" data-quiz2="check">${nL('Submit','提交')}</button>`;}
 function quiz2QuestionVisual(word){if(!word||!LULU_WORD_PLANS[word.id])return '';return `<div class="quiz2-q-visual">${luluPreviewVisual(word)}</div>`;}
 function quiz2QuestionHeader(word,title,gloss,{jp=false}={}){const visual=quiz2QuestionVisual(word);return `<div class="quiz2-q-header">${visual}<div class="quiz2-q-copy"><h2 class="quiz2-prompt ${jp?'jp':''}" ${jp?'lang="ja"':''}>${esc(title)}</h2><p class="quiz2-gloss">${esc(gloss)}</p></div></div>`;}
