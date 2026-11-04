@@ -91,12 +91,9 @@ function vocabBuildAdaptiveQueue(round,batchIds){
 }
 function vocabAdvanceAdaptive(round){
   if(round.phase==='preview'){round.phase='match';round.matchOrder=shuffle([...vocabCurrentPart(round)]);round.matchIndex=0;vocabPrepareMatch(round,round.matchOrder[0]);return;}
-  if(round.phase==='match'){
-    if(round.matchIndex<round.matchOrder.length-1){round.matchIndex++;vocabPrepareMatch(round,round.matchOrder[round.matchIndex]);return;}
-    round.phase='translate';round.translateOrder=shuffle([...vocabCurrentPart(round)]);round.translateIndex=0;vocabPrepareTranslate(round,round.translateOrder[0]);return;
-  }
+  if(round.phase==='match'){round.phase='translate';vocabPrepareTranslate(round,round.matchOrder[round.matchIndex]);return;}
   if(round.phase==='translate'){
-    if(round.translateIndex<round.translateOrder.length-1){round.translateIndex++;vocabPrepareTranslate(round,round.translateOrder[round.translateIndex]);return;}
+    if(round.matchIndex<round.matchOrder.length-1){round.matchIndex++;round.phase='match';vocabPrepareMatch(round,round.matchOrder[round.matchIndex]);return;}
     if(round.part===0&&round.parts[round.batch+1]){round.part=1;round.phase='preview';vocabResetQuestion(round);return;}
     vocabBuildAdaptiveQueue(round,[...vocabCurrentPart({...round,part:0}),...(round.parts[round.batch+1]||[])]);return;
   }
@@ -158,8 +155,9 @@ function vocabNext(round){
   vocabResetQuestion(round);
   if(round.activity==='adaptive'){vocabAdvanceAdaptive(round);return;}
   if(round.activity==='match'){
-    if(round.phase!=='translate'){round.index++;if(round.index<round.ids.length){vocabPrepareMatch(round,round.ids[round.index]);return;}round.phase='translate';round.index=0;round.translateOrder=shuffle([...round.ids]);vocabPrepareTranslate(round,round.translateOrder[0]);return;}
-    round.index++;if(round.index<round.translateOrder.length)vocabPrepareTranslate(round,round.translateOrder[round.index]);else round.phase='done';return;
+    if(round.phase!=='translate'){round.phase='translate';vocabPrepareTranslate(round,round.ids[round.index]);return;}
+    round.index++;if(round.index<round.ids.length){round.phase='match';vocabPrepareMatch(round,round.ids[round.index]);return;}
+    round.phase='done';return;
   }
   if(round.activity==='kanji'){round.index++;if(round.index<round.questions.length)vocabPrepareKanji(round,round.questions[round.index]);else round.phase='done';return;}
   if(round.activity==='rebuild'){round.index++;if(round.index<round.ids.length)vocabPrepareRebuild(round,round.ids[round.index]);else round.phase='done';return;}
