@@ -19,6 +19,7 @@ const LULU_ART={
 };
 const LULU_FEEDBACK_POOLS={correct:['happy','clap','proud','hop'],wrong:['encouraging','puzzled','disappointed','review']};
 const luluPoolCursor={correct:0,wrong:0};
+const luluPoolBags={correct:[],wrong:[]};
 function luluFallback(){return '<g class="lulu-fallback" fill="#f9d5c8" stroke="#925b38" stroke-width="5"><path d="M20 38Q5 3 35 20Q65 9 83 20Q112 2 96 40Q112 100 57 105Q3 101 20 38Z"/><ellipse cx="58" cy="65" rx="20" ry="14" fill="#efa6a5"/><circle cx="38" cy="46" r="3" fill="#925b38"/><circle cx="77" cy="46" r="3" fill="#925b38"/><path d="M51 63v3m14-3v3"/></g>';}
 const LULU_INK={listening:[23,54,489,439],watching:[0,98,512,397],photographing:[18,68,488,424],smoking:[50,11,431,437],finishing:[0,0,552,482],resting:[0,0,432,481],wave:[42,28,370,390],point:[35,28,362,390],bow:[22,58,341,355],reading:[63,29,315,374],teacher:[20,0,412,407],doctor:[30,19,315,385],thinking:[57,2,351,385],gift:[4,1,390,383],speaking:[0,0,415,406],self:[18,59,266,319],you:[0,78,430,308],teaching:[0,43,435,350],student:[0,73,288,322],examining:[0,14,396,311],working:[0,16,344,300],eating:[0,6,290,314],drinking:[15,25,287,300],waking:[10,0,399,325],sleeping:[0,29,409,305],walking:[0,2,307,337],employeeOriginal:[89,24,630,694],bankerOriginal:[6,14,709,695],researcherOriginal:[0,23,677,701]};
 function luluSprite(pose,cls='',tight=false){
@@ -31,9 +32,12 @@ function luluSprite(pose,cls='',tight=false){
 function luluSvgPose(pose,x,y,width,height){return `<foreignObject class="lulu-piggy" x="${x}" y="${y}" width="${width}" height="${height}">${luluSprite(pose)}</foreignObject>`;}
 function luluChoose(pool){
  const list=LULU_FEEDBACK_POOLS[pool]||LULU_FEEDBACK_POOLS.correct;
- const options=list.filter(pose=>pose!==luluPoolCursor[pool]);
- const choices=options.length?options:list;
- const pose=choices[Math.floor(Math.random()*choices.length)];
+ if(!luluPoolBags[pool]?.length){
+  const bag=shuffle([...list]),last=luluPoolCursor[pool];
+  if(bag[0]===last&&bag.length>1){const swap=1+Math.floor(Math.random()*(bag.length-1));[bag[0],bag[swap]]=[bag[swap],bag[0]];}
+  luluPoolBags[pool]=bag;
+ }
+ const pose=luluPoolBags[pool].shift();
  luluPoolCursor[pool]=pose;
  return pose;
 }
