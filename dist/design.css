@@ -172,3 +172,8 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .question-scene .lesson-product-symbol{width:72px;height:72px;grid-row:span 2}
 .question-scene .lesson-product-symbol svg{width:72px;height:72px}
 .question-word-exercise .conversation-stage{margin-top:0}
+
+.kanji-stack{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin-bottom:8px}
+.kanji-reading{margin:0;font-size:14px;line-height:1.4;font-weight:500;color:var(--md-on-surface-variant)}
+.kanji-form{margin:0;font-size:32px;line-height:1.25;font-weight:500;color:var(--md-on-surface)}
+.kanji-stack .lexical-meaning{margin:4px 0 0;font-size:16px;font-weight:500;line-height:1.5;color:var(--md-on-surface)}

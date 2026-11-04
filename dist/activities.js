@@ -365,13 +365,14 @@ function dialoguePrompt(q){
   return situation+incoming;
 }
 
+function quiz2OpeningGreeting(text){return /^(こんにちは|いらっしゃいませ|はじめまして|はい)[。.]?$/.test(String(text||'').trim());}
+function greetingIsPractised(q,text){
+  const bare=String(text||'').replace(/[。.\s]/g,'');
+  return [q?.kana,q?.target,...(q?.forms||[]).map(form=>form.kana)].filter(Boolean).some(item=>{const target=String(item).replace(/[。.\s]/g,'');return target&&(target===bare||bare.includes(target)||target.includes(bare));});
+}
 function questionWordGameTurns(q){
-  const turns=q.turns||[],you=turns.findIndex(turn=>turn[0]==='you');
-  if(you<=0)return turns.map((turn,index)=>[turn,index]);
-  const opening=turns[0][1]||'';
-  const greeting=/いらっしゃい|こんにちは|^はい[。.]?$/.test(opening);
-  const start=greeting?you:0;
-  return turns.slice(start).map((turn,index)=>[turn,start+index]);
+  const turns=q.turns||[];
+  return turns.map((turn,index)=>[turn,index]).filter(([turn,index])=>index!==0||turn[0]==='you'||!quiz2OpeningGreeting(turn[1])||q.answerSlot?.turn===index||greetingIsPractised(q,turn[1]));
 }
 function questionWordRows(q,visual){
   const text=`${q.sentence||''} ${q.scene||''} ${q.sceneZh||''}`;

@@ -179,9 +179,8 @@ function quiz2GroupsLive(){return QUIZ2_GROUPS.filter(([id])=>quiz2Rows(id).leng
 function quiz2ActiveGroup(){const live=quiz2GroupsLive();return live.some(([id])=>id===state.quiz2Group)?state.quiz2Group:live[0]?.[0]||'facilities';}
 function quiz2NextGroup(after){const ids=QUIZ2_GROUPS.map(group=>group[0]),start=ids.indexOf(after);for(let i=start+1;i<ids.length;i++)if(quiz2Rows(ids[i]).length)return ids[i];return null;}
 function quiz2FormCopy(w){
- const heading=hasKanji(w)?w.c:(w.jp||w.kana||''),reading=w.kana&&heading!==w.kana?`<p class="jp lexical-reading" lang="ja">${esc(w.kana)}</p>`:'';
  const note=learningWordNote(w),ready=wordGameReady(w),tags=WORD_CLASSIFICATION.get(w.id);
- return `<div class="quiz2-form"><h2 class="jp" lang="ja">${esc(heading)}</h2>${reading}<p class="lexical-meaning">${esc(w.zh||'')}</p><p class="quiz2-en">${esc(w.en||'')}</p><p class="small muted">${esc(sourceTag(w))}${tags?.tags?.includes('counter')?' · '+nL('Counter','量詞'):''}</p>${ready?`<span class="status-badge">${esc(translateText(status(w.id)))}</span>`:''}${note?`<p class="small quiz2-note">${esc(note)}</p>`:''}</div>`;
+ return `<div class="quiz2-form">${vocabularyWordStack(w)}<p class="small muted">${esc(sourceTag(w))}${tags?.tags?.includes('counter')?' · '+nL('Counter','量詞'):''}</p>${ready?`<span class="status-badge">${esc(translateText(status(w.id)))}</span>`:''}${note?`<p class="small quiz2-note">${esc(note)}</p>`:''}</div>`;
 }
 function quiz2WideScene(word){
  const plan=LULU_WORD_PLANS[word.id];if(!plan)return false;
