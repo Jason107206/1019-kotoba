@@ -7,18 +7,9 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
@@ -50,12 +41,3 @@ jobs:
         run: node tests/number-matching.cjs
       - name: Verify Chapters 3 and 4
         run: node tests/chapters-3-4.cjs
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Upload static website
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: dist
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
