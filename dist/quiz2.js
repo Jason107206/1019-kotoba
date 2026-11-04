@@ -188,8 +188,8 @@ function quiz2GroupsLive(){return QUIZ2_GROUPS.filter(([id])=>quiz2Rows(id).leng
 function quiz2ActiveGroup(){const live=quiz2GroupsLive();return live.some(([id])=>id===state.quiz2Group)?state.quiz2Group:live[0]?.[0]||'facilities';}
 function quiz2NextGroup(after){const ids=QUIZ2_GROUPS.map(group=>group[0]),start=ids.indexOf(after);for(let i=start+1;i<ids.length;i++)if(quiz2Rows(ids[i]).length)return ids[i];return null;}
 function quiz2FormCopy(w){
- const note=learningWordNote(w),ready=wordGameReady(w),tags=WORD_CLASSIFICATION.get(w.id);
- return `<div class="quiz2-form">${vocabularyWordStack(w)}<p class="small muted">${esc(sourceTag(w))}${tags?.tags?.includes('counter')?' · '+nL('Counter','量詞'):''}</p>${ready?`<span class="status-badge">${esc(translateText(status(w.id)))}</span>`:''}${note?`<p class="small quiz2-note">${esc(note)}</p>`:''}</div>`;
+ const note=learningWordNote(w);
+ return `<div class="quiz2-form">${vocabularyWordStack(w)}${note?`<p class="small quiz2-note">${esc(note)}</p>`:''}</div>`;
 }
 function quiz2WideScene(word){
  const plan=LULU_WORD_PLANS[word.id];if(!plan)return false;

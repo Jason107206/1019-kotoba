@@ -80,7 +80,6 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-card .lexical-meaning{margin:6px 0 0;font-weight:500;line-height:1.45}
 .quiz2-card .quiz2-en{margin:2px 0 0;color:var(--md-on-surface-variant);font-size:14px;line-height:1.45}
 .quiz2-card .small{margin:6px 0 0;line-height:1.45}
-.quiz2-card .status-badge{margin-top:8px}
 .quiz2-card .quiz2-form+.quiz2-form{margin-top:12px;padding-top:12px;border-top:1px solid var(--md-outline-variant)}.quiz2-card-pair .lexical-card-visual{align-self:start}
 .quiz2-card .lexical-card-visual .vocabulary-visual{min-height:0!important;width:100%;height:100%;max-width:112px;margin:0!important;display:flex;align-items:center;justify-content:center}
 .quiz2-card .lexical-card-visual .vocabulary-visual>svg{display:block;width:100%;height:100%;max-width:112px;max-height:112px;object-fit:contain;margin-inline:auto}
@@ -181,10 +180,11 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-card .lexical-card-copy,.quiz2-card .quiz2-form,.quiz2-card .kanji-stack{align-items:flex-start;text-align:left}
 .quiz2-card .kanji-stack{width:100%}
 .quiz2-card .kanji-reading,.quiz2-card .kanji-form,.quiz2-card .lexical-meaning,.quiz2-card .lexical-reading,.quiz2-card .small,.quiz2-card .quiz2-note,.quiz2-card h2{text-align:left;margin-inline:0}
-.quiz2-card .status-badge{align-self:flex-start}
 
 .vocab-revision{max-width:760px;margin-inline:auto}
-.vocab-instruction{margin:0 0 16px;color:var(--md-on-surface-variant)}
+.vocab-instruction{margin:0 0 16px;color:var(--md-on-surface-variant);text-align:left}
+.vocab-revision .vocab-target{align-items:flex-start;text-align:left;width:100%;margin:0}
+.vocab-revision .vocab-target .kanji-reading,.vocab-revision .vocab-target .kanji-form{text-align:left;margin-inline:0}
 .vocab-choice-grid,.vocab-kanji-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
 .vocab-choice,.vocab-kanji-option{display:flex;flex-direction:column;align-items:center;gap:8px;min-height:148px;padding:12px;border:1px solid var(--md-outline-variant);border-radius:16px;background:var(--md-surface-container-lowest);text-align:center}
 .vocab-choice.selected,.vocab-kanji-option.selected{border-color:var(--md-primary);background:var(--md-primary-container)}
