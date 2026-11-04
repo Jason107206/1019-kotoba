@@ -488,8 +488,8 @@ body:has(.modal-backdrop:not([hidden])), body:has(.navigation-open) { overflow: 
 .back-button { display: inline-flex; }
 .feedback-copy { min-width: 0; overflow-wrap: anywhere; }
 .feedback-copy p { margin-top: var(--space-1); }
-.update-button { display: inline-flex; align-items: center; gap: var(--space-2); background: #326941; border-color: #326941; color: #fff; }
-.update-button .icon { width: 18px; height: 18px; }
+.update-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #326941; border-color: #326941; color: #fff; }
+.update-button .icon { width: 24px; height: 24px; fill: currentColor; stroke: none; }
 .update-button:hover { background: #285735; border-color: #285735; color: #fff; }
 .update-button:active { background: #1b4427; border-color: #1b4427; }
 .update-button:focus-visible { outline-color: #326941; }
