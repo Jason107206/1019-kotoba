@@ -177,3 +177,23 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .kanji-reading{margin:0;font-size:14px;line-height:1.4;font-weight:500;color:var(--md-on-surface-variant)}
 .kanji-form{margin:0;font-size:32px;line-height:1.25;font-weight:500;color:var(--md-on-surface)}
 .kanji-stack .lexical-meaning{margin:4px 0 0;font-size:16px;font-weight:500;line-height:1.5;color:var(--md-on-surface)}
+
+.quiz2-card .lexical-card-copy,.quiz2-card .quiz2-form,.quiz2-card .kanji-stack{align-items:flex-start;text-align:left}
+.quiz2-card .kanji-stack{width:100%}
+.quiz2-card .kanji-reading,.quiz2-card .kanji-form,.quiz2-card .lexical-meaning,.quiz2-card .lexical-reading,.quiz2-card .small,.quiz2-card .quiz2-note,.quiz2-card h2{text-align:left;margin-inline:0}
+.quiz2-card .status-badge{align-self:flex-start}
+
+.vocab-revision{max-width:760px;margin-inline:auto}
+.vocab-instruction{margin:0 0 16px;color:var(--md-on-surface-variant)}
+.vocab-choice-grid,.vocab-kanji-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.vocab-choice,.vocab-kanji-option{display:flex;flex-direction:column;align-items:center;gap:8px;min-height:148px;padding:12px;border:1px solid var(--md-outline-variant);border-radius:16px;background:var(--md-surface-container-lowest);text-align:center}
+.vocab-choice.selected,.vocab-kanji-option.selected{border-color:var(--md-primary);background:var(--md-primary-container)}
+.vocab-choice.correct,.vocab-kanji-option.correct{border-color:var(--md-success);background:var(--md-success-container)}
+.vocab-choice.wrong,.vocab-kanji-option.wrong{border-color:var(--md-error);background:var(--md-error-container)}
+.vocab-choice-art{width:88px;height:88px;display:flex;align-items:center;justify-content:center}
+.vocab-choice-art svg,.vocab-choice-art img{max-width:88px;max-height:88px;object-fit:contain}
+.vocab-kanji-svg{display:inline-flex;width:42px;height:42px;vertical-align:middle}
+.vocab-kanji-svg svg{width:42px;height:42px}
+.vocab-kanji-diff{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;padding:12px;border-radius:16px;background:var(--md-surface-container)}
+.practice-actions{flex-wrap:wrap}
+@media(max-width:599px){.vocab-choice-grid,.vocab-kanji-grid{grid-template-columns:1fr 1fr;gap:8px}.vocab-choice,.vocab-kanji-option{min-height:132px;padding:10px}}
