@@ -29,7 +29,14 @@ function luluSprite(pose,cls='',tight=false){
 }
 // SVG scene participants use the same source/crop registry and fallback as HTML cards.
 function luluSvgPose(pose,x,y,width,height){return `<foreignObject class="lulu-piggy" x="${x}" y="${y}" width="${width}" height="${height}">${luluSprite(pose)}</foreignObject>`;}
-function luluChoose(pool){const list=LULU_FEEDBACK_POOLS[pool],index=luluPoolCursor[pool]++%list.length;return list[index];}
+function luluChoose(pool){
+ const list=LULU_FEEDBACK_POOLS[pool]||LULU_FEEDBACK_POOLS.correct;
+ const options=list.filter(pose=>pose!==luluPoolCursor[pool]);
+ const choices=options.length?options:list;
+ const pose=choices[Math.floor(Math.random()*choices.length)];
+ luluPoolCursor[pool]=pose;
+ return pose;
+}
 function luluCommitFeedback(holder,{key,correct=0,total=1,assisted=false,revealed=false,selfAssessed=false}={}){
  if(!holder)return;key??=String(holder.index??'result');if(holder.luluFeedback?.key===key)return holder.luluFeedback;
  const outcome=selfAssessed?'self':revealed?'revealed':correct>0&&correct<total?'partial':correct===total?(assisted?'assisted':'correct'):'wrong';
