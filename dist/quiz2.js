@@ -106,7 +106,13 @@ function quiz2PairRows(words){
  for(const w of words){if(seen.has(w.id))continue;seen.add(w.id);const mate=byId.get(QUIZ2_PAIR.get(w.id)||'');if(mate&&!seen.has(mate.id)){seen.add(mate.id);rows.push([w,mate].sort((a,b)=>a.id.localeCompare(b.id,'en',{numeric:true})));}else rows.push([w]);}
  return rows;
 }
-function quiz2Rows(group){return quiz2PairRows(quiz2Words().filter(w=>quiz2Bucket(w)===group));}
+function quiz2KatakanaOnly(w){
+ if(hasKanji(w))return false;
+ const written=(w.c&&w.c!=='X'?w.c:w.jp||w.kana||'');
+ const core=[...written].filter(ch=>!/[\s\u3000・･.,。、！？!?()（）「」『』\-—–/／ーｰ]/.test(ch));
+ return core.length>0&&core.every(ch=>/\p{Script=Katakana}/u.test(ch));
+}
+function quiz2Rows(group){return quiz2PairRows(quiz2Words().filter(w=>quiz2Bucket(w)===group&&!quiz2KatakanaOnly(w)));}
 function quiz2CombinedRows(groupIds){
  const seen=new Set(),rows=[];
  for(const row of groupIds.flatMap(id=>quiz2Rows(id))){const fresh=row.filter(w=>!seen.has(w.id));fresh.forEach(w=>seen.add(w.id));if(fresh.length)rows.push(fresh);}
@@ -188,8 +194,9 @@ function quiz2GroupsLive(){return QUIZ2_GROUPS.filter(([id])=>quiz2Rows(id).leng
 function quiz2ActiveGroup(){const live=quiz2GroupsLive();return live.some(([id])=>id===state.quiz2Group)?state.quiz2Group:live[0]?.[0]||'facilities';}
 function quiz2NextGroup(after){const ids=QUIZ2_GROUPS.map(group=>group[0]),start=ids.indexOf(after);for(let i=start+1;i<ids.length;i++)if(quiz2Rows(ids[i]).length)return ids[i];return null;}
 function quiz2FormCopy(w){
- const note=learningWordNote(w);
- return `<div class="quiz2-form">${vocabularyWordStack(w)}${note?`<p class="small quiz2-note">${esc(note)}</p>`:''}</div>`;
+ const note=learningWordNote(w),kana=w.kana||w.jp||'',kanji=hasKanji(w)&&w.c&&w.c!=='X'&&w.c!==kana?w.c:'';
+ const head=kanji?`<span class="quiz2-kana jp" lang="ja">${esc(kana)}</span><span class="quiz2-sep" aria-hidden="true"> • </span><span class="quiz2-kanji jp" lang="ja">${esc(kanji)}</span>`:`<span class="quiz2-kana jp" lang="ja">${esc(kana)}</span>`;
+ return `<div class="quiz2-form"><p class="quiz2-head">${head}</p><p class="quiz2-meaning">${esc(nL(w.en,w.zh))}</p>${note?`<p class="small quiz2-note">${esc(note)}</p>`:''}</div>`;
 }
 function quiz2WideScene(word){
  const plan=LULU_WORD_PLANS[word.id];if(!plan)return false;

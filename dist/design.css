@@ -106,9 +106,9 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-rebuild .reply-feedback.skipped .lulu-outcome-label{margin:0;font-weight:500}
 .quiz2-hold{display:flex;flex-direction:column;gap:8px}
 .quiz2-rebuild .token-bank{padding-top:12px}
-.quiz2-rebuild .vocabulary-slot{display:inline-flex;align-items:center;justify-content:center;min-width:52px;min-height:56px;padding:8px 12px;border:1px solid var(--md-outline);border-radius:12px;font-size:22px}
-.quiz2-rebuild .vocabulary-slot.empty{background:var(--md-surface-container-lowest);border-style:dashed;color:var(--md-on-surface-variant);font-size:12px}
-.quiz2-rebuild .vocabulary-slot.filled,.quiz2-rebuild .token-bank .tile.selected{background:var(--md-primary-container);color:var(--md-on-primary-container);border-color:var(--md-primary);visibility:visible;opacity:1;box-shadow:none}
+.quiz2-rebuild .vocabulary-answer-slots,.vocab-revision .vocabulary-answer-slots{display:flex;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;justify-content:flex-start;gap:8px;min-height:0;border-style:dashed}
+.quiz2-rebuild .vocabulary-slot,.vocab-revision .vocabulary-slot{display:inline-flex;align-items:center;justify-content:center;flex:0 0 48px;width:48px;height:48px;min-width:48px;min-height:48px;max-width:48px;max-height:48px;padding:0;border:1px dashed var(--md-outline);border-radius:12px;background:var(--md-surface-container-lowest);color:var(--md-on-surface-variant);font-size:12px;line-height:1;box-sizing:border-box;text-align:center}
+.quiz2-rebuild .vocabulary-slot.filled,.vocab-revision .vocabulary-slot.filled,.quiz2-rebuild .token-bank .tile.selected{background:var(--md-primary-container);color:var(--md-on-primary-container);border:1px dashed var(--md-primary);font-size:20px;visibility:visible;opacity:1;box-shadow:none}
 .quiz2-rebuild .token-area .tile{background:var(--md-primary-container);color:var(--md-on-primary-container)}
 .quiz2-card-scene,.quiz2-card.quiz2-card-banner{grid-template-columns:112px minmax(0,1fr)}
 .quiz2-card-scene .lexical-card-visual,.quiz2-card.quiz2-card-banner .lexical-card-visual{width:112px;max-width:112px;height:112px;margin:0}
@@ -206,3 +206,27 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
  .quiz2-mode-menu{flex-direction:column;align-items:stretch}
  .quiz2-mode-menu .button{width:100%;flex:0 0 auto}
 }
+
+.quiz2-form{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;min-width:0}
+.quiz2-head,.quiz2-meaning{margin:0;text-align:left}
+.quiz2-head{display:flex;flex-wrap:wrap;align-items:baseline;line-height:1.4}
+.quiz2-kana{font-size:16px;font-weight:500;color:var(--md-on-surface)}
+.quiz2-sep{margin:0 6px;color:var(--md-on-surface-variant)}
+.quiz2-kanji{font-size:18px;font-weight:700;color:var(--md-on-surface)}
+.quiz2-meaning{font-size:15px;line-height:1.5;color:var(--md-on-surface)}
+.vocab-choice-text{min-height:64px;justify-content:center;padding:12px 16px}
+.vocab-choice-text .vocab-choice-meaning{font-size:18px;line-height:1.4}
+
+.translate-prompt{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.translate-lulu{width:72px;height:72px;flex:0 0 72px;display:flex;align-items:center;justify-content:center}
+.translate-lulu .lulu-art{width:72px;height:72px}
+.translate-bubble{flex:1;min-width:0;padding:12px 16px;border:1px solid var(--md-outline-variant);border-radius:16px;background:var(--md-surface-container-low);color:var(--md-on-surface);line-height:1.5}
+.translate-options{display:flex;flex-direction:column;gap:12px}
+.translate-option{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;width:100%;min-height:64px;padding:10px 16px;border:1px solid var(--md-outline);border-radius:12px;background:transparent;color:var(--md-on-surface);text-align:left}
+.translate-option.selected{border-color:var(--md-primary);background:var(--md-primary-container)}
+.translate-option.correct{border-color:var(--md-success);background:var(--md-success-container)}
+.translate-option.wrong{border-color:var(--md-error);background:var(--md-error-container)}
+.translate-reading{font-size:13px;line-height:1.3;color:var(--md-on-surface-variant)}
+.translate-kanji{font-size:20px;line-height:1.3;font-weight:500}
+
+.game-progress-gap{flex:1 1 auto;min-width:48px}
