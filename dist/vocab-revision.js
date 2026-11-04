@@ -1,6 +1,7 @@
 'use strict';
 // Adaptive vocabulary revision. Kanji stroke paths come from KanjiVG (CC BY-SA 3.0).
-function vocabEligibleKanji(word){return hasKanji(word)?[...word.c].filter(char=>KANJI_DISTRACTORS[char]):[];}
+const REGIONAL_KANJI=new Set(['所','食','話','試','議','社','画','図','昼','曜','館','機','靴','終','強','部','郵','銀','後','術','階','号','段','新','電','会','番','映']);
+function vocabEligibleKanji(word){return hasKanji(word)?[...word.c].filter(char=>REGIONAL_KANJI.has(char)):[];}
 function vocabRevisionPool(){return scopedWords('vocabulary',true);}
 function vocabKanjiQuestions(words){return words.flatMap(w=>vocabEligibleKanji(w).map(char=>({id:w.id,char})));}
 function vocabChunk(ids,size=5){const parts=[];for(let i=0;i<ids.length;i+=size)parts.push(ids.slice(i,i+size));return parts;}
@@ -69,8 +70,8 @@ function vocabPrepareTranslate(round,id){
   round.q={id,stage:'translate'};round.choices=shuffle([word,...distractors]).map(item=>item.id);round.selected=null;round.checked=false;round.final=false;round.feedback=null;round.luluFeedback=null;
 }
 function vocabPrepareKanji(round,question){
-  const asset=KANJI_DISTRACTORS[question.char];if(!asset)return false;
-  const options=shuffle([{kind:'correct',svg:asset.correct},...asset.options]);
+  if(!REGIONAL_KANJI.has(question.char))return false;
+  const options=shuffle([{kind:'correct',glyph:'jp'},{kind:'tc',glyph:'tc'}]);
   round.q={id:question.id,stage:'kanji',char:question.char};round.choices=options;round.selected=null;round.checked=false;round.final=false;round.feedback=null;round.luluFeedback=null;return true;
 }
 function vocabPrepareRebuild(round,id){const word=wordBy(id);round.q={id,stage:'rebuild'};round.tileBank=vocabularyTileBank(word);round.chosen=[];round.checked=false;round.final=false;round.feedback=null;round.luluFeedback=null;round.result=null;}
@@ -188,11 +189,11 @@ function vocabTranslateCard(round){
   return `<p class="vocab-instruction">${esc(nL('Choose the Japanese translation.','選擇日文翻譯。'))}</p><div class="translate-prompt"><span class="translate-lulu">${luluSprite('speaking')}</span><div class="translate-bubble">${esc(vocabMeaning(word))}</div></div><div class="translate-options" role="group">${choices}</div>`;
 }
 function vocabKanjiCard(round){
-  const word=wordBy(round.q.id),asset=KANJI_DISTRACTORS[round.q.char];
-  const options=round.choices.map((option,index)=>{const selected=round.selected===index,correct=round.checked&&option.kind==='correct',wrong=round.checked&&selected&&option.kind!=='correct';return `<button type="button" class="vocab-kanji-option ${selected?'selected ':''}${correct?'correct ':''}${wrong?'wrong ':''}" data-vocab="kanji" data-vocab-index="${index}" ${round.checked?'disabled':''} aria-pressed="${selected}">${vocabKanjiWord(word,round.q.char,option.svg)}</button>`;}).join('');
-  const selected=round.choices[round.selected];
-  const diff=round.checked&&round.feedback==='wrong'?`<div class="vocab-kanji-diff"><div><span>${esc(nL('Your choice','你的選擇'))}</span>${vocabKanjiWord(word,round.q.char,selected.svg)}</div><div><span>${esc(nL('Correct form','正確寫法'))}</span>${vocabKanjiWord(word,round.q.char,asset.correct)}</div><p>${esc(vocabDiffText(selected.kind))}</p></div>`:'';
-  return `<p class="vocab-instruction">${esc(nL('Choose the correctly written Japanese form.','選擇書寫正確的日文。'))}</p><p class="jp vocab-kana" lang="ja">${esc(word.kana)}</p><p class="lexical-meaning">${esc(vocabMeaning(word))}</p><div class="vocab-kanji-grid" role="group">${options}</div>${diff}`;
+  const word=wordBy(round.q.id),char=round.q.char,selected=round.choices[round.selected];
+  const blank=selected?`<span class="kanji-blank filled glyph-${selected.glyph}" lang="${selected.glyph==='jp'?'ja':'zh-Hant'}">${esc(char)}</span>`:`<span class="kanji-blank" aria-label="${esc(nL('Blank','空格'))}"></span>`;
+  const wordHtml=[...word.c].map(item=>item===char?blank:`<span>${esc(item)}</span>`).join('');
+  const options=round.choices.map((option,index)=>{const sel=round.selected===index,correct=round.checked&&option.kind==='correct',wrong=round.checked&&sel&&option.kind!=='correct';return `<button type="button" class="kanji-glyph-option ${sel?'selected ':''}${correct?'correct ':''}${wrong?'wrong ':''}" data-vocab="kanji" data-vocab-index="${index}" data-glyph="${option.glyph}" ${round.checked?'disabled':''} aria-pressed="${sel}"><span class="glyph-${option.glyph}" lang="${option.glyph==='jp'?'ja':'zh-Hant'}">${esc(char)}</span></button>`;}).join('');
+  return `<h3 class="jp kanji-reading" lang="ja">${esc(word.kana)}</h3><p class="jp kanji-word" lang="ja">${wordHtml}</p><div class="kanji-glyph-row" role="group">${options}</div>`;
 }
 function vocabKanjiWord(word,target,svg){return `<span class="vocab-kanji-word jp" lang="ja">${[...word.c].map(char=>char===target?`<span class="vocab-kanji-svg">${svg}</span>`:esc(char)).join('')}</span>`;}
 function vocabDiffText(kind){return kind==='missing'?nL('A stroke is missing.','少了一筆。'):kind==='extra'?nL('An extra stroke was added.','多了一筆。'):nL('A stroke is in the wrong place.','有一筆位置不對。');}

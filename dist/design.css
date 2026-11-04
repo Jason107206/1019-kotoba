@@ -69,10 +69,10 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .filter-chip.quiz2-category{gap:6px}
 .quiz2-check{width:18px;height:18px;flex:0 0 auto}
 .quiz2-chapters{margin-top:20px}
-.quiz2-preview{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:12px;align-items:start}
+.quiz2-preview{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:12px;align-items:start}
 .quiz2-preview-title{margin:16px 0 0;font-size:16px;font-weight:600;line-height:1.4}
 .quiz2-count{margin-left:8px;color:var(--md-on-surface-variant);font-size:13px;font-weight:500}
-.quiz2-card{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;align-items:start;padding:16px;border-radius:var(--shape-card);overflow:hidden}
+.quiz2-card{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;align-items:center;padding:16px;border:0;box-shadow:none;background:var(--md-surface-container-highest);border-radius:12px;overflow:hidden;height:auto;min-height:0}
 .quiz2-card .lexical-card-visual{width:112px;height:112px;aspect-ratio:1;flex:0 0 112px;min-width:0;align-self:center;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .quiz2-card .lexical-card-copy{min-width:0}
 .quiz2-card h2{margin:0;font-size:24px;line-height:1.35;font-weight:560}
@@ -210,10 +210,10 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .quiz2-form{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;min-width:0}
 .quiz2-head,.quiz2-meaning{margin:0;text-align:left}
 .quiz2-head{display:flex;flex-wrap:wrap;align-items:baseline;line-height:1.4}
-.quiz2-kana{font-size:16px;font-weight:500;color:var(--md-on-surface)}
-.quiz2-sep{margin:0 6px;color:var(--md-on-surface-variant)}
-.quiz2-kanji{font-size:18px;font-weight:700;color:var(--md-on-surface)}
-.quiz2-meaning{font-size:15px;line-height:1.5;color:var(--md-on-surface)}
+.quiz2-kana{font-size:22px;font-weight:500;color:var(--md-on-surface);line-height:1.3}
+.quiz2-sep{margin:0 6px;color:var(--md-on-surface-variant);font-size:14px;font-weight:400}
+.quiz2-kanji{font-size:14px;font-weight:400;color:var(--md-on-surface-variant);line-height:1.4}
+.quiz2-meaning{margin-top:2px;font-size:14px;font-weight:400;line-height:1.4;color:var(--md-on-surface)}
 .vocab-choice-text{min-height:64px;justify-content:center;padding:12px 16px}
 .vocab-choice-text .vocab-choice-meaning{font-size:18px;line-height:1.4}
 
@@ -230,3 +230,23 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .translate-kanji{font-size:20px;line-height:1.3;font-weight:500}
 
 .game-progress-gap{flex:1 1 auto;min-width:48px}
+
+.kanji-reading{margin:0 0 8px;font-size:20px;font-weight:500;text-align:left}
+.kanji-word{display:flex;align-items:center;justify-content:flex-start;gap:2px;margin:0 0 16px;font-size:32px;font-weight:500;text-align:left}
+.kanji-blank{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;margin:0 4px;border:1px dashed var(--md-outline);border-radius:8px}
+.kanji-blank.filled{border-style:solid;border-color:var(--md-primary)}
+.kanji-glyph-row{display:flex;justify-content:flex-start;gap:12px}
+.kanji-glyph-option{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border:1px solid var(--md-outline);border-radius:12px;background:transparent;color:var(--md-on-surface);font-size:32px;font-weight:500}
+.kanji-glyph-option.selected{border-color:var(--md-primary);background:var(--md-primary-container)}
+.kanji-glyph-option.correct{border-color:var(--md-success);background:var(--md-success-container)}
+.kanji-glyph-option.wrong{border-color:var(--md-error);background:var(--md-error-container)}
+.glyph-jp{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+.glyph-tc{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+
+.quiz2-card,.quiz2-card-scene,.quiz2-card.quiz2-card-banner{grid-template-columns:48px minmax(0,1fr)!important;align-items:center;min-height:0;height:auto}
+.quiz2-card .lexical-card-visual,.quiz2-card-scene .lexical-card-visual,.quiz2-card.quiz2-card-banner .lexical-card-visual{width:48px!important;max-width:48px!important;height:48px!important;flex-basis:48px;margin:0}
+.quiz2-card .lexical-card-visual .vocabulary-visual,.quiz2-card .lexical-card-visual .vocabulary-visual>svg,.quiz2-card .quiz2-object-visual>svg,.quiz2-card.quiz2-card-banner .lulu-word-visual{width:48px!important;height:48px!important;max-width:48px!important;max-height:48px!important}
+.quiz2-card .lexical-card-copy{min-width:0}
+.quiz2-head,.quiz2-meaning,.quiz2-form{overflow-wrap:anywhere;text-align:left}
+@media(max-width:599px){.quiz2-card,.quiz2-card-scene,.quiz2-card.quiz2-card-banner{grid-template-columns:48px minmax(0,1fr)!important;padding:16px;gap:16px}}
+@media(max-width:380px){.quiz2-card,.quiz2-card-scene,.quiz2-card.quiz2-card-banner{grid-template-columns:48px minmax(0,1fr)!important;gap:16px}}
