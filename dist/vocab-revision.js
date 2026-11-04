@@ -159,8 +159,7 @@ function vocabRevisionPage(){
   const notice=round.feedback?`<div class="quiz2-result">${quiz2Notice(round.feedback,round)}</div>`:'';
   const ready=round.phase==='preview'||round.q?.stage==='match'&&round.selected||round.q?.stage==='kanji'&&round.selected!=null||round.q?.stage==='rebuild'&&rebuildReady(round.chosen.map(i=>round.tileBank[i]).join(''),vocabularyReading(wordBy(round.q.id)))||round.q?.stage==='recall';
   const action=round.phase==='preview'?`<button type="button" class="button primary" data-vocab="continue">${nL('Continue','繼續')}</button>`:round.final?`<button type="button" class="button primary" data-vocab="next">${nL('Next','下一個')}</button>`:`<button type="button" class="button primary" data-vocab="submit" ${ready?'':'disabled'}>${nL('Submit','提交')}</button>`;
-  const batch=round.activity==='adaptive'?`<p class="small muted">${esc(vocabStageLabel(round))} · ${esc(nL('Batch','批次'))} ${Math.floor(round.batch/2)+1}</p>`:`<p class="small muted">${esc(vocabStageLabel(round))}</p>`;
-  return `<section class="study-wrap vocab-revision"><h1 class="sr-only">${esc(vocabStageLabel(round))}</h1>${batch}${body}${notice}<div class="card-actions">${action}</div></section>`;
+  return `<section class="study-wrap vocab-revision"><h1 class="sr-only">${esc(vocabStageLabel(round))}</h1>${body}${notice}<div class="card-actions">${action}</div></section>`;
 }
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-vocab]');if(!button||button.disabled)return;
