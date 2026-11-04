@@ -197,3 +197,12 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .vocab-kanji-diff{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;padding:12px;border-radius:16px;background:var(--md-surface-container)}
 .practice-actions{flex-wrap:wrap}
 @media(max-width:599px){.vocab-choice-grid,.vocab-kanji-grid{grid-template-columns:1fr 1fr;gap:8px}.vocab-choice,.vocab-kanji-option{min-height:132px;padding:10px}}
+
+.quiz2-mode-menu{align-items:stretch;justify-content:flex-start;flex-wrap:wrap;gap:12px;margin-top:16px}
+.quiz2-mode-menu .button{min-height:40px;height:40px;padding:0 24px;border-radius:20px;width:auto;min-width:0;flex:0 0 auto}
+.quiz2-mode-menu .button.primary{background:var(--md-primary);color:var(--md-on-primary);border-color:transparent}
+.quiz2-mode-menu .button:not(.primary){background:transparent;color:var(--md-primary);border:1px solid var(--md-outline)}
+@media(max-width:599px){
+ .quiz2-mode-menu{flex-direction:column;align-items:stretch}
+ .quiz2-mode-menu .button{width:100%;flex:0 0 auto}
+}

@@ -180,8 +180,8 @@ function quiz2CategoryField(){
 function quiz2VocabWords(){const id=quiz2Selected('vocab')[0];return id?quiz2Rows(id).flat():[];}
 function quiz2VocabActions(){
  const words=quiz2VocabWords(),kanji=words.some(w=>vocabEligibleKanji(w).length),off=words.length?'':'disabled';
- const button=(kind,en,zh,tone='ghost')=>`<button type="button" class="button ${tone}" data-quiz2="${kind}" ${off}>${nL(en,zh)}</button>`;
- return `<div class="card-actions quiz2-start">${button('adaptive','Adaptive revision','自適應溫習','primary')}${button('matching','Matching','配對')}${kanji?button('kanji','Choose the correct kanji','選擇正確漢字'):''}${button('rebuild','Rebuild','重組')}${button('recall','Recall','回想')}</div>`;
+ const button=(kind,en,zh,tone='')=>`<button type="button" class="button${tone?` ${tone}`:''}" data-quiz2="${kind}" ${off}>${nL(en,zh)}</button>`;
+ return `<div class="card-actions quiz2-start quiz2-mode-menu" role="group" aria-label="${esc(nL('Practice method','練習方式'))}">${button('adaptive','Adaptive revision','自適應溫習','primary')}${button('matching','Matching','配對')}${kanji?button('kanji','Choose the correct kanji','選擇正確漢字'):''}${button('rebuild','Rebuild','重組')}${button('recall','Recall','回想')}</div>`;
 }
 function quiz2GroupMeta(id){return QUIZ2_GROUPS.find(group=>group[0]===id)||QUIZ2_GROUPS[0];}
 function quiz2GroupsLive(){return QUIZ2_GROUPS.filter(([id])=>quiz2Rows(id).length);}
