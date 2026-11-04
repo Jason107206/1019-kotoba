@@ -21,20 +21,22 @@ function vocabAfterMatch(round,word,ok){
   if(ok){const char=vocabNextKanji(word,round);vocabEnqueue(round,char?{id:word.id,stage:'kanji',char}:{id:word.id,stage:'rebuild'});}
   else vocabEnqueue(round,{id:word.id,stage:'match'});
 }
-function vocabStartAdaptive(words){
+function vocabStartAdaptive(words,home='vocabulary-content'){
   const ids=shuffle(words.map(w=>w.id)),parts=vocabChunk(ids);
-  state.learningReturn='vocabulary-content';
+  state.learningReturn=home;
   state.round={mode:'vocab-revision',activity:'adaptive',ids,total:ids.length,completed:[],parts,batch:0,phase:'preview',part:0,matchOrder:[],matchIndex:0,firstMatch:{},kanjiOk:{},queue:[],queueIndex:0,stageLabel:'Preview'};
   vocabResetQuestion(state.round);state.view='vocab-revision';save();render();window.scrollTo({top:0,behavior:'auto'});
 }
-function vocabStartIndependent(activity,words){
+function vocabStartIndependent(activity,words,home='vocabulary-content'){
   const ids=shuffle(words.map(w=>w.id));
   const questions=activity==='kanji'?shuffle(vocabKanjiQuestions(words)):[];
-  state.learningReturn='vocabulary-content';
+  state.learningReturn=home;
   state.round={mode:'vocab-revision',activity,ids,questions,total:activity==='kanji'?questions.length:ids.length,completed:[],index:0,firstMatch:{},kanjiOk:{},stageLabel:activity};
   vocabResetQuestion(state.round);
   if(activity==='match')vocabPrepareMatch(state.round,ids[0]);
-  if(activity==='kanji')vocabPrepareKanji(state.round,questions[0]);
+  else if(activity==='kanji')vocabPrepareKanji(state.round,questions[0]);
+  else if(activity==='rebuild')vocabPrepareRebuild(state.round,ids[0]);
+  else if(activity==='recall')vocabPrepareRecall(state.round,ids[0]);
   state.view='vocab-revision';save();render();window.scrollTo({top:0,behavior:'auto'});
 }
 function vocabCurrentPart(round){return round.parts[round.batch+round.part]||[];}
@@ -108,6 +110,8 @@ function vocabNext(round){
   if(round.activity==='adaptive'){vocabAdvanceAdaptive(round);return;}
   if(round.activity==='match'){round.index++;if(round.index<round.ids.length)vocabPrepareMatch(round,round.ids[round.index]);else round.phase='done';return;}
   if(round.activity==='kanji'){round.index++;if(round.index<round.questions.length)vocabPrepareKanji(round,round.questions[round.index]);else round.phase='done';return;}
+  if(round.activity==='rebuild'){round.index++;if(round.index<round.ids.length)vocabPrepareRebuild(round,round.ids[round.index]);else round.phase='done';return;}
+  if(round.activity==='recall'){round.index++;if(round.index<round.ids.length)vocabPrepareRecall(round,round.ids[round.index]);else round.phase='done';return;}
 }
 function vocabStageLabel(round){
   if(round.phase==='done')return nL('Complete','完成');

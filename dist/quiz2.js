@@ -112,7 +112,7 @@ function quiz2CombinedRows(groupIds){
  for(const row of groupIds.flatMap(id=>quiz2Rows(id))){const fresh=row.filter(w=>!seen.has(w.id));fresh.forEach(w=>seen.add(w.id));if(fresh.length)rows.push(fresh);}
  return rows;
 }
-function quiz2Mode(){return ['rebuild','recall','questions','particles'].includes(state.quiz2Method)?state.quiz2Method:'rebuild';}
+function quiz2Mode(){const method=state.quiz2Method==='rebuild'||state.quiz2Method==='recall'?'vocab':state.quiz2Method;return ['vocab','questions','particles'].includes(method)?method:'vocab';}
 function quiz2CategoryOptions(method=quiz2Mode()){
  if(method==='questions'){
   const group=LEARNING_TAXONOMY.find(item=>item.id==='questions');
@@ -125,18 +125,20 @@ function quiz2CategoryOptions(method=quiz2Mode()){
 function quiz2NormalizeCategories(){
  const stored=state.quiz2Categories&&typeof state.quiz2Categories==='object'?state.quiz2Categories:{};
  const next={};
- for(const method of ['rebuild','recall','questions','particles']){
+ for(const method of ['vocab','rebuild','recall','questions','particles']){
   const available=quiz2CategoryOptions(method).map(item=>item[0]);
   let selected=Array.isArray(stored[method])?stored[method].map(String):null;
   if(!selected){
-   if(method==='rebuild'||method==='recall')selected=available.includes(state.quiz2Group)?[state.quiz2Group]:[...available];
+   if(method==='vocab'||method==='rebuild'||method==='recall')selected=available.includes(state.quiz2Group)?[state.quiz2Group]:method==='vocab'?available.slice(0,1):[...available];
    else if(method==='particles'){const chapters=normalizeChapters(state.quiz2Chapter,['3','4']);selected=chapters.includes('all')?[...available]:chapters;}
    else selected=[...available];
   }
   next[method]=available.filter(id=>selected.includes(id));
+  if(method==='vocab')next[method]=(next[method][0]?[next[method][0]]:available.slice(0,1));
  }
  state.quiz2Categories=next;
- if(next.rebuild.length)state.quiz2Group=next.rebuild[0];
+ if(next.vocab?.length)state.quiz2Group=next.vocab[0];
+ else if(next.rebuild.length)state.quiz2Group=next.rebuild[0];
  state.quiz2Chapter=next.particles.length?[...next.particles]:['3','4'];
 }
 function quiz2Selected(method=quiz2Mode()){quiz2NormalizeCategories();return state.quiz2Categories[method];}
@@ -163,16 +165,23 @@ function quiz2PracticeCount(method=quiz2Mode()){
 function quiz2CheckIcon(){return `<svg class="quiz2-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8.65-8.65 1.4 1.4z"/></svg>`;}
 function quiz2ToggleCategory(id){
  const method=quiz2Mode(),available=quiz2CategoryOptions(method).map(item=>item[0]);
+ if(method==='vocab'){if(available.includes(id))state.quiz2Categories.vocab=[id];return;}
  if(id==='all'){const allOn=available.every(item=>quiz2Selected(method).includes(item));state.quiz2Categories[method]=allOn?[]:[...available];}
  else if(available.includes(id)){const selected=new Set(quiz2Selected(method));if(selected.has(id))selected.delete(id);else selected.add(id);state.quiz2Categories[method]=available.filter(item=>selected.has(item));}
- if(method==='rebuild'&&state.quiz2Categories.rebuild.length)state.quiz2Group=state.quiz2Categories.rebuild[0];
+ if((method==='vocab'||method==='rebuild')&&state.quiz2Categories[method]?.length)state.quiz2Group=state.quiz2Categories[method][0];
  if(method==='particles')state.quiz2Chapter=state.quiz2Categories.particles.length?[...state.quiz2Categories.particles]:['3','4'];
 }
 function quiz2CategoryField(){
- const options=quiz2CategoryOptions(),selected=new Set(quiz2Selected()),allOn=options.length>0&&options.every(([id])=>selected.has(id));
- const tab=allOn?'all':options.find(([id])=>selected.has(id))?.[0]||'all';
+ const options=quiz2CategoryOptions(),selected=new Set(quiz2Selected()),vocab=quiz2Mode()==='vocab',allOn=!vocab&&options.length>0&&options.every(([id])=>selected.has(id));
+ const tab=allOn?'all':options.find(([id])=>selected.has(id))?.[0]||options[0]?.[0]||'all';
  const chip=(id,label,pressed)=>`<button type="button" class="filter-chip quiz2-category" data-quiz2="category" data-quiz2-category="${esc(id)}" aria-pressed="${pressed}" tabindex="${tab===id?0:-1}">${pressed?quiz2CheckIcon():''}${esc(label)}</button>`;
- return `<fieldset class="filter-chip-group quiz2-categories"><legend>${esc(nL('Categories','組別'))}</legend><div class="filter-chip-options" role="group" aria-label="${esc(nL('Categories','組別'))}">${chip('all',nL('All','全部'),allOn)}${options.map(([id,en,zh])=>chip(id,nL(en,zh),selected.has(id))).join('')}</div></fieldset>`;
+ return `<fieldset class="filter-chip-group quiz2-categories"><legend>${esc(nL('Categories','組別'))}</legend><div class="filter-chip-options" role="group" aria-label="${esc(nL('Categories','組別'))}">${vocab?'':chip('all',nL('All','全部'),allOn)}${options.map(([id,en,zh])=>chip(id,nL(en,zh),selected.has(id))).join('')}</div></fieldset>`;
+}
+function quiz2VocabWords(){const id=quiz2Selected('vocab')[0];return id?quiz2Rows(id).flat():[];}
+function quiz2VocabActions(){
+ const words=quiz2VocabWords(),kanji=words.some(w=>vocabEligibleKanji(w).length),off=words.length?'':'disabled';
+ const button=(kind,en,zh,tone='ghost')=>`<button type="button" class="button ${tone}" data-quiz2="${kind}" ${off}>${nL(en,zh)}</button>`;
+ return `<div class="card-actions quiz2-start">${button('adaptive','Adaptive revision','自適應溫習','primary')}${button('matching','Matching','配對')}${kanji?button('kanji','Choose the correct kanji','選擇正確漢字'):''}${button('rebuild','Rebuild','重組')}${button('recall','Recall','回想')}</div>`;
 }
 function quiz2GroupMeta(id){return QUIZ2_GROUPS.find(group=>group[0]===id)||QUIZ2_GROUPS[0];}
 function quiz2GroupsLive(){return QUIZ2_GROUPS.filter(([id])=>quiz2Rows(id).length);}
@@ -214,10 +223,11 @@ function quiz2ParticlePreview(){
 }
 function quiz2Menu(){
  const method=quiz2Mode();
- const methods=[['rebuild','Rebuild','重組'],['recall','Recall','回想'],['questions','Question Words','疑問詞'],['particles','Particle Matching','助詞配對']];
+ const methods=[['vocab','Vocab','詞彙'],['questions','Question Words','疑問詞'],['particles','Particle Matching','助詞配對']];
  const chips=methods.map(([id,en,zh])=>`<button type="button" class="filter-chip" data-quiz2="method" data-quiz2-method="${id}" aria-pressed="${method===id}" tabindex="${method===id?0:-1}">${nL(en,zh)}</button>`).join('');
  const count=quiz2PracticeCount(method);
- return `<section class="study-wrap quiz2-home"><h1 class="sr-only">${esc(nL('Quiz 2 Revision','測驗二溫習'))}</h1><div class="filter-chip-group"><div class="filter-chip-options" role="group" aria-label="${esc(nL('Practice method','練習方式'))}">${chips}</div></div>${quiz2CategoryField()}<div class="card-actions quiz2-start"><button type="button" class="button primary" data-quiz2="start" ${count?'':'disabled'}>${nL('Start','開始')}</button></div>${quiz2ModePreview()}</section>`;
+ const start=method==='vocab'?quiz2VocabActions():`<div class="card-actions quiz2-start"><button type="button" class="button primary" data-quiz2="start" ${count?'':'disabled'}>${nL('Start','開始')}</button></div>`;
+ return `<section class="study-wrap quiz2-home"><h1 class="sr-only">${esc(nL('Quiz 2 Revision','測驗二溫習'))}</h1><div class="filter-chip-group"><div class="filter-chip-options" role="group" aria-label="${esc(nL('Practice method','練習方式'))}">${chips}</div></div>${quiz2CategoryField()}${start}${quiz2ModePreview()}</section>`;
 }
 function quiz2Item(row){const ids=row.map(word=>word.id);return {key:ids.join('+'),ids,solved:[],missed:false};}
 function quiz2CurrentItem(round){return round?.items?.[round.index]||null;}
@@ -377,9 +387,9 @@ document.addEventListener('click',event=>{
  const t=event.target.closest('[data-quiz2]');if(!t||t.disabled)return;
  event.stopPropagation();event.preventDefault();
  const kind=t.dataset.quiz2,r=state.round;
- if(kind==='method'){const method=t.dataset.quiz2Method;if(!['rebuild','recall','questions','particles'].includes(method))return;state.quiz2Method=method;save();render();const chip=document.querySelector(`[data-quiz2-method="${method}"]`);if(chip){focusFilterChip(chip);chip.focus({preventScroll:true});revealFilterChip(chip);}return;}
+ if(kind==='method'){const method=t.dataset.quiz2Method;if(!['vocab','rebuild','recall','questions','particles'].includes(method))return;state.quiz2Method=method;save();render();const chip=document.querySelector(`[data-quiz2-method="${method}"]`);if(chip){focusFilterChip(chip);chip.focus({preventScroll:true});revealFilterChip(chip);}return;}
  if(kind==='category'){quiz2ToggleCategory(t.dataset.quiz2Category);save();render();const chip=document.querySelector(`[data-quiz2-category="${t.dataset.quiz2Category}"]`);if(chip){focusFilterChip(chip);chip.focus({preventScroll:true});revealFilterChip(chip);}return;}
- if(kind==='start'){startQuiz2(state.quiz2Method||'rebuild');return;}
+ if(kind==='start'){startQuiz2(state.quiz2Method||'questions');return;} if(['adaptive','matching','kanji','rebuild','recall'].includes(kind)&&quiz2Mode()==='vocab'){const words=quiz2VocabWords();if(!words.length)return;state.quiz2Method='vocab';state.learningReturn='quiz2';if(kind==='adaptive')vocabStartAdaptive(words,'quiz2');else if(kind==='matching')vocabStartIndependent('match',words,'quiz2');else if(kind==='kanji')vocabStartIndependent('kanji',words.filter(w=>vocabEligibleKanji(w).length),'quiz2');else vocabStartIndependent(kind,words,'quiz2');return;}
  if(kind==='retry'&&r?.mode==='particle'){startParticle(r.missed);return;}
  if(['tile','return','clear'].includes(kind)&&r?.mode==='quiz2-rebuild'){quiz2RebuildEdit(kind,Number(t.dataset.quiz2Index));return;}
  if(kind==='blank'&&r&&!r.checked){r.active=Number(t.dataset.quiz2Index);render();return;}
@@ -392,6 +402,7 @@ document.addEventListener('click',event=>{
 Object.assign(ZH_HANT,{
  'Quiz 2 Revision':'測驗二溫習',
  'Revise Chapters 3 and 4 vocabulary, question words and particles.':'溫習第 3 及第 4 課的詞彙、疑問詞及助詞。',
+ 'Vocab':'詞彙',
  'Rebuild, Question Words, Particles':'重組、疑問詞、助詞',
  'Question Words':'疑問詞',
  'Learn question words, readings, kanji and examples.':'學習疑問詞的讀音、漢字與例句。',
