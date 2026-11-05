@@ -5,7 +5,6 @@ const QUIZ2_SKIP=new Set(['linking','everyday']);
 const QUIZ2_GROUPS=[
  ['facilities','Facilities','設施'],
  ['countries','Countries and regions','國家與地區'],
- ['fictional','Fictional places','虛構場所'],
  ['objects','Objects','物品'],
  ['food','Food','食物'],
  ['actions','Daily actions','日常動作'],
@@ -96,8 +95,8 @@ const PARTICLE_ITEMS=[
  {id:'ch4-end-time',chapters:[4],page:67,context:['It finishes at 2:30.','2 點半結束。'],parts:['2時半','終わります。'],answers:['に']},
  {id:'ch4-phone',chapters:[4],page:63,context:['Ask for the telephone number.','詢問電話號碼。'],parts:['電話番号','何番です','。'],answers:['は','か']}
 ];
-function quiz2Words(){const seen=new Set();return WORDS.filter(w=>{if(!wordGameReady(w)||seen.has(w.id))return false;const cls=WORD_CLASSIFICATION.get(w.id);if(!cls||QUIZ2_SKIP.has(cls.group)||cls.subgroup==='particles')return false;if(!matchesChapters(w,['3','4']))return false;seen.add(w.id);return true;});}
-function quiz2QuestionScenes(){const seen=new Set();return DIALOGUE_ENTRIES.filter(q=>SCENE_META.get(q.id).home==='grammar'&&matchesChapters(q,['3','4'])&&!seen.has(q.id)&&seen.add(q.id));}
+function quiz2Words(){const seen=new Set();return WORDS.filter(w=>{if(!wordGameReady(w)||seen.has(w.id)||QUIZ2_FICTIONAL.has(w.id))return false;const cls=WORD_CLASSIFICATION.get(w.id);if(!cls||QUIZ2_SKIP.has(cls.group)||cls.subgroup==='particles')return false;if(!matchesChapters(w,['3','4']))return false;seen.add(w.id);return true;});}
+function quiz2QuestionScenes(){const seen=new Set();const scenes=DIALOGUE_ENTRIES.filter(q=>SCENE_META.get(q.id)?.home==='grammar'&&matchesChapters(q,['3','4'])&&!['ここ','そこ','あそこ'].includes(q.kana)&&!seen.has(q.id)&&seen.add(q.id));const nanno=DIALOGUE_ENTRIES.find(q=>q.id==='wh-what-kind');if(nanno&&!seen.has(nanno.id))scenes.push(nanno);return scenes;}
 function particlePool(){const selected=new Set(quiz2Selected('particles'));return PARTICLE_ITEMS.filter(item=>item.chapters.some(ch=>selected.has(String(ch))));}
 function particleChoices(items){const used=new Set(items.flatMap(item=>item.answers));return PARTICLE_ORDER.filter(p=>used.has(p));}
 function particlePlain(item,values){return item.parts.map((part,i)=>{const a=values[i];return part+(a&&a!=='×'?a:'');}).join('');}
@@ -123,7 +122,7 @@ function quiz2CategoryOptions(method=quiz2Mode()){
  if(method==='questions'){
   const group=LEARNING_TAXONOMY.find(item=>item.id==='questions');
   const words=quiz2Words().filter(w=>quiz2Bucket(w)==='questions');
-  return (group?.subgroups||[]).filter(item=>words.some(w=>WORD_CLASSIFICATION.get(w.id)?.subgroup===item.id)).map(item=>[item.id,item.label,item.zh]);
+  return (group?.subgroups||[]).filter(item=>item.id==='question'||words.some(w=>quiz2QuestionSubgroup(w.id)===item.id)).map(item=>[item.id,item.label,item.zh]);
  }
  if(method==='particles')return [['3','Chapter 3','第3課'],['4','Chapter 4','第4課']].filter(([id])=>PARTICLE_ITEMS.some(item=>item.chapters.includes(Number(id))));
  return quiz2GroupsLive();
@@ -148,13 +147,16 @@ function quiz2NormalizeCategories(){
  state.quiz2Chapter=next.particles.length?[...next.particles]:['3','4'];
 }
 function quiz2Selected(method=quiz2Mode()){quiz2NormalizeCategories();return state.quiz2Categories[method];}
+function quiz2QuestionSubgroup(id){return id==='3-04'?'question':WORD_CLASSIFICATION.get(id)?.subgroup;}
 function quiz2QuestionWords(categoryIds){
  const ids=new Set(categoryIds),seen=new Set();
- return quiz2Words().filter(w=>{const sub=WORD_CLASSIFICATION.get(w.id)?.subgroup;if(quiz2Bucket(w)!=='questions'||!ids.has(sub)||seen.has(w.id))return false;seen.add(w.id);return true;});
+ return quiz2Words().filter(w=>{const sub=quiz2QuestionSubgroup(w.id);if(quiz2Bucket(w)!=='questions'||!ids.has(sub)||seen.has(w.id))return false;seen.add(w.id);return true;});
 }
-function quiz2QuestionRows(categoryIds){return quiz2PairRows(quiz2QuestionWords(categoryIds));}
+function quiz2Nanno(){return {id:'quiz2-nanno',kana:'なんの',jp:'なんの',c:'なんの',en:'what kind / what topic',zh:'哪一類／什麼主題'};}
+function quiz2QuestionRows(categoryIds){const rows=quiz2PairRows(quiz2QuestionWords(categoryIds));if((categoryIds||[]).includes('question'))rows.push([quiz2Nanno()]);return rows;}
 function quiz2SceneCategory(q){
- const subs=new Set(dialogueForms(q).map(form=>form.word&&WORD_CLASSIFICATION.get(form.word)?.subgroup).filter(Boolean));
+ if(q.id==='wh-what-kind'||q.kana==='どこ')return 'question';
+ const subs=new Set(dialogueForms(q).map(form=>form.word&&quiz2QuestionSubgroup(form.word)).filter(Boolean));
  return subs.has('location')?'location':'question';
 }
 function quiz2QuestionScenesFor(categoryIds){
@@ -206,7 +208,8 @@ function quiz2WideScene(word){
 }
 function quiz2Card(row){
  const ids=row.map(w=>w.id).join(' '),banner=row.some(w=>['3-01','3-02','3-03'].includes(w.id));
- return `<article class="paper lexical-card quiz2-card${row.length>1?' quiz2-card-pair':''}${quiz2WideScene(row[0])?' quiz2-card-scene':''}${banner?' quiz2-card-banner':''}" data-lexical-id="${ids}"><div class="lexical-card-visual">${luluPreviewVisual(row[0])}</div><div class="lexical-card-copy">${row.map(quiz2FormCopy).join('')}</div></article>`;
+ const visualWord=LULU_WORD_PLANS[row[0].id]?row[0]:wordBy('2-36');
+ return `<article class="paper lexical-card quiz2-card${row.length>1?' quiz2-card-pair':''}${quiz2WideScene(row[0])?' quiz2-card-scene':''}${banner?' quiz2-card-banner':''}" data-lexical-id="${ids}"><div class="lexical-card-visual">${visualWord?luluPreviewVisual(visualWord):''}</div><div class="lexical-card-copy">${row.map(quiz2FormCopy).join('')}</div></article>`;
 }
 function quiz2Preview(group,tag='h2'){
  const [,en,zh]=quiz2GroupMeta(group),rows=quiz2Rows(group);if(!rows.length)return '';

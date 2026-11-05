@@ -262,3 +262,6 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 .lulu-speech .lulu-outcome-label{margin:0;font-size:16px;font-weight:500;line-height:1.4}
 .lulu-speech .jp,.lulu-speech p{margin:4px 0 0;font-size:16px;line-height:1.4}
 .lulu-speech p:first-child{margin-top:0}
+
+.question-word-exercise .activity-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.question-word-exercise .option{width:100%;min-height:48px;white-space:normal;overflow-wrap:anywhere}

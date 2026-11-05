@@ -102,13 +102,15 @@ function preparePairedActivity(q){
  for(const form of q.forms)a.formAnswers[form.role]={chosen:[],tileBank:pairedTileBank(form)};
  const correct=q.forms.map(form=>({...form,formRole:form.role})),seen=new Set(q.forms.flatMap(activityReadings));
  const distractors=[...(q.distractors||[]).map((kana,i)=>({id:`${q.id}-d${i}`,kana,word:q.word,category:q.category,family:`${q.id}-d${i}`})),...relatedActivityItems(a,q)].filter(item=>{const key=rebuildText(item.kana);if(seen.has(key))return false;seen.add(key);return true;}).slice(0,2);
- a.choices=shuffle([...correct,...distractors]);a.tileBank=a.formAnswers.normal.tileBank;a.chosen=a.formAnswers.normal.chosen;
+ a.choices=shuffle([...correct,...distractors]);if(state.learningReturn==='quiz2'&&state.quiz2Method==='questions')a.choices=a.choices.filter(item=>!['ここ','そこ','あそこ'].includes(item.kana));a.tileBank=a.formAnswers.normal.tileBank;a.chosen=a.formAnswers.normal.chosen;
 }
 function selectActivityChoice(id){
  const a=state.activity,q=activityCurrent();if(!q||a.checked||a.final||!a.choices.some(c=>c.id===id))return;
- if(state.learningReturn==='quiz2'&&state.quiz2Method==='questions'&&!q.forms){a.selected=id;render();return;}
+ if(state.learningReturn==='quiz2'&&state.quiz2Method==='questions'&&!q.forms){a.selected=id;quiz2ActivitySubmit();return;}
  if(!q.forms){checkActivity(id);return;}
- const index=a.selections.indexOf(id);if(index>=0)a.selections.splice(index,1);else if(a.selections.length<2)a.selections.push(id);render();
+ const index=a.selections.indexOf(id);if(index>=0)a.selections.splice(index,1);else if(a.selections.length<2)a.selections.push(id);
+ if(state.learningReturn==='quiz2'&&state.quiz2Method==='questions'&&a.selections.length===q.forms.length){quiz2ActivitySubmit();return;}
+ render();
 }
 function pairedActivityResults(q,reveal){
  const a=state.activity;
@@ -146,13 +148,13 @@ function pairedDialogueExercise(q,tileMode){
  }).join('');
  const turns=questionWordPractice(q)?questionWordGameTurns(q):q.turns.map((turn,index)=>[turn,index]);
  const conversation=turns.map(([turn,index])=>{const [speaker,ja,en,cn]=turn;return `<div class="conversation-turn ${speaker}">${conversationPig(speaker)}<div class="conversation-bubble ${index===q.answerSlot.turn?'reply-bubble':''}">${index===q.answerSlot.turn?`<span class="dialogue-role">You</span>${response}`:`<span class="dialogue-role">${conversationSpeaker(q,speaker)}</span><p class="jp" lang="ja">${esc(dialogueTurnText(q,index,a.checked))}</p><p class="conversation-translation">${esc(zh?cn:en)}</p>`}</div></div>`;}).join('');
- const hideSelector=questionWordPractice(q)&&a.result;
+ const hideSelector=false;
  const options=tileMode||hideSelector?'':`<p class="small pair-selection-count" role="status">${a.selections.length} / 2 selected</p><div class="options activity-options paired-options" role="group" aria-label="Select both forms">${a.choices.map((choice,index)=>{
   const selected=a.selections.includes(choice.id),correct=q.forms.some(f=>activityReadings(f).some(r=>rebuildCorrect(choice.kana,r)));
   return `<button class="option jp ${selected?'selected ':''}${a.checked?(correct?'correct':selected?'wrong':''):''}" aria-pressed="${selected}" data-activity-choice="${choice.id}" ${a.checked||!selected&&a.selections.length===2?'disabled':''}><span class="number">${index+1}</span><span>${esc(choice.kana)}</span>${selected?'<span class="pair-check" aria-hidden="true">✓</span>':''}</button>`;
  }).join('')}</div>`;
  const quiz2q=state.learningReturn==='quiz2'&&state.quiz2Method==='questions';
  const feedback=quiz2q&&a.feedbackKind?quiz2Notice(a.feedbackKind,a,a.feedbackKind==='wrong'?q.forms.map(form=>`<p><span>${dialogueFormLabel(form)}</span> · <span class="jp" lang="ja">${esc(form.kana)}</span></p>`).join(''):''):a.checked?`<div class="reply-feedback ${a.result?'correct':'wrong'}" role="status">${luluFeedbackArt(a)}<div class="feedback-copy">${questionWordPractice(q)?'':`<p class="lulu-outcome-label">${luluFeedbackLabel(a)}</p>`}<strong>${a.result?'Correct!':'Review both forms'}</strong>${q.forms.map(form=>`<div class="pair-form-feedback ${a.formResults[form.role]?'correct':'wrong'}" data-form-result="${form.role}"><span>${dialogueFormLabel(form)}</span> · <span>${a.formResults[form.role]?'Correct':'Needs correction'}</span>${questionWordPractice(q)&&a.formResults[form.role]?'':`<p class="jp" lang="ja">${esc(form.kana)}</p>`}</div>`).join('')}</div><p class="activity-explanation">${q.forms.map(form=>`${esc(translateText(dialogueFormLabel(form)))}: ${esc(dialogueUsage(form))}`).join('<br>')}</p></div>`:'';
- const controls=a.checked?button('Next '+icon('arrow'),'activityNext','primary'):quiz2q?button('Submit','activityCheck','primary'):button('Check answer','activityCheck','primary',(tileMode?activityReady(q):a.selections.length===2)?'':'disabled');
+ const controls=a.checked?button('Next '+icon('arrow'),'activityNext','primary'):quiz2q?'':button('Check answer','activityCheck','primary',(tileMode?activityReady(q):a.selections.length===2)?'':'disabled');
  return `<h1 class="sr-only">${tileMode?'Rebuild':'Matching'}</h1><section class="study-wrap conversation-exercise paired-exercise${questionWordPractice(q)?' question-word-exercise':''}"><div class="exercise-body"><p class="exercise-situation">${esc(zh?q.sceneZh:q.scene)}</p><p class="pair-instruction">${tileMode?'Build both the normal and polite forms.':'Select both the normal and polite forms.'}</p>${q.lesson?lessonScene(q):''}<div class="conversation-stage">${conversation}</div>${questionWordStack(q,options,feedback)}<div class="card-actions activity-controls">${controls}</div>${tileMode&&!a.checked?'<div class="activity-reveal"><button class="scope-link" data-action="activityReveal">Show answer & mark for review</button></div>':''}</div></section>`;
 }
