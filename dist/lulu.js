@@ -7,6 +7,9 @@ const LULU_ASSETS={
  occupations:{src:'icons/lulu-occupations.png',width:2172,height:724,cell:724,columns:3},
  actions:{src:'icons/lulu-actions.png',width:1536,height:1024,rects:[[0,0,512,512],[512,0,512,512],[1024,0,512,512],[0,512,512,512],[512,512,552,512],[1064,512,472,512]]},
  feedbackNew:{src:'icons/lulu-feedback-new.png',width:1536,height:1024,rects:[[0,60,512,464],[512,30,512,529],[1024,0,512,545],[0,524,512,500],[512,559,512,465],[1024,545,512,479]]},
+ cheer:{src:'icons/lulu-cheer.png',width:1500,height:1683,rects:[[0,0,1500,1683]]},
+ support:{src:'icons/lulu-support.png',width:1500,height:1851,rects:[[0,0,1500,1851]]},
+ study:{src:'icons/lulu-study.png',width:1500,height:1851,rects:[[0,0,1500,1851]]},
  teaching:{src:'icons/lulu-teaching.png',width:1448,height:1086,rects:[[0,0,285,395],[285,0,430,395],[715,0,435,395],[1150,0,298,395],[0,395,396,325],[396,395,344,325],[740,395,410,325],[1150,395,298,325],[0,720,317,366],[317,720,409,366],[726,720,409,366],[1135,720,313,366]]}
 };
 const LULU_ART={
@@ -14,10 +17,10 @@ const LULU_ART={
  employeeOriginal:['occupations',0],bankerOriginal:['occupations',1],researcherOriginal:['occupations',2],
  listening:['actions',0],watching:['actions',1],photographing:['actions',2],smoking:['actions',3],finishing:['actions',4],resting:['actions',5],
  wave:['original',0],point:['original',1],bow:['original',2],reading:['original',3],teacher:['original',4],doctor:['original',5],thinking:['original',6],gift:['original',7],speaking:['original',8],
- happy:['feedback',0],encouraging:['feedback',1],clap:['feedbackNew',0],proud:['feedbackNew',1],hop:['feedbackNew',2],puzzled:['feedbackNew',3],disappointed:['feedbackNew',4],review:['feedbackNew',5],
+ happy:['feedback',0],encouraging:['feedback',1],clap:['feedbackNew',0],proud:['feedbackNew',1],hop:['feedbackNew',2],puzzled:['cheer',0],disappointed:['support',0],review:['study',0],cheer:['cheer',0],support:['support',0],study:['study',0],
  self:['teaching',0],you:['teaching',1],teaching:['teaching',2],student:['teaching',3],examining:['teaching',4],working:['teaching',5],researching:['teaching',6],eating:['teaching',7],drinking:['teaching',8],waking:['teaching',9],sleeping:['teaching',10],walking:['teaching',11]
 };
-const LULU_FEEDBACK_POOLS={correct:['happy','clap','proud','hop'],wrong:['encouraging','puzzled','disappointed','review']};
+const LULU_FEEDBACK_POOLS={correct:['happy','clap','proud','hop'],wrong:['cheer','support','study','encouraging']};
 const luluPoolCursor={correct:0,wrong:0};
 const luluPoolBags={correct:[],wrong:[]};
 function luluFallback(){return '<g class="lulu-fallback" fill="#f9d5c8" stroke="#925b38" stroke-width="5"><path d="M20 38Q5 3 35 20Q65 9 83 20Q112 2 96 40Q112 100 57 105Q3 101 20 38Z"/><ellipse cx="58" cy="65" rx="20" ry="14" fill="#efa6a5"/><circle cx="38" cy="46" r="3" fill="#925b38"/><circle cx="77" cy="46" r="3" fill="#925b38"/><path d="M51 63v3m14-3v3"/></g>';}
@@ -44,11 +47,11 @@ function luluChoose(pool){
 function luluCommitFeedback(holder,{key,correct=0,total=1,assisted=false,revealed=false,selfAssessed=false}={}){
  if(!holder)return;key??=String(holder.index??'result');if(holder.luluFeedback?.key===key)return holder.luluFeedback;
  const outcome=selfAssessed?'self':revealed?'revealed':correct>0&&correct<total?'partial':correct===total?(assisted?'assisted':'correct'):'wrong';
- const pose=['self','revealed','assisted'].includes(outcome)?'review':luluChoose(outcome==='correct'?'correct':'wrong');
+ const pose=['self','revealed','assisted'].includes(outcome)?'study':luluChoose(outcome==='correct'?'correct':'wrong');
  holder.luluAnyAssisted=!!holder.luluAnyAssisted||assisted||revealed||selfAssessed;holder.luluAnySelf=!!holder.luluAnySelf||selfAssessed;holder.luluFeedback={key,pose,outcome,correct,total};
  return holder.luluFeedback;
 }
-function luluFeedbackLabel(holder){const o=holder?.luluFeedback?.outcome;if(o==='self')return holder.luluFeedback.correct===holder.luluFeedback.total?(state.language==='zh-Hant'?'✓ 手寫自評：正確':'✓ Handwriting: marked correct by you'):(state.language==='zh-Hant'?'↻ 手寫自評：需要再練習':'↻ Handwriting: self-assessed for more practice');return ({correct:['✓ Correct independently','✓ 獨立答對'],wrong:['✕ Try again — use the correction below','✕ 再試一次，參考下方修正'],partial:['◐ Partly correct','◐ 部分答對'],assisted:['✓ Correct with guidance','✓ 在引導下答對'],revealed:['↻ Model shown · practise again','↻ 已顯示範例，再練習一次'],self:['✓/✕ Handwriting · self-assessed','✓/✕ 手寫結果由你自評']})[o]?.[state.language==='zh-Hant'?1:0]||'';}
+function luluFeedbackLabel(holder){const o=holder?.luluFeedback?.outcome;const zh=state.language==='zh-Hant';if(o==='self')return holder.luluFeedback.correct===holder.luluFeedback.total?(zh?'手寫自評：做得好！':'Handwriting: nicely done!'):(zh?'手寫自評：稍後再練習一次！':'Handwriting: we’ll practise this again later!');return ({correct:["Nicely done!",'做得好！'],wrong:[holder?.requeue?"We'll practise this again later!":"Let's review the answer together!",holder?.requeue?'稍後再練習一次！':'一齊睇下答案！'],partial:["Give it another try!",'再試一次，你可以的！'],assisted:["Nicely done!",'做得好！'],revealed:["Let's review the answer together!",'一齊睇下答案！'],self:[zh?'手寫結果由你自評':'Handwriting is self-assessed']})[o]?.[zh?1:0]||'';}
 function luluFeedbackArt(holder){const f=holder?.luluFeedback;return f?`<span class="feedback-lulu ${f.outcome==='correct'?'happy':'encouraging'}" data-lulu-outcome="${f.outcome}">${luluSprite(f.pose)}</span>`:luluSprite('thinking','feedback-lulu');}
 function luluFeedbackHeading(holder){return `<div class="lulu-feedback-heading" role="status" aria-live="polite" aria-atomic="true">${luluFeedbackArt(holder)}<strong>${luluFeedbackLabel(holder)}</strong></div>`;}
 function luluFeedbackPlaceholder(){if(state.learningReturn==='quiz2'||state.view==='quiz2-rebuild'||state.view==='particle-game')return '';return `<div class="lulu-feedback-placeholder" aria-hidden="true">${luluSprite('thinking')}<span>${state.language==='zh-Hant'?'作答後在此查看結果。':'Your result will appear here.'}</span></div>`;}
