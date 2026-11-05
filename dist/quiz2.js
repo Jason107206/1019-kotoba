@@ -122,7 +122,7 @@ function quiz2CategoryOptions(method=quiz2Mode()){
  if(method==='questions'){
   const group=LEARNING_TAXONOMY.find(item=>item.id==='questions');
   const words=quiz2Words().filter(w=>quiz2Bucket(w)==='questions');
-  return (group?.subgroups||[]).filter(item=>item.id==='question'||words.some(w=>quiz2QuestionSubgroup(w.id)===item.id)).map(item=>[item.id,item.label,item.zh]);
+  return (group?.subgroups||[]).filter(item=>item.id!=='location'&&(item.id==='question'||words.some(w=>quiz2QuestionSubgroup(w.id)===item.id))).map(item=>[item.id,item.label,item.zh]);
  }
  if(method==='particles')return [['3','Chapter 3','第3課'],['4','Chapter 4','第4課']].filter(([id])=>PARTICLE_ITEMS.some(item=>item.chapters.includes(Number(id))));
  return quiz2GroupsLive();
@@ -147,7 +147,7 @@ function quiz2NormalizeCategories(){
  state.quiz2Chapter=next.particles.length?[...next.particles]:['3','4'];
 }
 function quiz2Selected(method=quiz2Mode()){quiz2NormalizeCategories();return state.quiz2Categories[method];}
-function quiz2QuestionSubgroup(id){return id==='3-04'?'question':WORD_CLASSIFICATION.get(id)?.subgroup;}
+function quiz2QuestionSubgroup(id){return id==='3-04'||id==='3-08'?'question':WORD_CLASSIFICATION.get(id)?.subgroup;}
 function quiz2QuestionWords(categoryIds){
  const ids=new Set(categoryIds),seen=new Set();
  return quiz2Words().filter(w=>{const sub=quiz2QuestionSubgroup(w.id);if(quiz2Bucket(w)!=='questions'||!ids.has(sub)||seen.has(w.id))return false;seen.add(w.id);return true;});
@@ -155,13 +155,13 @@ function quiz2QuestionWords(categoryIds){
 function quiz2Nanno(){return {id:'quiz2-nanno',kana:'なんの',jp:'なんの',c:'なんの',en:'what kind / what topic',zh:'哪一類／什麼主題'};}
 function quiz2QuestionRows(categoryIds){const rows=quiz2PairRows(quiz2QuestionWords(categoryIds));if((categoryIds||[]).includes('question'))rows.push([quiz2Nanno()]);return rows;}
 function quiz2SceneCategory(q){
- if(q.id==='wh-what-kind'||q.kana==='どこ')return 'question';
+ if(q.id==='wh-what-kind'||q.kana==='どこ'||q.kana==='どちら')return 'question';
  const subs=new Set(dialogueForms(q).map(form=>form.word&&quiz2QuestionSubgroup(form.word)).filter(Boolean));
- return subs.has('location')?'location':'question';
+ return subs.has('location')?null:'question';
 }
 function quiz2QuestionScenesFor(categoryIds){
  const selected=new Set(categoryIds),seen=new Set();
- return quiz2QuestionScenes().filter(q=>{if(seen.has(q.id)||!selected.has(quiz2SceneCategory(q)))return false;seen.add(q.id);return true;});
+ return quiz2QuestionScenes().filter(q=>{const category=quiz2SceneCategory(q);if(!category||seen.has(q.id)||!selected.has(category))return false;seen.add(q.id);return true;});
 }
 function quiz2PracticeCount(method=quiz2Mode()){
  const selected=quiz2Selected(method);if(!selected.length)return 0;

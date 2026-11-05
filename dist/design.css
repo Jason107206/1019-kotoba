@@ -265,3 +265,10 @@ h2{font-size:22px;line-height:1.35}h3{font-size:18px}
 
 .question-word-exercise .activity-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
 .question-word-exercise .option{width:100%;min-height:48px;white-space:normal;overflow-wrap:anywhere}
+
+.question-word-exercise .conversation-stage{margin-bottom:16px}
+.question-word-exercise .question-word-result,.question-word-exercise .lulu-bubble-row{margin-top:16px}
+.question-word-exercise .option.correct:disabled,.question-word-exercise .option.correct{background:var(--md-success-container);border-color:var(--md-success);color:var(--md-on-success-container);opacity:1}
+.question-word-exercise .option.wrong:disabled,.question-word-exercise .option.wrong{background:var(--md-error-container);border-color:var(--md-error);color:var(--md-on-error-container);opacity:1}
+.question-word-exercise .option:disabled{opacity:1}
+.question-word-exercise .option-state,.question-word-exercise .pair-check{display:none}
