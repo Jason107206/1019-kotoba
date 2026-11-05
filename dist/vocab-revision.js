@@ -1,6 +1,6 @@
 'use strict';
 // Adaptive vocabulary revision. Kanji stroke paths come from KanjiVG (CC BY-SA 3.0).
-const REGIONAL_KANJI=new Set(['所','食','話','試','議','社','画','図','昼','曜','館','機','靴','終','強','部','郵','銀','後','術','階','号','段','新','電','会','番','映']);
+const REGIONAL_KANJI=new Set(['所','食','話','試','画','図','昼','曜','館','靴','終','強','部','郵','銀','後','術','号','新','電']);
 function vocabEligibleKanji(word){return hasKanji(word)?[...word.c].filter(char=>REGIONAL_KANJI.has(char)):[];}
 function vocabRevisionPool(){return scopedWords('vocabulary',true);}
 function vocabKanjiQuestions(words){return words.flatMap(w=>vocabEligibleKanji(w).map(char=>({id:w.id,char})));}
